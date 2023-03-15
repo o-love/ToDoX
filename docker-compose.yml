@@ -1,0 +1,72 @@
+version: "3.7"
+
+# networks:
+#     app-network:
+#         driver: bridge
+
+services:
+    app:
+        build: docker/php
+        restart: always
+        working_dir: /application
+        volumes:
+            - ./Server:/application
+            - ./docker/php/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+            # - ./docker/php/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+        # networks:
+        #     - app-network
+        depends_on:
+            - mysql
+
+    appserver:
+        image: 'angular-laravel-book'
+        build: './Client'
+        ports:
+          - "${SERVER_PORT}:81"
+
+    nginx:
+        image: nginx
+        restart: always
+        working_dir: /application
+        depends_on:
+            - app
+        ports:
+            - "${NGINX_PORT}:80"
+        volumes:
+            - .:/application
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./docker/nginx/timeout.conf:/etc/nginx/conf.d/timeout.conf:ro
+        # networks:
+        #     - app-network
+
+    mysql:
+        image: mysql:5.7
+        restart: always
+        working_dir: /application
+        ports:
+            - "${MYSQL_PORT}:3306"
+        environment:
+            TZ: "${TIMEZONE}"
+            MYSQL_DATABASE: "${MYSQL_DATABASE}"
+            MYSQL_USER: "${MYSQL_USER}"
+            MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+            MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD}"
+        volumes:
+            - .:/application
+            - ./database:/var/lib/mysql
+            - ./docker/mysql/hosts.allow:/etc/hosts.allow
+        # networks:
+        #     - app-network
+
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     ports:
+    #         - '${PHPMYADMIN_PORT}:80'
+    #     environment:
+    #         PMA_ARBITRARY: 1
+    #         MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD}"
+    #         PMA_HOST: mysql
+    #         UPLOAD_LIMIT: 300M
+    #     restart: always
+        # networks:
+        #     - app-network
