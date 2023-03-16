@@ -10,12 +10,20 @@ services:
             - ./docker/php/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
         depends_on:
             - mysql
+        networks:
+            ntw:
+                ipv4_address: 172.16.0.4
 
     appserver:
-        image: 'angular-laravel-book'
         build: './Client'
+        working_dir: /application
         ports:
           - "${SERVER_PORT}:81"
+        volumes:
+            - ./Client:/application
+        networks:
+            ntw:
+                ipv4_address: 172.16.0.5
 
     nginx:
         image: nginx
@@ -29,6 +37,9 @@ services:
             - .:/application
             - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
             - ./docker/nginx/timeout.conf:/etc/nginx/conf.d/timeout.conf:ro
+        networks:
+            ntw:
+                ipv4_address: 172.16.0.2
 
     mysql:
         image: mysql:5.7
@@ -45,6 +56,19 @@ services:
         volumes:
             - mysql_volume:/var/lib/mysql
             - ./docker/mysql/hosts.allow:/etc/hosts.allow
+        networks:
+            ntw:
+                ipv4_address: 172.16.0.3
 
 volumes:
     mysql_volume:
+
+# Predictable networking, fixed Ip addresses
+networks:
+  ntw:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
+          gateway: 172.16.0.1
+
