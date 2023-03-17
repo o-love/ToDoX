@@ -1,0 +1,12 @@
+<h2>Create Board</h2>
+<form (ngSubmit)="onSubmit()">
+  <label>
+    Name:
+    <input type="text" [(ngModel)]="boardName" name="boardName" required>
+  </label>
+  <label>
+    Description:
+    <input type="text" [(ngModel)]="boardDescription" name="boardDescription" required>
+  </label>
+  <button type="submit">Create Board</button>
+</form>

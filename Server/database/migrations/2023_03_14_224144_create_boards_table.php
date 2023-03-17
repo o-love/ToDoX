@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('boards', function (Blueprint $table) {
+        Schema::create('board', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
             $table->timestamps(); // Automatically managed by Laravel - created_at, updated_at
         });
     }

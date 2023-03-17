@@ -15,25 +15,23 @@ class BoardController extends Controller
     }
 
     // Creates a new board
-    public function create(Request $request)
+    public function createBoard(Request $request)
     {
-        // Validates the request data
-        $request->validate([
-            'name' => 'required|unique:boards,name', //Name is required and must be unique
-            'description' => 'nullable|string',
-            // 'active' => 'boolean',
-        ]);
+        $board = Board::create([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);    
 
-        // Creates the Board
-        $board = new Board();
-        $board->name = $request->input('name');
-        $board->description = $request->input('description');
-        $board->active = true; // A new board is always active
-        $board->save();
+        return response()->json([
+            'message' => 'Board created successfully',
+            'board' => $board
+        ], 201);
 
-        // Add register to Board_user
-
-        return response()->json(['message' => 'Board created successfully']);
+        // $board = new Board;
+        // $board->name = $request->name;
+        // $board->description = $request->description;
+        // $board->save();
+        // return response()->json($board, 201);
     }
 
     // Returns a single Board by ID
@@ -47,28 +45,17 @@ class BoardController extends Controller
     // Updates an existing Board by ID
     public function update(Request $request, $id)
     {
-        // Finds the Board to be updated
-        $board = Board::findOrFail($id);
-
-        // Validates the request data
-        $request->validate([
-            'name' => 'required|unique:boards,name,'.$id.',id,manager_id,'.$request->manager_id,
-            'description' => 'nullable|string',
-        ]);
-
-        // Updates the Board
-        $board->update($request->all());
-
-        return response()->json($board);
+        $board = Board::find($id);
+        $board->name = $request->name;
+        $board->description = $request->description;
+        $board->save();
+        return response()->json($board, 200);
     }
 
     // Deletes a Board by ID
     public function destroy($id)
     {
-        $Board = Board::findOrFail($id);
-
-        $Board->delete();
-
-        return response()->json(['success' => true]);
+        Board::destroy($id);
+        return response()->json(null, 204);
     }
 }

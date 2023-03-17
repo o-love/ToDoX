@@ -3,11 +3,8 @@ FROM node:16.18-alpine as build
 WORKDIR /app
 COPY package.json /app/package.json
 RUN npm install
-# RUN npm install -g @angular/cli
 COPY ./ /app/
-# RUN ng build --configuration=development
 RUN npm run build --prod
-# RUN ng build --prod
 
 
 FROM nginx:alpine
