@@ -70,35 +70,35 @@ The main branch should be used as the stable version of the codebase, and should
 
 ## Usage
 ### Building the application
-To build the application, run the following command:
+To build the application, run the following command:<br>
     ```
     docker-compose build
     ```<br>
 This will build all the necessary Docker images.
 
 ### Restarting the application
-To restart the application, run the following command:
+To restart the application, run the following command:<br>
     ```
     docker-compose up -d
     ```<br>
 This will restart all the Docker containers.
 
 ### Bringing the application down
-To stop the application, run the following command:
+To stop the application, run the following command:<br>
     ```
     docker-compose down
     ```<br>
 This will stop and remove all the Docker containers.
 
 ### Killing the application
-To kill the application, run the following command:
+To kill the application, run the following command:<br>
     ```
     docker-compose kill
     ```<br>
 This will stop all the Docker containers immediately.
 
 ### Building with docker-compose up --build -d
-To alternatively build the application, run the following command:
+To alternatively build the application, run the following command:<br>
     ```
     docker-compose up --build -d
     ```<br>
