@@ -42,7 +42,7 @@ services:
                 ipv4_address: 172.16.0.2
 
     mysql:
-        image: mysql:5.7
+        image: mysql/mysql-server:5.7
         restart: always
         working_dir: /application
         ports:
