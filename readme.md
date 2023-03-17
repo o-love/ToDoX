@@ -9,18 +9,18 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
 2. Make sure you have Docker installed & running on your machine.
 3. Create a .env file in the Server directory with the following variables:
 
-```bash
-TIMEZONE=Europe/Madrid
+    ```bash
+    TIMEZONE=Europe/Madrid
 
-NGINX_PORT=8082
-MYSQL_PORT=3382
-SERVER_PORT=3000
+    NGINX_PORT=8082
+    MYSQL_PORT=3382
+    SERVER_PORT=3000
 
-MYSQL_DATABASE=todox
-MYSQL_USER=ps
-MYSQL_PASSWORD=cQGMlSMYsUb
-```
-*Note that you do not need to modify any of the variables in this file unless you want to change the default configuration. Remember that, if you create a new database user, you will need to grant privileges to access.
+    MYSQL_DATABASE=todox
+    MYSQL_USER=ps
+    MYSQL_PASSWORD=cQGMlSMYsUb
+    ```
+    *Note that you do not need to modify any of the variables in this file unless you want to change the default configuration. Remember that, if you create a new database user, you will need to grant privileges to access.
 
 4. Run docker-compose up -d to start the application. This command will build and start all the necessary Docker containers.
 5. You can access the application at http://http://localhost:3000.
@@ -28,41 +28,41 @@ MYSQL_PASSWORD=cQGMlSMYsUb
 
 ## Commit changes as a group member
 1. Once you cloned the repository, create a new branch for your feature or bug fix using the following command:
-```bash
-git checkout -b <your_branch_name>
-```
+    ```bash
+    git checkout -b <your_branch_name>
+    ```
 2. Make changes and commit to your branch using the following commands:
     -  When using commit, Git will open your default text editor to allow you to write a multi-line commit message.
-    ```bash
-    git commit
-    ```
+        ```bash
+        git commit
+        ```
     -  Commit -m option allows you to specify the commit message in-line, without opening a text editor. Useful for quick and simple commit messages.
-    ```bash
-    git commit -m "Your commit message"
-    ```
+        ```bash
+        git commit -m "Your commit message"
+        ```
 3. Push your changes to Github using the following commands:
-```bash
-git push origin <your_branch_name>
-```
+    ```bash
+    git push origin <your_branch_name>
+    ```
 **BE AWARE**:
 When working with Git, it's important to merge changes from different branches carefully to avoid losing work. The best way to do this is to follow a clear and consistent process for merging. Once your branch has your features, merge those into the main branch (master) when the changes are complete and tested.
 
 To merge changes from a feature branch into the master branch, first ensure that the main branch is up-to-date with the latest changes from other contributors. You can do this by running:
-```bash
-git fetch
-```
+    ```bash
+    git fetch
+    ```
 and then 
-```bash
-git merge origin/master
-```
+    ```bash
+    git merge origin/master
+    ```
 Next, switch to the feature branch with
-```bash
-git checkout <your_branch_name>
-```
+    ```bash
+    git checkout <your_branch_name>
+    ```
 and merge the changes from the master branch with
-```bash
-git merge master
-```
+    ```bash
+    git merge master
+    ```
 Resolve any merge conflicts carefully to avoid losing work, and then commit the changes with a descriptive commit message.
 
 The main branch should be used as the stable version of the codebase, and should only contain code that has been thoroughly tested and reviewed. It's important to avoid making changes directly to the main branch, and to only merge changes in from feature branches after they have been reviewed and tested. This helps to ensure that the codebase remains stable and that changes are properly tracked and reviewed.
@@ -71,37 +71,37 @@ The main branch should be used as the stable version of the codebase, and should
 ## Usage
 ### Building the application
 To build the application, run the following command:
-```bash
-docker-compose build
-```
+    ```bash
+    docker-compose build
+    ```
 This will build all the necessary Docker images.
 
 ### Restarting the application
 To restart the application, run the following command:
-```bash
-docker-compose up -d
-```
+    ```bash
+    docker-compose up -d
+    ```
 This will restart all the Docker containers.
 
 ### Bringing the application down
 To stop the application, run the following command:
-```bash
-docker-compose down
-```
+    ```bash
+    docker-compose down
+    ```
 This will stop and remove all the Docker containers.
 
 ### Killing the application
 To kill the application, run the following command:
-```bash
-docker-compose kill
-```
+    ```bash
+    docker-compose kill
+    ```
 This will stop all the Docker containers immediately.
 
 ### Building with docker-compose up --build -d
 To alternatively build the application, run the following command:
-```bash
-docker-compose up --build -d
-```
+    ```bash
+    docker-compose up --build -d
+    ```
 This command rebuilds the image before starting the container. This command can be slower than docker-compose up -d because it rebuilds the image every time. However, it can be helpful if you have made changes to the Dockerfile or if the image was not built correctly the first time.
 
 ## Configuration
@@ -126,66 +126,66 @@ For example, we use the hosts.allow file to restrict access to the MySQL service
 ## Basic Docker commands
 Here are some basic Docker commands that everyone should know:
 - Opens a terminal inside the container with the specified name:
-```bash
-docker exec -it <container_name> bash
-```
+    ```bash
+    docker exec -it <container_name> bash
+    ```
 - Lists all running services defined in the docker-compose file:
-```bash
-docker-compose ps
-```
+    ```bash
+    docker-compose ps
+    ```
 - List all the Docker networks on the system:
-```bash
-docker network ls
-```
+    ```bash
+    docker network ls
+    ```
 - Remove all unused Docker networks:
-```bash
-docker network prune
-```
+    ```bash
+    docker network prune
+    ```
 - List all running containers:
-```bash
-docker ps
-```
+    ```bash
+    docker ps
+    ```
 - Display the name of each container and its associated IP address:
-```bash
-docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
-```
+    ```bash
+    docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+    ```
 ** These are just a few examples of Docker commands. Check the documentation for more information: https://laravel.com/docs/8.x/artisan](https://docs.docker.com/ or https://docs.docker.com/engine/reference/commandline/ (Docker CLI).
 
 
 ## Basic Laravel commands
 Here are some basic Laravel commands that everyone should know. Remember to run the commands inside the correct container (todox-app-1).
 - Creates a new Eloquent model class:
-```bash
-php artisan make:model <model_name>
-```
+    ```bash
+    php artisan make:model <model_name>
+    ```
 - Creates a new controller class:
-```bash
-php artisan make:controller <controller_name>
-```
+    ```bash
+    php artisan make:controller <controller_name>
+    ```
 - Runs all the outstanding database migrations:
-```bash
-php artisan migrate
-```
+    ```bash
+    php artisan migrate
+    ```
 - Creates a new migration file for a specific table:
-```bash
-php artisan make:migration <migration_name> --create=<table_name>
-```
+    ```bash
+    php artisan make:migration <migration_name> --create=<table_name>
+    ```
 - Opens an interactive shell to test your application:
-```bash
-php artisan tinker
-```
+    ```bash
+    php artisan tinker
+    ```
 - Seeds the database with initial data:
-```bash
-php artisan db:seed
-```
+    ```bash
+    php artisan db:seed
+    ```
 - Lists all registered routes:
-```bash
-php artisan route:list
-```
+    ```bash
+    php artisan route:list
+    ```
 - Caches the configuration files for faster performance
-```bash
-php artisan config:cache
-```
+    ```bash
+    php artisan config:cache
+    ```
 ** These are just a few examples of Laravel commands. Check the documentation for more information: https://laravel.com/docs/8.x/artisan
 
 
@@ -206,6 +206,6 @@ API: http://localhost:8082/
 ## Custom commands
 In addition to the basic Laravel commands, we have added some custom commands to the project. These commands are to be used inside the Laravel container (docker-compose exec php php artisan <command_name> or docker exec -it todox-app-1 bash -> run <command_name).
 - Checks the status of the database connection:
-```bash
-php artisan app:checkdb
-```
+    ```bash
+    php artisan app:checkdb
+    ```
