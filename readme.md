@@ -73,35 +73,35 @@ The main branch should be used as the stable version of the codebase, and should
 To build the application, run the following command:
     ```
     docker-compose build
-    ```
+    ```<br>
 This will build all the necessary Docker images.
 
 ### Restarting the application
 To restart the application, run the following command:
     ```
     docker-compose up -d
-    ```
+    ```<br>
 This will restart all the Docker containers.
 
 ### Bringing the application down
 To stop the application, run the following command:
     ```
     docker-compose down
-    ```
+    ```<br>
 This will stop and remove all the Docker containers.
 
 ### Killing the application
 To kill the application, run the following command:
     ```
     docker-compose kill
-    ```
+    ```<br>
 This will stop all the Docker containers immediately.
 
 ### Building with docker-compose up --build -d
 To alternatively build the application, run the following command:
     ```
     docker-compose up --build -d
-    ```
+    ```<br>
 This command rebuilds the image before starting the container. This command can be slower than docker-compose up -d because it rebuilds the image every time. However, it can be helpful if you have made changes to the Dockerfile or if the image was not built correctly the first time.
 
 ## Configuration
@@ -110,7 +110,8 @@ This command rebuilds the image before starting the container. This command can 
 - The user created in the .env file already has the necessary permissions on the database. You do not need to create another user or modify the permissions of the current user unless a new one is created.
 
 ### Why Docker & Nginx
-We use Docker to simplify the process of deploying our application and to ensure consistent environments across all machines. With Docker, we can package all the dependencies and configurations of our application into a single container, making it easy to deploy and run the application on any machine.<br>
+We use Docker to simplify the process of deploying our application and to ensure consistent environments across all machines. With Docker, we can package all the dependencies and configurations of our application into a single container, making it easy to deploy and run the application on any machine.
+
 We use Nginx as a reverse proxy to handle incoming traffic and distribute it to the appropriate containers in our Docker network. Nginx provides additional features like load balancing, caching, and SSL termination, which can help improve the performance and security of our application.
 
 ### Docker folders
