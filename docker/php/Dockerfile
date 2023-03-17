@@ -17,10 +17,10 @@ RUN apt-get update \
 
 # # PHP
 RUN apt-get update && apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        libpq-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo pdo_pgsql \
@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 # # WORKDIR /usr/src/app
 
 # # Composer
-# # COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # # Yarn
 # RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get -y install nodejs
