@@ -7,39 +7,28 @@ use App\Models\Board;
 
 class BoardController extends Controller
 {
-    // Returns all boards
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $boards = Board::all();
-        return response()->json($boards);
+        return BoardResource::collection(Board::all());
     }
 
-    // Creates a new board
-    public function createBoard(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreBoardRequest $request)
     {
-        $board = Board::create([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);    
+        $board = Board::create($request->all());
 
-        return response()->json([
-            'message' => 'Board created successfully',
-            'board' => $board
-        ], 201);
-
-        // $board = new Board;
-        // $board->name = $request->name;
-        // $board->description = $request->description;
-        // $board->save();
-        // return response()->json($board, 201);
+        return new BoardResource($board);
     }
 
     // Returns a single Board by ID
     public function show($id)
     {
-        $board = Board::findOrFail($id);
-
-        return response()->json($board);
+        return new BoardResource(Board::findOrFail($id));
     }
 
     // Updates an existing Board by ID
