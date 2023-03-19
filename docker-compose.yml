@@ -14,17 +14,6 @@ services:
             ntw:
                 ipv4_address: 172.16.0.4
 
-    appserver:
-        build: './Client'
-        working_dir: /application
-        ports:
-          - "${SERVER_PORT}:81"
-        volumes:
-            - ./Client:/application
-        networks:
-            ntw:
-                ipv4_address: 172.16.0.5
-
     nginx:
         image: nginx
         restart: always
