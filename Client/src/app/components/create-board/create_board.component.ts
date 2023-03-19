@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-create-board',
-  templateUrl: './create-board.component.html',
+  templateUrl: './create_board.component.html',
 })
 
 export class CreateBoardComponent {

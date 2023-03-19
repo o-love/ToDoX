@@ -7,10 +7,12 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  title = 'ToDoX';
+  
   constructor(private http: HttpClient) {}
 
   onBoardCreated(board: any) {
-    this.http.post('http:/localhost:8082/api/boards', board).subscribe((response) => {
+    this.http.post('http:/localhost:8082/api/board', board).subscribe((response) => {
       console.log(response);
     });
   }
