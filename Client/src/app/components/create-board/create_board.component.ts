@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { BoardService } from 'src/app/services/board-service/board-service.service';
+
+// This component will be responsible for creating boards for a user.
 
 @Component({
   selector: 'app-create-board',
@@ -6,17 +9,21 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 
 export class CreateBoardComponent {
+  constructor(private boardService: BoardService) {}
+
   boardName: string = '';
   boardDescription: string = '';
   @Output() boardCreated = new EventEmitter<any>();
 
   onSubmit() {
-    const board = {
-      name: this.boardName,
-      description: this.boardDescription,
-    };
-    this.boardCreated.emit(board);
-    this.boardName = '';
-    this.boardDescription = '';
+    console.log("board: ", this.boardName, " description: ", this.boardDescription)
+    this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
+      next: (board) => {
+        this.boardCreated.emit(board);
+        this.boardName = '';
+        this.boardDescription = '';
+      },
+      error: (error) => console.log(error)
+    });
   }
 }
