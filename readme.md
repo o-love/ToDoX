@@ -26,6 +26,15 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
 5. You can access the application at http://http://localhost:3000.
 
 
+## Work with angular
+Since we haven't been able to set up angular using Docker, we will be working with angular locally.
+1. Once you've build and run all containers, move to the Client directory.
+2. Execute ng serve -o (--port xxxx if you want to specify a port, default port is 4200).
+3. Angular will be deployed on http://http://localhost:xxxx (http://http://localhost:4200 in case no port was declared).
+    * Changes will be updated in Real Time. Make sure to commit and push your changes.
+    ** To add elements, just run the command inside the Client directory. E.g. to create a component cd to Client and run ng generate component <component_name>.
+
+
 ## Commit changes as a group member
 1. Once you cloned the repository, create a new branch for your feature or bug fix using the following command:
     ```
