@@ -26,7 +26,7 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
 5. You can access the application at http://http://localhost:3000.
 
 
-## Work with angular
+## Working with angular
 Since we haven't been able to set up angular using Docker, we will be working with angular locally.
 1. Once you've build and run all containers, move to the Client directory.
 2. Execute ng serve -o (--port xxxx if you want to specify a port, default port is 4200).

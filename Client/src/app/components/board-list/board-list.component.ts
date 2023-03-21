@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { BoardService } from 'src/app/services/board-service/board-service.service';
 
@@ -12,7 +13,7 @@ import { BoardService } from 'src/app/services/board-service/board-service.servi
 export class BoardListComponent implements OnInit {
   boards: Board[] = [];
 
-  constructor(private boardService: BoardService) {}
+  constructor(private boardService: BoardService, private router: Router) {}
 
   ngOnInit(): void {
     this.getBoards();
@@ -28,5 +29,9 @@ export class BoardListComponent implements OnInit {
         console.error('Error retrieving boards:', error);
       }
     );
+  }
+
+  viewBoard(id: number) {
+    this.router.navigate(['/boards', id]);
   }
 }
