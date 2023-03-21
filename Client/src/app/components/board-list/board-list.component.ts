@@ -29,5 +29,9 @@ export class BoardListComponent implements OnInit {
         console.error('Error retrieving boards:', error);
       }
     );
-  }  
+  }
+
+  viewBoard(id: number) {
+    this.router.navigate(['/boards', id]);
+  }
 }
