@@ -5,7 +5,7 @@ import { BoardService } from 'src/app/services/board-service/board-service.servi
 
 @Component({
   selector: 'app-create-board',
-  templateUrl: './create_board.component.html',
+  templateUrl: './create-board.component.html',
 })
 
 export class CreateBoardComponent {

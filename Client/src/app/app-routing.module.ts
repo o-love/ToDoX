@@ -6,6 +6,7 @@ import { BoardListComponent } from './components/board-list/board-list.component
 const routes: Routes = [
     { path: '', component: CreateBoardComponent },
     { path: 'boards', component: BoardListComponent },
+    { path: 'boards/:id', component: BoardListComponent },
 ];
 
 @NgModule({
