@@ -18,7 +18,7 @@ class TaskListPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class TaskListPolicy
      */
     public function view(User $user, TaskList $taskList)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class TaskListPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TaskListPolicy
      */
     public function update(User $user, TaskList $taskList)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +65,7 @@ class TaskListPolicy
      */
     public function delete(User $user, TaskList $taskList)
     {
-        //
+        return true;
     }
 
     /**
@@ -77,7 +77,7 @@ class TaskListPolicy
      */
     public function restore(User $user, TaskList $taskList)
     {
-        //
+        return true;
     }
 
     /**
@@ -89,6 +89,6 @@ class TaskListPolicy
      */
     public function forceDelete(User $user, TaskList $taskList)
     {
-        //
+        return true;
     }
 }
