@@ -1,0 +1,25 @@
+<form class="login-form">
+    <div class="form-header">
+        <img class="back-btn" src="../../../assets/icons/IoChevronBackCircle.svg">
+    </div>
+    <div class="form-body">
+        <div class="form-group">
+            <label for="email" #emailLabel [class.focused]="isFocused || email">
+                Email
+            </label>
+            <input type="email" id="email" [(ngModel)]="email" name="email" class="form-control" required
+                (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
+        </div>
+        <div class="form-group">
+            <label for="password" #passwordLabel [class.focused]="isFocused || password">
+                Contraseña
+            </label>
+            <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required
+                (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
+        </div>
+        <div class="bottom">
+            <button class="login-btn" type="submit">INICIAR SESIÓN</button>
+            <a href="#">¿No tienes cuenta? Regístrate aquí.</a>
+        </div>
+    </div>
+</form>

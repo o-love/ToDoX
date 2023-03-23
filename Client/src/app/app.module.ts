@@ -12,6 +12,8 @@ import { CreateBoardComponent } from './components/create-board/create-board.com
 import { BoardListComponent } from './components/board-list/board-list.component';
 import { CreateListComponent } from './components/create-list/create-list.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
     BoardListComponent,
     BoardDetailComponent,
     CreateListComponent,
+    HeaderComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,
