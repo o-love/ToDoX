@@ -1,4 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-form',
@@ -6,6 +8,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent {  
+  loginForm: FormGroup;
   email: string = '';
   password: string = '';
   isFocused: boolean = false;
@@ -13,7 +16,12 @@ export class LoginFormComponent {
   @ViewChild('emailLabel') emailLabel!: ElementRef;
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
 
-  constructor() { }
+  constructor(private router: Router, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
 
   onFocus(event: any, label: any) {
     this.isFocused = true;
@@ -27,7 +35,12 @@ export class LoginFormComponent {
     }
   }
 
+  onRegister() {
+    this.router.navigate(['/register']);
+  }
+
   onSubmit() {
-    // aquí puedes agregar el código que se ejecutará al enviar el formulario
+    console.log(this.loginForm.value);
+    this.router.navigate(['/boards']);
   }
 }

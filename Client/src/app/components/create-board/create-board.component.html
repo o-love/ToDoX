@@ -1,12 +1,26 @@
-<h2>Create Board</h2>
 <form (ngSubmit)="onSubmit()">
-  <label>
-    Name:
-    <input type="text" [(ngModel)]="boardName" name="boardName" required>
-  </label>
-  <label>
-    Description:
-    <input type="text" [(ngModel)]="boardDescription" name="boardDescription" required>
-  </label>
-  <button type="submit">Create Board</button>
+  <div class="form-header">
+    <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
+  </div>
+  <div class="form-body">
+    <div class="form-group">
+      <div class="input-label">
+        <label>Name:</label>
+      </div>
+      <div class="input-field">
+        <input type="text" [(ngModel)]="boardName" name="boardName" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-label">
+        <label>Description:</label>
+      </div>
+      <div class="input-field">
+        <textarea rows="5" cols="50" [(ngModel)]="boardDescription" name="boardDescription" required></textarea>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="btn" type="submit">Ok</button>
+    </div>
+  </div>
 </form>
