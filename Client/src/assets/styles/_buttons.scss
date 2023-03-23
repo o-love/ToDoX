@@ -1,0 +1,19 @@
+.btn {
+    border-radius: 10px;
+    border: 3px solid $white;
+    background-color: $melon;
+    box-shadow: 0 0.3em $melon;
+
+    color: $white;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: $melon;
+    box-shadow: 0 0.3em $melon;
+}
+
+.btn:active {
+    transform: translateY(0.1em);
+    box-shadow: 0 0.2em $melon;
+}

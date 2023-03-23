@@ -1,0 +1,76 @@
+@import "../../../assets/styles/colours";
+@import "../../../assets/styles/buttons";
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Centers vertically
+    align-items: center; // Centers
+    height: 100%; // 100% of the height visible in the window
+    width: 100%; // 100% of the available width
+
+    position: relative;
+
+    // .background-img {
+    //     background-image: url('../../../assets/placeholder.png');
+    //     background-size: cover;
+    //     background-repeat: no-repeat;
+    //     background-position: center center;
+    //     height: 100%;
+    //     width: 100%;
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     z-index: -1; // Sets the Z-index behind the other elements
+    // }
+
+    .centered-content {
+
+        h1 {
+            margin: 0;
+            padding: 0;
+
+            color: $melon;
+            font-size: 8vw;
+            font-weight: bold;
+
+            // For screens smaller than 768px width
+            @media (max-width: 768px) {
+                font-size: 10vw;
+            }
+        }
+    }
+
+    .buttons {
+        margin-top: 10vh;
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        .btn {
+            width: 25vw;
+            height: 6vw;
+            margin-top: 5vw;
+            font-size: 2.2vw;
+            background-color: $tropical-indigo-80;
+            box-shadow: 0 0.3em $tropical-indigo-60;
+            
+            .btn:hover {
+                background-color: $tropical-indigo;
+                box-shadow: 0 0.3em $tropical-indigo-80;
+            }
+            
+            .btn:active {
+                box-shadow: 0 0.2em $tropical-indigo-80;
+            }
+
+            @media (max-width: 768px) {
+                width: 40vw;
+                height: 10vw;
+                font-size: 4vw;
+            }
+        }
+        
+    }
+}

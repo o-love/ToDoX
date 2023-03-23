@@ -1,32 +1,32 @@
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let board of boards" (click)="viewBoard(board.id)">
-            <td>{{ board.name }}</td>
-            <td>{{ board.description }}</td>
-        </tr>
-    </tbody>
-</table>
+<h1>Mis tableros</h1>
 
-<!-- ANOTHER WAY OF VISUALIZING AND ACCESSING BOARDS:
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let board of boards">
-            <td>{{ board.name }}</td>
-            <td>{{ board.description }}</td>
-            <td><a [routerLink]="['/boards', board.id]">View board</a></td>
-        </tr>
-    </tbody>
-</table> -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let board of boards" (click)="viewBoard(board.id)">
+                        <td>{{ board.name }}</td>
+                        <td>{{ board.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<button class="add-btn btn" (click)="showPopup = true">+ Añadir</button>
+
+<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
+
+<div class="popup" *ngIf="showPopup">
+    <app-create-board *ngIf="showPopup" (boardCreated)="addBoard($event)"
+        (closePopup)="showPopup = false"></app-create-board>
+</div>

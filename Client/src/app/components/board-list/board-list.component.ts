@@ -12,6 +12,7 @@ import { BoardService } from 'src/app/services/board-service/board-service.servi
 })
 export class BoardListComponent implements OnInit {
   boards: Board[] = [];
+  showPopup = false;
 
   constructor(private boardService: BoardService, private router: Router) {}
 
@@ -33,5 +34,11 @@ export class BoardListComponent implements OnInit {
 
   viewBoard(id: number) {
     this.router.navigate(['/boards', id]);
+  }
+
+  addBoard(newBoard: Board) {
+    this.boards.push(newBoard);
+    this.showPopup = false;
+    this.getBoards();
   }
 }
