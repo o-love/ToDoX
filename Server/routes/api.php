@@ -22,9 +22,9 @@ Route::post('boards/createBoard', [BoardController::class, 'create']);
 Route::post('boards/{board}', [BoardController::class, 'show'])->name('boards.show');
 
 // List routes
-Route::get('boards/{id}/lists', [TaskListController::class, 'index']);
-Route::post('boards/{id}/lists', [TaskListController::class, 'store']);
-
+Route::apiResource('boards.lists', TaskListController::class)->only([
+   'index', 'store'
+]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
