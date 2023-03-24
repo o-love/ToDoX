@@ -20,8 +20,7 @@ const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: SignupFormComponent },
   { path: 'boards', component: BoardListComponent },
-  // { path: 'boards/new', component: CreateBoardComponent },
-  { path: 'boards/:id', component: BoardListComponent },
+  { path: 'boards/:id', component: BoardDetailComponent },
 ];
 
 @NgModule({
