@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { Board } from 'src/app/models/board';
-import { BoardList } from 'src/app/models/boardList';
-import { BoardService } from 'src/app/services/board-service/board-service.service';
+import { TaskList } from 'src/app/models/taskList';
+import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { CreateListComponent } from '../create-list/create-list.component';
 
 @Component({
   selector: 'app-board-detail',
@@ -11,11 +13,13 @@ import { BoardService } from 'src/app/services/board-service/board-service.servi
 })
 export class BoardDetailComponent implements OnInit {
   board: Board | undefined;
-  lists: BoardList[] | undefined;
-  componentVisible: boolean = true;
+  lists: TaskList[] = [];
   boardId = this.route.snapshot.paramMap.get('id');
 
-  constructor(private boardService: BoardService, private route: ActivatedRoute) { }
+  componentVisible: boolean = true;
+  showPopup = false
+
+  constructor(private boardService: BoardService, private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
     this.getBoard();
@@ -38,8 +42,8 @@ export class BoardDetailComponent implements OnInit {
 
   getLists(): void {
     if (this.boardId) {
-      this.boardService.getBoardListsByBoardId(this.boardId).subscribe(
-        (lists: BoardList[]) => {
+      this.boardService.getTaskListsByBoardId(this.boardId).subscribe(
+        (lists: TaskList[]) => {
           console.log('Lists retrieved:', lists);
           this.lists = lists;
         },
@@ -47,16 +51,16 @@ export class BoardDetailComponent implements OnInit {
           console.error('Error retrieving lists:', error);
         }
       );
-    }    
+    }
   }
 
   toggleComponent(): void {
     this.componentVisible = !this.componentVisible;
   }
 
-  // addList(newBoard: Board) {
-  //   this.boards.push(newBoard);
-  //   this.showPopup = false;
-  //   this.getBoards();
-  // }
+  addList(newList: TaskList) {
+    this.lists.push(newList);
+    this.showPopup = false;
+    this.getLists();
+  }
 }

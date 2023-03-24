@@ -16,8 +16,15 @@
     </div>
 
     <div class="add-container">
-        <img class="add-btn" src="../../../assets/icons/CkAdd.svg">
+        <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
     </div>
 </div>
 
-<!--CkAdd -->
+
+<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
+
+<div class="popup" *ngIf="showPopup">
+    <app-create-list *ngIf="showPopup" (listCreated)="addList($event)"
+        (closePopup)="showPopup = false"></app-create-list>
+</div>
+

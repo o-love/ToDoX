@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Board } from 'src/app/models/board';
-import { BoardList } from 'src/app/models/boardList';
+import { TaskList } from 'src/app/models/taskList';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +29,16 @@ export class BoardService {
       name: boardName,
       description: boardDescription,
     };
-    return this.http.post(`${this.apiUrl}/createBoard`, board);
+    return this.http.post(`${this.apiUrl}`, board);
   }
 
-  getBoardListsByBoardId(boardId: string): Observable<BoardList[]> {
-    return this.http.get<BoardList[]>(`${this.apiUrl}/${boardId}/lists`);
+  // Gets all lists from backend related to a certain board by boardId
+  getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
+    return this.http.get<TaskList[]>(`${this.apiUrl}/${boardId}/lists`);
   }
 
-  createList(boardId: number, listName: string, listDescription: string): Observable<any> {
+  // Creates a new list in backend related to a board by boardId
+  createList(boardId: string, listName: string, listDescription: string): Observable<any> {
     const list = {
       name: listName,
       description: listDescription,

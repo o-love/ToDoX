@@ -1,4 +1,4 @@
-export interface BoardList {
+export interface TaskList {
     id: number;
     name: string;
     description: string;

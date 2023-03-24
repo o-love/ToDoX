@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
-use App\Http\Controllers\BoardListController;
+use App\Http\Controllers\TaskListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +19,15 @@ use App\Http\Controllers\BoardListController;
 
 // Board routes
 Route::get('boards', [BoardController::class, 'index']);
-Route::post('boards/createBoard', [BoardController::class, 'create']);
+Route::post('boards', [BoardController::class, 'create'])->name('boards.create');
 Route::get('boards/{id}', [BoardController::class, 'show'])->name('boards.show');
 
 // List routes
-Route::post('/boards/{board}/lists', [ListController::class, 'index']);
-Route::post('/boards/{board}/lists/createList', [ListController::class, 'create'])->name('lists.create');
-
+Route::get('/boards/{board}/lists', [TaskListController::class, 'index']);
+Route::post('/boards/{board}/lists', [TaskListController::class, 'create'])->name('lists.create');
+Route::get('/boards/{boardId}/lists/{listId}', 'ListController@show')->name('lists.show');
+// Route::put('/boards/{boardId}/lists/{listId}', 'ListController@update');
+// Route::delete('/boards/{boardId}/lists/{listId}', 'ListController@destroy');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

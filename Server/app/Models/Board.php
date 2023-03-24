@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TaskList;
 
 class Board extends Model
 {
@@ -13,6 +14,12 @@ class Board extends Model
     // or `update()` method of the model. The `name`, `description`, and `manager_id` attributes are fillable.
     protected $fillable = ['name', 'description', 'is_active'];
     protected $table='board';
+
+    // A Board can have many TaskLists
+    public function taskLists()
+    {
+        return $this->hasMany(TaskList::class);
+    }
 
     // The `manager()` method defines a relationship between the board and the user who manages it.
     // Specifically, it indicates that a board belongs to a user, and that the foreign key for the user
