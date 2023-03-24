@@ -23,3 +23,32 @@
     backdrop-filter: blur(3px); // Adds a blur effect
     z-index: 99; // Make sure it's behind the popup
 }
+
+// If scrollbar (1) doesn't appear, try commenting this
+table {
+    table-layout: fixed;
+}
+
+/*
+There's several options for when the description is long
+1) Adding a scrollbar to the description
+2) Showing only the description that fits on the screen
+3) Viewing the whole description as a parragraph
+*/
+
+td {
+    cursor: pointer;
+    // (1)
+    // max-width: 100vh;
+    // overflow: auto;
+    // (3)
+    // word-wrap: break-word;
+}
+
+// (2)
+.description-td {
+  max-width: 300px; // Set maximum width
+  white-space: nowrap; // Prevent text from auto-wrapping
+  overflow: hidden; // Hide excess text
+  text-overflow: ellipsis; // Add an ellipsis to indicate that the text has been truncated
+}

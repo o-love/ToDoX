@@ -1,0 +1,27 @@
+@import "../../../assets/styles/colours";
+
+.sidebar {
+    width: 20%;
+    height: calc(100vh - 14vh); // Header takes 14vh
+    background-color: $melon-20;
+    border-right: 2px solid black;
+    text-align: center;
+    position: relative;
+
+    .close-btn {
+        position: absolute;
+        top: 1%;
+        right: 0%;
+    }
+
+    .description {
+        word-wrap: break-word;
+    }
+
+    .settings {
+        border-top: 1px solid grey;
+        border-bottom: 1px solid grey;
+        padding: 7%;
+        cursor: pointer;
+    }
+}

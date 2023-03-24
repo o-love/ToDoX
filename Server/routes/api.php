@@ -20,7 +20,7 @@ use App\Http\Controllers\BoardListController;
 // Board routes
 Route::get('boards', [BoardController::class, 'index']);
 Route::post('boards/createBoard', [BoardController::class, 'create']);
-Route::post('boards/{board}', [BoardController::class, 'show'])->name('boards.show');
+Route::get('boards/{id}', [BoardController::class, 'show'])->name('boards.show');
 
 // List routes
 Route::post('/boards/{board}/lists', [ListController::class, 'index']);
