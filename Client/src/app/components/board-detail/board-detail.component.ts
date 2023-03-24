@@ -51,7 +51,7 @@ export class BoardDetailComponent implements OnInit {
           console.error('Error retrieving lists:', error);
         }
       );
-    }    
+    }
   }
 
   toggleComponent(): void {
