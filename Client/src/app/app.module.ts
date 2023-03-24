@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { BoardService } from './services/board-service/board-service.service';
+import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
 
 import { CreateBoardComponent } from './components/create-board/create-board.component';
 import { BoardListComponent } from './components/board-list/board-list.component';
@@ -32,7 +32,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [ // Ensuring that a single instance is created and shared across all components that inject it.
     BoardService, // So it is available throughout the application

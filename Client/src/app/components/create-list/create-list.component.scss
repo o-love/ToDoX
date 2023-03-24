@@ -1,0 +1,52 @@
+@import "../../../assets/styles/colours";
+@import "../../../assets/styles/buttons";
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    .input-label {
+        font-size: 16px;
+    }
+
+    .input-field {
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+
+            &:focus {
+                outline: none;
+                border-color: $tropical-indigo-80;
+            }
+        }
+    }
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .close-btn {
+        cursor: pointer;
+        margin-left: auto;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    .btn {
+        padding: 10px 20px;
+        text-align: center; 
+    }
+}
