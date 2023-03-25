@@ -1,7 +1,11 @@
 // The underscore at the beginning of the filename indicates that it is a partial Sass file, which will not compile on its own.
 $white: #FFFFFF;
 
-$melon: #FEB4AE;
+$melon: rgb(254, 180, 174);
+$melon-90: rgba(254, 180, 174, 0.9);
+$melon-80: rgba(254, 180, 174, 0.8);
+$melon-70: rgba(254, 180, 174, 0.7);
+$melon-60: rgba(254, 180, 174, 0.6);
 $melon-50: rgba(254, 180, 174, 0.5);
 $melon-40: rgba(254, 180, 174, 0.4);
 $melon-30: rgba(254, 180, 174, 0.3);
