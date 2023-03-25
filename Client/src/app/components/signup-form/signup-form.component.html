@@ -1,1 +1,33 @@
-<p>signup-form works!</p>
+<body>
+    <div class="container">
+        <form class="signup-form" (ngSubmit)="onSubmit()" [formGroup]="signupForm">
+            <div class="form-header">
+                <img class="back-btn" src="../../../assets/icons/IoChevronBackCircle.svg" alt="Back" (click)="goBack()"
+                    role="button">
+            </div>
+            <div class="form-body">
+                <div class="form-group">
+                    <input type="text" id="name" [(ngModel)]="name" name="name" class="form-control" required
+                        placeholder="Name" (focus)="onFocus($event, nameLabel)" (blur)="onBlur($event, nameLabel)">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" [(ngModel)]="email" name="email" class="form-control" required
+                        placeholder="Email" (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control"
+                        required placeholder="Password" (focus)="onFocus($event, passwordLabel)"
+                        (blur)="onBlur($event, passwordLabel)">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="repeat-password" [(ngModel)]="repeatPassword" name="repeatPassword"
+                        class="form-control" required placeholder="Repeat Password"
+                        (focus)="onFocus($event, repeatPasswordLabel)" (blur)="onBlur($event, repeatPasswordLabel)">
+                </div>
+                <div class="bottom">
+                    <button class="signup-btn" type="submit">REGISTRARSE</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>

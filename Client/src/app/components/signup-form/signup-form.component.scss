@@ -1,0 +1,101 @@
+body {
+    background-color: rgba(131, 119, 209, 0.6);
+}
+
+.container {
+    padding-top: 250px;
+}
+
+::placeholder {
+    color: rgba(131, 119, 209, 0.6);
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 32%;
+    background-color: snow;
+    border-radius: 20px;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        input {
+            border: none;
+            border-bottom: 2px solid #d8d8d8;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+
+            &:focus {
+                outline: none;
+                border-color: #8377D1;
+
+                +label {
+                    transform: translateY(-24px) scale(0.8);
+                    color: #8377D1;
+                }
+            }
+
+            &:valid {
+                +label {
+                    transform: translateY(-24px) scale(0.8);
+                    color: #8377D1;
+                }
+            }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 40px;
+
+        button {
+            background-color: #FEB4AE;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 20px;
+
+            &:hover {
+                background-color: #f89990;
+                transform: scale(1.1);
+            }
+        }
+
+
+    }
+}
+
+.focused {
+    transform: translateY(-24px) scale(0.8);
+    color: #8377D1;
+}
+
+.form-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .back-btn {
+        width: 30px;
+        height: 30px;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-left: 20px;
+        cursor: pointer;
+
+    }
+}

@@ -1,22 +1,29 @@
+body {
+  background-color: rgba(131, 119, 209, 0.6);
+}
+
+.container {
+  padding-top: 250px;
+}
+
+::placeholder {
+  color: rgba(131, 119, 209, 0.6);
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 80px;
+  margin: auto;
   width: 32%;
+  background-color: snow;
+  border-radius: 20px;
 
   .form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-
-    label {
-      font-size: 16px;
-      font-weight: 600;
-      color: #525252;
-      margin-bottom: 8px;
-    }
 
     input {
       border: none;
@@ -27,18 +34,18 @@
 
       &:focus {
         outline: none;
-        border-color: #7b1fa2;
+        border-color: #8377D1;
 
         +label {
           transform: translateY(-24px) scale(0.8);
-          color: #7b1fa2;
+          color: #8377D1;
         }
       }
 
       &:valid {
         +label {
           transform: translateY(-24px) scale(0.8);
-          color: #7b1fa2;
+          color: #8377D1;
         }
       }
     }
@@ -51,7 +58,7 @@
     margin-top: 40px;
 
     button {
-      background-color: #7b1fa2;
+      background-color: #FEB4AE;
       color: white;
       font-size: 16px;
       padding: 10px 20px;
@@ -60,16 +67,18 @@
       transition: all 0.2s ease-in-out;
 
       &:hover {
-        background-color: #5e1667;
+        background-color: #f89990;
         transform: scale(1.1);
       }
     }
 
     a {
       font-size: 14px;
-      color: #7b1fa2;
+      color: #8377D1;
       margin-top: 20px;
       text-decoration: none;
+      padding-bottom: 20px;
+      font-weight: bold;
 
       &:hover {
         text-decoration: underline;
@@ -80,7 +89,7 @@
 
 .focused {
   transform: translateY(-24px) scale(0.8);
-  color: #7b1fa2;
+  color: #8377D1;
 }
 
 .form-header {
@@ -94,6 +103,8 @@
     width: 30px;
     height: 30px;
     margin-right: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
     cursor: pointer;
   }
 }

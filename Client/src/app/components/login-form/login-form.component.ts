@@ -35,6 +35,10 @@ export class LoginFormComponent {
     }
   }
 
+  goBack() {
+    this.router.navigate(['/..']);
+  }
+
   onRegister() {
     this.router.navigate(['/register']);
   }
