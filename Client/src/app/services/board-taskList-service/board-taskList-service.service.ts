@@ -32,12 +32,17 @@ export class BoardService {
     return this.http.post(`${this.apiUrl}`, board);
   }
 
-  // Gets all lists from backend related to a certain board by boardId
+  // Gets all taskLists from backend related to a certain board by boardId
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
     return this.http.get<TaskList[]>(`${this.apiUrl}/${boardId}/lists`);
   }
 
-  // Creates a new list in backend related to a board by boardId
+  // Gets a taskList by id and board id
+  getList(boardId: string, listId: string): Observable<TaskList> {
+    return this.http.get<TaskList>(`${this.apiUrl}/${boardId}/lists/${listId}`);
+  }
+
+  // Creates a new taskList in backend related to a board by boardId
   createList(boardId: string, listName: string, listDescription: string): Observable<any> {
     const list = {
       name: listName,

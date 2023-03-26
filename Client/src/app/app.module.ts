@@ -16,6 +16,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import { ListDetailComponent } from './components/list-detail/list-detail.component';
+import { TaskService } from './services/task-service/task-service.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
     LoginFormComponent,
     WelcomeComponent,
     SignupFormComponent,
+    ListDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
   ],
   providers: [ // Ensuring that a single instance is created and shared across all components that inject it.
     BoardService, // So it is available throughout the application
+    TaskService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,30 @@
+<div class="list-detail-container">
+  <div>
+    zoy el list
+    <h2>{{ taskList?.name }}</h2>
+    <p>{{ taskList?.description }}</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Label</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td>{{ task.name }}</td>
+        <td>{{ task.description }}</td>
+        <!-- <td>{{ tasks.status }}</td>
+        <td>{{ tasks.label }}</td>
+        <td>{{ tasks.start_date }}</td>
+        <td>{{ tasks.end_date }}</td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
