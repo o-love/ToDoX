@@ -15,7 +15,14 @@ class TaskList extends Model
     protected $table='list';
 
     // A TaskList belongs to a Board
-    public function board() {
+    public function board()
+    {
         return $this->belongsTo(Board::class, 'board_id');
+    }
+
+    // A TaskList can have many Tasks
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

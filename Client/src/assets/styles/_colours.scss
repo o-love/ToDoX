@@ -1,4 +1,3 @@
-// The underscore at the beginning of the filename indicates that it is a partial Sass file, which will not compile on its own.
 $white: #FFFFFF;
 
 $melon: rgb(254, 180, 174);
@@ -12,6 +11,8 @@ $melon-30: rgba(254, 180, 174, 0.3);
 $melon-20: rgba(254, 180, 174, 0.2);
 $melon-10: rgba(254, 180, 174, 0.1);
 
+$melon-pastel: rgba(255, 217, 214);
+
 $tropical-indigo: rgb(131, 119, 209);
 $tropical-indigo-90: rgba(131, 119, 209, 0.9);
 $tropical-indigo-80: rgba(131, 119, 209, 0.8);
@@ -22,6 +23,7 @@ $tropical-indigo-40: rgba(131, 119, 209, 0.4);
 $tropical-indigo-30: rgba(131, 119, 209, 0.3);
 $tropical-indigo-20: rgba(131, 119, 209, 0.2);
 $tropical-indigo-10: rgba(131, 119, 209, 0.1);
+$tropical-indigo-05: rgba(131, 119, 209, 0.05);
 
 $english-violet: #45364B;
 $raisin-black: #2D2327;

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 import { CreateBoardComponent } from './components/create-board/create-board.component';
 import { BoardListComponent } from './components/board-list/board-list.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'register', component: SignupFormComponent },
   { path: 'boards', component: BoardListComponent },
   { path: 'boards/:id', component: BoardDetailComponent },
+  { path: 'profile', component: ProfileComponent },
 ];
 
 @NgModule({

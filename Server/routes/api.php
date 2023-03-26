@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\TaskListController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,15 +20,20 @@ use App\Http\Controllers\TaskListController;
 
 // Board routes
 Route::get('boards', [BoardController::class, 'index']);
-Route::post('boards', [BoardController::class, 'create'])->name('boards.create');
-Route::get('boards/{id}', [BoardController::class, 'show'])->name('boards.show');
+Route::post('boards', [BoardController::class, 'store'])->name('boards.store');
+Route::get('boards/{boardId}', [BoardController::class, 'show'])->name('boards.show');
 
 // List routes
-Route::get('/boards/{board}/lists', [TaskListController::class, 'index']);
-Route::post('/boards/{board}/lists', [TaskListController::class, 'create'])->name('lists.create');
-Route::get('/boards/{boardId}/lists/{listId}', 'ListController@show')->name('lists.show');
-// Route::put('/boards/{boardId}/lists/{listId}', 'ListController@update');
-// Route::delete('/boards/{boardId}/lists/{listId}', 'ListController@destroy');
+Route::get('boards/{boardId}/lists', [TaskListController::class, 'index']);
+Route::post('boards/{boardId}/lists', [TaskListController::class, 'store'])->name('tasklists.store');
+Route::get('boards/{boardId}/lists/{listId}', [TaskListController::class, 'show'])->name('tasklists.show');
+// Route::put('/boards/{boardId}/lists/{listId}', [TaskListController::class, 'update']);
+// Route::delete('/boards/{boardId}/lists/{listId}', 'TaskListController@destroy');
+
+// Task routes
+Route::get('boards/{boardId}/lists/{listId}/tasks', [TaskController::class, 'index']);
+Route::post('boards/{boardId}/lists/{listId}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+Route::get('boards/{boardId}/lists/{listId}/tasks/{taskId}', [TaskController::class, 'show'])->name('tasks.show');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: center; // Centers vertically
     align-items: center; // Centers
-    height: 100%; // 100% of the height visible in the window
+    height: 100vh; // 100% of the height visible in the window
     width: 100%; // 100% of the available width
 
     position: relative;
@@ -25,7 +25,6 @@
     // }
 
     .centered-content {
-
         h1 {
             margin: 0;
             padding: 0;
@@ -49,19 +48,22 @@
         align-items: center;
 
         .btn {
-            width: 25vw;
+            width: 22vw;
             height: 6vw;
             margin-top: 5vw;
             font-size: 2.2vw;
             background-color: $tropical-indigo-80;
             box-shadow: 0 0.3em $tropical-indigo-60;
+
+            border-radius: 20px;
             
-            .btn:hover {
+            &:hover {
                 background-color: $tropical-indigo;
                 box-shadow: 0 0.3em $tropical-indigo-80;
             }
             
-            .btn:active {
+            &:active {
+                transform: translateY(0.1em);
                 box-shadow: 0 0.2em $tropical-indigo-80;
             }
 

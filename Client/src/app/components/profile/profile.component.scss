@@ -1,0 +1,153 @@
+@import '../../../assets/styles/colours';
+@import '../../../assets/styles/buttons';
+
+.subheader {
+    background-color: $tropical-indigo-60;
+    position: relative;
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+
+    box-shadow: inset 0px -11px 8px -10px $tropical-indigo;
+
+    .info {
+        display: flex;
+        width: 100%;
+        margin-left: 50px;
+        transform: translateY(50%);
+
+        z-index: 1;
+
+        .profile-pic {
+            background-color: $melon-pastel;
+            border-radius: 50%;
+
+            width: 130px;
+            height: 130px;
+        }
+
+        .name-edit {
+            margin: 82px 0 0 30px;
+            box-sizing: content-box;
+            display: flex;
+            align-items: center;
+            width: 25%;
+
+            .name {
+                margin: 0 20px 5px 0;
+                font-size: 20pt;
+                font-weight: bold;
+            }
+
+            #edit {
+                display: none;
+                /* a cambiar en el siguiente sprint !! */
+
+                width: 35px;
+                height: 35px;
+                margin-bottom: 10px;
+
+                /*fill: $tropical-indigo;*/
+
+                &:hover {
+                    transform: scale(1.1);
+                    cursor: pointer;
+                }
+
+                &:active {
+                    transform: translateY(2px);
+                }
+            }
+        }
+    }
+}
+
+.content {
+    margin-top: 80px;
+    padding: 20px 20px 20px 40px;
+
+    .section {
+        display: flex;
+        flex-direction: column;
+
+        .title {
+            width: fit-content;
+            padding: 0 0 10px 0;
+            margin: 0;
+            font-size: 18pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid $melon;
+        }
+
+        .subsection {
+            display: flex;
+            flex-direction: column;
+
+            .subtitle {
+                display: flex;
+                align-items: center;
+                width: 120px;
+
+                .subtitle-icon {
+                    width: 22px;
+                    height: 22px;
+                }
+
+                .subtitle-name {
+                    margin-left: 30px;
+                    font-size: 17pt;
+                }
+            }
+
+            .subsection-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                height: 100px;
+
+                margin-top: 5px;
+                margin-bottom: 40px;
+
+                .field-container {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 350px;
+
+                    .field {
+                        width: 180px;
+                        border: 2px solid $tropical-indigo-60;
+                        background-color: $tropical-indigo-05;
+                        border-radius: 5px;
+                    }
+
+                    #currentEmail {
+                        background-color: $tropical-indigo-40;
+                    }
+
+                    label {
+                        font-weight: bold;
+
+                        &:focus {
+                            border-color: transparent;
+                        }
+                    }
+                }
+
+                .save-btn {
+                    width: 9em;
+                    font-size: 9pt;
+                    text-transform: uppercase;
+                    margin-left: 160px;
+                }
+            }
+        }
+    }
+
+    #preferencies {
+        display: none;
+        /* para el siguiente sprint !! */
+    }
+}

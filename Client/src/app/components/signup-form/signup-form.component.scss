@@ -1,101 +1,73 @@
+@import '../../../assets/styles/colours';
+@import '../../../assets/styles/buttons';
+
 body {
-    background-color: rgba(131, 119, 209, 0.6);
-}
+    background-color: $tropical-indigo-60;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
 
-.container {
-    padding-top: 250px;
-}
-
-::placeholder {
-    color: rgba(131, 119, 209, 0.6);
-}
-
-.signup-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    width: 32%;
-    background-color: snow;
-    border-radius: 20px;
 
-    .form-group {
+    .signup-form {
+        background-color: $white;
+
         display: flex;
         flex-direction: column;
-        margin-bottom: 20px;
 
-        input {
-            border: none;
-            border-bottom: 2px solid #d8d8d8;
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
+        box-sizing: border-box;
+        width: 400px;
+        height: 410px;
 
-            &:focus {
-                outline: none;
-                border-color: #8377D1;
+        border-radius: 5%;
+        padding: 15px;
 
-                +label {
-                    transform: translateY(-24px) scale(0.8);
-                    color: #8377D1;
-                }
-            }
-
-            &:valid {
-                +label {
-                    transform: translateY(-24px) scale(0.8);
-                    color: #8377D1;
-                }
-            }
+        .form-header .back-btn:hover {
+            cursor: pointer;
+            /* fill: ... */
         }
-    }
 
-    .bottom {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 40px;
+        .form-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
 
-        button {
-            background-color: #FEB4AE;
-            color: white;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 30px;
-            transition: all 0.2s ease-in-out;
-            margin-bottom: 20px;
+            margin: 30px;
+            height: 200px;
 
-            &:hover {
-                background-color: #f89990;
-                transform: scale(1.1);
+            input {
+                height: 2em;
+                border: 2px solid $tropical-indigo-30;
+                border-radius: 20px;
+                background-color: $tropical-indigo-05;
+
+                padding-left: 10px;
+                color: $tropical-indigo;
+
+                &::placeholder {
+                    color: $tropical-indigo-50;
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: $tropical-indigo-30;
+                }
+
+                /*+label {
+                    transform: translateY(-24px) scale(0.8);
+                    color: $tropical-indigo;
+                }*/
             }
         }
 
-
-    }
-}
-
-.focused {
-    transform: translateY(-24px) scale(0.8);
-    color: #8377D1;
-}
-
-.form-header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-
-    .back-btn {
-        width: 30px;
-        height: 30px;
-        margin-right: 20px;
-        margin-top: 20px;
-        margin-left: 20px;
-        cursor: pointer;
-
+        .signup-btn {
+            width: 10em;
+            align-self: center;
+            margin-top: 25px;
+            font-size: 12pt;
+        }
     }
 }

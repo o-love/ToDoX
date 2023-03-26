@@ -15,7 +15,7 @@ class BoardController extends Controller
     }
 
     // Creates a new board
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $board = Board::create([
             'name' => $request->name,

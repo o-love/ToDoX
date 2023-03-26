@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
+import { TaskService } from './services/task-service/task-service.service';
 
 import { CreateBoardComponent } from './components/create-board/create-board.component';
 import { BoardListComponent } from './components/board-list/board-list.component';
@@ -17,7 +18,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
-import { TaskService } from './services/task-service/task-service.service';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { TaskService } from './services/task-service/task-service.service';
     WelcomeComponent,
     SignupFormComponent,
     ListDetailComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
