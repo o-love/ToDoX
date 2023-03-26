@@ -1,7 +1,7 @@
 @import "../../../assets/styles/colours";
 
 .sidebar {
-    width: 20%;
+    width: 100%;
     height: calc(100vh - 14vh); // Header takes 14vh
     background-color: $melon-20;
     border-right: 2px solid black;
@@ -24,4 +24,75 @@
         padding: 7%;
         cursor: pointer;
     }
+}
+
+.sidebar-container {
+    position: relative;
+    width: 20%;
+}
+
+.close-btn-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    z-index: 1;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 100;
+    border-radius: 15px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px); // Adds a blur effect
+    z-index: 99; // Make sure it's behind the popup
+}
+
+.moveWhenClosed {
+    transform: rotate(180deg);
+}
+
+// Sidebar button rotates 180º when sidebar is closed
+// and sticks to the left side
+.close-btn-container {
+    transition: transform ;
+    &.moveWhenClosed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 1rem;
+        z-index: 1;
+        transform: translateX(0%) rotate(0deg);
+    }
+    &:not(.moveWhenClosed) {
+        transform: translateX(-100%) rotate(0deg);
+    }
+    &:not(.moveWhenClosed) img.close-btn {
+        transform: rotate(0deg);
+    }
+    &.moveWhenClosed img.close-btn {
+        transform: rotate(180deg);
+    }
+}
+
+.list-detail-container {
+    flex: 1;
+}
+
+.hidden {
+    display: none;
 }

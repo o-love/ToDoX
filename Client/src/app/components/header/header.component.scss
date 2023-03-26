@@ -1,27 +1,47 @@
+@import '../../../assets/styles/colours';
+
 header {
-    padding: 1rem;
-    height: 14vh;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    top: 0;
+    z-index: 2;
+    position: sticky;
 
-    .user-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+    background-color: $white;
 
-        .profile-pic {
-            display: block;
-            margin: auto;
-        }
+    display: flex;
+    justify-content: space-between;
 
-        .user-name {
-            display: block;
-            margin: auto;
-            font-size: 1.2rem;
-            font-weight: bold;
+    box-sizing: border-box;
+    height: 70px;
+
+    .logo {
+        width: 300px;
+        height: 100%;
+
+        &:hover {
+            cursor: pointer;
         }
     }
 
-    .user-container, .profile-pic, .user-name { // Provisional
-        cursor: pointer;
+    .profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        padding: 5px 25px 10px 5px;
+
+        .profile-pic {
+            width: 46px;
+            height: 46px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .user-name {
+            text-align: center;
+            font-size: 10pt;
+        }
     }
 }

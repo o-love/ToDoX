@@ -21,15 +21,6 @@ class TaskListController extends Controller
     // Creates a new list on a specific board
     public function create(Request $request, Board $board)
     {
-        // $board = Board::findOrFail($boardId);
-
-        // $taskList = new TaskList;
-        // $taskList->name = $request->input('nombre');
-        // $taskList->description = $request->input('descripcion');
-
-        // $board->taskLists()->save($taskList);
-
-        // return response()->json($taskList);
 
         $list = new TaskList([
             'name' => $request->input('name'),
@@ -38,7 +29,6 @@ class TaskListController extends Controller
         ]);
         $list->save();
 
-        // return redirect()->route('boards.show', $board);
         return response()->json($list);
     }
 

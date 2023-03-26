@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { Board } from 'src/app/models/board';
 import { TaskList } from 'src/app/models/taskList';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
-import { CreateListComponent } from '../create-list/create-list.component';
 
 @Component({
   selector: 'app-board-detail',
@@ -15,9 +13,11 @@ export class BoardDetailComponent implements OnInit {
   board: Board | undefined;
   lists: TaskList[] = [];
   boardId = this.route.snapshot.paramMap.get('id');
+  selectedList: TaskList | undefined;
 
-  componentVisible: boolean = true;
-  showPopup = false
+  sidebarVisible: boolean = true;
+  showPopup: boolean = false;
+  showListDetail: boolean = false;
 
   constructor(private boardService: BoardService, private route: ActivatedRoute ) { }
 
@@ -55,12 +55,19 @@ export class BoardDetailComponent implements OnInit {
   }
 
   toggleComponent(): void {
-    this.componentVisible = !this.componentVisible;
+    console.log("prue");
+    this.sidebarVisible = !this.sidebarVisible;
   }
 
   addList(newList: TaskList) {
     this.lists.push(newList);
     this.showPopup = false;
     this.getLists();
+  }
+
+  selectList(list: TaskList): void {
+    console.log("seleccionada");
+    this.selectedList = list;
+    this.showListDetail = true;
   }
 }

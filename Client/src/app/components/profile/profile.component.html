@@ -1,0 +1,66 @@
+<div class="subheader">
+    <div class="info">
+        <div class="profile-pic"></div>
+        <div class="name-edit">
+            <div class="name">Nombre de Usuario</div>
+            <img id="edit" src="../../../assets/icons/Edit.svg">
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div id="settings" class="section">
+        <h2 class="title">Configuración</h2>
+
+        <div id="set-email" class="subsection">
+            <div class="subtitle">
+                <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
+                <h3 class="subtitle-name">Correo</h3>
+            </div>
+
+            <div class="subsection-content">
+                <div class="field-container">
+                    <label for="email">Tu correo actual</label>
+                    <input id="email" type="email" class="field" (ngModel)="currentEmail" readonly>
+
+                </div>
+                <div class="field-container">
+                    <label for="newEmail">Nuevo correo</label>
+                    <input id="newEmail" class="field" type="email" (ngModel)="newEmail" required>
+                </div>
+                <button class="save-btn qt-btn" (click)="saveEmail()">Guardar</button>
+            </div>
+        </div>
+
+        <div id="set-password" class="subsection">
+            <div class="subtitle">
+                <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
+                <h3 class="subtitle-name">Contraseña</h3>
+            </div>
+
+            <div class="subsection-content">
+                <div class="field-container">
+                    <label id="asterisk-label">
+                        <label for="password">Contraseña actual</label>
+                        <span class="asterisk">*</span>
+                    </label>
+                    <input id="password" class="field" type="password" (ngModel)="currentPassword" required>
+
+                </div>
+                <div class="field-container">
+                    <label for="newPassword">Nueva contraseña</label>
+                    <input id="newPassword" class="field" type="password" (ngModel)="newPassword" required>
+                </div>
+                <button class="save-btn qt-btn" (click)="savePassword()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="preferencies" class="section">
+        <h2 class="title">Preferencias</h2>
+        <div class="subsection">
+            <label>Modo oscuro</label>
+            <button class="darkmode" (click)="toggleDarkMode()">{{ darkMode ? 'Desactivar' : 'Activar' }}</button>
+        </div>
+    </div>
+</div>

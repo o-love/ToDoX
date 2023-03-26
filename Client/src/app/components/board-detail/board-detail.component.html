@@ -1,25 +1,28 @@
-<div *ngIf="componentVisible" class="sidebar">
-    <img class="close-btn" src="../../../assets/icons/IoCaretBackCircle.svg" (click)="toggleComponent()">
-
-    <div class="board-info">
-        <h2>{{ board?.name }}</h2>
-        <p class="description">{{ board?.description }}</p>
+<div class="sidebar-container">
+    <div *ngIf="sidebarVisible" class="sidebar">
+        <div class="board-info">
+            <h2>{{ board?.name }}</h2>
+            <p class="description">{{ board?.description }}</p>
+        </div>
+    
+        <div class="settings">
+            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> Settings
+        </div>
+    
+        <div class="lists-container">
+            <h4>Lists</h4>
+            <div *ngFor="let list of lists" (click)="selectList(list)">{{ list.name }}</div>
+        </div>
+    
+        <div class="add-container">
+            <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+        </div>
     </div>
 
-    <div class="settings">
-        <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> Settings
-    </div>
-
-    <div class="lists-container">
-        <h4>Lists</h4>
-        <div *ngFor="let list of lists">{{ list.name }}</div>
-    </div>
-
-    <div class="add-container">
-        <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+    <div class="close-btn-container" (click)="toggleComponent()" [class.moveWhenClosed]="!sidebarVisible">
+        <img class="close-btn" src="../../../assets/icons/IoCaretBackCircle.svg">
     </div>
 </div>
-
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 
@@ -28,3 +31,6 @@
         (closePopup)="showPopup = false"></app-create-list>
 </div>
 
+<div class="list-detail-container" *ngIf="showListDetail">
+    <app-list-detail [selectedList]="selectedList"></app-list-detail>
+</div>
