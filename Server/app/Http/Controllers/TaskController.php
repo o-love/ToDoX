@@ -3,29 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TaskList;
 use App\Models\Task;
+use App\Models\TaskList;
 use App\Models\Board;
 
 class TaskController extends Controller
 {
     // Display a listing of the resource
-    public function index($taskListId, $boardId)
+    public function index($boardId, $taskListId)
     {
         $taskList = TaskList::findOrFail($taskListId);
-        $task = $taskList->tasks()->get();
+        $task = Task::where('tasklist_id', $taskListId)->get();
 
         return response()->json($task);        
     }
 
     // Store a newly created resource in storage
-    public function store(Request $request, TaskList $taskList, Board $boardId)
+    public function store(Request $request, $taskListId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
+        $taskList = TaskList::findOrFail($taskListId);
         $task = new Task([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'list_id' => $taskList->id,
+            'taskList_id' => $taskListId,
             'state_id' => $request->input('state_id')
         ]);
 

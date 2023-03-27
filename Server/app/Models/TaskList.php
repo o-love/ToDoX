@@ -12,7 +12,7 @@ class TaskList extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'board_id'];
-    protected $table='list';
+    protected $table='tasklist';
 
     // A TaskList belongs to a Board
     public function board()

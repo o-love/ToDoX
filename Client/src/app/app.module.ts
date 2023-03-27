@@ -19,6 +19,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { CreateTaskComponent } from './components/create-task/create-task.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     SignupFormComponent,
     ListDetailComponent,
     ProfileComponent,
+    CreateTaskComponent,
   ],
   imports: [
     BrowserModule,

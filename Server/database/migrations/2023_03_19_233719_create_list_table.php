@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('list', function (Blueprint $table) {
+        Schema::create('tasklist', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('board_id');
-            $table->foreign('board_id')->references('id')->on('board');
+            $table->foreign('board_id')->references('id')->on('board')->onDelete('cascade');
             $table->timestamps();
         });
     }
