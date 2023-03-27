@@ -26,6 +26,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql \
     && docker-php-ext-install pdo_mysql
 
+RUN apt-get install -y libzip-dev && apt-get install -y libpq-dev \
+    && docker-php-ext-install zip exif pcntl
+
 # ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # RUN chmod +x /usr/local/bin/install-php-extensions && \
