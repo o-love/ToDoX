@@ -27,7 +27,7 @@ export class ListDetailComponent {
   ngOnInit(): void {
     if (this.selectedList) {
       this.boardId = this.selectedList.board_id.toString();
-      this.taskListId = this.selectedList.id.toString()
+      this.taskListId = this.selectedList.id.toString();
       this.getList();
       this.getTasks();
     }
