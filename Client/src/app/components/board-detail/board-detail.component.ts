@@ -55,7 +55,6 @@ export class BoardDetailComponent implements OnInit {
   }
 
   toggleComponent(): void {
-    console.log("prue");
     this.sidebarVisible = !this.sidebarVisible;
   }
 

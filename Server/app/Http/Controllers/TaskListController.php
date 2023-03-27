@@ -19,13 +19,19 @@ class TaskListController extends Controller
     }
 
     // Creates a new list on a specific board
-    public function create(Request $request, Board $board)
+    public function store(Request $request, $boardId)
     {
+        // \Log::info('Request received for creating task list', [
+        //     'board_id' => $boardId,
+        //     'list_name' => $request->input('name'),
+        //     'list_description' => $request->input('description'),
+        //     'board' => $boardId
+        // ]);
 
         $list = new TaskList([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'board_id' => $board->id
+            'board_id' => $boardId
         ]);
         $list->save();
 

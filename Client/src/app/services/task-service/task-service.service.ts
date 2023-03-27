@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
+import { State } from 'src/app/models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,8 @@ export class TaskService {
     const task = {
       name: taskName,
       description: taskDescription,
-      state_id: stateId
+      state_id: stateId,
+      taskListId: listId,
     };
     return this.http.post<Task>(url, task);
   }
@@ -47,4 +49,9 @@ export class TaskService {
   //   const url = `${this.apiUrl}/${boardId}/lists/${listId}/tasks/${taskId}`;
   //   return this.http.delete(url);
   // }
+
+  getStates(boardId: string, listId: string): Observable<State[]> {
+    const url = `${this.apiUrl}/${boardId}/lists/${listId}/states`;
+    return this.http.get<State[]>(url);
+  }
 }

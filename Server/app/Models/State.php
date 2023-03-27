@@ -15,6 +15,6 @@ class State extends Model
     // A Task can have one or more States
     public function task()
     {
-        return $this->belongsToMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 }

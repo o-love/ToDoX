@@ -22,7 +22,6 @@ export class CreateListComponent {
 
   onSubmit() {
     if (this.boardId && this.listName) {
-      console.log();
       this.boardService.createList(this.boardId, this.listName, this.listDescription).subscribe({
         next: (list: TaskList) => {
           this.listCreated.emit(list);
