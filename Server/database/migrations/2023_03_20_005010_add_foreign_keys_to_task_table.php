@@ -29,9 +29,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('task', function (Blueprint $table) {
-            $table->dropForeign(['list_id']);
+            $table->dropForeign(['tasklist_id']);
             $table->dropForeign(['state_id']);
-            $table->dropColumn(['list_id', 'state_id']);
+            $table->dropColumn(['tasklist_id', 'state_id']);
         });        
     }
 };

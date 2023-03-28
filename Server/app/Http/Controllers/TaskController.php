@@ -19,14 +19,14 @@ class TaskController extends Controller
     }
 
     // Store a newly created resource in storage
-    public function store(Request $request, $taskListId)
+    public function store(Request $request, $boardId, $taskListId)
     {
         $taskList = TaskList::findOrFail($taskListId);
         $task = new Task([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'taskList_id' => $taskListId,
-            'state_id' => $request->input('state_id')
+            'tasklist_id' => $taskListId,
+            'state_id' => $request->input('state_id'),
         ]);
 
         $task->save();

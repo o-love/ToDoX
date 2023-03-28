@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
@@ -24,10 +24,11 @@ export class ListDetailComponent {
 
   constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    if (this.selectedList) {
-      this.boardId = this.selectedList.board_id.toString();
-      this.taskListId = this.selectedList.id.toString();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedList'] && changes['selectedList'].currentValue) {
+      const selectedList = changes['selectedList'].currentValue;
+      this.boardId = selectedList.board_id.toString();
+      this.taskListId = selectedList.id.toString();
       this.getList();
       this.getTasks();
     }

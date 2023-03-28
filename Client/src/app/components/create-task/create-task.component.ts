@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { State } from 'src/app/models/state';
 import { ActivatedRoute, Router } from '@angular/router'
 import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { Task } from 'src/app/models/task';
 
 @Component({
   selector: 'app-create-task',
@@ -13,6 +14,7 @@ export class CreateTaskComponent {
 
   taskName: string = '';
   taskDescription: string = '';
+
   selectedState: string = '';
   stateId: string = '';
   states: State[] = [];
@@ -39,12 +41,12 @@ export class CreateTaskComponent {
   }
 
   onSubmit() {
-    if (this.boardId && this.taskListId && this.taskName && this.selectedState) {
+    if (this.boardId && this.taskListId && this.taskName) { //&& this.selectedState) {
       // const state = this.states.find(state => state.id === parseInt(this.selectedState));
       // if (state) this.stateId = state.id.toString();
       // console.log("Task", this.taskName, " description ", this.taskDescription, " state ", this.stateId);
-      this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription, "1").subscribe({
-        next: (task) => {
+      this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription).subscribe({
+        next: (task: Task) => {
           this.taskCreated.emit(task);
           this.taskName = '';
           this.taskDescription = '';

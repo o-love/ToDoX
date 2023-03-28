@@ -11,10 +11,10 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
   styleUrls: ['./board-list.component.scss']
 })
 export class BoardListComponent implements OnInit {
+  constructor(private boardService: BoardService, private router: Router) {}
+
   boards: Board[] = [];
   showPopup = false;
-
-  constructor(private boardService: BoardService, private router: Router) {}
 
   ngOnInit(): void {
     this.getBoards();
@@ -33,7 +33,9 @@ export class BoardListComponent implements OnInit {
   }
 
   viewBoard(id: number) {
-    this.router.navigate(['/boards', id]);
+    this.router.navigate(['/boards', id]); //name + '-' +
+    // When accessing by url, id is not received - REV.
+    // this.router.navigateByUrl(`/boards/${name}`, { state: { boardId: id } });
   }
 
   addBoard(newBoard: Board) {

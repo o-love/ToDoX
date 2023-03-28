@@ -20,7 +20,7 @@ export class BoardService {
   // Gets a board by id
   getBoard(id: string): Observable<Board> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.get<Board>(url); // El problema está aquí C:
+    return this.http.get<Board>(url);
   }
 
   // Creates a new board in backend
