@@ -26,12 +26,6 @@ class BoardController extends Controller
             'message' => 'Board created successfully',
             'board' => $board
         ], 201);
-
-        // $board = new Board;
-        // $board->name = $request->name;
-        // $board->description = $request->description;
-        // $board->save();
-        // return response()->json($board, 201);
     }
 
     // Returns a single Board by ID

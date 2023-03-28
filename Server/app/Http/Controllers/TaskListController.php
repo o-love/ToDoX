@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Board;
 use App\Models\TaskList;
+use App\Models\State;
 
 class TaskListController extends Controller
 {
@@ -13,7 +14,7 @@ class TaskListController extends Controller
     public function index($boardId)
     {
         $board = Board::findOrFail($boardId);
-        $taskLists = $board->taskLists()->get();
+        $taskLists = $board->taskLists()->get();//->with('states')->get();
 
         return response()->json($taskLists);
     }
@@ -34,6 +35,14 @@ class TaskListController extends Controller
             'board_id' => $boardId
         ]);
         $list->save();
+
+        // if ($request->has('state_ids')) {
+        //     $stateIds = $request->input('state_ids');
+        //     foreach ($stateIds as $stateId) {
+        //         $state = State::findOrFail($stateId);
+        //         $list->states()->attach($state);
+        //     }
+        // }
 
         return response()->json($list);
     }

@@ -28,13 +28,13 @@ export class TaskService {
   // }
 
   // Creates a new task in backend related to a taskList related to a board
-  createTask(boardId: string, listId: string, taskName: string, taskDescription: string, stateId: string): Observable<Task> {
+  createTask(boardId: string, listId: string, taskName: string, taskDescription: string): Observable<Task> { //, stateId: string
     const url = `${this.apiUrl}/${boardId}/lists/${listId}/tasks`;
     const task = {
       name: taskName,
       description: taskDescription,
-      state_id: stateId,
-      taskListId: listId,
+      tasklist_id: listId,
+      state_id: "1",
     };
     return this.http.post<Task>(url, task);
   }

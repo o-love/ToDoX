@@ -9,8 +9,9 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id'];
+    protected $fillable = ['name', 'description', 'tasklist_id'];//, 'state_id'];
     protected $table='task';
+    // protected $primaryKey = "uuid";
 
     // A Task belongs to a TaskList
     public function taskList()
@@ -19,8 +20,8 @@ class Task extends Model
     }
 
     // A task can have many states
-    public function states()
-    {
-        return $this->belongsTo(State::class, 'state_id');
-    }
+    // public function states()
+    // {
+    //     return $this->belongsTo(State::class, 'state_id');
+    // }
 }

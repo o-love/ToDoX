@@ -6,9 +6,9 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
-import { CreateBoardComponent } from './components/create-board/create-board.component';
 import { BoardListComponent } from './components/board-list/board-list.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+import { ListDetailComponent } from './components/list-detail/list-detail.component';
 
 const routes: Routes = [
   /*
@@ -21,7 +21,9 @@ const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: SignupFormComponent },
   { path: 'boards', component: BoardListComponent },
-  { path: 'boards/:id', component: BoardDetailComponent },
+  { path: 'boards/:boardId', component: BoardDetailComponent, children: [
+    { path: 'lists/:listId', component: ListDetailComponent }
+  ]},
   { path: 'profile', component: ProfileComponent },
 ];
 

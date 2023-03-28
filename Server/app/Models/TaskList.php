@@ -13,6 +13,7 @@ class TaskList extends Model
 
     protected $fillable = ['name', 'description', 'board_id'];
     protected $table='tasklist';
+    // protected $primaryKey = "uuid";
 
     // A TaskList belongs to a Board
     public function board()
@@ -24,5 +25,11 @@ class TaskList extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    // A TaskList has many States through TaskListState
+    public function states()
+    {
+        return $this->belongsToMany(State::class, 'tasklist_state', 'tasklist_id', 'state_id');
     }
 }
