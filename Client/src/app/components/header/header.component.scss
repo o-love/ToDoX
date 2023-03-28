@@ -11,37 +11,42 @@ header {
     justify-content: space-between;
 
     box-sizing: border-box;
-    height: 70px;
+    padding-right: 20px;
+    height: 65px;
+
+    box-shadow: 0 2px 5px $black-20;
 
     .logo {
-        width: 300px;
+        width: 250px;
         height: 100%;
 
-        &:hover {
-            cursor: pointer;
-        }
+        &:hover { cursor: pointer; }
     }
 
     .profile {
         display: flex;
         flex-direction: column;
+
         justify-content: center;
         align-items: center;
 
-        padding: 5px 25px 10px 5px;
+        padding: 5px 0px 5px 0px;
 
         .profile-pic {
-            width: 46px;
-            height: 46px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
 
-            &:hover {
-                cursor: pointer;
+            &:hover { 
+                cursor: pointer; 
+                transform: scale(1.02);
             }
         }
 
         .user-name {
             text-align: center;
-            font-size: 10pt;
+            font-size: 8pt;
+            font-weight: bold;
         }
     }
 }
