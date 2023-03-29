@@ -20,6 +20,8 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
+import { CreateStateComponent } from './components/create-state/create-state.component';
+import { CreateLabelComponent } from './components/create-label/create-label.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
     ListDetailComponent,
     ProfileComponent,
     CreateTaskComponent,
+    CreateStateComponent,
+    CreateLabelComponent,
   ],
   imports: [
     BrowserModule,
