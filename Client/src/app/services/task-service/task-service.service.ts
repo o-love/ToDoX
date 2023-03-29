@@ -5,6 +5,8 @@ import { Board } from 'src/app/models/board';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
 import { State } from 'src/app/models/state';
+import { Label } from 'src/app/models/label';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +30,13 @@ export class TaskService {
   // }
 
   // Creates a new task in backend related to a taskList related to a board
-  createTask(boardId: string, listId: string, taskName: string, taskDescription: string, stateId: string): Observable<Task> {
+  createTask(boardId: string, listId: string, taskName: string, taskDescription: string): Observable<Task> { //, stateId: string
     const url = `${this.apiUrl}/${boardId}/lists/${listId}/tasks`;
     const task = {
       name: taskName,
       description: taskDescription,
-      state_id: stateId,
-      taskListId: listId,
+      tasklist_id: listId,
+      state_id: "1",
     };
     return this.http.post<Task>(url, task);
   }
@@ -50,8 +52,19 @@ export class TaskService {
   //   return this.http.delete(url);
   // }
 
+  // Creates a new task in backend related to a taskList related to a board
   getStates(boardId: string, listId: string): Observable<State[]> {
     const url = `${this.apiUrl}/${boardId}/lists/${listId}/states`;
     return this.http.get<State[]>(url);
+  }
+
+  // Creates a new task in backend related to a taskList related to a board
+  getLabels(boardId: string, listId: string, color: string): Observable<Label[]> {
+    let params = new HttpParams();
+    if (color) {
+      params = params.set('color', color);
+    }
+    const url = `${this.apiUrl}/${boardId}/lists/${listId}/labels`;
+    return this.http.get<Label[]>(url, { params });
   }
 }
