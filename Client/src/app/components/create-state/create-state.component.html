@@ -1,0 +1,9 @@
+<div class="create-state">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="text" class="form-control" id="stateName" [(ngModel)]="stateName" name="stateName" placeholder="Nombre">
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+    <button type="button" class="btn btn-secondary" (click)="onClose()">Eliminar</button>
+  </form>
+</div>

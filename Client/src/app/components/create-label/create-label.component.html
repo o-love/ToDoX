@@ -1,0 +1,14 @@
+<div class="create-label">
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <input type="text" id="label-name" [(ngModel)]="labelName" name="labelName" required placeholder="Nombre">
+    </div>
+    <div>
+      <input type="color" id="label-color" [(ngModel)]="labelColor" name="labelColor" required placeholder="Color">
+    </div>
+    <div>
+      <button type="submit">Crear</button>
+      <button type="button" (click)="onClose()">Eliminar</button>
+    </div>
+  </form>
+</div>
