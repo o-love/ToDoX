@@ -39,12 +39,16 @@ Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class,
 // Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
 // State routes
-Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
+Route::get('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
 Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
 // Route::post('/states', 'StateController@show');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth')->get('test', function (Request $request) {
+    return "hello";
 });
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
