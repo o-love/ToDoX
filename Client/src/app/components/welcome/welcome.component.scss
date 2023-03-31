@@ -1,178 +1,185 @@
 @import "../../../assets/styles/colours";
 @import "../../../assets/styles/buttons";
 
+
 .welcome {
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-    height: 100%;
-    width: 100%; 
 
-    position: relative;
+    width: 100%;
+
+    overflow-y: hidden;
 
     .background {
         height: 100%;
         width: 100%;
 
-        top: 0;
-        left: 0;
         position: absolute;
         overflow: hidden;
-        z-index: -1;
 
-        background-color: $white;
+        overflow: hidden;
 
-        .square {
-            position: absolute;
-            display: block;
+        z-index: -3;
 
-            bottom: -150px;
-            animation: animate 15s linear infinite;
+        .circles {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            z-index: -2;
+            overflow: hidden;
 
-            &:nth-child(1) {
-                left: 10%;
-                width: 80px;
-                height: 80px;
-                animation-delay: 0s;
+            .square {
+                position: absolute;
+                display: block;
+    
+                bottom: -100px;
+                animation: animate 15s linear infinite;
+    
+                &:nth-child(1) {
+                    left: 10%;
+                    width: 80px;
+                    height: 80px;
+                    animation-delay: 0s;
+                }
+        
+                &:nth-child(2) {
+                    left: 20%;
+                    width: 80px;
+                    height: 80px;
+                    animation-delay: 3s;
+                }
+        
+                &:nth-child(3) {
+                    left: 30%;
+                    width: 40px;
+                    height: 40px;
+                    animation-delay: 6s;
+                }
+        
+                &:nth-child(4) {
+                    left: 70%;
+                    width: 60px;
+                    height: 60px;
+                    animation-delay: 5s;
+                }
+        
+                &:nth-child(5) {
+                    left: 80%;
+                    width: 80px;
+                    height: 80px;
+                    animation-delay: 13s;
+                }
+        
+                &:nth-child(6) {
+                    left: 5%;
+                    width: 50px;
+                    height: 50px;
+                    animation-delay: 8s;
+                }
+        
+                &:nth-child(7) {
+                    left: 49%;
+                    width: 60px;
+                    height: 60px;
+                    animation-delay: 2s;
+                }
+    
+                &:nth-child(8) {
+                    left: 90%;
+                    width: 60px;
+                    height: 60px;
+                    animation-delay: 2s;
+                }
+                &:nth-child(9) {
+                    left: 50%;
+                    width: 40px;
+                    height: 40px;
+                    animation-delay: 9s;
+                }
+                &:nth-child(10) {
+                    left: 60%;
+                    width: 80px;
+                    height: 80px;
+                    animation-delay: 5s;
+                }
+                &:nth-child(11) {
+                    left: 40%;
+                    width: 40px;
+                    height: 40px;
+                    animation-delay: 4s;
+                }
+                &:nth-child(12) {
+                    left: 15%;
+                    width: 50px;
+                    height: 50px;
+                    animation-delay: 5s;
+                }
+                &:nth-child(13) {
+                    left: 60%;
+                    width: 60px;
+                    height: 60px;
+                    animation-delay: 12s;
+                }
+                &:nth-child(14) {
+                    left: 80%;
+                    width: 40px;
+                    height: 40px;
+                    animation-delay: 0s;
+                }
             }
     
-            &:nth-child(2) {
-                left: 20%;
-                width: 80px;
-                height: 80px;
-                animation-delay: 3s;
-            }
-    
-            &:nth-child(3) {
-                left: 30%;
-                width: 40px;
-                height: 40px;
-                animation-delay: 6s;
-            }
-    
-            &:nth-child(4) {
-                left: 70%;
-                width: 60px;
-                height: 60px;
-                animation-delay: 5s;
-            }
-    
-            &:nth-child(5) {
-                left: 80%;
-                width: 80px;
-                height: 80px;
-                animation-delay: 13s;
-            }
-    
-            &:nth-child(6) {
-                left: 5%;
-                width: 50px;
-                height: 50px;
-                animation-delay: 8s;
-            }
-    
-            &:nth-child(7) {
-                left: 90%;
-                width: 60px;
-                height: 60px;
-                animation-delay: 2s;
-            }
-
-            &:nth-child(8) {
-                left: 90%;
-                width: 60px;
-                height: 60px;
-                animation-delay: 2s;
-            }
-            &:nth-child(9) {
-                left: 29%;
-                width: 40px;
-                height: 40px;
-                animation-delay: 9s;
-            }
-            &:nth-child(10) {
-                left: 60%;
-                width: 80px;
-                height: 80px;
-                animation-delay: 5s;
-            }
-            &:nth-child(11) {
-                left: 10%;
-                width: 70px;
-                height: 70px;
-                animation-delay: 2s;
-            }
-            &:nth-child(12) {
-                left: 90%;
-                width: 50px;
-                height: 50px;
-                animation-delay: 6s;
-            }
-            &:nth-child(13) {
-                left: 60%;
-                width: 60px;
-                height: 60px;
-                animation-delay: 12s;
-            }
-            &:nth-child(14) {
-                left: 80%;
-                width: 40px;
-                height: 40px;
-                animation-delay: 0s;
-            }
+            .red-square { background: linear-gradient(45deg, rgba($bittersweet, 0.5), $melon-pastel-70); }
+            .lilac-square { background: linear-gradient(145deg, $tropical-indigo-70, $light-red-50); }
         }
 
-        .red-square { background: linear-gradient(45deg, rgba($bittersweet, 0.5), $melon-pastel-70); }
-        .lilac-square { background: linear-gradient(145deg, $tropical-indigo-70, $light-red-50); }
+        img {
+
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transform: translateY(10%);
+        
+            z-index: -1;
+        }
     }
 
-    .centered-content {
-        h1 {
+    .content {
+        display: flex;
+        flex-direction: column;
+
+        top: 20%;
+        left: 5%;
+        position: absolute;
+
+        .title {
             margin: 0;
             padding: 0;
 
-            color: $melon;
-            font-size: 80pt;
-            font-weight: bold;
+            color: $black;
+            font-size: 38pt;
+            font-weight: 600;
 
-            // For screens smaller than 768px width
-            @media (max-width: 768px) {
-                font-size: 10vw;
+            #pink { color: $melon; }
+            #purple { 
+                color: $tropical-indigo; 
+                font-size: 40pt;
             }
         }
 
-        .buttons {
-            margin-top: 10vh;
+        .btn-section {
             display: flex;
-            flex-direction: column;
-    
-            align-items: center;
-    
-            .btn {
-                width: 10em;
-                height: 3em;
-    
-                margin-top: 50px;
-    
-                font-size: 19pt;
-                background-color: transparent;
-                border: 2px solid $tropical-indigo;
-                border-radius: 5px;
-    
-                color: $tropical-indigo;
-                text-transform: uppercase;
+            justify-content: space-between;
+            width: 45%;
+            margin-top: 60px;
 
-                position: relative;
-                display: block;
-                overflow: hidden;
-    
-                &:hover {
-                    background-color: $tropical-indigo-90;
-                    color: $white;
-                }
 
-                &:active { transform: translateY(3px); }
+            #login-btn { 
+                @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+            }
+
+            #signup-btn { 
+                @include btn(9em, 2.8em, 14pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
             }
         }
     }

@@ -43,7 +43,7 @@ export class CreateTaskComponent {
       // const state = this.states.find(state => state.id === parseInt(this.selectedState));
       // if (state) this.stateId = state.id.toString();
       // console.log("Task", this.taskName, " description ", this.taskDescription, " state ", this.stateId);
-      this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription, "1").subscribe({
+      this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription).subscribe({
         next: (task) => {
           this.taskCreated.emit(task);
           this.taskName = '';

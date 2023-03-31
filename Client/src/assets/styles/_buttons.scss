@@ -18,3 +18,27 @@
         box-shadow: 0 1px $melon-40;
     }
 }
+
+@mixin btn($width, $height, $font-size, $background-color, $font-color, $stroke, $border-radius, $color) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $width;
+    height: $height;
+
+    font-size: $font-size;
+    font-weight: 500;
+
+    color: $font-color;
+    background-color: $background-color;
+
+    border: $stroke;
+    border-radius: $border-radius;
+
+    &:hover {
+        box-shadow: 0 5px 10px $color;
+        transform: translateY(-2px);
+    }
+
+    &:active { transform: translateY(4px); }
+}
