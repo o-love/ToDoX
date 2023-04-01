@@ -43,11 +43,12 @@ export class BoardService {
   }
 
   // Creates a new taskList in backend related to a board by boardId
-  createList(boardId: string, listName: string, listDescription: string): Observable<any> {
+  createList(boardId: string, listName: string, listDescription: string, stateIds: number[]): Observable<any> {
     const list = {
       name: listName,
       description: listDescription,
       board_id: boardId,
+      state_ids: stateIds,
     };
     return this.http.post(`${this.apiUrl}/${boardId}/lists`, list);
   }

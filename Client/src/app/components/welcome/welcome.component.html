@@ -1,10 +1,31 @@
-<div class="welcome">
-    <!-- <div class="background-img"></div> -->
-    <div class="centered-content">
-        <h1>Bienvenido</h1>
-        <div class="buttons">
-            <button id="login-btn" class="btn qt-btn" (click)="onLogin()">INICIA SESIÓN</button>
-            <button id="signup-btn" class="btn qt-btn" (click)="onRegister()">REGÍSTRATE</button>
+<main class="welcome">
+    <div class="background">
+        <div class="circles">
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+            <div class="square red-square"></div>
+
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+            <div class="square lilac-square"></div>
+        </div>
+        <img src="../../../assets/vector_welcome.svg">
+    </div>
+    <div class="content">
+        <h1 class="title">Empieza a trabajar de forma<br>
+            <span id="pink">organizada y coordinada</span> con <span id="purple">ToDoX</span>
+        </h1>
+        <div class="btn-section">
+            <button id="login-btn" class="btn" (click)="onLogin()">Iniciar sesión</button>
+            <button id="signup-btn" class="btn" (click)="onRegister()">Registrarse</button>
         </div>
     </div>
-</div>
+</main>

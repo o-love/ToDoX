@@ -2,8 +2,11 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
+import { State } from 'src/app/models/state';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-list-detail',
@@ -17,8 +20,7 @@ export class ListDetailComponent {
 
   boardId: string = '';
   taskListId: string = '';
-  taskName: string = '';
-  taskDescription: string = '';
+  stateNames: {[key: string]: string} = {};
 
   showPopup: boolean = false;
 
@@ -39,6 +41,7 @@ export class ListDetailComponent {
       (tasks: Task[]) => {
         console.log('Tasks retrieved:', tasks);
         this.tasks = tasks;
+        this.getStateNames();
       },
       (error: any) => {
         console.error('Error retrieving tasks:', error);
@@ -62,5 +65,24 @@ export class ListDetailComponent {
     this.tasks.push(newTask);
     this.showPopup = false;
     this.getTasks();
+  }
+
+  getStateNames(): void {
+    const stateIds = new Set(this.tasks.map(task => task.state_id));
+    const observables: Observable<State>[] = Array.from(stateIds).map(stateId => this.taskService.getStateName(stateId.toString()));
+    forkJoin(observables).subscribe(
+      (states: State[]) => {
+        states.forEach((state: State) => {
+          this.stateNames[state.id] = state.name;
+        });
+      },
+      (error: any) => {
+        console.error('Error retrieving state names:', error);
+      }
+    );
+  }
+
+  getStateName(stateId: string) {
+    return this.stateNames[stateId];
   }
 }

@@ -31,29 +31,31 @@ export class CreateTaskComponent {
 
   getStates() {
     if (this.boardId && this.taskListId) {
-      this.taskService.getStates(this.boardId, this.taskListId).subscribe({
+      this.taskService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
         next: (states) => {
           this.states = states;
         },
         error: (error) => console.log(error)
       });
     }
+    console.log("states de board", this.boardId, "y list", this.taskListId, "states:", this.states);
   }
 
   onSubmit() {
-    if (this.boardId && this.taskListId && this.taskName) { //&& this.selectedState) {
-      // const state = this.states.find(state => state.id === parseInt(this.selectedState));
-      // if (state) this.stateId = state.id.toString();
-      // console.log("Task", this.taskName, " description ", this.taskDescription, " state ", this.stateId);
-      this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription).subscribe({
-        next: (task: Task) => {
-          this.taskCreated.emit(task);
-          this.taskName = '';
-          this.taskDescription = '';
-          this.stateId = '';
-        },
-        error: (error) => console.log(error)
-      });
+    if (this.boardId && this.taskListId && this.taskName && this.selectedState) {
+      const state = this.states.find(state => state.id === parseInt(this.selectedState));
+      if (state) this.stateId = state.id.toString();
+      if (state) {
+        this.taskService.createTask(this.boardId, this.taskListId, this.taskName, this.taskDescription, this.stateId).subscribe({
+          next: (task: Task) => {
+            this.taskCreated.emit(task);
+            this.taskName = '';
+            this.taskDescription = '';
+            this.stateId = '';
+          },
+          error: (error) => console.log(error)
+        });
+      }
     }
   }
 
