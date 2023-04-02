@@ -9,7 +9,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id'];
+    protected $fillable = ['name', 'description', 'tasklist_id'];//, 'state_id'];
     protected $table='task';
     // protected $primaryKey = "uuid";
 
