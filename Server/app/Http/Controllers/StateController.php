@@ -9,27 +9,30 @@ use App\Models\TaskList;
 
 class StateController extends Controller
 {
-    public function index()
+    public function index($taskListId)
     {
-        $states = State::all();
-
-        return response()->json($states, 200);
+        $taskList = TaskList::findOrFail($taskListId);
+        $states = $taskList->states()->get();
+        return response()->json($states);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $boardId, $taskListId)
     {
-        $state = new State;
-        $state->name = $request->input('name');
-        $state->save();
+        $state = new State([
+            'name' => $request->input('name'),
+        ]);
 
-        return response()->json($state);
+        $taskList = TaskList::findOrFail($taskListId);
+        $taskList->states()->attach($state);
+
+        return response()->json($state, 201);
     }
 
-    public function show($id)
+    public function show($boardId, $taskListId, $stateId)
     {
-        $state = State::findOrFail($id);
+        $state = State::findOrFail($stateId);
 
-        return response()->json(['state' => $state], 200);
+        return response()->json($state, 200);
     }
 
     public function update(Request $request, $id)
@@ -61,5 +64,12 @@ class StateController extends Controller
         }
 
         return response()->json($list->states);
+    }
+
+    public function getStateName($stateId)
+    {
+        $state = State::findOrFail($stateId);
+        // return response()->json(['name' => $state->name]);
+        return response()->json($state);
     }
 }

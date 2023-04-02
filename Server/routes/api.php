@@ -41,7 +41,14 @@ Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class,
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
 Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
+Route::get('/states/{stateId}/name', [StateController::class, 'getStateName']);
 // Route::post('/states', 'StateController@show');
+
+// REV
+// Route::group(['prefix' => 'boards/{boardId}/lists/{taskListId}'], function () {
+//     Route::get('/states', [StateController::class, 'index']);
+//     Route::post('/states', [StateController::class, 'store']);
+// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

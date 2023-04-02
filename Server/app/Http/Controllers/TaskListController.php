@@ -14,7 +14,7 @@ class TaskListController extends Controller
     public function index($boardId)
     {
         $board = Board::findOrFail($boardId);
-        $taskLists = $board->taskLists()->get();//->with('states')->get();
+        $taskLists = $board->taskLists()->get(); //->with('states')->get();
 
         return response()->json($taskLists);
     }
@@ -33,8 +33,12 @@ class TaskListController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'board_id' => $boardId
-        ]);
+        ]);        
         $list->save();
+
+        $stateIds = [1, 2, 3];
+        $states = State::whereIn('id', $stateIds)->get();
+        $list->states()->attach($states);
 
         // if ($request->has('state_ids')) {
         //     $stateIds = $request->input('state_ids');
