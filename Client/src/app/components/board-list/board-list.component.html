@@ -1,4 +1,4 @@
-<h1>Mis tableros</h1>
+<h1 translate>boards.title</h1>
 
 <div class="container">
 
@@ -7,8 +7,8 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
+                        <th translate>boards.name</th>
+                        <th translate>boards.description</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<button class="add-btn btn" (click)="showPopup = true">+ Añadir</button>
+<button class="add-btn btn" (click)="showPopup = true" translate>boards.addBtn</button>
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 

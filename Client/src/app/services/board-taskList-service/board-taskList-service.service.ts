@@ -8,18 +8,18 @@ import { TaskList } from 'src/app/models/taskList';
   providedIn: 'root'
 })
 export class BoardService {
-  private apiUrl = 'http://localhost:8082/api/boards';
+  private apiUrl = 'http://localhost:8082/api';
 
   constructor(private http: HttpClient) { }
 
   // Gets all boards from backend
   getBoards(): Observable<Board[]> {
-    return this.http.get<Board[]>(this.apiUrl);
+    return this.http.get<Board[]>(`${this.apiUrl}/boards`);
   }
 
   // Gets a board by id
   getBoard(id: string): Observable<Board> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}/boards/${id}`;
     return this.http.get<Board>(url);
   }
 
@@ -29,17 +29,17 @@ export class BoardService {
       name: boardName,
       description: boardDescription,
     };
-    return this.http.post(`${this.apiUrl}`, board);
+    return this.http.post(`${this.apiUrl}/boards`, board);
   }
 
   // Gets all taskLists from backend related to a certain board by boardId
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
-    return this.http.get<TaskList[]>(`${this.apiUrl}/${boardId}/lists`);
+    return this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
   }
 
   // Gets a taskList by id and board id
   getList(boardId: string, taskListId: string): Observable<TaskList> {
-    return this.http.get<TaskList>(`${this.apiUrl}/${boardId}/lists/${taskListId}`);
+    return this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
   }
 
   // Creates a new taskList in backend related to a board by boardId
@@ -50,6 +50,6 @@ export class BoardService {
       board_id: boardId,
       state_ids: stateIds,
     };
-    return this.http.post(`${this.apiUrl}/${boardId}/lists`, list);
+    return this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, list);
   }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\LabelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,27 +23,40 @@ use App\Http\Controllers\StateController;
 // Board routes
 Route::get('boards', [BoardController::class, 'index']);
 Route::post('boards', [BoardController::class, 'store'])->name('boards.store');
+// Route::put('boards', [BoardController::class, 'update'])->name('boards.update');
+// Route::delete('boards', [BoardController::class, 'destroy'])->name('boards.store');
 Route::get('boards/{boardId}', [BoardController::class, 'show'])->name('boards.show');
+// Route::put('boards/{boardId}', [BoardController::class, 'show'])->name('boards.show');
+// Route::delete('boards/{boardId}', [BoardController::class, 'show'])->name('boards.show');
 
 // List routes
 Route::get('boards/{boardId}/lists', [TaskListController::class, 'index']);
 Route::post('boards/{boardId}/lists', [TaskListController::class, 'store'])->name('tasklists.store');
-Route::get('boards/{boardId}/lists/{taskListId}', [TaskListController::class, 'show'])->name('tasklists.show');
-// Route::put('/boards/{boardId}/lists/{taskListId}', [TaskListController::class, 'update']);
-// Route::delete('/boards/{boardId}/lists/{taskListId}', 'TaskListController@destroy');
+// Route::put('boards/{boardId}/lists', [TaskListController::class, 'update'])->name('tasklists.update');
+// Route::delete('boards/{boardId}/lists', [TaskListController::class, 'destroy'])->name('tasklists.destroy');
+Route::get('boards/{boardId}/lists/{taskListId}', [TaskListController::class, 'show'])->name('tasklists.show'); // lists/{taskListId} REV
+// Route::put('lists/{taskListId}', [TaskListController::class, 'show'])->name('tasklists.show'); // lists/{taskListId} REV
+// Route::delete('lists/{taskListId}', [TaskListController::class, 'show'])->name('tasklists.show'); // lists/{taskListId} REV
 
 // Task routes
-Route::get('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 'index']);
+Route::get('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 'index']); // lists/{taskListId}/tasks REV
 Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 'store'])->name('tasks.store');
-// Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show'])->name('tasks.show');
+// Route::put('lists/{taskListId}/tasks', [TaskController::class, 'update'])->name('tasks.update');
+// Route::delete('lists/{taskListId}/tasks', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::get('tasks/{taskId}', [TaskController::class, 'show'])->name('tasks.show');
 // Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update'])->name('tasks.update');
 // Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
-Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
+// Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
 Route::get('/states/{stateId}/name', [StateController::class, 'getStateName']);
 // Route::post('/states', 'StateController@show');
+
+// Label routes
+Route::get('labels', [LabelController::class, 'index']);
+Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
+// Route::get('tasks/{taskId}/labels', [LabelController::class, 'show']); // Get label assigned to a task REV
 
 // REV
 // Route::group(['prefix' => 'boards/{boardId}/lists/{taskListId}'], function () {

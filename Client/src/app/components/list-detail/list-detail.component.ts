@@ -5,7 +5,6 @@ import { Task } from 'src/app/models/task';
 import { State } from 'src/app/models/state';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from 'src/app/services/task-service/task-service.service';
-import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
 
 @Component({

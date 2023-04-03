@@ -6,11 +6,11 @@
         </div>
     
         <div class="settings">
-            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> Settings
+            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> {{ 'global.settings' | translate }}
         </div>
     
         <div class="lists-container">
-            <h4>Lists</h4>
+            <h4 translate>boards.boardLists</h4>
             <div *ngFor="let list of lists" (click)="selectList(list)">{{ list.name }}</div>
         </div>
     

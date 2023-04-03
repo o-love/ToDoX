@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router) { }
+  @Input() showLoginButton: boolean = false;
+
+  constructor(private router: Router, private translate: TranslateService) {
+    translate.setDefaultLang('en');
+  }
+
+  ngOnInit() {
+    console.log('showLoginButton:', this.showLoginButton);
+  }
 
   goHome() {
     this.router.navigate(['/home']);
@@ -15,5 +24,17 @@ export class HeaderComponent {
 
   goProfile() {
     this.router.navigate(['./profile']);
+  }
+
+  onLogin() {
+    this.router.navigate(['./login']);
+  }
+
+  onSignUp() {
+    this.router.navigate(['./signup']);
+  }
+
+  switchLanguage() {
+    this.translate.use(this.translate.currentLang === 'en' ? 'es' : 'en');
   }
 }

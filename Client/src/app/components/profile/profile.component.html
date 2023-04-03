@@ -2,7 +2,7 @@
     <div class="info">
         <div class="profile-pic"></div>
         <div class="name-edit">
-            <div class="name">Nombre de Usuario</div>
+            <div class="name" translate></div>
             <img id="edit" src="../../../assets/icons/Edit.svg">
         </div>
     </div>
@@ -10,56 +10,56 @@
 
 <div class="content">
     <div id="settings" class="section">
-        <h2 class="title">Configuración</h2>
+        <h2 class="title" translate>global.settings</h2>
 
         <div id="set-email" class="subsection">
             <div class="subtitle">
                 <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
-                <h3 class="subtitle-name">Correo</h3>
+                <h3 class="subtitle-name" translate>global.emailShort</h3>
             </div>
 
             <div class="subsection-content">
                 <div class="field-container">
-                    <label for="email">Tu correo actual</label>
+                    <label for="email" translate>users.email.currentEmail</label>
                     <input id="email" type="email" class="field" (ngModel)="currentEmail" readonly>
 
                 </div>
                 <div class="field-container">
-                    <label for="newEmail">Nuevo correo</label>
+                    <label for="newEmail" translate>users.email.newEmail</label>
                     <input id="newEmail" class="field" type="email" (ngModel)="newEmail" required>
                 </div>
-                <button class="save-btn qt-btn" (click)="saveEmail()">Guardar</button>
+                <button class="save-btn qt-btn" (click)="saveEmail()" translate>{{ 'global.save' }}</button>
             </div>
         </div>
 
         <div id="set-password" class="subsection">
             <div class="subtitle">
                 <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
-                <h3 class="subtitle-name">Contraseña</h3>
+                <h3 class="subtitle-name" translate>global.password</h3>
             </div>
 
             <div class="subsection-content">
                 <div class="field-container">
                     <label id="asterisk-label">
-                        <label for="password">Contraseña actual</label>
+                        <label for="password" translate>users.password.currentPassword</label>
                         <span class="asterisk">*</span>
                     </label>
                     <input id="password" class="field" type="password" (ngModel)="currentPassword" required>
 
                 </div>
                 <div class="field-container">
-                    <label for="newPassword">Nueva contraseña</label>
+                    <label for="newPassword" translate>users.password.newPassword</label>
                     <input id="newPassword" class="field" type="password" (ngModel)="newPassword" required>
                 </div>
-                <button class="save-btn qt-btn" (click)="savePassword()">Guardar</button>
+                <button class="save-btn qt-btn" (click)="savePassword()" translate>{{ 'global.save' }}</button>
             </div>
         </div>
     </div>
 
     <div id="preferencies" class="section">
-        <h2 class="title">Preferencias</h2>
+        <h2 class="title" translate>user.preferences</h2>
         <div class="subsection">
-            <label>Modo oscuro</label>
+            <label translate>user.theme.dark</label> <!-- users.theme.light ngIf selected? -->
             <button class="darkmode" (click)="toggleDarkMode()">{{ darkMode ? 'Desactivar' : 'Activar' }}</button>
         </div>
     </div>

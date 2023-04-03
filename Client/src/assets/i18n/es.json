@@ -1,0 +1,73 @@
+{
+    "global": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "email": "Correo electrónico",
+        "emailShort": "Correo",
+        "password": "Contraseña",
+        "name": "Nombre",
+        "description": "Descripción",
+        "ok": "Ok",
+        "color": "Color",
+        "settings": "Configuración",
+        "save": "Guardar"
+    },
+
+    "welcome": {
+        "title": "Empieza a trabajar de forma",
+        "span": "organizada y coordinada",        
+        "connector": "con"
+    },
+
+    "login": {
+        "noAccountLink": "¿No tienes cuenta? Regístrate aquí"
+    },
+
+    "register": {
+        "repeatPassword": "Repita la contraseña"
+    },
+
+    "boards": {
+        "title": "Mis tableros",
+        "name": "Nombre",
+        "description": "Descripción",
+        "addBtn": "+ Añadir",
+        "boardLists": "Listas"
+    },
+
+    "lists": {
+    },
+
+    "tasks": {
+        "startDate": "Fecha de Inicio",
+        "dueDate": "Fecha de Fin"
+    },
+
+    "labels": {
+        "title": "Crear etiqueta",
+        "labels": "Etiquetas",
+        "label": "Etiqueta"
+    },
+
+    "states": {
+        "states": "Estados",
+        "state": "Estado"
+    }, 
+
+    "users": {
+        "username": "Nombre de Usuario",
+        "email": {
+            "currentEmail": "Tu correo actual",
+            "newEmail": "Nuevo correo"
+        },
+        "password": {
+            "currentPassword": "Contraseña actual",
+            "newPassword": "Nueva contraseña"
+        },        
+        "preferences": "Preferencias",
+        "theme": {
+            "dark": "Modo oscuro",
+            "light": "Modo claro"
+        }
+    }
+}

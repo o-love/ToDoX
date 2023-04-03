@@ -9,7 +9,7 @@ use App\Models\TaskList;
 
 class StateController extends Controller
 {
-    public function index($taskListId)
+    public function index($boardId, $taskListId)
     {
         $taskList = TaskList::findOrFail($taskListId);
         $states = $taskList->states()->get();
@@ -69,7 +69,6 @@ class StateController extends Controller
     public function getStateName($stateId)
     {
         $state = State::findOrFail($stateId);
-        // return response()->json(['name' => $state->name]);
         return response()->json($state);
     }
 }

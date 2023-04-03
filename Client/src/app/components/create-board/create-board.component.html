@@ -5,7 +5,7 @@
   <div class="form-body">
     <div class="form-group">
       <div class="input-label">
-        <label>Name:</label>
+        <label>{{ 'global.name' | translate }}:</label>
       </div>
       <div class="input-field">
         <input type="text" [(ngModel)]="boardName" name="boardName" required>
@@ -13,14 +13,14 @@
     </div>
     <div class="form-group">
       <div class="input-label">
-        <label>Description:</label>
+        <label>{{ 'global.description' | translate }}:</label>
       </div>
       <div class="input-field">
         <textarea rows="5" cols="50" [(ngModel)]="boardDescription" name="boardDescription" required></textarea>
       </div>
     </div>
     <div class="buttons">
-      <button class="btn" type="submit">Ok</button>
+      <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
   </div>
 </form>

@@ -1,0 +1,73 @@
+{
+    "global": {
+        "login": "Log in",
+        "register": "Sign Up",
+        "email": "Email",
+        "emailShort": "Email",
+        "password": "Password",
+        "name": "Name",
+        "description": "Description",
+        "ok": "Ok",
+        "color": "Color",
+        "settings": "Settings",
+        "save": "Save"
+    },
+
+    "welcome": {
+        "title": "Start working in an",
+        "span": "organized and coordinated",
+        "connector": "way with"
+    },
+
+    "login": {
+        "noAccountLink": "Don't have an account? Register here"
+    },
+
+    "register": {
+        "repeatPassword": "Repeat password"
+    },
+
+    "boards": {
+        "title": "My Boards",
+        "name": "Name",
+        "description": "Description",
+        "addBtn": "+ Add",
+        "boardLists": "Lists"
+    },
+
+    "lists": {
+    },
+
+    "tasks": {
+        "startDate": "Start Date",
+        "dueDate": "Due Date"
+    },
+
+    "labels": {
+        "title": "Create Label",
+        "labels": "Labels",
+        "label": "Label"
+    },
+
+    "states": {
+        "states": "States",
+        "state": "State"
+    }, 
+
+    "users": {
+        "username": "Username",
+        "email": {
+            "currentEmail": "Current email",
+            "newEmail": "New email"
+        },
+        "password": {
+            "currentPassword": "Current password",
+            "newPassword": "New password"
+        },        
+        "preferences": "Preferences",
+        "theme": {
+            "dark": "Dark mode",
+            "light": "Light mode"
+        }
+    }
+}

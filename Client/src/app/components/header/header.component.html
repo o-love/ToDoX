@@ -1,7 +1,12 @@
 <header>
     <img class="logo" src="../../../assets/placeholder.png" (click)="goHome()">
-    <div class="profile">
+    <div *ngIf="!showLoginButton" class="profile">
         <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
         <label class="user-name">Lorem Ipsum</label>
     </div>
+    <div *ngIf="showLoginButton" class="login">
+        <button (click)="onLogin()">Log In</button>
+        <button (click)="onSignUp()">Sign Up</button>
+    </div>
+    <button (click)="switchLanguage()">Switch language</button>
 </header>

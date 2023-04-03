@@ -1,20 +1,23 @@
 <body>
-    <form class="signup-form" (ngSubmit)="onSubmit()" (formGroup)="signupForm">
+    <form class="signup-form" (ngSubmit)="onSubmit()" [formGroup]="signupForm">
         <div class="form-header">
             <img class="back-btn" src="../../../assets/icons/IoChevronBackCircle.svg" alt="Back" (click)="goBack()"
                 role="button">
         </div>
         <div class="form-body">
-            <input type="text" id="name" (ngModel)="name" name="name" class="form-control" required placeholder="Name"
-                (focus)="onFocus($event, nameLabel)" (blur)="onBlur($event, nameLabel)">
-            <input type="email" id="email" (ngModel)="email" name="email" class="form-control" required
-                placeholder="Email" (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
-            <input type="password" id="password" (ngModel)="password" name="password" class="form-control" required
-                placeholder="Password" (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
-            <input type="password" id="repeat-password" (ngModel)="repeatPassword" name="repeatPassword"
-                class="form-control" required placeholder="Repeat Password"
+            <input #nameLabel type="text" id="name" formControlName="name" name="name" class="form-control"
+                placeholder="{{ 'global.name' | translate }}" (focus)="onFocus($event, nameLabel)"
+                (blur)="onBlur($event, nameLabel)">
+            <input #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control"
+                placeholder="{{ 'global.email' | translate }}" (focus)="onFocus($event, emailLabel)"
+                (blur)="onBlur($event, emailLabel)">
+            <input #passwordLabel type="password" id="password" formControlName="password" name="password"
+                class="form-control" placeholder="{{ 'global.password' | translate }}"
+                (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
+            <input #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword"
+                name="repeatPassword" class="form-control" placeholder="{{ 'register.repeatPassword' | translate}}"
                 (focus)="onFocus($event, repeatPasswordLabel)" (blur)="onBlur($event, repeatPasswordLabel)">
         </div>
-        <button class="signup-btn qt-btn" type="submit">REGISTRARSE</button>
+        <button class="signup-btn qt-btn" type="submit">{{ 'global.register' | translate | uppercase }}</button>
     </form>
 </body>

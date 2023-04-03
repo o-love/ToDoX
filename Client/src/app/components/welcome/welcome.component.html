@@ -20,12 +20,12 @@
         <img src="../../../assets/vector_welcome.svg">
     </div>
     <div class="content">
-        <h1 class="title">Empieza a trabajar de forma<br>
-            <span id="pink">organizada y coordinada</span> con <span id="purple">ToDoX</span>
+        <h1 class="title" translate>welcome.title
+            <span id="pink" translate>welcome.span</span> <span translate> welcome.connector </span> <span id="purple">ToDoX</span>
         </h1>
         <div class="btn-section">
-            <button id="login-btn" class="btn" (click)="onLogin()">Iniciar sesión</button>
-            <button id="signup-btn" class="btn" (click)="onRegister()">Registrarse</button>
+            <button id="login-btn" class="btn" (click)="onLogin()" translate>global.login</button>
+            <button id="signup-btn" class="btn" (click)="onRegister()" translate>global.register</button>
         </div>
     </div>
 </main>

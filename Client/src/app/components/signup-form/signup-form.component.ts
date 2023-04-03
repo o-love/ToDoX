@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-signup-form',
@@ -14,6 +14,7 @@ export class SignupFormComponent {
   password: string = '';
   repeatPassword: string = '';
   isFocused: boolean = false;
+  error: boolean = false;
 
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
@@ -41,12 +42,38 @@ export class SignupFormComponent {
     }
   }
 
+  onError(label: ElementRef) {
+    this.error = true;
+    label.nativeElement.style.boxShadow = '0px 0px 7px rgba(255, 113, 113)';
+  }
+
+  resetErrors() {
+    this.error = false;
+    this.nameLabel.nativeElement.style.boxShadow = 'none';
+    this.emailLabel.nativeElement.style.boxShadow = 'none';
+    this.passwordLabel.nativeElement.style.boxShadow = 'none';
+    this.repeatPasswordLabel.nativeElement.style.boxShadow = 'none';
+  }
+
   goBack() {
     this.router.navigate(['/..']);
   }
 
   onSubmit() {
     console.log(this.signupForm.value);
-    this.router.navigate(['/login']);
+
+    if (this.error) this.resetErrors();
+
+    const nameErrors: ValidationErrors | null | undefined = this.signupForm.get('name')?.errors;
+    const emailErrors: ValidationErrors | null | undefined = this.signupForm.get('email')?.errors;
+    const passwordErrors: ValidationErrors | null | undefined = this.signupForm.get('password')?.errors;
+    const repeatPasswordErrors: ValidationErrors | null | undefined = this.signupForm.get('repeatPassword')?.errors;
+
+    if (nameErrors || emailErrors || passwordErrors || repeatPasswordErrors) {
+      if (nameErrors) this.onError(this.nameLabel);
+      if (emailErrors) this.onError(this.emailLabel);
+      if (passwordErrors) this.onError(this.passwordLabel);
+      if (repeatPasswordErrors) this.onError(this.repeatPasswordLabel);
+    } else this.router.navigate(['/profile']);
   }
 }

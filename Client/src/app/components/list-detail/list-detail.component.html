@@ -7,12 +7,12 @@
   <table>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>State</th>
-        <th>Label</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th translate>global.name</th>
+        <th translate>global.description</th>
+        <th translate>states.state</th>
+        <th translate>labels.label</th>
+        <th translate>tasks.startDate</th>
+        <th translate>tasks.dueDate</th>
       </tr>
     </thead>
     <tbody>
@@ -20,9 +20,9 @@
         <td>{{ task.name }}</td>
         <td>{{ task.description }}</td>
         <td>{{ stateNames[task.state_id] }}</td>
-        <!-- <td>{{ tasks.label }}</td>
-        <td>{{ tasks.start_date }}</td>
-        <td>{{ tasks.end_date }}</td> -->
+        <td></td><!-- {{ task.label }}-->
+        <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
+        <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
       </tr>
     </tbody>
   </table>

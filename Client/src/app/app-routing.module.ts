@@ -10,21 +10,30 @@ import { BoardListComponent } from './components/board-list/board-list.component
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
 
+// PROV until frontend decides
+import { CreateLabelComponent } from './components/create-label/create-label.component';
+import { LabelDetailComponent } from './components/label-detail/label-detail.component';
+
 const routes: Routes = [
   /*
   If a user types in the page URL without adding anything after the domain, the content of the welcome component will be loaded,
   and if they type in "/home" after the domain, it will also load the content of the welcome component.
   */
-  { path: '', component: WelcomeComponent },  
-  { path: 'home', component: WelcomeComponent },
+  { path: '', component: WelcomeComponent, data: { showLoginButton: true } },  
+  { path: 'home', component: WelcomeComponent, data: { showLoginButton: true } },
 
-  { path: 'login', component: LoginFormComponent },
-  { path: 'register', component: SignupFormComponent },
-  { path: 'boards', component: BoardListComponent },
-  { path: 'boards/:boardId', component: BoardDetailComponent, children: [
-    { path: 'lists/:listId', component: ListDetailComponent }
+  { path: 'login', component: LoginFormComponent, data: { showLoginButton: true } },
+  { path: 'register', component: SignupFormComponent, data: { showLoginButton: true } },
+  { path: 'profile', component: ProfileComponent, data: { showLoginButton: false } },
+
+  { path: 'boards', component: BoardListComponent, data: { showLoginButton: false } },
+  { path: 'boards/:boardId', component: BoardDetailComponent, data: { showLoginButton: false }, children: [
+    { path: 'lists/:listId', component: ListDetailComponent, data: { showLoginButton: false } }
   ]},
-  { path: 'profile', component: ProfileComponent },
+
+  // PROV until frontend decides
+  { path: 'labels', component: LabelDetailComponent, data: { showLoginButton: false } },
+  { path: 'labels/new', component: CreateLabelComponent, data: { showLoginButton: false } },
 ];
 
 @NgModule({
