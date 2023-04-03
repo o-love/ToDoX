@@ -1,9 +1,28 @@
-<div class="create-state">
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <input type="text" class="form-control" id="stateName" [(ngModel)]="stateName" name="stateName" placeholder="Nombre">
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-    <button type="button" class="btn btn-secondary" (click)="onClose()">Eliminar</button>
-  </form>
-</div>
+<h1>State</h1>
+
+<form [formGroup]="stateForm" (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label>
+  <input type="text" id="name" formControlName="name" />
+
+  <button type="submit">Save</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let state of states">
+      <td>{{ state.id }}</td>
+      <td>{{ state.name }}</td>
+      <td>
+        <button type="button" (click)="editState(state)">Edit</button>
+        <button type="button" (click)="deleteState(state)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

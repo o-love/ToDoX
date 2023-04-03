@@ -1,38 +1,56 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
-import { TaskList } from 'src/app/models/taskList';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { State } from '../../models/state';
 
 @Component({
   selector: 'app-create-state',
   templateUrl: './create-state.component.html',
-  styleUrls: ['./create-state.component.scss']
+  styleUrls: ['./create-state.component.css']
 })
-export class CreateStateComponent {
-  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) {}
+export class CreateStateComponent implements OnInit {
+  stateForm!: FormGroup;
+  states: State[] = [];
+  displayedColumns: string[] = ['id', 'name', 'actions'];
+  editingState: State | null = null;
 
-  stateName: string = '';
-  stateId = this.route.snapshot.paramMap.get('id') || '';
-  
-  @Output() stateCreated = new EventEmitter<any>();
-  @Output() closePopup = new EventEmitter<void>();
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit(): void {
+    this.stateForm = this.fb.group({
+      name: ['', Validators.required]
+    });
+  }
 
   onSubmit() {
-    if (this.stateId && this.stateName) {
-      this.boardService.createBoard(this.stateId, this.stateName).subscribe({
-        next: (state: TaskList) => {
-          this.stateCreated.emit(state);
-          this.stateName = '';
-          this.stateId = '';
-        },
-        error: (error) => console.log(error)
-      });
+    const { value } = this.stateForm;
+    if (this.editingState) {
+      const index = this.states.findIndex(s => s.id === this.editingState!.id);
+      this.states[index] = { ...this.editingState, name: value.name };
+      this.editingState = null;
+    } else {
+      const newState: State = {
+        id: 1,
+        name: 'New State',
+        tasks: []
+      };
+      this.states.push(newState);
     }
+    this.stateForm.reset();
   }
 
-  onClose() {
-    this.closePopup.emit();
+  resetForm() {
+    this.editingState = null;
+    this.stateForm.reset();
+  }
+
+  editState(state: State) {
+    this.editingState = state;
+    this.stateForm.patchValue({ name: state.name });
+  }
+
+  deleteState(state: State) {
+    const index = this.states.findIndex(s => s.id === state.id);
+    this.states.splice(index, 1);
   }
 }
-
-
