@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 import { State } from '../../models/state';
 
 @Component({
   selector: 'app-create-state',
   templateUrl: './create-state.component.html',
-  styleUrls: ['./create-state.component.css']
+  styleUrls: ['./create-state.component.scss']
 })
 export class CreateStateComponent implements OnInit {
   stateForm!: FormGroup;
