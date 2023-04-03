@@ -21,7 +21,6 @@ import { ListDetailComponent } from './components/list-detail/list-detail.compon
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
-import { CreateLabelComponent } from './components/create-label/create-label.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import { CreateLabelComponent } from './components/create-label/create-label.com
     ProfileComponent,
     CreateTaskComponent,
     CreateStateComponent,
-    CreateLabelComponent,
   ],
   imports: [
     BrowserModule,
