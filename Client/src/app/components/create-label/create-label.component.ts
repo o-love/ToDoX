@@ -20,7 +20,7 @@ export class CreateLabelComponent {
   @Output() closePopup = new EventEmitter<void>();
 
   onSubmit() {
-    if (this.labelId && this.labelName) {
+    /*if (this.labelId && this.labelName) {
       this.boardService.createList(this.labelId, this.labelName, this.labelColor).subscribe({
         next: (list: TaskList) => {
           this.labelCreated.emit(list);
@@ -29,7 +29,7 @@ export class CreateLabelComponent {
         },
         error: (error) => console.log(error)
       });
-    }
+    }*/
   }
 
   onClose() {

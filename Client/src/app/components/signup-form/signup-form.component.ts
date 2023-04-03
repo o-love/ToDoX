@@ -47,6 +47,6 @@ export class SignupFormComponent {
 
   onSubmit() {
     console.log(this.signupForm.value);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/profile']);
   }
 }
