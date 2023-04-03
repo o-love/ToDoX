@@ -12,7 +12,7 @@ export class LoginFormComponent {
   email: string = '';
   password: string = '';
   isFocused: boolean = false;
-  error: boolean = true;
+  error: boolean = false;
 
   @ViewChild('emailLabel') emailLabel!: ElementRef;
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
