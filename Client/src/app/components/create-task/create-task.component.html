@@ -19,14 +19,19 @@
                 <textarea rows="5" cols="50" [(ngModel)]="taskDescription" name="taskDescription" required></textarea>
             </div>
         </div>
-        <!-- <div class="form-group">
-            <label class="input-label" for="state">State:</label>
-            <select name="state" id="state" [(ngModel)]="selectedState">
-                <option *ngFor="let state of states" [value]="state.id">{{state.name}}</option>
-            </select>
-        </div> -->
+        <div class="form-group">
+            <div class="input-label">
+                <label>State:</label>
+            </div>
+            <div class="input-field">
+                <select [(ngModel)]="selectedState" name="state" required>
+                    <option *ngFor="let state of states" [value]="state.id | number">{{state.name}}</option>
+                </select>
+            </div>
+        </div>
         <div class="buttons">
             <button class="btn" type="submit">Ok</button>
         </div>
     </div>
 </form>
+  

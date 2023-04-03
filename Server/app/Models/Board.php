@@ -14,6 +14,7 @@ class Board extends Model
     // or `update()` method of the model. The `name`, `description`, and `manager_id` attributes are fillable.
     protected $fillable = ['name', 'description', 'is_active'];
     protected $table='board';
+    // protected $primaryKey = "uuid";
 
     // A Board can have many TaskLists
     public function taskLists()

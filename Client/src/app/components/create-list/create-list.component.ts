@@ -15,18 +15,20 @@ export class CreateListComponent {
 
   listName: string = '';
   listDescription: string = '';
-  boardId = this.route.snapshot.paramMap.get('id') || '';
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  stateIds: number[] = [];
   
   @Output() listCreated = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<void>();
 
   onSubmit() {
     if (this.boardId && this.listName) {
-      this.boardService.createList(this.boardId, this.listName, this.listDescription).subscribe({
+      this.boardService.createList(this.boardId, this.listName, this.listDescription, this.stateIds).subscribe({
         next: (list: TaskList) => {
           this.listCreated.emit(list);
           this.listName = '';
           this.listDescription = '';
+          this.stateIds = [];
         },
         error: (error) => console.log(error)
       });

@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasklist', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->unsignedBigInteger('board_id');
-            $table->foreign('board_id')->references('id')->on('board')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('tasklist_state', function (Blueprint $table) {
+            $table->dropTimestamps();
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasklist');
+        Schema::table('tasklist_state', function (Blueprint $table) {
+            $table->timestamps();
+        });
     }
 };

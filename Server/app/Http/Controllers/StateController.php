@@ -5,51 +5,40 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
+use App\Models\TaskList;
 
 class StateController extends Controller
 {
-    public function index()
+    public function index($taskListId)
     {
-        $states = State::all();
-
-        return response()->json($states, 200);
+        $taskList = TaskList::findOrFail($taskListId);
+        $states = $taskList->states()->get();
+        return response()->json($states);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $boardId, $taskListId)
     {
-        $state = new State;
-        $state->name = $request->input('name');
-        $state->save();
+        $state = new State([
+            'name' => $request->input('name'),
+        ]);
 
-        return response()->json($state);
+        $taskList = TaskList::findOrFail($taskListId);
+        $taskList->states()->attach($state);
+
+        return response()->json($state, 201);
     }
 
-    public function show($id)
+    public function show($boardId, $taskListId, $stateId)
     {
-        $state = State::find($id);
+        $state = State::findOrFail($stateId);
 
-        if (!$state) {
-            return response()->json(['error' => 'State not found'], 404);
-        }
-
-        return response()->json(['state' => $state], 200);
+        return response()->json($state, 200);
     }
 
     public function update(Request $request, $id)
     {
-        $state = State::find($id);
-
-        if (!$state) {
-            return response()->json(['error' => 'State not found'], 404);
-        }
-
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'color' => 'required|max:255',
-        ]);
-
-        $state->name = $validatedData['name'];
-        $state->color = $validatedData['color'];
+        $state = State::findOrFail($id);
+        $state->name = $request->input('name');
         $state->save();
 
         return response()->json(['state' => $state], 200);
@@ -57,14 +46,30 @@ class StateController extends Controller
 
     public function destroy($id)
     {
-        $state = State::find($id);
-
-        if (!$state) {
-            return response()->json(['error' => 'State not found'], 404);
-        }
-
+        $state = State::findOrFail($id);
         $state->delete();
 
-        return response()->json(['message' => 'State deleted successfully'], 200);
+        return response()->json(null, 204);
+    }
+
+    public function assignToList(Request $request, $listId)
+    {
+        $stateIds = $request->input('state_ids');
+
+        $list = TaskList::findOrFail($listId);
+
+        foreach ($stateIds as $stateId) {
+            $state = State::findOrFail($stateId);
+            $list->states()->attach($state);
+        }
+
+        return response()->json($list->states);
+    }
+
+    public function getStateName($stateId)
+    {
+        $state = State::findOrFail($stateId);
+        // return response()->json(['name' => $state->name]);
+        return response()->json($state);
     }
 }

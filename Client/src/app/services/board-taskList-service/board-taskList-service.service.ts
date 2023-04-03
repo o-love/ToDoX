@@ -20,7 +20,7 @@ export class BoardService {
   // Gets a board by id
   getBoard(id: string): Observable<Board> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.get<Board>(url); // El problema está aquí C:
+    return this.http.get<Board>(url);
   }
 
   // Creates a new board in backend
@@ -43,11 +43,12 @@ export class BoardService {
   }
 
   // Creates a new taskList in backend related to a board by boardId
-  createList(boardId: string, listName: string, listDescription: string): Observable<any> {
+  createList(boardId: string, listName: string, listDescription: string, stateIds: number[]): Observable<any> {
     const list = {
       name: listName,
       description: listDescription,
       board_id: boardId,
+      state_ids: stateIds,
     };
     return this.http.post(`${this.apiUrl}/${boardId}/lists`, list);
   }

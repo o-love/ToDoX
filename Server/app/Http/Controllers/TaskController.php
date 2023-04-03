@@ -15,20 +15,19 @@ class TaskController extends Controller
         $taskList = TaskList::findOrFail($taskListId);
         $task = Task::where('tasklist_id', $taskListId)->get();
 
-        return response()->json($task);        
+        return response()->json($task);
     }
 
     // Store a newly created resource in storage
-    public function store(Request $request, $taskListId)
+    public function store(Request $request, $boardId, $taskListId)
     {
         $taskList = TaskList::findOrFail($taskListId);
         $task = new Task([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'taskList_id' => $taskListId,
-            'state_id' => $request->input('state_id')
+            'tasklist_id' => $taskListId,
+            'state_id' => $request->input('state_id'),
         ]);
-
         $task->save();
 
         return response()->json($task, 201);
@@ -41,7 +40,6 @@ class TaskController extends Controller
         $task = $taskList->tasks()->findOrFail($task->id);
 
         return response()->json($task);
-
     }
 
     // Update the specified resource in storage
@@ -65,7 +63,6 @@ class TaskController extends Controller
     {
         $taskList = TaskList::findOrFail($taskList->id);
         $task = $taskList->tasks()->findOrFail($task->id);
-
         $task->delete();
 
         return response()->json(null, 204);
