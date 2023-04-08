@@ -9,9 +9,19 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent {
   @Input() showLoginButton: boolean = false;
+  selectedLang: string;
 
-  constructor(private router: Router, private translate: TranslateService) {
-    translate.setDefaultLang('en');
+  constructor(private router: Router, public translate: TranslateService) {
+    this.translate.addLangs(['en', 'es', 'de', 'it', 'pt']);
+    const storedLang = localStorage.getItem('selectedLang');
+    if (storedLang) {
+      this.selectedLang = storedLang;
+      this.translate.use(storedLang);
+    } else {
+      this.selectedLang = 'en';
+      this.translate.setDefaultLang('en');
+      this.translate.use('en');
+    }
   }
 
   ngOnInit() {
@@ -35,6 +45,7 @@ export class HeaderComponent {
   }
 
   switchLanguage() {
-    this.translate.use(this.translate.currentLang === 'en' ? 'es' : 'en');
+    this.translate.use(this.selectedLang);
+    localStorage.setItem('selectedLang', this.selectedLang);
   }
 }

@@ -96,3 +96,17 @@
 .hidden {
     display: none;
 }
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item span {
+    display: inline-block;
+}
+
+.list-buttons {
+    display: inline-block;
+}

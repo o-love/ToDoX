@@ -44,16 +44,28 @@ export class TaskService {
     return this.http.post<Task>(url, task);
   }
 
-  // updateTask(boardId: string, listId: string, taskId: string, name: string, description: string): Observable<Task> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
-  //   const task = { name, description };
-  //   return this.http.put<Task>(url, task);
-  // }
+  // Updates a task by id, list id and board id - REV opt with createTask
+  editTask(
+    boardId: string, listId: string, taskId: string, name: string, description: string,
+    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
+  ): Observable<Task> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
+    const task = {
+      name: name,
+      description: description,
+      state_id: stateId,
+      // selectedLabels: selectedLabels,
+      start_date: startDate,
+      due_date: dueDate
+    };
+    return this.http.put<Task>(url, task);
+  }
 
-  // deleteTask(boardId: string, listId: string, taskId: string): Observable<any> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
-  //   return this.http.delete(url);
-  // }
+  // Deletes a tasklist by id, list id and board id
+  deleteTask(boardId: string, listId: string, taskId: string): Observable<any> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
+    return this.http.delete(url);
+  }
 
   // Gets all states from a task list related to a board
   getStatesByTaskListId(boardId: string, listId: string): Observable<State[]> {

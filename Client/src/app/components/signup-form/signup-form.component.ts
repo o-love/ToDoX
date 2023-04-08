@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
+import { PasswordValidator } from 'src/app/validators/password.validator';
 
 @Component({
   selector: 'app-signup-form',

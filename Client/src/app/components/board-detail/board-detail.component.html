@@ -4,16 +4,30 @@
             <h2>{{ board?.name }}</h2>
             <p class="description">{{ board?.description }}</p>
         </div>
-    
+
         <div class="settings">
             <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> {{ 'global.settings' | translate }}
         </div>
-    
+
         <div class="lists-container">
             <h4 translate>boards.boardLists</h4>
-            <div *ngFor="let list of lists" (click)="selectList(list)">{{ list.name }}</div>
+            <div *ngFor="let list of lists; let i = index">
+                <ng-container *ngIf="!list.isEditing; else editRow">
+                    <span (click)="selectList(list)">{{ list.name }}</span>
+                    <div class="list-buttons">
+                        <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editTasklist(i)">
+                        <img class="delete-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteTasklist(list.id)">
+                    </div>
+                </ng-container>
+                <ng-template #editRow>
+                    <input type="text" [(ngModel)]="list.name">
+                    <input type="text" [(ngModel)]="list.description">
+                    <button (click)="saveTasklistEdit(i)" translate>global.save</button>
+                    <button (click)="cancelTasklistEdit(i)" translate>global.cancel</button>
+                </ng-template>
+            </div>
         </div>
-    
+
         <div class="add-container">
             <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
         </div>

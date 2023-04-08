@@ -22,6 +22,10 @@ export class ListDetailComponent {
   stateNames: {[key: string]: string} = {};
 
   showPopup: boolean = false;
+  
+  // selectedState: string = '';
+  // stateId: string = '';
+  states: State[] = [];
 
   constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) { }
 
@@ -83,5 +87,41 @@ export class ListDetailComponent {
 
   getStateName(stateId: string) {
     return this.stateNames[stateId];
+  }
+
+  deleteTask(id: number): void {
+    console.log("Delete task", id);
+    if (this.boardId) {
+      this.taskService.deleteTask(this.boardId, this.taskListId, id.toString()).subscribe(() => {
+        this.getTasks();
+      });
+      console.log("Deleted task", id);
+    }
+  }
+
+  editTask(id: number): void {
+    console.log("Task id edit", id);
+    this.tasks[id].isEditing = true;
+  }
+
+  saveTaskEdit(index: number): void {
+    const task = this.tasks[index];
+    if (this.boardId){
+      this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name, task.description,
+      task.state_id.toString(), [], task.due_date, task.start_date).subscribe(
+        (response) => {
+          console.log("Task updated:", response);
+          task.isEditing = false;
+          this.getTasks();
+        },
+        (error) => {
+          console.error("Error updating task:", error);
+        }
+      );
+    }
+  }
+  
+  cancelTaskEdit(index: number): void {
+    this.tasks[index].isEditing = false;
   }
 }

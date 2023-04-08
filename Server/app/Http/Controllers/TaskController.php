@@ -23,15 +23,15 @@ class TaskController extends Controller
     // Store a newly created resource in storage
     public function store(Request $request, $boardId, $taskListId)
     {
-        \Log::info('Request received for creating task', [
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'tasklist_id' => $taskListId,
-            'state_id' => $request->input('state_id'),
-            'selectedLabels' => $request->input('selectedLabels'),
-            'due_date' => $request->input('start_date'),
-            'start_date' => $request->input('due_date'),
-        ]);
+        // \Log::info('Request received for creating task', [
+        //     'name' => $request->input('name'),
+        //     'description' => $request->input('description'),
+        //     'tasklist_id' => $taskListId,
+        //     'state_id' => $request->input('state_id'),
+        //     'selectedLabels' => $request->input('selectedLabels'),
+        //     'due_date' => $request->input('start_date'),
+        //     'start_date' => $request->input('due_date'),
+        // ]);
 
         $start_date = $this->convertDate($request->input('start_date'));
         $due_date = $this->convertDate($request->input('due_date'));
@@ -88,7 +88,6 @@ class TaskController extends Controller
         $task->update([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'list_id' => $taskList->id,
             'state_id' => $request->input('state_id'),
             'due_date' => $due_date,
             'start_date' => $start_date

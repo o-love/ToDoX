@@ -45,3 +45,22 @@ header {
         }
     }
 }
+
+.flag {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.mat-select-value-text {
+    display: flex;
+    align-items: center;
+  
+    .flag {
+        width: 1em;
+        height: 1em;
+        vertical-align: middle;
+        margin-right: 0.5em;
+    }
+  }

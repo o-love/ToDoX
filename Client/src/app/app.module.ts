@@ -11,11 +11,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-// import { CommonModule } from '@angular/common';
 import { UppercasePipe } from './pipes/uppercase.pipe';
 
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
@@ -70,6 +68,7 @@ import { CreateStateComponent } from './components/create-state/create-state.com
     MatInputModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
+    MatSelectModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

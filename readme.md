@@ -23,10 +23,10 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
     *Note that you do not need to modify any of the variables in this file unless you want to change the default configuration. Remember that, if you create a new database user, you will need to grant privileges to access.
 
 4. Run docker-compose up -d to start the application. This command will build and start all the necessary Docker containers.
-5. You can access the application at http://http://localhost:3000.
+5. Follow the additional steps in the 'Sorking with Angular' section below.
 
 
-## Working with angular
+## Working with Angular
 Since we haven't been able to set up angular using Docker, we will be working with angular locally.
 1. Once you've build and run all containers, move to the Client directory.
 2. Execute ng serve -o (--port xxxx if you want to specify a port, default port is 4200).
@@ -204,12 +204,12 @@ Here are some basic Laravel commands that everyone should know. Remember to run 
 2. To stop the containers, use the docker-compose down command.
 3. To force stop the containers, use the docker-compose kill command.
 4. To rebuild the Docker image for a specific application, use the docker-compose build [service name] command.
-5. You can access the Angular application via http://http://localhost:3000//.
+5. You can access the Angular application via http://localhost:4200/ (or http://localhost:<port_number>/ if you've used a different port).
 6. To run commands in a specific container, use the docker exec -it <container_name> to open a terminal inside the container and run the desired command.
 
 
 ## Application Ports:
-Front-end application: http://localhost:3000/ <br>
+Front-end application: http://localhost:4200/ (or http://localhost:<port_number>/ if you've used a different port)<br>
 API: http://localhost:8082/
 
 

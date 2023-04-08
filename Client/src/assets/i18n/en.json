@@ -10,7 +10,8 @@
         "ok": "Ok",
         "color": "Color",
         "settings": "Settings",
-        "save": "Save"
+        "save": "Save",
+        "cancel": "Cancel"
     },
 
     "welcome": {

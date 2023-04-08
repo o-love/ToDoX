@@ -1,0 +1,64 @@
+{
+    "global": {
+        "login": "Entrar",
+        "register": "Registrar",
+        "email": "Email",
+        "emailShort": "Email",
+        "password": "Senha",
+        "name": "Nome",
+        "description": "Descrição",
+        "ok": "Ok",
+        "color": "Cor",
+        "settings": "Configurações",
+        "save": "Salvar",
+        "cancel": "Cancelar"
+    },
+    "welcome": {
+        "title": "Comece a trabalhar de forma",
+        "span": "organizada e coordenada",
+        "connector": "com"
+    },
+    "login": {
+        "noAccountLink": "Não tem uma conta? Registre-se aqui"
+    },
+    "register": {
+        "repeatPassword": "Repetir senha"
+    },
+    "boards": {
+        "title": "Meus Quadros",
+        "name": "Nome",
+        "description": "Descrição",
+        "addBtn": "+ Adicionar",
+        "boardLists": "Listas"
+    },
+    "lists": {},
+    "tasks": {
+        "startDate": "Data de Início",
+        "dueDate": "Data de Conclusão"
+    },
+    "labels": {
+        "title": "Criar Etiqueta",
+        "labels": "Etiquetas",
+        "label": "Etiqueta"
+    },
+    "states": {
+        "states": "Estados",
+        "state": "Estado"
+    },
+    "users": {
+        "username": "Nome de Usuário",
+        "email": {
+            "currentEmail": "Email atual",
+            "newEmail": "Novo email"
+        },
+        "password": {
+            "currentPassword": "Senha atual",
+            "newPassword": "Nova senha"
+        },
+        "preferences": "Preferências",
+        "theme": {
+            "dark": "Modo Escuro",
+            "light": "Modo Claro"
+        }
+    }
+}

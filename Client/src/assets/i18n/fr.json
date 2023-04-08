@@ -1,0 +1,74 @@
+{
+    "global": {
+        "login": "Connexion",
+        "register": "Inscription",
+        "email": "E-mail",
+        "emailShort": "E-mail",
+        "password": "Mot de passe",
+        "name": "Nom",
+        "description": "Description",
+        "ok": "Ok",
+        "color": "Couleur",
+        "settings": "Paramètres",
+        "save": "Sauvegarder",
+        "cancel": "Annuler"
+    },
+
+    "welcome": {
+        "title": "Commencez à travailler de manière",
+        "span": "organisée et coordonnée",
+        "connector": "avec"
+    },
+
+    "login": {
+        "noAccountLink": "Vous n'avez pas de compte ? Inscrivez-vous ici"
+    },
+
+    "register": {
+        "repeatPassword": "Répéter le mot de passe"
+    },
+
+    "boards": {
+        "title": "Mes tableaux",
+        "name": "Nom",
+        "description": "Description",
+        "addBtn": "+ Ajouter",
+        "boardLists": "Listes"
+    },
+
+    "lists": {
+    },
+
+    "tasks": {
+        "startDate": "Date de début",
+        "dueDate": "Date d'échéance"
+    },
+
+    "labels": {
+        "title": "Créer une étiquette",
+        "labels": "Étiquettes",
+        "label": "Étiquette"
+    },
+
+    "states": {
+        "states": "États",
+        "state": "État"
+    }, 
+
+    "users": {
+        "username": "Nom d'utilisateur",
+        "email": {
+            "currentEmail": "E-mail actuel",
+            "newEmail": "Nouvel e-mail"
+        },
+        "password": {
+            "currentPassword": "Mot de passe actuel",
+            "newPassword": "Nouveau mot de passe"
+        },        
+        "preferences": "Préférences",
+        "theme": {
+            "dark": "Mode sombre",
+            "light": "Mode clair"
+        }
+    }
+}

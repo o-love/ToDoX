@@ -10,7 +10,8 @@
         "ok": "Ok",
         "color": "Color",
         "settings": "Configuración",
-        "save": "Guardar"
+        "save": "Guardar",        
+        "cancel": "Cancelar"
     },
 
     "welcome": {

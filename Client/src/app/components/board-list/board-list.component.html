@@ -1,7 +1,6 @@
 <h1 translate>boards.title</h1>
 
 <div class="container">
-
     <div class="row">
         <div class="col-12">
             <table class="table">
@@ -9,20 +8,38 @@
                     <tr>
                         <th translate>boards.name</th>
                         <th translate>boards.description</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let board of boards" (click)="viewBoard(board.id)">
-                        <td>{{ board.name }}</td>
-                        <td class="description-td">{{ board.description }}</td>
-                    </tr>
+                    <ng-container *ngFor="let board of boards; let i = index">
+                        <tr [ngClass]="{ isEditing: board.isEditing }">
+                            <ng-container *ngIf="!board.isEditing; else editRow">
+                                <td (click)="viewBoard(board.id)">{{ board.name }}</td>
+                                <td class="description-td" (click)="viewBoard(board.id)">{{ board.description }}</td>
+                                <td>
+                                    <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editBoard(i)">
+                                    <img class="delete-btn" src="../../../assets/icons/Trashcan.svg"
+                                        (click)="deleteBoard(board.id)">
+                                </td>
+                            </ng-container>
+                            <ng-template #editRow>
+                                <td><input type="text" [(ngModel)]="board.name"></td>
+                                <td><input type="text" [(ngModel)]="board.description"></td>
+                                <td>
+                                    <button (click)="saveBoardEdit(i)" translate>global.save</button>
+                                    <button (click)="cancelBoardEdit(i)" translate>global.cancel</button>
+                                </td>
+                            </ng-template>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<button class="add-btn btn" (click)="showPopup = true" translate>boards.addBtn</button>
+<button class="add-btn qt-btn" (click)="showPopup = true" translate>boards.addBtn</button>
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 
