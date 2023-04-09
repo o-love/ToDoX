@@ -1,0 +1,9 @@
+<h2 translate>labels.labels</h2>
+<ul>
+  <li *ngFor="let label of labels">
+    <h3>{{ label.name }}</h3>
+    <div [style.background-color]="label.color" style="width: 20px; height: 20px;"></div>
+    <p>{{ label.description }}</p>
+    <!-- <p>{{ label.type }}</p> -->
+  </li>
+</ul>

@@ -22,6 +22,8 @@ export class BoardDetailComponent implements OnInit {
   showPopup: boolean = false;
   showListDetail: boolean = false;
 
+  editingListName: string | null = null;
+
   constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
@@ -86,5 +88,40 @@ export class BoardDetailComponent implements OnInit {
     console.log("seleccionada", list);
     this.showListDetail = true;
     this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
+  }
+
+  deleteTasklist(id: number): void {
+    console.log("Delete tasklist", id);
+    if (this.boardId) {
+      this.boardService.deleteTasklist(this.boardId, id.toString()).subscribe(() => {
+        this.getLists();
+      });
+      console.log("Deleted tasklist", id);
+    }
+  }
+
+  editTasklist(id: number): void {
+    console.log("Tasklist id edit", id);
+    this.lists[+id].isEditing = true;
+  }
+
+  saveTasklistEdit(index: number): void {
+    const list = this.lists[index];
+    if (this.boardId){
+      this.boardService.editTasklist(this.boardId, list.id.toString(), list.name, list.description).subscribe(
+        (response) => {
+          console.log("Tasklist updated:", response);
+          list.isEditing = false;
+          this.getLists();
+        },
+        (error) => {
+          console.error("Error updating tasklist:", error);
+        }
+      );
+    }
+  }
+  
+  cancelTasklistEdit(index: number): void {
+    this.lists[index].isEditing = false;
   }
 }

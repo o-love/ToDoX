@@ -1,0 +1,64 @@
+{
+    "global": {
+        "login": "Anmelden",
+        "register": "Registrieren",
+        "email": "E-Mail",
+        "emailShort": "E-Mail",
+        "password": "Passwort",
+        "name": "Name",
+        "description": "Beschreibung",
+        "ok": "Ok",
+        "color": "Farbe",
+        "settings": "Einstellungen",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    },
+    "welcome": {
+        "title": "Beginnen Sie mit der Arbeit in einer",
+        "span": "organisierten und koordinierten",
+        "connector": "Weise mit"
+    },
+    "login": {
+        "noAccountLink": "Sie haben kein Konto? Hier registrieren"
+    },
+    "register": {
+        "repeatPassword": "Passwort wiederholen"
+    },
+    "boards": {
+        "title": "Meine Boards",
+        "name": "Name",
+        "description": "Beschreibung",
+        "addBtn": "+ Hinzufügen",
+        "boardLists": "Listen"
+    },
+    "lists": {},
+    "tasks": {
+        "startDate": "Startdatum",
+        "dueDate": "Fälligkeitsdatum"
+    },
+    "labels": {
+        "title": "Etikett erstellen",
+        "labels": "Etiketten",
+        "label": "Etikett"
+    },
+    "states": {
+        "states": "Status",
+        "state": "Status"
+    },
+    "users": {
+        "username": "Benutzername",
+        "email": {
+            "currentEmail": "Aktuelle E-Mail",
+            "newEmail": "Neue E-Mail"
+        },
+        "password": {
+            "currentPassword": "Aktuelles Passwort",
+            "newPassword": "Neues Passwort"
+        },
+        "preferences": "Einstellungen",
+        "theme": {
+            "dark": "Dunkelmodus",
+            "light": "Hellmodus"
+        }
+    }
+}

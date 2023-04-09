@@ -1,14 +1,15 @@
 import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
+import { Form } from 'src/app/models/form';
 
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss']
 })
-export class SignupFormComponent {
+export class SignupFormComponent implements Form {
   signupForm: FormGroup;
 
   @ViewChildren('label') labels!: QueryList<ElementRef>;

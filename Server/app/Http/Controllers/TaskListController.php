@@ -66,9 +66,8 @@ class TaskListController extends Controller
         $board = Board::findOrFail($boardId);
         $taskList = $board->taskLists()->findOrFail($listId);
 
-        $taskList->name = $request->input('nombre');
-        $taskList->description = $request->input('descripcion');
-
+        $taskList->name = $request->input('name');
+        $taskList->description = $request->input('description');
         $taskList->save();
 
         return response()->json($taskList, 200);
@@ -79,7 +78,6 @@ class TaskListController extends Controller
     {
         $board = Board::findOrFail($boardId);
         $taskList = $board->taskLists()->findOrFail($listId);
-
         $taskList->delete();
 
         return response()->json(null, 204);

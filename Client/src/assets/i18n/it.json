@@ -1,0 +1,64 @@
+{
+    "global": {
+        "login": "Accedi",
+        "register": "Registrati",
+        "email": "Email",
+        "emailShort": "Email",
+        "password": "Password",
+        "name": "Nome",
+        "description": "Descrizione",
+        "ok": "Ok",
+        "color": "Colore",
+        "settings": "Impostazioni",
+        "save": "Salva",
+        "cancel": "Annulla"
+    },
+    "welcome": {
+        "title": "Inizia a lavorare in modo",
+        "span": "organizzato e coordinato",
+        "connector": "con"
+    },
+    "login": {
+        "noAccountLink": "Non hai un account? Registrati qui"
+    },
+    "register": {
+        "repeatPassword": "Ripeti password"
+    },
+    "boards": {
+        "title": "I miei Board",
+        "name": "Nome",
+        "description": "Descrizione",
+        "addBtn": "+ Aggiungi",
+        "boardLists": "Liste"
+    },
+    "lists": {},
+    "tasks": {
+        "startDate": "Data di inizio",
+        "dueDate": "Data di scadenza"
+    },
+    "labels": {
+        "title": "Crea Etichetta",
+        "labels": "Etichette",
+        "label": "Etichetta"
+    },
+    "states": {
+        "states": "Stati",
+        "state": "Stato"
+    },
+    "users": {
+        "username": "Nome utente",
+        "email": {
+            "currentEmail": "Email corrente",
+            "newEmail": "Nuova email"
+        },
+        "password": {
+            "currentPassword": "Password corrente",
+            "newPassword": "Nuova password"
+        },
+        "preferences": "Preferenze",
+        "theme": {
+            "dark": "Modalità scura",
+            "light": "Modalità chiara"
+        }
+    }
+}

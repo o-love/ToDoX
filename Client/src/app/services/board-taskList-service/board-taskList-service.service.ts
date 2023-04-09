@@ -8,19 +8,33 @@ import { TaskList } from 'src/app/models/taskList';
   providedIn: 'root'
 })
 export class BoardService {
-  private apiUrl = 'http://localhost:8082/api/boards';
+  private apiUrl = 'http://localhost:8082/api';
 
   constructor(private http: HttpClient) { }
 
   // Gets all boards from backend
   getBoards(): Observable<Board[]> {
-    return this.http.get<Board[]>(this.apiUrl);
+    return this.http.get<Board[]>(`${this.apiUrl}/boards`);
   }
 
   // Gets a board by id
   getBoard(id: string): Observable<Board> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}/boards/${id}`;
     return this.http.get<Board>(url);
+  }
+
+  // Updates a board by id
+  editBoard(id: number, name: string, description: string): Observable<any> {
+    const board = {
+      name,
+      description
+    };
+    return this.http.put(`${this.apiUrl}/boards/${id}`, board);
+  }
+
+  // Deletes a board by id
+  deleteBoard(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/boards/${id}`);
   }
 
   // Creates a new board in backend
@@ -29,17 +43,17 @@ export class BoardService {
       name: boardName,
       description: boardDescription,
     };
-    return this.http.post(`${this.apiUrl}`, board);
+    return this.http.post(`${this.apiUrl}/boards`, board);
   }
 
   // Gets all taskLists from backend related to a certain board by boardId
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
-    return this.http.get<TaskList[]>(`${this.apiUrl}/${boardId}/lists`);
+    return this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
   }
 
   // Gets a taskList by id and board id
   getList(boardId: string, taskListId: string): Observable<TaskList> {
-    return this.http.get<TaskList>(`${this.apiUrl}/${boardId}/lists/${taskListId}`);
+    return this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
   }
 
   // Creates a new taskList in backend related to a board by boardId
@@ -50,6 +64,19 @@ export class BoardService {
       board_id: boardId,
       state_ids: stateIds,
     };
-    return this.http.post(`${this.apiUrl}/${boardId}/lists`, list);
+    return this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, list);
+  }
+
+  // Updates a tasklist by id and board id
+  editTasklist(boardId: string, taskListId: string, name: string, description: string): Observable<TaskList> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}`;
+    const taskList = { name, description };
+    return this.http.put<TaskList>(url, taskList);
+  }
+
+  // Deletes a tasklist by id and board id
+  deleteTasklist(boardId: string, taskListId: string): Observable<any> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}`;
+    return this.http.delete(url);
   }
 }

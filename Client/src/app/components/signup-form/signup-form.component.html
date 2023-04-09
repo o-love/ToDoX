@@ -5,15 +5,15 @@
                 role="button">
         </div>
         <div class="form-body">
-            <input #label #nameLabel type="text" id="name" formControlName="name" name="name" class="form-control" placeholder="Name"
+            <input #label #nameLabel type="text" id="name" formControlName="name" name="name" class="form-control" placeholder="{{ 'global.name' | translate }}"
                 (focus)="onFocus($event, nameLabel)" (blur)="onBlur($event, nameLabel)">
-            <input #label #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control" placeholder="Email" 
+            <input #label #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control" placeholder="{{ 'global.email' | translate }}" 
                 (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
-            <input #label #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control" placeholder="Password" 
+            <input #label #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control" placeholder="{{ 'global.password' | translate }}"
                 (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
-            <input #label #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword" name="repeatPassword" class="form-control" placeholder="Repeat Password"
+            <input #label #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword" name="repeatPassword" class="form-control" placeholder="{{ 'register.repeatPassword' | translate}}"
                 (focus)="onFocus($event, repeatPasswordLabel)" (blur)="onBlur($event, repeatPasswordLabel)">
         </div>
-        <button class="signup-btn qt-btn" type="submit">REGISTRARSE</button>
+        <button class="signup-btn qt-btn" type="submit">{{ 'global.register' | translate | uppercase }}</button>
     </form>
 </main>

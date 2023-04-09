@@ -4,7 +4,8 @@ export interface Task {
     description: string;
     tasklist_id: number;
     state_id: number;
-    // created_at: string;
-    // updated_at: string;
+    start_date: Date | null;
+    due_date: Date | null;
+    isEditing: boolean;
   }
   

@@ -6,13 +6,13 @@
         </div>
         <div class="form-body">
             <input #label #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control"
-                placeholder="Email" (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
+                placeholder="{{ 'global.email' | translate }}" (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
             <input #label #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control"
-                placeholder="Password" (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
+                placeholder="{{ 'global.password' | translate }}" (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
         </div>
         <div class="bottom">
-            <button class="login-btn qt-btn" type="submit">INICIAR SESIÓN</button>
-            <a href="./register">¿No tienes cuenta? Regístrate aquí.</a>
+            <button class="login-btn qt-btn" type="submit">{{ 'global.login' | translate | uppercase }}</button>
+            <a href="./register" translate>login.noAccountLink</a>
         </div>
     </form>
 </main>
