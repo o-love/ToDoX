@@ -12,48 +12,49 @@
     <div id="settings" class="section">
         <h2 class="title">Configuración</h2>
 
-        <form id="email-form" class="subsection" (ngSubmit)="saveEmail()" [formGroup]="emailForm">
-            <div class="subtitle">
-                <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
-                <h3 class="subtitle-name">Correo</h3>
-            </div>
-
-            <div class="subsection-content">
-                <div class="field-container">
-                    <label for="email">Tu correo actual</label>
-                    <input #email #currentEmailLabel id="email" type="email" class="field" formControlName="currentEmail" readonly placeholder="">
-
+        <div class="section-content">
+            <form id="email-form" class="subsection" (ngSubmit)="saveEmail()" [formGroup]="emailForm">
+                <div class="subtitle">
+                    <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
+                    <h3 class="subtitle-name">Correo</h3>
                 </div>
-                <div class="field-container">
-                    <label for="newEmail">Nuevo correo</label>
-                    <input #email #newEmailLabel id="newEmail" class="field" type="email" formControlName="newEmail">
+            
+                <div class="subsection-content">
+                    <div class="field-container">
+                        <label for="email">Tu correo actual</label>
+                        <input #email #currentEmailLabel id="email" type="email" class="field" formControlName="currentEmail" readonly placeholder="">
+                    </div>
+                    <div class="field-container">
+                        <label for="newEmail">Nuevo correo</label>
+                        <input #email #newEmailLabel id="newEmail" class="field" type="email" formControlName="newEmail">
+                    </div>
+                    <button class="save-btn qt-btn" type="submit">Guardar</button>
                 </div>
-                <button class="save-btn qt-btn" type="submit">Guardar</button>
-            </div>
-        </form>
-
-        <form id="password-form" class="subsection" (ngSubmit)="savePassword()" [formGroup]="passwordForm">
-            <div class="subtitle">
-                <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
-                <h3 class="subtitle-name">Contraseña</h3>
-            </div>
-
-            <div class="subsection-content">
-                <div class="field-container">
-                    <label id="asterisk-label">
-                        <label for="password">Contraseña actual</label>
-                        <span class="asterisk"> *</span>
-                    </label>
-                    <input #password #oldPasswordLabel id="password" class="field" type="password" formControlName="oldPassword">
-
+            </form>
+        
+            <form id="password-form" class="subsection" (ngSubmit)="savePassword()" [formGroup]="passwordForm">
+                <div class="subtitle">
+                    <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
+                    <h3 class="subtitle-name">Contraseña</h3>
                 </div>
-                <div class="field-container">
-                    <label for="newPassword">Nueva contraseña</label>
-                    <input #password #newPasswordLabel id="newPassword" class="field" type="password" formControlName="newPassword">
+            
+                <div class="subsection-content">
+                    <div class="field-container">
+                        <label id="asterisk-label">
+                            <label for="password">Contraseña actual</label>
+                            <span class="asterisk"> *</span>
+                        </label>
+                        <input #password #oldPasswordLabel id="password" class="field" type="password" formControlName="oldPassword">
+                    
+                    </div>
+                    <div class="field-container">
+                        <label for="newPassword">Nueva contraseña</label>
+                        <input #password #newPasswordLabel id="newPassword" class="field" type="password" formControlName="newPassword">
+                    </div>
+                    <button class="save-btn qt-btn">Guardar</button>
                 </div>
-                <button class="save-btn qt-btn">Guardar</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <div id="preferencies" class="section">
