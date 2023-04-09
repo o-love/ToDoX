@@ -4,40 +4,43 @@
 .subheader {
     background-color: $tropical-indigo-60;
     position: relative;
-    height: 150px;
+    height: 16vh;
 
     display: flex;
     align-items: center;
 
-    box-shadow: inset 0px -11px 8px -10px $tropical-indigo;
+    box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
 
     .info {
         display: flex;
+
         width: 100%;
-        margin-left: 50px;
-        transform: translateY(50%);
+        margin-left: 35px;
+        transform: translateY(8vh);
 
         z-index: 1;
 
         .profile-pic {
             background-color: $melon-pastel;
             border-radius: 50%;
+            border: 4px solid white;
 
-            width: 130px;
-            height: 130px;
+            width: 125px;
+            height: 125px;
         }
 
         .name-edit {
-            margin: 82px 0 0 30px;
+            margin-left: 30px;
+            transform: translateY(25%);
             box-sizing: content-box;
             display: flex;
             align-items: center;
-            width: 25%;
+            width: 60%;
 
             .name {
                 margin: 0 20px 5px 0;
                 font-size: 20pt;
-                font-weight: bold;
+                font-weight: 500;
             }
 
             #edit {
@@ -64,19 +67,21 @@
 }
 
 .content {
-    margin-top: 80px;
+    margin-top: 10vh;
     padding: 20px 20px 20px 40px;
 
     .section {
         display: flex;
         flex-direction: column;
+        width: fit-content;
 
         .title {
             width: fit-content;
-            padding: 0 0 10px 0;
-            margin: 0;
-            font-size: 18pt;
-            font-weight: bold;
+            box-sizing: border-box;
+            padding: 0 4px 7px 4px;
+            margin: 0 0 40px 0;
+            font-size: 17pt;
+            font-weight: 500;
             text-transform: uppercase;
             border-bottom: 2px solid $melon;
         }
@@ -88,7 +93,8 @@
             .subtitle {
                 display: flex;
                 align-items: center;
-                width: 120px;
+                width: 100%;
+                margin-bottom: 15px;
 
                 .subtitle-icon {
                     width: 22px;
@@ -96,7 +102,7 @@
                 }
 
                 .subtitle-name {
-                    margin-left: 30px;
+                    margin: 0 0 0 20px;
                     font-size: 17pt;
                 }
             }
@@ -106,7 +112,7 @@
                 flex-direction: column;
                 justify-content: space-between;
 
-                height: 100px;
+                height: 130px;
 
                 margin-top: 5px;
                 margin-bottom: 40px;
@@ -114,13 +120,31 @@
                 .field-container {
                     display: flex;
                     justify-content: space-between;
-                    width: 350px;
+                    width: 420px;
 
                     .field {
-                        width: 180px;
+                        width: 220px;
+                        height: 2em;
                         border: 2px solid $tropical-indigo-60;
                         background-color: $tropical-indigo-05;
                         border-radius: 5px;
+
+                        padding-left: 5px;
+                        color: $tropical-indigo;
+                        font-size: 10pt;
+
+                        &::placeholder {
+                            color: $tropical-indigo-50;
+                        }
+                  
+                        &:focus {
+                            outline: none;
+                            border-color: $tropical-indigo-30;
+                        }
+                    }
+
+                    .asterisk {
+                        color: $bittersweet;
                     }
 
                     #currentEmail {
@@ -128,7 +152,7 @@
                     }
 
                     label {
-                        font-weight: bold;
+                        font-weight: 500;
 
                         &:focus {
                             border-color: transparent;
@@ -137,10 +161,10 @@
                 }
 
                 .save-btn {
-                    width: 9em;
-                    font-size: 9pt;
+                    width: 8em;
+                    font-size: 10pt;
                     text-transform: uppercase;
-                    margin-left: 160px;
+                    align-self: end;
                 }
             }
         }

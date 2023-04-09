@@ -68,6 +68,8 @@ export class LoginFormComponent implements Form {
     console.log(this.loginForm.value);
 
 		this.resetErrors();
-		if (!this.checkErrors()) console.log("no hay errores");
+		if (!this.checkErrors()) {
+      this.router.navigate(['/boards']);
+    }
   }  
 }

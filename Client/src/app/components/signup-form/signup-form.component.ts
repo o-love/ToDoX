@@ -75,6 +75,8 @@ export class SignupFormComponent {
     console.log(this.signupForm.value);
 
 		this.resetErrors();
-		if (!this.checkErrors() && this.match()) console.log("no hay errores");
+		if (!this.checkErrors() && this.match()) {
+      this.router.navigate(['/profile']);
+    }
   }
 }

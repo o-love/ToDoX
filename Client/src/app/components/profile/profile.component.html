@@ -12,7 +12,7 @@
     <div id="settings" class="section">
         <h2 class="title">Configuración</h2>
 
-        <div id="set-email" class="subsection">
+        <form id="email-form" class="subsection" (ngSubmit)="saveEmail()" [formGroup]="emailForm">
             <div class="subtitle">
                 <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
                 <h3 class="subtitle-name">Correo</h3>
@@ -21,18 +21,18 @@
             <div class="subsection-content">
                 <div class="field-container">
                     <label for="email">Tu correo actual</label>
-                    <input id="email" type="email" class="field" (ngModel)="currentEmail" readonly>
+                    <input #email #currentEmailLabel id="email" type="email" class="field" formControlName="currentEmail" readonly placeholder="">
 
                 </div>
                 <div class="field-container">
                     <label for="newEmail">Nuevo correo</label>
-                    <input id="newEmail" class="field" type="email" (ngModel)="newEmail" required>
+                    <input #email #newEmailLabel id="newEmail" class="field" type="email" formControlName="newEmail">
                 </div>
-                <button class="save-btn qt-btn" (click)="saveEmail()">Guardar</button>
+                <button class="save-btn qt-btn" type="submit">Guardar</button>
             </div>
-        </div>
+        </form>
 
-        <div id="set-password" class="subsection">
+        <form id="password-form" class="subsection" (ngSubmit)="savePassword()" [formGroup]="passwordForm">
             <div class="subtitle">
                 <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
                 <h3 class="subtitle-name">Contraseña</h3>
@@ -42,18 +42,18 @@
                 <div class="field-container">
                     <label id="asterisk-label">
                         <label for="password">Contraseña actual</label>
-                        <span class="asterisk">*</span>
+                        <span class="asterisk"> *</span>
                     </label>
-                    <input id="password" class="field" type="password" (ngModel)="currentPassword" required>
+                    <input #password #oldPasswordLabel id="password" class="field" type="password" formControlName="oldPassword">
 
                 </div>
                 <div class="field-container">
                     <label for="newPassword">Nueva contraseña</label>
-                    <input id="newPassword" class="field" type="password" (ngModel)="newPassword" required>
+                    <input #password #newPasswordLabel id="newPassword" class="field" type="password" formControlName="newPassword">
                 </div>
-                <button class="save-btn qt-btn" (click)="savePassword()">Guardar</button>
+                <button class="save-btn qt-btn">Guardar</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <div id="preferencies" class="section">
