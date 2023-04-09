@@ -5,13 +5,13 @@
                 role="button">
         </div>
         <div class="form-body">
-            <input #nameLabel type="text" id="name" formControlName="name" name="name" class="form-control" placeholder="Name"
+            <input #label #nameLabel type="text" id="name" formControlName="name" name="name" class="form-control" placeholder="Name"
                 (focus)="onFocus($event, nameLabel)" (blur)="onBlur($event, nameLabel)">
-            <input #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control" placeholder="Email" 
+            <input #label #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control" placeholder="Email" 
                 (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
-            <input #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control" placeholder="Password" 
+            <input #label #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control" placeholder="Password" 
                 (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
-            <input #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword" name="repeatPassword" class="form-control" placeholder="Repeat Password"
+            <input #label #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword" name="repeatPassword" class="form-control" placeholder="Repeat Password"
                 (focus)="onFocus($event, repeatPasswordLabel)" (blur)="onBlur($event, repeatPasswordLabel)">
         </div>
         <button class="signup-btn qt-btn" type="submit">REGISTRARSE</button>
