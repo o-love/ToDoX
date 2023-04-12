@@ -1,6 +1,15 @@
 @import "../../../assets/styles/colours";
 @import "../../../assets/styles/buttons";
 
+.title {
+    margin: 3% 0 0 5%;
+    font-weight: 500;
+}
+
+.content {
+    margin: 2% 5%;
+}
+
 .popup {
     position: fixed;
     top: 50%;
@@ -24,6 +33,53 @@
     z-index: 99; // Make sure it's behind the popup
 }
 
+.add-btn {
+    margin-left: 5%;
+    transform: translateY(-80%);
+}
+
+.content {
+    display: flex;
+    max-width: 100%;
+    height: fit-content;
+    padding: 5px 0px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+
+    .board { 
+        display: flex; 
+        align-items: center;
+        width: 200px;
+        padding: 10px 15px; 
+        margin: 0px 50px 40px 5px;
+
+        .board-img {
+            background-color: $tropical-indigo;
+            border-radius: 5px;
+            width: 35px;
+            height: 35px;
+
+            margin-right: 20px;
+
+            &:hover { cursor: pointer; }
+        }
+
+        .board-name {
+            font-size: 15pt;
+            font-weight: 500;
+
+            &:hover { cursor: pointer; }
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: rgba($black, 0.05);
+        }
+    }
+}
+
+/*
 // If scrollbar (1) doesn't appear, try commenting this
 table {
     table-layout: fixed;
@@ -35,7 +91,7 @@ There's several options for when the description is long
 2) Showing only the description that fits on the screen
 3) Viewing the whole description as a parragraph
 */
-
+/*
 td {
     cursor: pointer;
     // (1)
@@ -52,3 +108,4 @@ td {
   overflow: hidden; // Hide excess text
   text-overflow: ellipsis; // Add an ellipsis to indicate that the text has been truncated
 }
+*/

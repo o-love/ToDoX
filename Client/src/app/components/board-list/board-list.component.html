@@ -1,7 +1,15 @@
-<h1 translate>boards.title</h1>
+<h1 class="title" translate>boards.title</h1>
 
-<div class="container">
-    <div class="row">
+<div class="content">
+    <ng-container *ngFor="let board of boards; let i = index">
+        <ng-container>
+            <div class="board" (click)="viewBoard(board.id)">
+                <div class="board-img"></div>
+                <label class="board-name">{{ board.name }}</label>
+            </div>
+        </ng-container>
+    </ng-container>
+    <!--<div class="row">
         <div class="col-12">
             <table class="table">
                 <thead>
@@ -36,7 +44,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <button class="add-btn qt-btn" (click)="showPopup = true" translate>boards.addBtn</button>
