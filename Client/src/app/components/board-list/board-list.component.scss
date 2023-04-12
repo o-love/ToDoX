@@ -36,6 +36,12 @@
 .add-btn {
     margin-left: 5%;
     transform: translateY(-80%);
+
+    border-radius: 10px;
+    width: 6em;
+
+    text-transform: uppercase;
+    font-weight: 500;
 }
 
 .content {
@@ -49,26 +55,59 @@
     .board { 
         display: flex; 
         align-items: center;
-        width: 200px;
+        justify-content: space-between;
+        min-width: 300px;
         padding: 10px 15px; 
-        margin: 0px 50px 40px 5px;
+        margin: 0px 120px 40px 5px;
 
-        .board-img {
-            background-color: $tropical-indigo;
-            border-radius: 5px;
-            width: 35px;
-            height: 35px;
-
-            margin-right: 20px;
-
-            &:hover { cursor: pointer; }
+        .board-info { 
+            display: flex; 
+            align-items: center;
+        
+            .board-img {
+                background-color: $tropical-indigo;
+                border-radius: 5px;
+                width: 35px;
+                height: 35px;
+    
+                margin-right: 20px;
+    
+                &:hover { cursor: pointer; }
+            }
+    
+            .board-name {
+                font-size: 15pt;
+                font-weight: 500;
+    
+                &:hover { cursor: pointer; }
+            }
         }
+        
 
-        .board-name {
-            font-size: 15pt;
-            font-weight: 500;
+        .btn-section {
+            display: flex;
+            align-items: center;
 
-            &:hover { cursor: pointer; }
+            .board-btn {
+                &:hover {
+                    transform: scale(1.2);
+                }
+
+                &:active {
+                    transform: scale(1);
+                }
+            }
+
+            #edit-btn {
+                width: 25px;
+                height: 25px;
+            }
+
+            #delete-btn {
+                margin-left: 10px;
+                width: 20px;
+                height: 20px;
+            }
         }
 
         &:hover {

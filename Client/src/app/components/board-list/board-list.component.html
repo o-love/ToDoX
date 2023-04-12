@@ -3,10 +3,18 @@
 <div class="content">
     <ng-container *ngFor="let board of boards; let i = index">
         <ng-container>
-            <div class="board" (click)="viewBoard(board.id)">
-                <div class="board-img"></div>
-                <label class="board-name">{{ board.name }}</label>
+            <div class="board">
+                <div class="board-info" (click)="viewBoard(board.id)">
+                    <div class="board-img"></div>
+                    <label class="board-name">{{ board.name }}</label> 
+                </div>
+                <div class="btn-section">
+                    <img id="edit-btn" class="board-btn" src="../../../assets/icons/Edit.svg" (click)="editBoard(i)">
+                    <img id="delete-btn" class="board-btn" src="../../../assets/icons/Trashcan.svg"
+                    (click)="deleteBoard(board.id)">
+                </div>
             </div>
+                
         </ng-container>
     </ng-container>
     <!--<div class="row">
