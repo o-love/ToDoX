@@ -13,14 +13,7 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
 export class BoardListComponent implements OnInit {
   constructor(private boardService: BoardService, private router: Router) { }
 
-  boards: Board[] = [
-    { id: 1, name: 'Hola', description: 'holaquetal', isEditing: false },
-    { id: 2, name: 'Adiós', description: 'mecaesmal', isEditing: false },
-    { id: 3, name: 'Cachis', description: 'mequieromorir', isEditing: false },
-    { id: 4, name: 'Vaya mierda', description: 'aaaaa', isEditing: false },
-    { id: 5, name: 'Suicidio', description: 'pucha', isEditing: false },
-    { id: 6, name: 'Homicidio', description: 'pucha', isEditing: false }
-  ];
+  boards: Board[] = [];
   showPopup = false;
 
   ngOnInit(): void {
