@@ -171,9 +171,8 @@
         .btn-section {
             display: flex;
             justify-content: space-between;
-            width: 45%;
+            width: 400px;
             margin-top: 60px;
-
 
             #login-btn { 
                 @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 

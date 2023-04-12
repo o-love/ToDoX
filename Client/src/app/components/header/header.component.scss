@@ -23,32 +23,51 @@ header {
         &:hover { cursor: pointer; }
     }
 
-    .profile {
+    .right-side {
         display: flex;
-        flex-direction: column;
-
-        justify-content: center;
         align-items: center;
 
-        padding: 5px 0px 5px 0px;
-
-        .profile-pic {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-
-            &:hover { 
-                cursor: pointer; 
-                transform: scale(1.02);
+        .profile {
+            display: flex;
+            flex-direction: column;
+    
+            justify-content: center;
+            align-items: center;
+    
+            padding: 5px 0px 5px 0px;
+    
+            .profile-pic {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+    
+                &:hover { 
+                    cursor: pointer; 
+                    transform: scale(1.02);
+                }
+            }
+    
+            .user-name {
+                text-align: center;
+                font-size: 8pt;
+                font-weight: bold;
             }
         }
-
-        .user-name {
-            text-align: center;
-            font-size: 8pt;
-            font-weight: bold;
-        }
     }
+}
+
+
+/*
+mat-form-field {
+    margin-bottom: -2em;
+    width: 120px;
+    font-size: 10pt;
+    margin-right: 20px;
+    background-color: transparent;
+}
+
+mat-option {
+    font-size: 9pt;
 }
 
 .flag {
@@ -56,16 +75,17 @@ header {
     height: 1em;
     vertical-align: middle;
     margin-right: 0.5em;
+
 }
 
 .mat-select-value-text {
     display: flex;
     align-items: center;
-  
-    .flag {
-        width: 1em;
-        height: 1em;
-        vertical-align: middle;
-        margin-right: 0.5em;
-    }
+}*/
+
+.flag {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    margin-right: 0.5em;
 }
