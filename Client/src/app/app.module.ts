@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -36,6 +37,7 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
 import { CreateLabelComponent } from './components/create-label/create-label.component';
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
+import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { CreateStateComponent } from './components/create-state/create-state.com
     CreateLabelComponent,
     LabelDetailComponent,
     CreateStateComponent,
+    LanguageSelectorComponent,
   ],
   imports: [
     // CommonModule,

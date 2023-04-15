@@ -1,35 +1,14 @@
 <header>
     <img class="logo" src="../../../assets/placeholder.png" (click)="goHome()">
     <div class="right-side">
-        <mat-form-field appearance="fill">
-            <mat-select>
-                <mat-option value="en"><img src="assets/flags/en.png" class="flag">English</mat-option>
-                <mat-option value="es"><img src="assets/flags/es.png" class="flag">Español</mat-option>
-                <mat-option value="de"><img src="assets/flags/de.png" class="flag">Deutsch</mat-option>
-                <mat-option value="it"><img src="assets/flags/it.png" class="flag">Italiano</mat-option>
-                <mat-option value="pt"><img src="assets/flags/pt.png" class="flag">Português</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <!--<mat-form-field>
-            <mat-select [(value)]="selectedLang" (selectionChange)="switchLanguage()" panelClass="my-select-panel-class">
-                <mat-select-trigger>
-                    <img [src]="'assets/flags/' + selectedLang + '.png'" class="flag" />
-                    {{ selectedLang | uppercase }}
-                </mat-select-trigger>
-                <mat-option value="en"><img src="assets/flags/en.png" class="flag">English</mat-option>
-                <mat-option value="es"><img src="assets/flags/es.png" class="flag">Español</mat-option>
-                <mat-option value="de"><img src="assets/flags/de.png" class="flag">Deutsch</mat-option>
-                <mat-option value="it"><img src="assets/flags/it.png" class="flag">Italiano</mat-option>
-                <mat-option value="pt"><img src="assets/flags/pt.png" class="flag">Português</mat-option>
-            </mat-select>
-        </mat-form-field>-->
-        <div *ngIf="!showLoginButton" class="profile">
+        <app-language-selector></app-language-selector>
+        <div *ngIf="!this.showLoginButton" class="profile">
             <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
             <label class="user-name">Lorem Ipsum</label>
         </div>
-        <div *ngIf="showLoginButton" class="login">
-            <button (click)="onLogin()">Log In</button>
-            <button (click)="onSignUp()">Sign Up</button>
+        <div *ngIf="this.showLoginButton" class="btn-section">
+            <button id="login-btn" (click)="onLogin()" translate>global.login</button>
+            <button id="signup-btn" (click)="onSignUp()" translate>global.register</button>
         </div>
     </div>
 </header>

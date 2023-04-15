@@ -1,4 +1,5 @@
 @import '../../../assets/styles/colours';
+@import '../../../assets//styles/buttons';
 
 header {
     top: 0;
@@ -33,7 +34,8 @@ header {
     
             justify-content: center;
             align-items: center;
-    
+            
+            margin-left: 20px;
             padding: 5px 0px 5px 0px;
     
             .profile-pic {
@@ -53,39 +55,20 @@ header {
                 font-weight: bold;
             }
         }
+
+        .btn-section {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 20px;
+            width: 13em;
+
+            #login-btn { 
+                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+            }    
+
+            #signup-btn { 
+                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+            }
+        }
     }
-}
-
-
-/*
-mat-form-field {
-    margin-bottom: -2em;
-    width: 120px;
-    font-size: 10pt;
-    margin-right: 20px;
-    background-color: transparent;
-}
-
-mat-option {
-    font-size: 9pt;
-}
-
-.flag {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    margin-right: 0.5em;
-
-}
-
-.mat-select-value-text {
-    display: flex;
-    align-items: center;
-}*/
-
-.flag {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    margin-right: 0.5em;
 }
