@@ -5,11 +5,11 @@
     </div>
 
     <div class="form-body">
-        <input  type="text" [(ngModel)]="taskName" name="taskName" required placeholder="{{ 'global.name' | translate}}" formControlName="taskName">
+        <input #required type="text" [(ngModel)]="taskName" name="taskName" placeholder="{{ 'global.name' | translate}}" formControlName="taskName">
         <textarea  rows="6" cols="30" [(ngModel)]="taskDescription" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="taskDescription"></textarea>
         <div class="form-group">
             <label>{{ 'states.states' | translate}}:</label>
-            <select [(ngModel)]="selectedState" name="state" required formControlName="selectedState">
+            <select [(ngModel)]="selectedState" name="state" #required formControlName="selectedState">
                 <option *ngFor="let state of states" [value]="state.id | number">{{state.name}}</option>
             </select>
         </div>

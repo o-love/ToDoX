@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { State } from 'src/app/models/state';
 import { ActivatedRoute, Router } from '@angular/router'
 import { TaskService } from 'src/app/services/task-service/task-service.service';
 import { Task } from 'src/app/models/task';
 import { Label } from 'src/app/models/label';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form } from 'src/app/models/form';
 
 @Component({
   selector: 'app-create-task',
@@ -23,12 +24,17 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     ]),
   ],
 })
-export class CreateTaskComponent {
+export class CreateTaskComponent implements Form {
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private taskService: TaskService, private route: ActivatedRoute, private router: Router) { 
     this.form = this.fb.group({
-      
+      taskName: ['', [Validators.required]],
+      taskDescription: ['', []],
+      selectedState: ['', [Validators.required]],
+      startDate: ['', []],
+      dueDate: ['', []],
+      labels: ['', []] 
     })
   }
 
@@ -50,9 +56,44 @@ export class CreateTaskComponent {
   @Input() boardId: string | undefined;
   @Input() taskListId: string | undefined;
 
+  @ViewChildren('required') requiredInputs!: QueryList<ElementRef>;
+
   ngOnInit() {
     this.getStates();
     this.getLabels();
+  }
+
+  checkErrors(): boolean {
+    let errors: boolean = false;
+
+    this.requiredInputs.forEach((label, index) => {
+      const control = this.form.controls[Object.keys(this.form.controls)[index]];
+
+      if (control.errors) {
+        this.onError(label);
+        errors = true;
+      }
+    })
+
+    return errors;
+  }
+
+  resetErrors(): void {
+    this.requiredInputs.forEach((label) => {
+			label.nativeElement.style.boxShadow = 'none';
+		});
+  }
+  
+  onError(label: ElementRef) {
+    label.nativeElement.style.boxShadow = '0px 0px 7px rgba(255, 113, 113, 0.7)';
+  }
+
+  onFocus(event: any, label: any) {
+    label.classList.add('focused');
+  }
+
+  onBlur(event: any, label: any) {
+    if (!event.target.value) label.classList.remove('focused');
   }
 
   getStates() {
@@ -75,6 +116,9 @@ export class CreateTaskComponent {
   }
 
   onSubmit() {
+    this.resetErrors();
+    if (this.checkErrors()) return;
+
     if (this.boardId && this.taskListId && this.taskName && this.selectedState) {
       const state = this.states.find(state => state.id === parseInt(this.selectedState));
       if (state) {
