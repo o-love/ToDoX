@@ -27,31 +27,12 @@ export class CreateBoardComponent implements Form {
   @Output() boardCreated = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<void>();
 
-  onSubmit() {
-    console.log("board: ", this.boardName, " description: ", this.boardDescription)
-    if (this.checkErrors()) return;
-    
-    this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
-      next: (board) => {
-        this.boardCreated.emit(board);
-
-        this.boardService.getBoards().subscribe((boards: Board[]) => {
-          this.boardCreated.emit(board);
-        });
-
-        this.boardName = '';
-        this.boardDescription = '';
-      },
-      error: (error) => console.log(error)
-    });
-  }
-
   onClose() {
     this.closePopup.emit();
   }
 
   checkErrors(): boolean {
-    if (this.form.get('boardName')?.errors) {
+    if (this.form.controls['boardName'].errors) {
       this.onError(this.name);
       return true;
     }  
@@ -72,5 +53,25 @@ export class CreateBoardComponent implements Form {
 
   onBlur(event: any, label: any) {
     if (!event.target.value) label.classList.remove('focused');
+  }
+
+  onSubmit() {
+    console.log("board: ", this.boardName, " description: ", this.boardDescription);
+    this.resetErrors();
+    if (this.checkErrors()) return;
+    
+    this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
+      next: (board) => {
+        this.boardCreated.emit(board);
+
+        this.boardService.getBoards().subscribe((boards: Board[]) => {
+          this.boardCreated.emit(board);
+        });
+
+        this.boardName = '';
+        this.boardDescription = '';
+      },
+      error: (error) => console.log(error)
+    });
   }
 }
