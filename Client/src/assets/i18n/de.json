@@ -25,7 +25,8 @@
         "repeatPassword": "Passwort wiederholen"
     },
     "boards": {
-        "title": "Meine Boards",
+        "title": "Meine Bretter",
+        "createBoard": "Brett erstellen",
         "name": "Name",
         "description": "Beschreibung",
         "addBtn": "+ Hinzufügen",

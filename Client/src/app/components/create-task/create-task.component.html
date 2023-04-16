@@ -1,78 +1,46 @@
-<form (ngSubmit)="onSubmit()">
+<form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">
+        <h2 translate>Crear tarea</h2>
         <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
     </div>
+
     <div class="form-body">
-        <!-- Task name -->
+        <input #required type="text" [(ngModel)]="taskName" name="taskName" placeholder="{{ 'global.name' | translate}}" formControlName="taskName">
+        <textarea  rows="6" cols="30" [(ngModel)]="taskDescription" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="taskDescription"></textarea>
         <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.name' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <input type="text" [(ngModel)]="taskName" name="taskName" required>
-            </div>
+            <label>{{ 'states.states' | translate}}:</label>
+            <select [(ngModel)]="selectedState" name="state" #required formControlName="selectedState">
+                <option *ngFor="let state of states" [value]="state.id | number">{{state.name}}</option>
+            </select>
         </div>
-        <!-- Task description -->
+
+        <div class="input-field">
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'tasks.startDate' | translate}}</mat-label>
+                <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" name="startDate" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    
+        <div class="input-field">
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'tasks.dueDate' | translate }}</mat-label>
+                <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="dueDate" name="dueDate" formControlName="dueDate">
+                <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #dueDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        
         <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.description' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <textarea rows="5" cols="50" [(ngModel)]="taskDescription" name="taskDescription" required></textarea>
-            </div>
+            <label>{{ 'labels.labels' | translate }}:</label>
+            <select multiple [(ngModel)]="selectedLabels" name="labels" formControlName="labels">
+                <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
+            </select>
         </div>
-        <!-- Task state -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'states.states' | translate}}:</label>
-            </div>
-            <div class="input-field">
-                <select [(ngModel)]="selectedState" name="state" required>
-                    <option *ngFor="let state of states" [value]="state.id | number">{{state.name}}</option>
-                </select>
-            </div>
-        </div>
-        <!-- Task start date -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'tasks.startDate' | translate}}:</label>
-            </div>
-            <div class="input-field">
-                <mat-form-field appearance="fill">
-                    <mat-label>{{ 'tasks.startDate' | translate}}</mat-label>
-                    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" name="startDate">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePicker></mat-datepicker>
-                </mat-form-field>
-            </div>
-        </div>
-        <!-- Task due date -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'tasks.dueDate' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <mat-form-field appearance="fill">
-                    <mat-label>{{ 'tasks.dueDate' | translate }}</mat-label>
-                    <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="dueDate" name="dueDate">
-                    <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #dueDatePicker></mat-datepicker>
-                </mat-form-field>
-            </div>
-        </div>
-        <!-- Task labels -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'labels.labels' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <select multiple [(ngModel)]="selectedLabels" name="labels">
-                    <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="buttons">
-            <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
-        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
 </form>

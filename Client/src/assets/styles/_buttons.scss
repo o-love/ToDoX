@@ -1,8 +1,8 @@
 .qt-btn {
-    background-color: $melon-70;
-    border-radius: 30px;
+    background-color: rgba($melon, 0.7);
+    border-radius: 20px;
     border: 2px solid $white;
-    box-shadow: 0 5px $melon-40;
+    box-shadow: 0 5px rgba($melon, 0.4);
 
     height: 2.5em;
     color: $white;
@@ -10,12 +10,12 @@
 
     &:hover {
         cursor: pointer;
-        background-color: $melon-80;
+        background-color: rgba($melon, 0.8);
     } 
 
     &:active {
         transform: translateY(4px);
-        box-shadow: 0 1px $melon-40;
+        box-shadow: 0 1px rgba($melon, 0.4);
     }
 }
 

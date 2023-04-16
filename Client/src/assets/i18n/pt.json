@@ -26,6 +26,7 @@
     },
     "boards": {
         "title": "Meus Quadros",
+        "createBoard": "Criar tabuleiro",
         "name": "Nome",
         "description": "Descrição",
         "addBtn": "+ Adicionar",

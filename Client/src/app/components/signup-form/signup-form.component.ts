@@ -1,22 +1,18 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
+import { Form } from 'src/app/models/form';
 
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss']
 })
-export class SignupFormComponent {
+export class SignupFormComponent implements Form {
   signupForm: FormGroup;
-  name: string = '';
-  email: string = '';
-  password: string = '';
-  repeatPassword: string = '';
-  isFocused: boolean = false;
-  error: boolean = false;
 
+  @ViewChildren('label') labels!: QueryList<ElementRef>;
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
@@ -26,34 +22,50 @@ export class SignupFormComponent {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', Validators.required, PasswordValidator.strong()],
       repeatPassword: ['', Validators.required]
     });
   }
 
+  checkErrors(): boolean {
+    let errors: boolean = false;
+
+    this.labels.forEach((label, index) => {
+      const control = this.signupForm.controls[Object.keys(this.signupForm.controls)[index]];
+
+      if (control.errors) {
+        this.onError(label);
+        errors = true;
+      }
+    })
+
+    return errors;
+  }
+
+  resetErrors() {
+    this.labels.forEach((label) => {
+			label.nativeElement.style.boxShadow = 'none';
+		});
+  }
+
+  onError(label: ElementRef) {
+    label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
+  }
+
   onFocus(event: any, label: any) {
-    this.isFocused = true;
     label.classList.add('focused');
   }
 
   onBlur(event: any, label: any) {
-    if (!event.target.value) {
-      this.isFocused = false;
-      label.classList.remove('focused');
+    if (!event.target.value) label.classList.remove('focused');
+  }
+
+  match(): boolean {
+    if (this.signupForm.get('password')?.value != this.signupForm.get('repeatPassword')?.value) {
+      this.onError(this.repeatPasswordLabel);
+      return false;
     }
-  }
-
-  onError(label: ElementRef) {
-    this.error = true;
-    label.nativeElement.style.boxShadow = '0px 0px 7px rgba(255, 113, 113)';
-  }
-
-  resetErrors() {
-    this.error = false;
-    this.nameLabel.nativeElement.style.boxShadow = 'none';
-    this.emailLabel.nativeElement.style.boxShadow = 'none';
-    this.passwordLabel.nativeElement.style.boxShadow = 'none';
-    this.repeatPasswordLabel.nativeElement.style.boxShadow = 'none';
+    return true;
   }
 
   goBack() {
@@ -63,18 +75,9 @@ export class SignupFormComponent {
   onSubmit() {
     console.log(this.signupForm.value);
 
-    if (this.error) this.resetErrors();
-
-    const nameErrors: ValidationErrors | null | undefined = this.signupForm.get('name')?.errors;
-    const emailErrors: ValidationErrors | null | undefined = this.signupForm.get('email')?.errors;
-    const passwordErrors: ValidationErrors | null | undefined = this.signupForm.get('password')?.errors;
-    const repeatPasswordErrors: ValidationErrors | null | undefined = this.signupForm.get('repeatPassword')?.errors;
-
-    if (nameErrors || emailErrors || passwordErrors || repeatPasswordErrors) {
-      if (nameErrors) this.onError(this.nameLabel);
-      if (emailErrors) this.onError(this.emailLabel);
-      if (passwordErrors) this.onError(this.passwordLabel);
-      if (repeatPasswordErrors) this.onError(this.repeatPasswordLabel);
-    } else this.router.navigate(['/profile']);
+		this.resetErrors();
+		if (!this.checkErrors() && this.match()) {
+      this.router.navigate(['/profile']);
+    }
   }
 }

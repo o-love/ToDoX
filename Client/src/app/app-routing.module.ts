@@ -20,7 +20,6 @@ const routes: Routes = [
   and if they type in "/home" after the domain, it will also load the content of the welcome component.
   */
   { path: '', component: WelcomeComponent, data: { showLoginButton: true } },  
-  { path: 'home', component: WelcomeComponent, data: { showLoginButton: true } },
 
   { path: 'login', component: LoginFormComponent, data: { showLoginButton: true } },
   { path: 'register', component: SignupFormComponent, data: { showLoginButton: true } },

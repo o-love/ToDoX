@@ -5,28 +5,28 @@
         <!-- Label name -->
         <div class="form-group">
             <div class="input-label">
-                <label>{{ 'global.name' | translate }}:</label>
+                <label>{{ 'global.name' | <!--translate-->  }}:</label>
             </div>
             <div class="input-field">
-                <input type="text" [(ngModel)]="labelName" name="labelName" required>
+                <input type="text" (ngModel)="labelName" name="labelName" required>
             </div>
         </div>
         <!-- Label description -->
         <div class="form-group">
             <div class="input-label">
-                <label>{{ 'global.description' | translate }}:</label>
+                <label>{{ 'global.description' | <!--translate-->  }}:</label>
             </div>
             <div class="input-field">
-                <textarea rows="5" cols="50" [(ngModel)]="labelDescription" name="labelDescription" required></textarea>
+                <textarea rows="5" cols="50" (ngModel)="labelDescription" name="labelDescription" required></textarea>
             </div>
         </div>
         <!-- Label color -->
         <div class="form-group">
             <div class="input-label">
-                <label>{{ 'global.color' | translate }}:</label>
+                <label>{{ 'global.color' | <!--translate--> }}:</label>
             </div>
             <div class="input-field">
-                <input type="color" [(ngModel)]="labelColor" name="labelColor">
+                <input type="color" (ngModel)="labelColor" name="labelColor">
             </div>
         </div>
         <!-- Label type -->
@@ -44,7 +44,7 @@
             </div>
         </div> -->
         <div class="buttons">
-            <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
+            <button class="btn" type="submit">{{ 'global.ok' | <!--translate-->  }}</button>
         </div>
     </div>
 </form>

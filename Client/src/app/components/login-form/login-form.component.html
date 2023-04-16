@@ -1,13 +1,13 @@
-<body>
+<main>
     <form class="login-form" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <div class="form-header">
             <img class="back-btn" src="../../../assets/icons/IoChevronBackCircle.svg" alt="Back" (click)="goBack()"
                 role="button">
         </div>
         <div class="form-body">
-            <input #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control"
+            <input #label #emailLabel type="email" id="email" formControlName="email" name="email" class="form-control"
                 placeholder="{{ 'global.email' | translate }}" (focus)="onFocus($event, emailLabel)" (blur)="onBlur($event, emailLabel)">
-            <input #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control"
+            <input #label #passwordLabel type="password" id="password" formControlName="password" name="password" class="form-control"
                 placeholder="{{ 'global.password' | translate }}" (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
         </div>
         <div class="bottom">
@@ -15,4 +15,4 @@
             <a href="./register" translate>login.noAccountLink</a>
         </div>
     </form>
-</body>
+</main>

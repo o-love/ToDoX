@@ -2,42 +2,45 @@
 @import '../../../assets/styles/buttons';
 
 .subheader {
-    background-color: $tropical-indigo-60;
+    background-color: rgba($tropical-indigo, 0.6);
     position: relative;
-    height: 150px;
+    height: 16vh;
 
     display: flex;
     align-items: center;
 
-    box-shadow: inset 0px -11px 8px -10px $tropical-indigo;
+    box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
 
     .info {
         display: flex;
+
         width: 100%;
-        margin-left: 50px;
-        transform: translateY(50%);
+        margin-left: 35px;
+        transform: translateY(8vh);
 
         z-index: 1;
 
         .profile-pic {
             background-color: $melon-pastel;
             border-radius: 50%;
+            border: 4px solid white;
 
-            width: 130px;
-            height: 130px;
+            width: 125px;
+            height: 125px;
         }
 
         .name-edit {
-            margin: 82px 0 0 30px;
+            margin-left: 30px;
+            transform: translateY(25%);
             box-sizing: content-box;
             display: flex;
             align-items: center;
-            width: 25%;
+            width: 60%;
 
             .name {
                 margin: 0 20px 5px 0;
                 font-size: 20pt;
-                font-weight: bold;
+                font-weight: 500;
             }
 
             #edit {
@@ -64,86 +67,117 @@
 }
 
 .content {
-    margin-top: 80px;
-    padding: 20px 20px 20px 40px;
-
+    margin-top: 10vh;
+    padding: 20px 20px 20px 45px;
+    width: 100%;
+    
     .section {
         display: flex;
         flex-direction: column;
 
         .title {
             width: fit-content;
-            padding: 0 0 10px 0;
-            margin: 0;
-            font-size: 18pt;
-            font-weight: bold;
+            box-sizing: border-box;
+            padding: 0 4px 7px 4px;
+            margin: 0 0 40px 0;
+            font-size: 17pt;
+            font-weight: 500;
             text-transform: uppercase;
             border-bottom: 2px solid $melon;
         }
 
-        .subsection {
+        .section-content {
             display: flex;
-            flex-direction: column;
-
-            .subtitle {
-                display: flex;
-                align-items: center;
-                width: 120px;
-
-                .subtitle-icon {
-                    width: 22px;
-                    height: 22px;
-                }
-
-                .subtitle-name {
-                    margin-left: 30px;
-                    font-size: 17pt;
-                }
-            }
-
-            .subsection-content {
+            flex-wrap: wrap;
+            
+            .subsection {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                margin-right: 10%;
 
-                height: 100px;
-
-                margin-top: 5px;
-                margin-bottom: 40px;
-
-                .field-container {
+                .subtitle {
                     display: flex;
+                    align-items: center;
+                    width: 100%;
+                    margin-bottom: 15px;
+
+                    .subtitle-icon {
+                        width: 22px;
+                        height: 22px;
+                    }
+
+                    .subtitle-name {
+                        margin: 0 0 0 20px;
+                        font-size: 17pt;
+                    }
+                }
+
+                .subsection-content {
+                    display: flex;
+                    flex-direction: column;
                     justify-content: space-between;
-                    width: 350px;
 
-                    .field {
-                        width: 180px;
-                        border: 2px solid $tropical-indigo-60;
-                        background-color: $tropical-indigo-05;
-                        border-radius: 5px;
-                    }
+                    height: 130px;
 
-                    #currentEmail {
-                        background-color: $tropical-indigo-40;
-                    }
+                    margin-top: 5px;
+                    margin-bottom: 40px;
 
-                    label {
-                        font-weight: bold;
+                    .field-container {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 420px;
 
-                        &:focus {
-                            border-color: transparent;
+                        .field {
+                            width: 220px;
+                            height: 2em;
+                            border: 2px solid rgba($tropical-indigo, 0.6);
+                            background-color: rgba($tropical-indigo, 0.05);
+                            border-radius: 5px;
+
+                            padding-left: 5px;
+                            color: $tropical-indigo;
+                            font-size: 10pt;
+
+                            &::placeholder {
+                                color: rgba($tropical-indigo, 0.5);
+                            }
+                        
+                            &:focus {
+                                outline: none;
+                                border-color: rgba($tropical-indigo, 0.3);
+                            }
+                        }
+
+                        .asterisk {
+                            color: $bittersweet;
+                        }
+
+                        #email {
+                            pointer-events: none;
+                        }
+
+                        #currentEmail {
+                            background-color: rgba($tropical-indigo, 0.4);
+                        }
+
+                        label {
+                            font-weight: 500;
+
+                            &:focus {
+                                border-color: transparent;
+                            }
                         }
                     }
-                }
 
-                .save-btn {
-                    width: 9em;
-                    font-size: 9pt;
-                    text-transform: uppercase;
-                    margin-left: 160px;
+                    .save-btn {
+                        width: 8em;
+                        font-size: 10pt;
+                        text-transform: uppercase;
+                        align-self: end;
+                    }
                 }
             }
-        }
+        }    
     }
 
     #preferencies {

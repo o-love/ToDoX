@@ -14,7 +14,7 @@ export class BoardListComponent implements OnInit {
   constructor(private boardService: BoardService, private router: Router) { }
 
   boards: Board[] = [];
-  showPopup = false;
+  showAddPopup = false;
 
   ngOnInit(): void {
     this.getBoards();
@@ -40,7 +40,7 @@ export class BoardListComponent implements OnInit {
 
   addBoard(newBoard: Board) {
     this.boards.push(newBoard);
-    this.showPopup = false;
+    this.showAddPopup = false;
     this.getBoards();
   }
 
@@ -73,5 +73,9 @@ export class BoardListComponent implements OnInit {
   
   cancelBoardEdit(index: number): void {
     this.boards[index].isEditing = false;
+  }
+
+  hidePopup() {
+    if (this.showAddPopup) this.showAddPopup = false;
   }
 }

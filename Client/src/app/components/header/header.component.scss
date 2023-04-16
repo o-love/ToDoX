@@ -1,4 +1,5 @@
 @import '../../../assets/styles/colours';
+@import '../../../assets//styles/buttons';
 
 header {
     top: 0;
@@ -11,56 +12,63 @@ header {
     justify-content: space-between;
 
     box-sizing: border-box;
-    height: 70px;
+    padding-right: 20px;
+    height: 8vh;
+
+    box-shadow: 0 2px 5px rgba($black, 0.2);
 
     .logo {
-        width: 300px;
+        width: 250px;
         height: 100%;
 
-        &:hover {
-            cursor: pointer;
-        }
+        &:hover { cursor: pointer; }
     }
 
-    .profile {
+    .right-side {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
         align-items: center;
 
-        padding: 5px 25px 10px 5px;
-
-        .profile-pic {
-            width: 46px;
-            height: 46px;
-
-            &:hover {
-                cursor: pointer;
+        .profile {
+            display: flex;
+            flex-direction: column;
+    
+            justify-content: center;
+            align-items: center;
+            
+            margin-left: 20px;
+            padding: 5px 0px 5px 0px;
+    
+            .profile-pic {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+    
+                &:hover { 
+                    cursor: pointer; 
+                    transform: scale(1.02);
+                }
+            }
+    
+            .user-name {
+                text-align: center;
+                font-size: 8pt;
+                font-weight: bold;
             }
         }
 
-        .user-name {
-            text-align: center;
-            font-size: 10pt;
+        .btn-section {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 20px;
+            width: 13em;
+
+            #login-btn { 
+                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+            }    
+
+            #signup-btn { 
+                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+            }
         }
     }
 }
-
-.flag {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    margin-right: 0.5em;
-}
-
-.mat-select-value-text {
-    display: flex;
-    align-items: center;
-  
-    .flag {
-        width: 1em;
-        height: 1em;
-        vertical-align: middle;
-        margin-right: 0.5em;
-    }
-  }
