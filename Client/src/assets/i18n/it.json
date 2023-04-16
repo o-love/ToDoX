@@ -25,7 +25,8 @@
         "repeatPassword": "Ripeti password"
     },
     "boards": {
-        "title": "I miei Board",
+        "title": "I miei Boards",
+        "createBoard": "Creare Board",
         "name": "Nome",
         "description": "Descrizione",
         "addBtn": "+ Aggiungi",

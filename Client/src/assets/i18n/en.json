@@ -30,6 +30,7 @@
 
     "boards": {
         "title": "My Boards",
+        "createBoard": "Create board",
         "name": "Name",
         "description": "Description",
         "addBtn": "+ Add",

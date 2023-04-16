@@ -15,15 +15,17 @@
 
     .form-header {
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
         align-items: center;
         width: 100%;
+
+        h2 { font-size: 15pt; }
 
         .close-btn {
             cursor: pointer;
             width: 32px;
             height: 32px;
-            margin: -2% -2% 0 0;
+            margin: -5% -2% 0 0;
 
             &:hover { transform: scale(1.1); }
             &:active { transform: scale(1); }
