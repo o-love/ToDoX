@@ -82,9 +82,49 @@
             
             .dropdown {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 width: 100%;
                 padding-top: 5%;   
+
+                .list-card {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    max-width: 100%;
+                    padding: 2px 6px;
+                    margin-bottom: 5px;
+
+                    .list-name {
+                        font-size: 10pt;
+                        max-width: 70%;
+                        margin: 0px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        &:hover { cursor: pointer; }
+                    }
+
+                    .delete-btn {
+                        width: 15px;
+                        height: 15px;
+
+                        &:hover {
+                            cursor: pointer;
+                            transform: scale(1.1);
+                        }
+
+                        &:active { transform: scale(1); }
+                    }
+
+                    &:hover {
+                        background-color: rgba($melon, 0.6);
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                }
             }
 
             .add-btn {
@@ -129,9 +169,10 @@
     .close-btn { transform: rotate(180deg); }
 }
 
-.dropdown-closed {
-    .lists-header .dropdown-btn { transform: rotate(180deg); }
-    .dropdown { display: none; }
+.list-card-selected {
+    background-color: rgba($melon, 0.9);
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .popup {

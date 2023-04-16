@@ -22,7 +22,6 @@ export class BoardDetailComponent implements OnInit {
   showListDetail: boolean = false;
 
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
-  @ViewChild('dropdown') dropdown!: ElementRef<any>; 
 
   constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) {}
 
@@ -35,10 +34,6 @@ export class BoardDetailComponent implements OnInit {
 
   toggleSidebar() {
     this.sidebar.nativeElement.classList.toggle('sidebar-closed');
-  }
-
-  toggleDropdown() {
-    this.dropdown.nativeElement.classList.toggle('dropdown-closed');
   }
 
   getBoard(): void {
@@ -75,7 +70,7 @@ export class BoardDetailComponent implements OnInit {
     this.getLists();
   }
 
-  selectList(list: TaskList): void {
+  selectList(list: TaskList, index: number): void {
     this.selectedList = list;
     console.log("seleccionada", list);
     this.showListDetail = true;

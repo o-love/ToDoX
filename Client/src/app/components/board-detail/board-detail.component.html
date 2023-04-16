@@ -11,16 +11,16 @@
             <label translate>global.settings</label>
         </div>
         <hr class="divider">
-        <div #dropdown class="lists-container">
-            <div class="lists-header" (click)="toggleDropdown()">
+        <div class="lists-container">
+            <div class="lists-header">
                 <h4 class="title" translate>boards.boardLists</h4>
-                <img class="dropdown-btn" src="../../../assets/icons/chevron-up-solid.svg">
             </div>
             <div class="dropdown">
                 <ng-container *ngFor="let list of lists; let i = index">
                     <ng-container>
-                        <div class="list-card">
+                        <div #list class="list-card" (click)="selectList(list, i)">
                             <label class="list-name">{{ list.name }}</label>
+                            <img class="delete-btn" src="../../../assets/icons/Trashcan.svg">
                         </div>
                     </ng-container>
                 </ng-container>
