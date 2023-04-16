@@ -1,26 +1,13 @@
-<form (ngSubmit)="onSubmit()">
+<form class="create-list" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">
-        <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
+        <h2 translate>Crear lista</h2>
+        <img class="close-btn" src="../../../assets/icons/IoChevronBackCircle.svg" (click)="onClose()">
     </div>
     <div class="form-body">
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.name' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <input type="text" [(ngModel)]="listName" name="listName" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.description' | translate }}:</label>
-            </div>
-            <div class="input-field">
-                <textarea rows="5" cols="50" [(ngModel)]="listDescription" name="listDescription" required></textarea>
-            </div>
-        </div>
-        <div class="buttons">
-            <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
-        </div>
+        <input #name type="text" [(ngModel)]="listName" name="listName" placeholder="{{ 'global.name' | translate }} *" (focus)="onFocus($event, name)" (blur)="onBlur($event, name)" formControlName="listName">
+        <textarea rows="6" cols="30" [(ngModel)]="listDescription" name="listDescription" placeholder="{{ 'global.description' | translate }}" formControlName="listDescription"></textarea>
+    </div>
+    <div class="buttons">
+        <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
 </form>

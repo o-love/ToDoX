@@ -139,11 +139,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 20px;
     z-index: 100;
-    border-radius: 15px;
 }
 
 .overlay {
@@ -157,11 +153,12 @@
     z-index: 99; 
 }
 
+/*
 .list-detail-container {
     flex: 1;
 }
 
-/*
+
 .moveWhenClosed {
     transform: rotate(180deg);
 }
