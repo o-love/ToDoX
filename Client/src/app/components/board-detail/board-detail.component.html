@@ -1,35 +1,41 @@
-<div #sidebar class="sidebar-container">
-    <div class="sidebar">
-        <div class="board-info">
-            <h2>{{ board?.name }}</h2>
-            <!--This is the board's author email-->
-            <!--<p class="author">{{ board?.user.email ??? }}</p>-->
-        </div>
-        <hr class="divider">
-        <div class="settings">
-            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> 
-            <label translate>global.settings</label>
-        </div>
-        <hr class="divider">
-        <div class="lists-container">
-            <div class="lists-header">
-                <h4 class="title" translate>boards.boardLists</h4>
+<div #sidebar class="board-detail">
+    <div class="sidebar-container">
+        <div class="sidebar">
+            <div class="board-info">
+                <h2>{{ board?.name }}</h2>
+                <!--This is the board's author email-->
+                <!--<p class="author">{{ board?.user.email ??? }}</p>-->
             </div>
-            <div class="dropdown">
-                <ng-container *ngFor="let list of lists; let i = index">
-                    <ng-container>
-                        <div #list class="list-card" (click)="selectList(list, i)">
-                            <label class="list-name">{{ list.name }}</label>
-                            <img class="delete-btn" src="../../../assets/icons/Trashcan.svg">
-                        </div>
+            <hr class="divider">
+            <div class="settings">
+                <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> 
+                <label translate>global.settings</label>
+            </div>
+            <hr class="divider">
+            <div class="lists-container">
+                <div class="lists-header">
+                    <h4 class="title" translate>boards.boardLists</h4>
+                </div>
+                <div class="dropdown">
+                    <ng-container *ngFor="let list of lists; let i = index">
+                        <ng-container>
+                            <div #list class="list-card" (click)="selectList(list, i)">
+                                <label class="list-name">{{ list.name }}</label>
+                                <img class="delete-btn" src="../../../assets/icons/Trashcan.svg">
+                            </div>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
-            </div>
-            <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-        </div>        
+                </div>
+                <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+            </div>        
+        </div>
+        <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
     </div>
-    <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
+    <div class="list-detail-container" *ngIf="showListDetail">
+        <app-list-detail [selectedList]="selectedList"></app-list-detail>
+    </div>
 </div>
+
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 <div class="popup" *ngIf="showPopup">
@@ -37,6 +43,3 @@
         (closePopup)="showPopup = false"></app-create-list>
 </div>
 
-<div class="list-detail-container" *ngIf="showListDetail">
-    <app-list-detail [selectedList]="selectedList"></app-list-detail>
-</div>

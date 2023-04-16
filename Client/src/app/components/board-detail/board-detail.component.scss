@@ -1,172 +1,186 @@
 @import "../../../assets/styles/colours";
 
-.sidebar-container {
-    position: relative;
-    width: 200px;
-    height: calc(100vh - 10vh);
-    background-color: $melon-pastel;
-    border-right: 2px solid rgba($melon, 0.5);
+.board-detail {
+    display: flex;
 
-    .sidebar {
-        height: 100%;
-        padding: 5%;
-        
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .sidebar-container {
+        position: relative;
+        width: 200px;
+        height: calc(100vh - 10vh);
+        background-color: $melon-pastel;
+        border-right: 2px solid rgba($melon, 0.5);
 
-        .divider {
-            width: 100%;
-            border: 1px solid rgba($black, 0.9);
-        }
+        .sidebar {
+            height: 100%;
+            padding: 5%;
 
-        .board-info {
-            padding: 10%;
-
-            h2 { 
-                font-size: 18pt; 
-                margin: 0;
-                padding: 0;
-            }
-        }
-
-        .settings {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-
-            .settings-btn {
-                margin-right: 10%;
-                width: 15px;
-                height: 15px;
-                &:hover { cursor: pointer; }
-            }
-
-            label {
-                font-size: 11pt;
-                text-transform: uppercase;
-                &:hover { cursor: pointer; }
-            }
-        }
-
-        .lists-container {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            padding-inline: 5%;
+            align-items: center;
 
-            .lists-header {
-                display: flex;
-                justify-content: start;
-                align-items: center;
-                width: fit-content;
-                height: fit-content;
+            .divider {
+                width: 100%;
+                border: 1px solid rgba($black, 0.9);
+            }
 
-                .title {    
-                    text-justify: start;
-                    font-size: 10pt;
+            .board-info {
+                padding: 10%;
+
+                h2 { 
+                    font-size: 18pt; 
                     margin: 0;
+                    padding: 0;
+                }
+            }
 
+            .settings {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+
+                .settings-btn {
+                    margin-right: 10%;
+                    width: 15px;
+                    height: 15px;
                     &:hover { cursor: pointer; }
                 }
 
-                .dropdown-btn {
-                    width: 10px;
-                    height: 10px;
-                    margin-left: 10px;
-
+                label {
+                    font-size: 11pt;
+                    text-transform: uppercase;
                     &:hover { cursor: pointer; }
                 }
-            }   
-            
-            .dropdown {
+            }
+
+            .lists-container {
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
                 width: 100%;
-                padding-top: 5%;   
+                padding-inline: 5%;
 
-                .list-card {
+                .lists-header {
                     display: flex;
+                    justify-content: start;
                     align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-                    max-width: 100%;
-                    padding: 2px 6px;
-                    margin-bottom: 5px;
+                    width: fit-content;
+                    height: fit-content;
 
-                    .list-name {
+                    .title {    
+                        text-justify: start;
                         font-size: 10pt;
-                        max-width: 70%;
-                        margin: 0px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
+                        margin: 0;
 
                         &:hover { cursor: pointer; }
                     }
 
-                    .delete-btn {
-                        width: 15px;
-                        height: 15px;
+                    .dropdown-btn {
+                        width: 10px;
+                        height: 10px;
+                        margin-left: 10px;
 
-                        &:hover {
-                            cursor: pointer;
-                            transform: scale(1.1);
+                        &:hover { cursor: pointer; }
+                    }
+                }   
+
+                .dropdown {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    width: 100%;
+                    padding-top: 5%;   
+
+                    .list-card {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 100%;
+                        max-width: 100%;
+                        padding: 2px 6px;
+                        margin-bottom: 5px;
+
+                        .list-name {
+                            font-size: 10pt;
+                            max-width: 70%;
+                            margin: 0px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+
+                            &:hover { cursor: pointer; }
                         }
 
-                        &:active { transform: scale(1); }
-                    }
+                        .delete-btn {
+                            width: 15px;
+                            height: 15px;
 
-                    &:hover {
-                        background-color: rgba($melon, 0.6);
-                        border-radius: 5px;
-                        cursor: pointer;
+                            &:hover {
+                                cursor: pointer;
+                                transform: scale(1.1);
+                            }
+
+                            &:active { transform: scale(1); }
+                        }
+
+                        &:hover {
+                            background-color: rgba($melon, 0.6);
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
                     }
                 }
-            }
 
-            .add-btn {
-                margin-top: 10px;
-                width: 18px;
-                height: 18px;
-                border: 1.5px solid rgba($black, 0.3);
-                border-radius: 2px;
-                align-self: center;
+                .add-btn {
+                    margin-top: 10px;
+                    width: 18px;
+                    height: 18px;
+                    border: 1.5px solid rgba($black, 0.3);
+                    border-radius: 2px;
+                    align-self: center;
 
-                &:hover { 
-                    cursor: pointer; 
-                    background-color: rgba($black, 0.05);
-                    transform: scale(1.1);
+                    &:hover { 
+                        cursor: pointer; 
+                        background-color: rgba($black, 0.05);
+                        transform: scale(1.1);
+                    }
+
+                    &:active { transform: scale(1); }
                 }
-
-                &:active { transform: scale(1); }
             }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 1rem -0.8rem 0 0;
+            background-color: $white;
+            border-radius: 50%;
+            border: 1px solid $melon-pastel;
+            width: 25px;
+            height: 25px;
+            z-index: 1;
+
+            &:hover { cursor: pointer; }
         }
     }
 
-    .close-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 1rem -0.8rem 0 0;
-        background-color: $white;
-        border-radius: 50%;
-        border: 1px solid $melon-pastel;
-        width: 25px;
-        height: 25px;
-        z-index: 1;
-
-        &:hover { cursor: pointer; }
+    .list-detail-container {
+        width: calc(100% - 200px);
     }
 }
 
 .sidebar-closed {
-    width: 20px;
+    .sidebar-container {
+        width: 20px;
 
-    .sidebar { display: none; }
-    .close-btn { transform: rotate(180deg); }
+        .sidebar { display: none; }
+        .close-btn { transform: rotate(180deg); }
+    }
+
+    .list-detail-container {
+        width: calc(100% - 20px);
+    }
 }
 
 .list-card-selected {
@@ -193,36 +207,3 @@
     backdrop-filter: blur(3px); 
     z-index: 99; 
 }
-
-/*
-.list-detail-container {
-    flex: 1;
-}
-
-
-.moveWhenClosed {
-    transform: rotate(180deg);
-}
-
-.list-detail-container {
-    flex: 1;
-}
-
-.hidden {
-    display: none;
-}
-
-.list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.list-item span {
-    display: inline-block;
-}
-
-.list-buttons {
-    display: inline-block;
-}
-*/
