@@ -1,42 +1,137 @@
 @import "../../../assets/styles/colours";
 
-.sidebar {
-    width: 100%;
-    height: calc(100vh - 14vh); // Header takes 14vh
-    background-color: $melon-20;
-    border-right: 2px solid black;
-    text-align: center;
+.sidebar-container {
     position: relative;
+    width: 200px;
+    height: calc(100vh - 10vh);
+    background-color: $melon-pastel;
+    border-right: 2px solid rgba($melon, 0.5);
+
+    .sidebar {
+        height: 100%;
+        padding: 5%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .divider {
+            width: 100%;
+            border: 1px solid rgba($black, 0.9);
+        }
+
+        .board-info {
+            padding: 10%;
+
+            h2 { 
+                font-size: 18pt; 
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        .settings {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+            .settings-btn {
+                margin-right: 10%;
+                width: 15px;
+                height: 15px;
+                &:hover { cursor: pointer; }
+            }
+
+            label {
+                font-size: 11pt;
+                text-transform: uppercase;
+                &:hover { cursor: pointer; }
+            }
+        }
+
+        .lists-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding-inline: 5%;
+
+            .lists-header {
+                display: flex;
+                justify-content: start;
+                align-items: center;
+                width: fit-content;
+                height: fit-content;
+
+                .title {    
+                    text-justify: start;
+                    font-size: 10pt;
+                    margin: 0;
+
+                    &:hover { cursor: pointer; }
+                }
+
+                .dropdown-btn {
+                    width: 10px;
+                    height: 10px;
+                    margin-left: 10px;
+
+                    &:hover { cursor: pointer; }
+                }
+            }   
+            
+            .dropdown {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding-top: 5%;   
+            }
+
+            .add-btn {
+                margin-top: 10px;
+                width: 18px;
+                height: 18px;
+                border: 1.5px solid rgba($black, 0.3);
+                border-radius: 2px;
+                align-self: center;
+
+                &:hover { 
+                    cursor: pointer; 
+                    background-color: rgba($black, 0.05);
+                    transform: scale(1.1);
+                }
+
+                &:active { transform: scale(1); }
+            }
+        }
+    }
 
     .close-btn {
         position: absolute;
-        top: 1%;
-        right: 0%;
-    }
+        top: 0;
+        right: 0;
+        margin: 1rem -0.8rem 0 0;
+        background-color: $white;
+        border-radius: 50%;
+        border: 1px solid $melon-pastel;
+        width: 25px;
+        height: 25px;
+        z-index: 1;
 
-    .description {
-        word-wrap: break-word;
-    }
-
-    .settings {
-        border-top: 1px solid grey;
-        border-bottom: 1px solid grey;
-        padding: 7%;
-        cursor: pointer;
+        &:hover { cursor: pointer; }
     }
 }
 
-.sidebar-container {
-    position: relative;
-    width: 20%;
+.sidebar-closed {
+    width: 20px;
+
+    .sidebar { display: none; }
+    .close-btn { transform: rotate(180deg); }
 }
 
-.close-btn-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 1rem;
-    z-index: 1;
+.dropdown-closed {
+    .lists-header .dropdown-btn { transform: rotate(180deg); }
+    .dropdown { display: none; }
 }
 
 .popup {
@@ -58,35 +153,17 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px); // Adds a blur effect
-    z-index: 99; // Make sure it's behind the popup
+    backdrop-filter: blur(3px); 
+    z-index: 99; 
 }
 
+.list-detail-container {
+    flex: 1;
+}
+
+/*
 .moveWhenClosed {
     transform: rotate(180deg);
-}
-
-// Sidebar button rotates 180º when sidebar is closed
-// and sticks to the left side
-.close-btn-container {
-    transition: transform ;
-    &.moveWhenClosed {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 1rem;
-        z-index: 1;
-        transform: translateX(0%) rotate(0deg);
-    }
-    &:not(.moveWhenClosed) {
-        transform: translateX(-100%) rotate(0deg);
-    }
-    &:not(.moveWhenClosed) img.close-btn {
-        transform: rotate(0deg);
-    }
-    &.moveWhenClosed img.close-btn {
-        transform: rotate(180deg);
-    }
 }
 
 .list-detail-container {
@@ -110,3 +187,4 @@
 .list-buttons {
     display: inline-block;
 }
+*/

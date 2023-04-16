@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
@@ -15,14 +15,124 @@ export class BoardDetailComponent implements OnInit {
   lists: TaskList[] = [];
   tasks: Task[] = [];
 
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  selectedList: TaskList | undefined;
+
+  showPopup: boolean = false;
+  showListDetail: boolean = false;
+
+  @ViewChild('sidebar') sidebar!: ElementRef<any>;
+  @ViewChild('dropdown') dropdown!: ElementRef<any>; 
+
+  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+    console.log("boardid", this.boardId);
+
+    this.getBoard();
+    this.getLists();
+  }
+
+  toggleSidebar() {
+    this.sidebar.nativeElement.classList.toggle('sidebar-closed');
+  }
+
+  toggleDropdown() {
+    this.dropdown.nativeElement.classList.toggle('dropdown-closed');
+  }
+
+  getBoard(): void {
+    if (this.boardId) {
+      this.boardService.getBoard(this.boardId).subscribe(
+        (board: Board) => {
+          console.log('Board retrieved:', board);
+          this.board = board;
+        },
+        (error: any) => {
+          console.error('Error retrieving board:', error);
+        }
+      );
+    }
+  }
+
+  getLists(): void {
+    if (this.boardId) {
+      this.boardService.getTaskListsByBoardId(this.boardId).subscribe(
+        (lists: TaskList[]) => {
+          console.log('Lists retrieved:', lists);
+          this.lists = lists;
+        },
+        (error: any) => {
+          console.error('Error retrieving lists:', error);
+        }
+      );
+    }
+  }
+
+  addList(newList: TaskList) {
+    this.lists.push(newList);
+    this.showPopup = false;
+    this.getLists();
+  }
+
+  selectList(list: TaskList): void {
+    this.selectedList = list;
+    console.log("seleccionada", list);
+    this.showListDetail = true;
+    this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
+  }
+
+  deleteTasklist(id: number): void {
+    console.log("Delete tasklist", id);
+    if (this.boardId) {
+      this.boardService.deleteTasklist(this.boardId, id.toString()).subscribe(() => {
+        this.getLists();
+      });
+      console.log("Deleted tasklist", id);
+    }
+  }
+
+  editTasklist(id: number): void {
+    console.log("Tasklist id edit", id);
+    this.lists[+id].isEditing = true;
+  }
+
+  saveTasklistEdit(index: number): void {
+    const list = this.lists[index];
+    if (this.boardId){
+      this.boardService.editTasklist(this.boardId, list.id.toString(), list.name, list.description).subscribe(
+        (response) => {
+          console.log("Tasklist updated:", response);
+          list.isEditing = false;
+          this.getLists();
+        },
+        (error) => {
+          console.error("Error updating tasklist:", error);
+        }
+      );
+    }
+  }
+  
+  cancelTasklistEdit(index: number): void {
+    this.lists[index].isEditing = false;
+  }
+
+  /*
+  board: Board | undefined;
+  lists: TaskList[] = [];
+  tasks: Task[] = [];
+
   boardId = this.route.snapshot.paramMap.get('boardId'); //  string = '';
   selectedList: TaskList | undefined;
 
   sidebarVisible: boolean = true;
+  dropdownVisible: boolean = false;
   showPopup: boolean = false;
   showListDetail: boolean = false;
 
   editingListName: string | null = null;
+
+  @ViewChild('sidebar') sidebar!: ElementRef<any>;
 
   constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) { }
 
@@ -73,8 +183,12 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
+  toggleDropdown(): void {
+    this.dropdownVisible = !this.dropdownVisible;
+  }
+
   toggleComponent(): void {
-    this.sidebarVisible = !this.sidebarVisible;
+    this.sidebar.nativeElement.classList.toggle("close");
   }
 
   addList(newList: TaskList) {
@@ -123,5 +237,5 @@ export class BoardDetailComponent implements OnInit {
   
   cancelTasklistEdit(index: number): void {
     this.lists[index].isEditing = false;
-  }
+  }*/
 }

@@ -129,8 +129,8 @@
                 }
             }
     
-            .red-square { background: linear-gradient(45deg, rgba($bittersweet, 0.5), $melon-pastel-70); }
-            .lilac-square { background: linear-gradient(145deg, $tropical-indigo-70, $light-red-50); }
+            .red-square { background: linear-gradient(45deg, rgba($bittersweet, 0.5), rgba($melon-pastel, 0.7)); }
+            .lilac-square { background: linear-gradient(145deg, rgba($tropical-indigo, 0.7), rgba($light-red, 0.5)); }
         }
 
         img {

@@ -1,47 +1,39 @@
-<div class="sidebar-container">
-    <div *ngIf="sidebarVisible" class="sidebar">
+<div #sidebar class="sidebar-container">
+    <div class="sidebar">
         <div class="board-info">
             <h2>{{ board?.name }}</h2>
-            <p class="description">{{ board?.description }}</p>
+            <!--This is the board's author email-->
+            <!--<p class="author">{{ board?.user.email ??? }}</p>-->
         </div>
-
+        <hr class="divider">
         <div class="settings">
-            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> {{ 'global.settings' | translate }}
+            <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> 
+            <label translate>global.settings</label>
         </div>
-
-        <div class="lists-container">
-            <h4 translate>boards.boardLists</h4>
-            <div *ngFor="let list of lists; let i = index">
-                <ng-container *ngIf="!list.isEditing; else editRow">
-                    <span (click)="selectList(list)">{{ list.name }}</span>
-                    <div class="list-buttons">
-                        <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editTasklist(i)">
-                        <img class="delete-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteTasklist(list.id)">
-                    </div>
-                </ng-container>
-                <ng-template #editRow>
-                    <input type="text" [(ngModel)]="list.name">
-                    <input type="text" [(ngModel)]="list.description">
-                    <button (click)="saveTasklistEdit(i)" translate>global.save</button>
-                    <button (click)="cancelTasklistEdit(i)" translate>global.cancel</button>
-                </ng-template>
+        <hr class="divider">
+        <div #dropdown class="lists-container">
+            <div class="lists-header" (click)="toggleDropdown()">
+                <h4 class="title" translate>boards.boardLists</h4>
+                <img class="dropdown-btn" src="../../../assets/icons/chevron-up-solid.svg">
             </div>
-        </div>
-
-        <div class="add-container">
+            <div class="dropdown">
+                <ng-container *ngFor="let list of lists; let i = index">
+                    <ng-container>
+                        <div class="list-card">
+                            <label class="list-name">{{ list.name }}</label>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
             <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-        </div>
+        </div>        
     </div>
-
-    <div class="close-btn-container" (click)="toggleComponent()" [class.moveWhenClosed]="!sidebarVisible">
-        <img class="close-btn" src="../../../assets/icons/IoCaretBackCircle.svg">
-    </div>
+    <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
 </div>
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
-
 <div class="popup" *ngIf="showPopup">
-    <app-create-list *ngIf="showPopup" (listCreated)="addList($event)"
+    <app-create-list (listCreated)="addList($event)"
         (closePopup)="showPopup = false"></app-create-list>
 </div>
 
