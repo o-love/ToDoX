@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { TaskService } from 'src/app/services/task-service/task-service.service';
 import { Task } from 'src/app/models/task';
 import { Label } from 'src/app/models/label';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-task',
@@ -23,7 +24,13 @@ import { Label } from 'src/app/models/label';
   ],
 })
 export class CreateTaskComponent {
-  constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router) { }
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder, private taskService: TaskService, private route: ActivatedRoute, private router: Router) { 
+    this.form = this.fb.group({
+      
+    })
+  }
 
   taskName: string = '';
   taskDescription: string = '';

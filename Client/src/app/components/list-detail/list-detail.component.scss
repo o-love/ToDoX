@@ -1,75 +1,125 @@
 @import '../../../assets/styles/colours';
 @import '../../../assets/styles/buttons';
 
-.subheader {
-    background-color: rgba($tropical-indigo, 0.6);
-    position: relative;
-    height: 150px;
-
-    display: flex;
-    align-items: center;
-
-    box-shadow: inset 0px -11px 8px -10px $tropical-indigo;
-}
-
 .list-detail-container {
+  width: 100%;
+
+  .wallpaper {
+    height: 16vh;
+    background-color: rgba($tropical-indigo, 0.6);
+    box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
+  }
+
+  .content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-  
-    div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 30px;
-  
-      h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-      }
-  
+
+    padding: 20px;
+
+    .text {
+      h3 { font-size: 18pt; }
       p {
-        font-size: 16px;
-        text-align: center;
-        color: #999;
+        padding: 2px 5px;
+        font-size: 10pt;
+        width: 700px;
+        max-width: 700px;
+        height: 3em;
+        max-height: 3em;
+        border: 1px solid rgba($black, 0.2);
+        border-radius: 5px;
+        background-color: rgba($black, 0.05);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
-  
-    table {
-      border-collapse: collapse;
-      width: 80%;
-      max-width: 800px;
-      background-color: #fff;
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
+
+    .table-container {
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      border-radius: 5px;
+      border: 1px solid rgba($black, 0.2);
       overflow: hidden;
-  
-      thead {
-        background-color: #f2f2f2;
-  
-        th {
-          padding: 12px;
-          font-size: 16px;
-          font-weight: bold;
-          color: #333;
-          text-align: left;
-        }
-      }
-  
-      tbody {
-        tr {
-          &:hover {
-            background-color: #f2f2f2;
-          }
-  
-          td {
+      width: fit-content;
+      margin-top: 20px;
+
+      table {
+        border-collapse: collapse;
+        width: 900px;
+        max-width: 900px;
+        background-color: #fff;
+        
+        overflow: hidden;
+    
+        thead {
+          background-color: #f2f2f2;
+          border-bottom: 1px solid rgba($black, 0.2);
+          th {
             padding: 12px;
             font-size: 16px;
+            font-weight: bold;
             color: #333;
-            border-bottom: 1px solid #ddd;
+            text-align: left;
           }
+        }
+    
+        tbody {
+          tr {
+            &:hover {
+              background-color: #f2f2f2;
+            }
+    
+            td {
+              padding: 12px;
+              font-size: 16px;
+              color: #333;
+              border-bottom: 1px solid #ddd;
+            }
+          }
+        }
+      }
+
+      .add-btn-container {
+        padding: 5px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        &:hover {
+          cursor: pointer;
+          background-color: rgba($black, 0.02);
+
+          .add-btn {
+            transform: scale(1.1);
+          }
+        }
+
+        &:active .add-btn {
+          transform: scale(1);
         }
       }
     }
   }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 100;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 99; 
+}

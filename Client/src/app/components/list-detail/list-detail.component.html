@@ -1,66 +1,68 @@
 <div class="list-detail-container">
-  <div class="list-detail-header">
-    <div class="wallpaper"></div>
+  <div class="wallpaper"></div>
+
+  <div class="content">
     <div class="text">
-      <h2>{{ taskList?.name }}</h2>
+      <h3>{{ taskList?.name }}</h3>
       <p>{{ taskList?.description }}</p>
     </div>
-  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th translate>global.name</th>
-        <th translate>global.description</th>
-        <th translate>states.state</th>
-        <th translate>labels.label</th>
-        <th translate>tasks.startDate</th>
-        <th translate>tasks.dueDate</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let task of tasks; let i = index">
-        <tr [ngClass]="{ isEditing: task.isEditing }">
-          <ng-container *ngIf="!task.isEditing; else editRow">
-            <td>{{ task.name }}</td>
-            <td>{{ task.description }}</td>
-            <td>{{ stateNames[task.state_id] }}</td>
-            <td></td><!-- {{ task.label }}-->
-            <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
-            <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
-            <!-- <td class="task-buttons">
-              <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editTask(i)">
-              <img class="delete-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteTask(task.id)">
-            </td> -->
+    <div class="table-container">
+      <table class="list">
+        <thead class="column-header">
+          <tr>
+            <th translate>global.name</th>
+            <th translate>global.description</th>
+            <th translate>states.state</th>
+            <th translate>labels.label</th>
+            <th translate>tasks.startDate</th>
+            <th translate>tasks.dueDate</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let task of tasks; let i = index">
+            <tr [ngClass]="{ isEditing: task.isEditing }">
+              <ng-container *ngIf="!task.isEditing; else editRow">
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ stateNames[task.state_id] }}</td>
+                <td></td><!-- {{ task.label }}-->
+                <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
+                <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
+                <!-- <td class="task-buttons">
+                  <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editTask(i)">
+                  <img class="delete-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteTask(task.id)">
+                </td> -->
+              </ng-container>
+              <ng-template #editRow>
+                <td><input type="text" [(ngModel)]="task.name"></td>
+                <td><input type="text" [(ngModel)]="task.description"></td>
+                <!-- <td>
+                  <select [(ngModel)]="selectedState">
+                    <option *ngFor="let state of stateNames" [value]="state.id">{{ state.name }}</option>
+                  </select>
+                </td>
+                <td></td>
+                <td><input type="text" [(ngModel)]="task.start_date"></td>
+                <td><input type="text" [(ngModel)]="task.due_date"></td> -->
+                <td>
+                  <button (click)="saveTaskEdit(i)" translate>global.save</button>
+                  <button (click)="cancelTaskEdit(i)" translate>global.cancel</button>
+                </td>
+              </ng-template>
+            </tr>
           </ng-container>
-          <ng-template #editRow>
-            <td><input type="text" [(ngModel)]="task.name"></td>
-            <td><input type="text" [(ngModel)]="task.description"></td>
-            <!-- <td>
-              <select [(ngModel)]="selectedState">
-                <option *ngFor="let state of stateNames" [value]="state.id">{{ state.name }}</option>
-              </select>
-            </td>
-            <td></td>
-            <td><input type="text" [(ngModel)]="task.start_date"></td>
-            <td><input type="text" [(ngModel)]="task.due_date"></td> -->
-            <td>
-              <button (click)="saveTaskEdit(i)" translate>global.save</button>
-              <button (click)="cancelTaskEdit(i)" translate>global.cancel</button>
-            </td>
-          </ng-template>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-</div>
-<div class="add-container">
-  <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+        </tbody>
+      </table>
+      <div class="add-btn-container">
+        <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+      </div>  
+    </div>
+  </div>
 </div>
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
-
 <div class="popup" *ngIf="showPopup">
   <app-create-task *ngIf="showPopup" [boardId]="boardId" [taskListId]="taskListId" (taskCreated)="addTask($event)"
     (closePopup)="showPopup = false"></app-create-task>
