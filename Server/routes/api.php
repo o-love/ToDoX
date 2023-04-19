@@ -63,9 +63,7 @@ Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
 //     Route::post('/states', [StateController::class, 'store']);
 // });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('users', \App\Http\Controllers\UserController::class);
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
