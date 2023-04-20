@@ -200,3 +200,45 @@
         transform: translateY(-1000px) rotate(720deg);
     }
 }
+
+
+@media screen and (max-width: 770px) {
+    .welcome {
+      height: auto;
+      padding-top: 8vh;
+
+
+        .content {
+          font-size: 28pt;
+          align-items: center;
+          position: absolute;
+          left: 50px;
+  
+          #purple {
+            font-size: 30pt;
+          }
+        }
+  
+        .btn-section {
+          flex-direction: column;
+          width: 100%;
+          margin-top: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          left: 60px;
+
+  
+          #login-btn {
+            width: 100%;
+            margin-bottom: 20px;
+          }
+        }
+
+        .background {
+            height: 84%;
+            width: 100%;
+      }
+    }
+}
