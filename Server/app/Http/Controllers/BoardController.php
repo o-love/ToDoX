@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Board;
+use Illuminate\Support\Facades\Cache;
 
 class BoardController extends Controller
 {
     // Returns all boards
     public function index()
     {
-        $boards = Board::all();
+        // $boards = Board::all();
+        // $boards = Board::with('name')->get();
+        $boards = Cache::remember('boards', 300, function() {
+          return Board::all();  
+        });
         return response()->json($boards);
     }
 
