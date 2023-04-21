@@ -55,4 +55,9 @@ class Task extends Model
     //     color: red;
     // }
 }
+
+public function taskComment()
+{
+    return $this->hasMany(TaskComment::class);
+}
 }
