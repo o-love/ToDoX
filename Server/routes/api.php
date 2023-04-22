@@ -65,5 +65,7 @@ Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
 
 Route::apiResource('users', \App\Http\Controllers\UserController::class);
 
+Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
+
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
