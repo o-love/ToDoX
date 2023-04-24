@@ -31,7 +31,12 @@ export class ListDetailComponent implements OnInit {
   @ViewChild('table') tableOption!: ElementRef<any>;
   @ViewChild('kanban') kanbanOption!: ElementRef<any>;
 
-  constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) {}
+  layouts: Map<string, boolean> = new Map();
+
+  constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) {
+    this.layouts.set('TABLE LAYOUT', false);
+    this.layouts.set('KANBAN LAYOUT', true);
+  }
 
   ngOnInit() {
     this.boardId = this.selectedList.board_id.toString();
@@ -135,13 +140,19 @@ export class ListDetailComponent implements OnInit {
   // OPTIONS
   selectLayout(selected_option: ElementRef<any>) {
     this.options.forEach((option) => {
-      if (option.nativeElement.classList.contains('checked')) option.nativeElement.classList.toggle('checked');
+      if (option.nativeElement.classList.contains('checked')) {
+        option.nativeElement.classList.toggle('checked');
+        this.layouts.set(option.nativeElement.innerText.toString(), false);
+      }  
     });
 
     this.selectTitle.nativeElement.innerText = selected_option.nativeElement.innerText;
 
     this.options.forEach((option) => {
-      if (option.nativeElement.innerText == selected_option.nativeElement.innerText) option.nativeElement.classList.toggle('checked');
+      if (option.nativeElement.innerText == selected_option.nativeElement.innerText) {
+        option.nativeElement.classList.toggle('checked');
+        this.layouts.set(option.nativeElement.innerText.toString(), true);
+      }
     });
   }
 

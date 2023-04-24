@@ -17,6 +17,9 @@
       </ul>
     </div>
   </div>
+
+  <p *ngIf="layouts.get('TABLE LAYOUT')">table layout!</p>
+  <p *ngIf="layouts.get('KANBAN LAYOUT')">kanban layout!</p>
 </div>
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
