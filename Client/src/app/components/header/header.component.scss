@@ -65,11 +65,11 @@ header {
             width: 13em;
 
             #login-btn { 
-                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -0.5px, 0.5px); 
             }    
 
             #signup-btn { 
-                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -0.5px, 0.5px); 
             }
         }
     }

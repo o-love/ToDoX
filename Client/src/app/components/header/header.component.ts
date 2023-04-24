@@ -16,18 +16,18 @@ export class HeaderComponent {
   }
 
   goHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   }
 
   goProfile() {
-    this.router.navigate(['./profile']);
+    this.router.navigate(['profile']);
   }
 
   onLogin() {
-    this.router.navigate(['./login']);
+    this.router.navigate(['login']);
   }
 
   onSignUp() {
-    this.router.navigate(['./signup']);
+    this.router.navigate(['signup']);
   }
 }
