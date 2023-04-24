@@ -4,6 +4,7 @@ import { TaskList } from 'src/app/models/taskList';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Form } from 'src/app/models/form';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Task } from 'src/app/models/task';
 
 // This component will be responsible for creating lists for a user on a board.
 
@@ -14,10 +15,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CreateListComponent implements Form {
   form: FormGroup;
+
   listName: string = '';
   listDescription: string = '';
+
   boardId = this.route.snapshot.paramMap.get('boardId');
-  stateIds: number[] = [];
 
   @Output() listCreated = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<void>();
@@ -35,7 +37,8 @@ export class CreateListComponent implements Form {
     if (this.form.controls['listName'].errors) {
       this.onError(this.name);
       return true;
-    }  
+    } 
+
     return false;
   }
 
@@ -59,18 +62,17 @@ export class CreateListComponent implements Form {
     console.log("list: ", this.listName, " description: ", this.listDescription);
     this.resetErrors();
     if (this.checkErrors()) return;
-
-    if (this.boardId && this.listName) {
-      this.boardService.createList(this.boardId, this.listName, this.listDescription, this.stateIds).subscribe({
-        next: (list: TaskList) => {
-          this.listCreated.emit(list);
-          this.listName = '';
-          this.listDescription = '';
-          this.stateIds = [];
-        },
-        error: (error) => console.log(error)
-      });
-    }
+    if (!this.boardId) return;
+    
+    this.boardService.createList(this.boardId, this.listName, this.listDescription, []).subscribe({
+      next: (list: TaskList) => {
+        this.listCreated.emit(list);
+        this.listName = '';
+        this.listDescription = '';
+      },
+      error: (error) => console.log(error)
+    });
+    
   }
 
   onClose() {

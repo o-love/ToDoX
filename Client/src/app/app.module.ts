@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -38,6 +37,9 @@ import { CreateLabelComponent } from './components/create-label/create-label.com
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+import { ListDetailKanbanComponent } from './components/list-detail-kanban/list-detail-kanban.component';
+import { ListDetailTableComponent } from './components/list-detail-table/list-detail-table.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,9 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
     LabelDetailComponent,
     CreateStateComponent,
     LanguageSelectorComponent,
+    ListDetailKanbanComponent,
+    ListDetailTableComponent,
+    HomeComponent,
   ],
   imports: [
     // CommonModule,

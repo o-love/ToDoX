@@ -1,0 +1,24 @@
+<div class="kanban-layout">
+    <div class="states">
+        <ng-container *ngFor="let state of states">
+            <div class="state">
+                <h3>{{ state.name }}</h3>
+                <div class="tasks">
+                    <ng-container *ngFor="let task of getTasksByStateId(state.id)">
+                        <div class="task-card">
+                            <textarea>{{ task.name }}</textarea>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    
+        <img id="add-state" class="btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+    </div>
+</div>
+
+<!--<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
+<div class="popup" *ngIf="showPopup">
+  <app-create-state *ngIf="showPopup"
+    (closePopup)="showPopup = false"></app-create-state>
+</div>-->

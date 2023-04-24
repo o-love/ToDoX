@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
 import { State } from '../../models/state';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
   private states: State[] = [];
+  
+  private apiUrl = 'http://localhost:8082/api';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getStates(): State[] {
-    return this.states;
+  // getStates(): State[] {
+  //   return this.states;
+  // }
+
+  getStatesByTaskListId(boardId: string, listId: string): Observable<State[]> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states`;
+    return this.http.get<State[]>(url);
   }
 
   getState(id: number): State | undefined {

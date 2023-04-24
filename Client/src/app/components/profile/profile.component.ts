@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user-service/user-service.service';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 
 @Component({
@@ -11,9 +12,6 @@ export class ProfileComponent {
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
-  userEmail: string = 'ejemplo@ejemplo.com';
-  userPassword: string = 'Hola!9';
-
   darkMode: boolean = false;
 
   @ViewChildren('email') emailLabels!: QueryList<ElementRef>;
@@ -24,18 +22,18 @@ export class ProfileComponent {
   @ViewChild('oldPasswordLabel') oldPasswordLabel!: ElementRef;
   @ViewChild('newPasswordLabel') newPasswordLabel!: ElementRef;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, public userService: UserService) {
     this.emailForm = this.fb.group({
-      currentEmail: [this.userEmail],
-      newEmail: ['', [Validators.required, Validators.email]]
+      currentEmail: [this.userService.user?.email],
+      newEmail: ['', [Validators.required, Validators.email, Validators.maxLength(70)]]
     })
 
     this.passwordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required], PasswordValidator.strong()]
+      newPassword: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]]
     })
   }
-  
+
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
@@ -65,14 +63,14 @@ export class ProfileComponent {
     console.log(this.emailForm.value);
 
     this.resetErrors(this.emailLabels);
-		if (!this.checkErrors(this.emailForm, this.emailLabels)) {
-      this.userEmail = this.emailForm.get('newEmail')?.value;
-      this.emailForm.setValue({currentEmail: this.userEmail, newEmail: ''});
+		if (!this.checkErrors(this.emailForm, this.emailLabels) && this.userService.user) {
+      this.userService.user.email = this.emailForm.get('newEmail')?.value.toString();
+      this.emailForm.setValue({currentEmail: this.userService.user.email, newEmail: ''});
     }
   }
 
   checkPassword(): boolean {
-    if (this.userPassword != this.passwordForm.get('oldPassword')?.value) {
+    if (this.userService.user && this.userService.user.password != this.passwordForm.get('oldPassword')?.value) {
       this.onError(this.oldPasswordLabel);
       return false;
     }
@@ -87,7 +85,7 @@ export class ProfileComponent {
     
     let check: boolean = this.checkPassword();
     if (!this.checkErrors(this.passwordForm, this.passwordLabels) && check) {
-      this.userPassword = this.passwordForm.get('newPassword')?.value;
+      if (this.userService.user) this.userService.user.password = this.passwordForm.get('newPassword')?.value;
       this.passwordForm.reset();
     }
   }

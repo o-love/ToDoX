@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user-service/user-service.service';
 
 
 @Component({
@@ -8,14 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Input() showLoginButton: boolean = false;
-  
-  constructor(private router: Router) {
-    
-  }
+  constructor(private router: Router, private userService: UserService) {}
 
-  ngOnInit() {
-    console.log('showLoginButton:', this.showLoginButton);
+  showLoginButton() {
+    return !this.userService.isLogged();
   }
 
   goHome() {

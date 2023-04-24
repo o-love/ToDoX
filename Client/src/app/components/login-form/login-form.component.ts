@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
+import { UserService } from 'src/app/services/user-service/user-service.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,10 +17,10 @@ export class LoginFormComponent implements Form {
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private userService: UserService) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, PasswordValidator.strong()]
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
+      password: ['', Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]
     });
   }
 
@@ -68,8 +69,8 @@ export class LoginFormComponent implements Form {
     console.log(this.loginForm.value);
 
 		this.resetErrors();
-		if (!this.checkErrors()) {
-      this.router.navigate(['/boards']);
+		if (!this.checkErrors() && this.userService.logUser(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)) {
+      this.router.navigate(['']);
     }
   }  
 }

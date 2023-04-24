@@ -1,5 +1,7 @@
 @import '../../../assets/styles/colours';
 @import '../../../assets/styles/buttons';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.3.2/css/simple-line-icons.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css';
 
 .list-detail-container {
   width: 100%;
@@ -10,9 +12,9 @@
     box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
   }
 
-  .content {
+  .header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
 
     padding: 20px;
 
@@ -25,16 +27,171 @@
         max-width: 700px;
         height: 3em;
         max-height: 3em;
-        border: 1px solid rgba($black, 0.2);
+        border: 1px solid rgba($black, .2);
         border-radius: 5px;
-        background-color: rgba($black, 0.05);
+        background-color: rgba($black, .05);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
     }
+    
+    /*
+    .layout-select {
+      position: relative;
+      overflow: hidden;
+      display: block;
 
-    .table-container {
+      width: 190px;
+      height: 90%;
+      
+      color: rgba($tropical-indigo, 1);
+      border: 2px solid rgba($tropical-indigo, .4);
+      box-shadow: 0 2px 8px rgba($tropical-indigo, 0.3);
+      
+      font-size: 12px;
+
+      i.toggle {
+        position: absolute;
+        z-index: 4;
+        right: 1.5em;
+        top: 1.6em;
+        color: rgba($tropical-indigo, 0.6);
+      }
+
+      .title, .placeholder {
+        position: relative;
+        display: block;
+
+        text-transform: uppercase;
+        color: $tropical-indigo;
+
+        width: 100%;
+        height: 100%;
+        padding: 1.5em 2em;
+        background: rgba(255, 255, 255, 1);
+        border-top: 1px solid rgba($tropical-indigo, .2);
+        cursor: pointer;
+      }
+
+      &>label>input {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 2;
+          
+        width: 100%;
+        height: 100%;
+
+        display: block;
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked {
+          z-index: 2;
+              
+          ~i.toggle.icon-arrow-down {
+            display: none;
+          }
+
+          ~i.toggle.icon-arrow-up {
+            display: block;
+          }
+        }
+
+        &:not(:checked) {
+          ~i.toggle.icon-arrow-up {
+            display: none;
+          }
+
+          ~i.toggle.icon-arrow-down {
+            display: block;
+          }
+
+          ~label.option input:not(:checked)~.title {
+            display: none !important;
+          }
+        }
+      }
+
+      & label>span.placeholder {
+        position: relative;
+        z-index: 0;
+        display: inline-block;
+        width: 100%;
+        color: $tropical-indigo;
+        border-top: 0px;
+      }
+
+      label.option {
+        display: block;
+        overflow: hidden;
+        z-index: 1;
+        width: 190px;
+        transition: all 1s ease-out;
+        
+        span.title {
+          position: relative;
+          z-index: 2;
+          transition: background .3s ease-out;
+
+          i.icon {
+            padding-right: 8px;
+            color: rgba($melon, .8);
+          }
+
+          &:hover {
+            color: $white;
+            background: rgba($tropical-indigo, .5);
+            box-shadow: inset 0px 1px 0px rgba(0, 0, 0, .1);
+
+            i.icon { color: $white; }
+          }
+        }
+
+        input {
+          display: none;
+
+          &:checked~span.title {
+            position: absolute;
+            display: block;
+            z-index: 1;
+            top: 0px;
+            font-size: 12px;
+            background: #fff;
+            border-top: 0px;
+            box-shadow: none;
+            color: inherit;
+            width: 100%;
+          }
+        }
+      }
+    }*/
+  }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 100;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 99; 
+}
+
+/*
+    .table-layout {
       display: flex;
       flex-direction: column;
 
@@ -100,26 +257,4 @@
           transform: scale(1);
         }
       }
-    }
-  }
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  z-index: 100;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(3px);
-  z-index: 99; 
-}
+    }*/
