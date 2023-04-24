@@ -26,12 +26,6 @@ export class UserService {
         return true;
       }
     }
-
-    return false;
-  }
-
-  isLogged(): boolean {
-    if (this.user) return true;
     return false;
   }
 }

@@ -2,11 +2,11 @@
     <img class="logo" src="../../../assets/logo.png" (click)="goHome()">
     <div class="right-side">
         <app-language-selector></app-language-selector>
-        <div *ngIf="!showLoginButton()" class="profile">
+        <div *ngIf="this.userService.user" class="profile">
             <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
-            <label class="user-name">¡Bienvenido!</label>
+            <label class="user-name">{{ this.userService.user.name }}</label>
         </div>
-        <div *ngIf="showLoginButton()" class="btn-section">
+        <div *ngIf="!this.userService.user" class="btn-section">
             <button id="login-btn" (click)="onLogin()" translate>global.login</button>
             <button id="signup-btn" (click)="onSignUp()" translate>global.register</button>
         </div>

@@ -9,11 +9,7 @@ import { UserService } from 'src/app/services/user-service/user-service.service'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router, private userService: UserService) {}
-
-  showLoginButton() {
-    return !this.userService.isLogged();
-  }
+  constructor(private router: Router, public userService: UserService) {}
 
   goHome() {
     this.router.navigate(['']);
