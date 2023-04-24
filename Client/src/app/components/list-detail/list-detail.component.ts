@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
@@ -22,6 +22,14 @@ export class ListDetailComponent implements OnInit {
   taskListId: string = '';
 
   showPopup: boolean = false;
+
+  @ViewChild('title') selectTitle!: ElementRef<any>;
+  @ViewChild('icon') dropdownIcon!: ElementRef<any>;
+  @ViewChild('select') select!: ElementRef<any>;
+
+  @ViewChildren('option') options!: QueryList<ElementRef<any>>;
+  @ViewChild('table') tableOption!: ElementRef<any>;
+  @ViewChild('kanban') kanbanOption!: ElementRef<any>;
 
   constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) {}
 
@@ -122,5 +130,24 @@ export class ListDetailComponent implements OnInit {
   /* NEEDS CHANGE */
   cancelTaskEdit(index: number): void {
     this.tasks[index].isEditing = false;
+  }
+
+  // OPTIONS
+  selectLayout(selected_option: ElementRef<any>) {
+    this.options.forEach((option) => {
+      if (option.nativeElement.classList.contains('checked')) option.nativeElement.classList.toggle('checked');
+    });
+
+    this.selectTitle.nativeElement.innerText = selected_option.nativeElement.innerText;
+
+    this.options.forEach((option) => {
+      if (option.nativeElement.innerText == selected_option.nativeElement.innerText) option.nativeElement.classList.toggle('checked');
+    });
+  }
+
+  selectActive() {
+    this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-down');
+    this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-up');
+    this.select.nativeElement.classList.toggle('closed');
   }
 }

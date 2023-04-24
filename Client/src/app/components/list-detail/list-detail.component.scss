@@ -1,7 +1,6 @@
 @import '../../../assets/styles/colours';
 @import '../../../assets/styles/buttons';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.3.2/css/simple-line-icons.min.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css';
 
 .list-detail-container {
   width: 100%;
@@ -35,138 +34,102 @@
         text-overflow: ellipsis;
       }
     }
-    
-    /*
+
     .layout-select {
-      position: relative;
+      display: flex;
       overflow: hidden;
-      display: block;
+      flex-direction: column;
+      width: 11em;
+      height: fit-content;
+      box-sizing: border-box;
+      border-radius: 10px;
+      color: $tropical-indigo;
+      border: .1em solid rgba($tropical-indigo, 0.1);
 
-      width: 190px;
-      height: 90%;
-      
-      color: rgba($tropical-indigo, 1);
-      border: 2px solid rgba($tropical-indigo, .4);
-      box-shadow: 0 2px 8px rgba($tropical-indigo, 0.3);
-      
-      font-size: 12px;
-
-      i.toggle {
-        position: absolute;
-        z-index: 4;
-        right: 1.5em;
-        top: 1.6em;
-        color: rgba($tropical-indigo, 0.6);
-      }
-
-      .title, .placeholder {
-        position: relative;
-        display: block;
-
+      .select-btn {
+        background-color: $tropical-indigo;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: .6em 1em;
         text-transform: uppercase;
-        color: $tropical-indigo;
+        font-size: 10pt;
+        font-weight: 500;
+        color: $white;
 
-        width: 100%;
-        height: 100%;
-        padding: 1.5em 2em;
-        background: rgba(255, 255, 255, 1);
-        border-top: 1px solid rgba($tropical-indigo, .2);
-        cursor: pointer;
+        &:hover { 
+          cursor: pointer; 
+          background-color: rgba($tropical-indigo, .95);
+        }
       }
 
-      &>label>input {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        z-index: 2;
+      .option-list {
+        background-color: rgba($tropical-indigo, .08);
+        list-style: none;
+        text-decoration: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+
+        .option {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: .6em 1em;
+          font-size: 9pt;
+          font-weight: 500;
+          text-transform: uppercase;
+          border-top: .1em solid rgba($tropical-indigo, 0.2);
+
+          .left {
+            display: flex;
+            align-items: center;
+
+            .icon {
+              margin-right: 1em;
+            }
+
+            .icon-chart {
+              transform: scaleY(-1);
+              -moz-transform: scaleY(-1);
+              -webkit-transform: scaleY(-1); 
+              -o-transform: scaleY(-1);
+            }
+          }
+
+          .icon-check {
+            font-size: 11pt;
+            font-weight: bold;
+            color: $melon;
+            opacity: 0;
+          }
           
-        width: 100%;
-        height: 100%;
-
-        display: block;
-        opacity: 0;
-        cursor: pointer;
-
-        &:checked {
-          z-index: 2;
-              
-          ~i.toggle.icon-arrow-down {
-            display: none;
-          }
-
-          ~i.toggle.icon-arrow-up {
-            display: block;
-          }
-        }
-
-        &:not(:checked) {
-          ~i.toggle.icon-arrow-up {
-            display: none;
-          }
-
-          ~i.toggle.icon-arrow-down {
-            display: block;
-          }
-
-          ~label.option input:not(:checked)~.title {
-            display: none !important;
-          }
-        }
-      }
-
-      & label>span.placeholder {
-        position: relative;
-        z-index: 0;
-        display: inline-block;
-        width: 100%;
-        color: $tropical-indigo;
-        border-top: 0px;
-      }
-
-      label.option {
-        display: block;
-        overflow: hidden;
-        z-index: 1;
-        width: 190px;
-        transition: all 1s ease-out;
-        
-        span.title {
-          position: relative;
-          z-index: 2;
-          transition: background .3s ease-out;
-
-          i.icon {
-            padding-right: 8px;
-            color: rgba($melon, .8);
-          }
-
           &:hover {
+            cursor: pointer;
+            background-color: rgba($tropical-indigo, 0.7);
             color: $white;
-            background: rgba($tropical-indigo, .5);
-            box-shadow: inset 0px 1px 0px rgba(0, 0, 0, .1);
 
-            i.icon { color: $white; }
+            .icon-check {
+              color: $white;
+            }
           }
         }
 
-        input {
-          display: none;
-
-          &:checked~span.title {
-            position: absolute;
-            display: block;
-            z-index: 1;
-            top: 0px;
-            font-size: 12px;
-            background: #fff;
-            border-top: 0px;
-            box-shadow: none;
-            color: inherit;
-            width: 100%;
+        .checked {
+          .icon-check {
+            opacity: 1;
           }
         }
       }
-    }*/
+    }
+
+    .closed {
+      .option-list {
+        display: none;
+      }
+    }
   }
 }
 
@@ -189,72 +152,3 @@
   backdrop-filter: blur(3px);
   z-index: 99; 
 }
-
-/*
-    .table-layout {
-      display: flex;
-      flex-direction: column;
-
-      align-items: center;
-      border-radius: 5px;
-      border: 1px solid rgba($black, 0.2);
-      overflow: hidden;
-      width: fit-content;
-      margin-top: 20px;
-
-      table {
-        border-collapse: collapse;
-        width: 900px;
-        max-width: 900px;
-        background-color: #fff;
-        
-        overflow: hidden;
-    
-        thead {
-          background-color: #f2f2f2;
-          border-bottom: 1px solid rgba($black, 0.2);
-          th {
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            text-align: left;
-          }
-        }
-    
-        tbody {
-          tr {
-            &:hover {
-              background-color: #f2f2f2;
-            }
-    
-            td {
-              padding: 12px;
-              font-size: 16px;
-              color: #333;
-              border-bottom: 1px solid #ddd;
-            }
-          }
-        }
-      }
-
-      .add-btn-container {
-        padding: 5px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-
-        &:hover {
-          cursor: pointer;
-          background-color: rgba($black, 0.02);
-
-          .add-btn {
-            transform: scale(1.1);
-          }
-        }
-
-        &:active .add-btn {
-          transform: scale(1);
-        }
-      }
-    }*/

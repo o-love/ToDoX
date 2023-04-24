@@ -6,27 +6,18 @@
       <h3>{{ selectedList.name }}</h3>
       <p>{{ selectedList.description }}</p>
     </div>
-    <div class="layout-select">
-
-      
-      <label>
-          <input type="checkbox" name="placeholder">
-          <i class="toggle icon icon-arrow-down"></i>
-          <i class="toggle icon icon-arrow-up"></i>
-          <span class="placeholder">Choose Layout</span>
-          <label class="option" id="table-option">
-              <input type="radio" name="option">
-              <span class="title animated fadeIn"><i class="icon icon-chart"></i>Table Layout</span>
-          </label>
-          <label class="option" id="kanban-option">
-              <input type="radio" name="option">
-              <span class="title animated fadeIn"><i class="icon icon-layers"></i>Kanban Layout</span>
-          </label>
-      </label>
+    <div #select class="layout-select closed">
+      <div class="select-btn" (click)="selectActive()">
+        <span #title class="placeholder-text">Kanban layout</span>
+        <i #icon class="icon icon-arrow-down"></i>
+      </div>
+      <ul class="option-list">
+        <li #option #table id="table" class="option closed" (click)="selectLayout(tableOption)"><span class="left"><i class="icon icon-list"></i>Table Layout</span><i class="icon icon-check"></i></li>
+        <li #option #kanban id="kanban" class="option closed checked" (click)="selectLayout(kanbanOption)"><span class="left"><i class="icon icon-chart"></i>Kanban Layout</span><i class="icon icon-check"></i></li>
+      </ul>
     </div>
   </div>
 </div>
-
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 <div class="popup" *ngIf="showPopup">
