@@ -47,6 +47,12 @@ Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController
 Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update'])->name('tasks.update');
 Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'index']);
+Route::post('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'store'])->name('taskComment.store');
+
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'show'])->name('taskComment.show');
+Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'show'])->name('taskComment.destroy');
+
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
 // Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
