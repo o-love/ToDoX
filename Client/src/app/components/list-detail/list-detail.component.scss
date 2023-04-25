@@ -4,9 +4,12 @@
 
 .list-detail-container {
   width: 100%;
+  height: 100%;
+  background-color: rgba($english-violet, .05);
+  color: $english-violet;
 
   .wallpaper {
-    height: 16vh;
+    height: 15vh;
     background-color: rgba($tropical-indigo, 0.6);
     box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
   }
@@ -14,11 +17,14 @@
   .header {
     display: flex;
     justify-content: space-between;
+    max-height: 60px;
+    height: 60px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
 
-    padding: 20px;
-
+    /*
     .text {
-      h3 { font-size: 18pt; }
       p {
         padding: 2px 5px;
         font-size: 10pt;
@@ -33,9 +39,21 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+    }*/
+
+    h3 { 
+      display: flex;
+      align-items: center;
+      font-size: 16pt; 
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      text-align: center;
     }
 
     .layout-select {
+      position: fixed;
+      right: 20px;
       display: flex;
       overflow: hidden;
       flex-direction: column;
@@ -45,6 +63,7 @@
       border-radius: 10px;
       color: $tropical-indigo;
       border: .1em solid rgba($tropical-indigo, 0.1);
+      z-index: 5;
 
       .select-btn {
         background-color: $tropical-indigo;
@@ -72,8 +91,11 @@
         margin: 0;
         display: flex;
         flex-direction: column;
+        
+        
 
         .option {
+          position: relative;
           display: flex;
           justify-content: space-between;
           align-items: center;

@@ -154,6 +154,8 @@ export class ListDetailComponent implements OnInit {
         this.layouts.set(option.nativeElement.innerText.toString(), true);
       }
     });
+
+    this.selectActive();
   }
 
   selectActive() {
