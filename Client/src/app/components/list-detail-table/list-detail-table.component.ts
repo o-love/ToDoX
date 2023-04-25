@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
@@ -19,9 +19,15 @@ export class ListDetailTableComponent implements OnInit {
   stateNames: {[key: number]: string} = {};
   showPopup: boolean = false; 
 
+  @Output() openCreateTaskPopup = new EventEmitter<any>();
+
   ngOnInit(): void {
     this.states.forEach((state) => {
       this.stateNames[state.id] = state.name;
     });
+  }
+
+  createTask() {
+    this.openCreateTaskPopup.emit();
   }
 }
