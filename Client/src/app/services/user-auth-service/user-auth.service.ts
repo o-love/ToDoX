@@ -6,7 +6,7 @@ import { User } from 'src/app/models/user';
 @Injectable({
   providedIn: 'root',
 })
-export class UserAuthServiceService {
+export class UserAuthService {
   private apiUrl = 'http://localhost:8082/api';
 
   constructor(private http: HttpClient) {}
@@ -15,16 +15,22 @@ export class UserAuthServiceService {
     return localStorage.getItem('token');
   }
 
-  login(email: string, password: string) {
+  isLoggedIn(): boolean {
+    return !!this.getAuthToken();
+  }
+
+  login(email: string, password: string): Observable<null> {
     const user = {
       email: email,
       password: password,
     };
 
-    this.http.post<any>(`${this.apiUrl}/login`, user).subscribe((res: any) => {
+    const toRet = this.http.post<any>(`${this.apiUrl}/login`, user);
+    toRet.subscribe((res: any) => {
       localStorage.setItem('token', res.token.split('|')[1]);
-      console.log(this.getAuthToken());
     });
+
+    return toRet;
   }
 
   register(name: string, email: string, password: string): Observable<User> {
