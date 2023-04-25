@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
@@ -64,9 +63,11 @@ Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
 //     Route::post('/states', [StateController::class, 'store']);
 // });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('users', \App\Http\Controllers\UserController::class);
+
+Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
+
+Route::middleware('auth:api')->get('myUser', [\App\Http\Controllers\ProfileController::class, 'index']);
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
