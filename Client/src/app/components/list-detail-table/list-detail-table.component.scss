@@ -1,3 +1,67 @@
+@import '../../../assets/styles/colours';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,600';
+
+.table-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  border-radius: .25em;
+  overflow: hidden;
+
+  .task-table {
+    background-color: rgba($tropical-indigo, .8);
+    border-collapse: collapse;
+    font-family: 'Open Sans', sans-serif;
+
+    th {
+      border-bottom: 1px solid rgba($white, .4);
+      color: $melon-pastel;
+      font-size: 12pt;
+      font-weight: 600;
+      padding: .5em 4em;
+      text-align: left;
+    }
+
+    td {
+      font-size: 10pt;
+      color: $english-violet;
+      background-color: $white;
+      padding: 0.65em 4em;
+    }
+
+    tbody tr {
+      transition: background 0.25s ease;
+
+      &:hover {
+        background: rgba($melon, .4);
+      }
+    }
+  }
+
+  .add-btn-container {
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: $white;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba($black, 0.02);
+
+      .add-btn {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active .add-btn {
+      transform: scale(1);
+    }
+  }
+}
+
 /*
     .table-layout {
       display: flex;

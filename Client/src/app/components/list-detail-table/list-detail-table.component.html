@@ -1,5 +1,5 @@
 <div class="table-layout">
-  <table>
+  <table class="task-table">
     <thead>
       <th translate>global.name</th>
       <th translate>global.description</th>
@@ -21,8 +21,11 @@
       </ng-container>
     </tbody>
   </table>
-  <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+  <div class="add-btn-container">
+    <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+  </div>
 </div>
+
 <!--<div class="table-layout">
     <table class="list">
       <thead class="column-header">
