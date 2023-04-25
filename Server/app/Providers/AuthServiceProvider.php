@@ -31,7 +31,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::viaRequest('custom-token', function (Request $request) {
-            error_log("executing custom token");
             $token = PersonalAccessToken::findToken(trim(substr($request->header('Authorization'), 6)));
             return User::findOrFail($token->tokenable_id);
         });

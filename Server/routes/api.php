@@ -67,7 +67,7 @@ Route::apiResource('users', \App\Http\Controllers\UserController::class);
 
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
 
-Route::middleware('auth:api')->get('myUser', [\App\Http\Controllers\TestController::class, 'index']);
+Route::middleware('auth:api')->get('myUser', [\App\Http\Controllers\ProfileController::class, 'index']);
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful

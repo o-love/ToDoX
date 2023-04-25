@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class TestController extends Controller
+class ProfileController extends Controller
 {
     public function index(Request $request)
     {
