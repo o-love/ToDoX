@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
@@ -12,9 +13,26 @@ import { TaskService } from 'src/app/services/task-service/task-service.service'
   templateUrl: './list-detail-kanban.component.html',
   styleUrls: ['./list-detail-kanban.component.scss']
 })
-export class ListDetailKanbanComponent implements OnInit {
-  /*@Input() selectedList!: TaskList;*/
+export class ListDetailKanbanComponent {
+  
+  @Input() selectedList!: TaskList;
+  @Input() tasks!: Task[];
+  @Input() states!: State[];
+  @Input() labels!: Label[];
 
+  showPopup: boolean = false; 
+
+  getTasksByStateId(state_id: number): Task[] {   
+    let stateTasks: Task[] = [];
+
+    this.tasks.forEach((task) => {
+      if (task.state_id == state_id) stateTasks.push(task);
+    });
+
+    return stateTasks;
+  }
+
+  /*
   selectedList: TaskList = {
     id: 4,
     name: 'Sprint 1',
@@ -85,5 +103,5 @@ export class ListDetailKanbanComponent implements OnInit {
     });
 
     return state_tasks;
-  }
+  }*/
 }

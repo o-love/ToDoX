@@ -11,7 +11,11 @@
         "color": "Farbe",
         "settings": "Einstellungen",
         "save": "Speichern",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "state": "Zustand",
+        "label": "Etikett",
+        "startDate": "Startdatum",
+        "dueDate": "Enddatum"
     },
     "welcome": {
         "title": "Beginnen Sie mit der Arbeit in einer",

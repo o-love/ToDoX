@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { State } from '@popperjs/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Label } from 'src/app/models/label';
+import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
 
@@ -9,11 +9,19 @@ import { TaskList } from 'src/app/models/taskList';
   templateUrl: './list-detail-table.component.html',
   styleUrls: ['./list-detail-table.component.scss']
 })
-export class ListDetailTableComponent {
+export class ListDetailTableComponent implements OnInit {
 
   @Input() selectedList!: TaskList;
   @Input() tasks!: Task[];
   @Input() states!: State[];
   @Input() labels!: Label[];
 
+  stateNames: {[key: number]: string} = {};
+  showPopup: boolean = false; 
+
+  ngOnInit(): void {
+    this.states.forEach((state) => {
+      this.stateNames[state.id] = state.name;
+    });
+  }
 }

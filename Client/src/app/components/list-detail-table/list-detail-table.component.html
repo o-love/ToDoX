@@ -1,3 +1,28 @@
+<div class="table-layout">
+  <table>
+    <thead>
+      <th translate>global.name</th>
+      <th translate>global.description</th>
+      <th translate>global.state</th>
+      <th translate>global.label</th>
+      <th translate>global.startDate</th>
+      <th translate>global.dueDate</th>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let task of tasks">
+        <tr>
+          <td>{{ task.name }}</td>
+          <td>{{ task.description }}</td>
+          <td>{{ stateNames[task.state_id] }}</td>
+          <td></td>
+          <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+</div>
 <!--<div class="table-layout">
     <table class="list">
       <thead class="column-header">

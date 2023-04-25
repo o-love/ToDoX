@@ -11,7 +11,11 @@
         "color": "Couleur",
         "settings": "Paramètres",
         "save": "Sauvegarder",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "state": "État",
+        "label": "Étiquette",
+        "startDate": "Date de début",
+        "dueDate": "Date d'échéance"
     },
 
     "welcome": {

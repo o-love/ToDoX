@@ -13,7 +13,7 @@ export class LanguageSelectorComponent {
   @ViewChild('icon') dropdownIcon!: ElementRef<any>;
   @ViewChild('select') select!: ElementRef<any>;
 
-  langs: string[] = ['en', 'es', 'de', 'it', 'pt'];
+  langs: string[] = ['en', 'es', 'de', 'fr', 'it', 'pt'];
 
   constructor(public translate: TranslateService) {
     this.translate.addLangs(this.langs);
