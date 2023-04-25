@@ -1,7 +1,7 @@
 <header>
     <img class="logo" src="../../../assets/logo.png" (click)="goHome()">
     <div class="right-side">
-        <app-language-selector></app-language-selector>
+        <app-language-selector class="language-select"></app-language-selector>
         <div *ngIf="this.userService.user" class="profile">
             <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
             <label class="user-name">{{ this.userService.user.name }}</label>
