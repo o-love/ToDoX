@@ -19,6 +19,7 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
 
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from './services/task-service/task-service.service';
+import { UserAuthServiceService } from './services/user-auth-service/user-auth-service.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -85,6 +86,7 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
   providers: [ // Ensuring that a single instance is created and shared across all components that inject it.
     BoardService, // So it is available throughout the application
     TaskService,
+    UserAuthServiceService,
   ],
   bootstrap: [AppComponent]
 })
