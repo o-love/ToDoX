@@ -28,7 +28,7 @@ export class LanguageSelectorComponent {
   selectLang(lang: string) {
     this.selectedLang = lang;
     this.translate.use(this.selectedLang);
-
+    localStorage.setItem('selectedLang', this.selectedLang);
     this.selectActive();
   }
 
