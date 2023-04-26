@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -49,6 +51,11 @@ class UserController extends Controller
         $user->update($request->all());
 
         return new UserResource($user);
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        Auth::user()->update($request->input('password'));
     }
 
     /**
