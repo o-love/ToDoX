@@ -69,7 +69,7 @@ Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
 
 Route::middleware('auth:api')->get('myUser', [\App\Http\Controllers\ProfileController::class, 'index']);
 
-Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Controllers\UserController::class, 'updatePassword']);
+Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Controllers\ProfileController::class, 'updatePassword']);
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
