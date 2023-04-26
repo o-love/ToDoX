@@ -1,22 +1,65 @@
-<div class="create-task">
+<form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">
         <h2 translate>Crear tarea</h2>
         <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg">
     </div>
 
     <div class="form-body">
-        <input type="text" name="taskName" placeholder="{{ 'global.name' | translate}}">
-        <textarea  rows="6" cols="30" name="boardDescription" placeholder="{{ 'global.description' | translate }}"></textarea>
         <div class="form-group">
-            <label>{{ 'states.states' | translate}}:</label>
-            
+            <label for="taskName">{{ 'global.name' | translate }}</label>
+            <input type="text" name="taskName" formControlName="taskName">
+        </div>
+
+        <div class="form-group">
+            <label for="taskDescription">{{ 'global.description' | translate }}</label>
+            <textarea rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>{{ 'states.states' | translate }}</label>
+            <div class="state-select">
+                <div class="select-btn">
+                    <label class="state placeholder" *ngIf="selectedState"><span class="balloon"><i class="icon ">{{ selectedState.name }}</i></span></label>
+                </div>
+                <ul class="state-list">
+                    <ng-container *ngFor="let state in states">
+                        <li class="state closed"><span class="balloon"><i class="icon "></i>{{ state.name }}</span></li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ 'labels.labels' | translate }}</label>
+            <div class="label-multiselect">
+                <div class="multiselect-btn">
+                    <ng-container *ngFor="let label in selectedLabels">
+                        <label class="label placeholder"><span class="balloon"><i class="icon "></i>{{ label.name }}</span></label>
+                    </ng-container>
+                </div>
+                <ul class="label-list">
+                    <ng-container *ngFor="let label in labels">
+                        <li class="label closed"><span class="balloon"><i class="icon "></i>{{ label.name }}</span></li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ 'global.startDate' | translate }}</label>
+            <input type="date" name="startDate" formControlName="startDate">
+        </div>
+        
+        <div class="form-group">
+            <label>{{ 'global.dueDate' | translate }}</label>
+            <input type="date" name="dueDate" formControlName="dueDate">
         </div>
     </div>
 
     <div class="buttons">
         <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
-</div>
+</form>
 
 <!--<form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">

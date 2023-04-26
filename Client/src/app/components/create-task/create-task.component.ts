@@ -24,9 +24,24 @@ import { Form } from 'src/app/models/form';
     ]),
   ],
 })
-export class CreateTaskComponent {
-
+export class CreateTaskComponent {  
   
+  form: FormGroup;
+  selectedState: State | null = null;
+  selectedLabels: Label[] = [];
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      taskName: ['', Validators.required],
+      taskDescription: ['', []],
+      startDate: ['', []],
+      dueDate: ['', []],
+    })
+  }
+
+  onSubmit() {
+    
+  }
   /*
   form: FormGroup;
 
