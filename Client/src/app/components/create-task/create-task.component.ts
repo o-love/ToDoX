@@ -28,7 +28,7 @@ export class CreateTaskComponent implements Form {
   
   form: FormGroup;
   selectedState: State | null = null;
-  selectedLabels: Label[] = [];
+  selectedLabels: Label[] | null = null;
 
   @Input() boardId!: number;
   @Input() taskListId!: number;
@@ -68,7 +68,7 @@ export class CreateTaskComponent implements Form {
   }
 
   onSubmit() {
-    if (!this.taskListId || !this.boardId || !this.selectedState) return;
+    if (!this.taskListId || !this.boardId || !this.selectedState || !this.selectedLabels) return;
 
     let taskName: string = this.form.get('taskName')?.value;
     let taskDescription: string = this.form.get('taskDescription')?.value;

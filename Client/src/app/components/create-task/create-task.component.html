@@ -20,7 +20,10 @@
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
                 <div class="select" id="state-select">
                     <div class="input select-btn">
-                        <label class="state placeholder" *ngIf="selectedState">
+                        <label class="placeholder-text" *ngIf="!selectedState">
+                            Select a state...
+                        </label>
+                        <label class="state" *ngIf="selectedState">
                             <span class="balloon">
                                 <div class="circle"></div>{{ selectedState.name }}
                             </span>
@@ -34,10 +37,15 @@
                 <div class="select" id="label-multiselect">
                     <div class="input select-btn">
                         <div class="selected-label-list">
-                            <ng-container *ngFor="let label in selectedLabels">
-                                <label class="label placeholder">
-                                    <span class="balloon">{{ label.name }}</span>
-                                </label>
+                            <label class="placeholder-text" *ngIf="!selectedLabels">
+                                Select labels...
+                            </label>
+                            <ng-container *ngIf="selectedLabels">
+                                <ng-container *ngFor="let label in selectedLabels">
+                                    <label class="label">
+                                        <span class="balloon">{{ label.name }}</span>
+                                    </label>
+                                </ng-container>
                             </ng-container>
                         </div>
                     </div>

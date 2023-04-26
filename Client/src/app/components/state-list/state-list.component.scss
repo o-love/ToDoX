@@ -1,0 +1,111 @@
+@import '../../../assets/styles/colours';
+
+.state-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 200px;
+    height: 210px;
+    border-radius: 5px;
+    box-shadow: 0 5px 7px rgba($english-violet, .2);
+
+    padding: .5% 1%;
+    color: $english-violet;
+
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    .title {
+        font-size: 12pt;
+        font-weight: 500;
+        margin: .8em .3em 0 .3em;
+        padding: 0;   
+    }
+
+    .divider {
+        width: 100%;
+        border: 1.5px solid rgba($english-violet, 0.9);
+        margin-block: .8em;
+        border-radius: 1.5px; 
+    }
+
+    .state-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding-inline: 2%;
+        margin-bottom: .5em;
+
+        .left {
+            display: flex;
+            align-items: center;
+
+            .bi-grip-vertical {
+                font-size: 10pt;
+            }
+
+            .balloon {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                font-size: 9pt;
+                margin-left: .5em;
+                min-width: fit-content;
+                width: 8em;
+                box-sizing: border-box;
+                padding: .75em .6em;
+                border-radius: 1.2em;
+                height: 1.2em;
+                background-color: rgba($english-violet, .2);
+                
+                .name { 
+                    font-size: 8pt;
+                    font-weight: 500; 
+                    margin: 0 0 0 .5em;
+                }
+
+                .bi { font-size: 5pt; }
+            }
+        }
+
+        .dropdown-btn {
+            font-size:10pt;
+            &:hover { cursor: pointer; }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: .5em;
+
+        .btn {
+            display: flex;
+            align-items: center;
+            font-size: 8pt;
+            height: 2em;
+            padding: .1em .5em;
+            background-color: rgba($tropical-indigo, .2);
+            color: $english-violet;
+            font-weight: 500;
+
+            .bi {
+                font-size: 8pt;
+                margin: 0 .5em 0 0;
+            }
+
+            label {
+                margin: 0;
+            }
+        }
+    }
+}
