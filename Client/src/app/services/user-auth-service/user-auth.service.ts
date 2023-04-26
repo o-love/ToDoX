@@ -66,4 +66,10 @@ export class UserAuthService {
   getMyUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/myUser`);
   }
+
+  updatePassword(password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/myUser/updatepassword`, {
+      password: password,
+    });
+  }
 }

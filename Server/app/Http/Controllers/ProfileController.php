@@ -23,6 +23,6 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response("Password updated", 200);
+        return response(`{res:"Password Updated"}`, 200);
     }
 }
