@@ -26,6 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'max:70'],
             'email' => ['required', 'max:70', 'email:rfc,dns'],
+            'password' => ['prohibited'],
         ];
     }
 }
