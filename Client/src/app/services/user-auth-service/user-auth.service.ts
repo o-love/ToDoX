@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from 'src/app/models/user';
 
 @Injectable({
@@ -48,23 +48,31 @@ export class UserAuthService {
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/users`);
+    return this.http
+      .get<User[]>(`${this.apiUrl}/users`)
+      .pipe(map((data: any) => data.data));
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/users/${id}`);
+    return this.http
+      .get<User>(`${this.apiUrl}/users/${id}`)
+      .pipe(map((data: any) => data.data));
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user);
+    return this.http
+      .put<User>(`${this.apiUrl}/users/${user.id}`, user)
+      .pipe(map((data: any) => data.data));
   }
 
-  deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(`${this.apiUrl}/users/${id}`);
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 
   getMyUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/myUser`);
+    return this.http
+      .get<User>(`${this.apiUrl}/myUser`)
+      .pipe(map((data: any) => data.data));
   }
 
   updatePassword(password: string): Observable<any> {
