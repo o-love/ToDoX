@@ -12,7 +12,7 @@
                             <label class="name">{{ state.name }}</label>
                         </div>
                     </div>
-                    <i class="bi dropdown-btn bi-chevron-down"></i>
+                    <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
                 </div>
             </ng-container>
         </ng-container>

@@ -101,10 +101,21 @@
             .bi {
                 font-size: 8pt;
                 margin: 0 .5em 0 0;
+                &:hover { cursor: pointer; }
             }
 
             label {
                 margin: 0;
+                &:hover { cursor: pointer; }
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba($tropical-indigo, .4);
+            }
+
+            &:active {
+                outline: none;
             }
         }
     }
