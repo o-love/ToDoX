@@ -24,13 +24,21 @@ import { Form } from 'src/app/models/form';
     ]),
   ],
 })
-export class CreateTaskComponent {  
+export class CreateTaskComponent implements Form {  
   
   form: FormGroup;
   selectedState: State | null = null;
   selectedLabels: Label[] = [];
 
-  constructor(private fb: FormBuilder) {
+  @Input() boardId!: number;
+  @Input() taskListId!: number;
+  @Input() states: State[] = [];
+  @Input() labels: Label[] = [];
+
+  @Output() taskCreated = new EventEmitter<Task>();
+  @Output() closePopup = new EventEmitter<void>();
+
+  constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
       taskName: ['', Validators.required],
       taskDescription: ['', []],
@@ -39,130 +47,41 @@ export class CreateTaskComponent {
     })
   }
 
-  onSubmit() {
-    
-  }
-  /*
-  form: FormGroup;
-
-  constructor(private fb: FormBuilder, private taskService: TaskService, private route: ActivatedRoute, private router: Router) { 
-    this.form = this.fb.group({
-      taskName: ['', [Validators.required]],
-      taskDescription: ['', []],
-      selectedState: ['', [Validators.required]],
-      startDate: ['', []],
-      dueDate: ['', []],
-      labels: ['', []] 
-    })
-  }
-
-  taskName: string = '';
-  taskDescription: string = '';
-  startDate: Date | null = null;
-  dueDate: Date | null = null;
-
-  selectedState: string = '';
-  stateId: string = '';
-  states: State[] = [];
-
-  labels: Label[] = [];
-  selectedLabels: Label[] = [];
-
-  @Output() taskCreated = new EventEmitter<any>();
-  @Output() closePopup = new EventEmitter<void>();
-
-  @Input() boardId: string | undefined;
-  @Input() taskListId: string | undefined;
-
-  @ViewChildren('required') requiredInputs!: QueryList<ElementRef>;
-
-  ngOnInit() {
-    this.getStates();
-    this.getLabels();
-  }
-
   checkErrors(): boolean {
-    let errors: boolean = false;
-
-    this.requiredInputs.forEach((label, index) => {
-      const control = this.form.controls[Object.keys(this.form.controls)[index]];
-
-      if (control.errors) {
-        this.onError(label);
-        errors = true;
-      }
-    })
-
-    return errors;
+    throw new Error('Method not implemented.');
   }
-
   resetErrors(): void {
-    this.requiredInputs.forEach((label) => {
-			label.nativeElement.style.boxShadow = 'none';
-		});
+    throw new Error('Method not implemented.');
   }
-  
-  onError(label: ElementRef) {
-    label.nativeElement.style.boxShadow = '0px 0px 7px rgba(255, 113, 113, 0.7)';
+  onError(label: ElementRef<any>): void {
+    throw new Error('Method not implemented.');
   }
-
-  onFocus(event: any, label: any) {
-    label.classList.add('focused');
+  onFocus(event: any, label: any): void {
+    throw new Error('Method not implemented.');
   }
-
-  onBlur(event: any, label: any) {
-    if (!event.target.value) label.classList.remove('focused');
-  }
-
-  getStates() {
-    if (this.boardId && this.taskListId) {
-      this.taskService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
-        next: (states) => {
-          this.states = states;
-        },
-        error: (error) => console.log(error)
-      });
-    }
-    console.log("states de board", this.boardId, "y list", this.taskListId, "states:", this.states);
-  }
-
-  getLabels() {
-    this.taskService.getLabels().subscribe(
-      (labels: Label[]) => {
-        this.labels = labels;
-    });
-  }
-
-  onSubmit() {
-    this.resetErrors();
-    if (this.checkErrors()) return;
-
-    if (this.boardId && this.taskListId && this.taskName && this.selectedState) {
-      const state = this.states.find(state => state.id === parseInt(this.selectedState));
-      if (state) {
-        console.log("selectedLabels", this.selectedLabels);
-        console.log("selectedDates", this.startDate, this.dueDate);
-        this.stateId = state.id.toString();
-        this.taskService.createTask(
-          this.boardId, this.taskListId, this.taskName, this.taskDescription,
-          this.stateId, this.selectedLabels, this.startDate, this.dueDate
-        ).subscribe({
-          next: (task: Task) => {
-            this.taskCreated.emit(task);
-            this.taskName = '';
-            this.taskDescription = '';
-            this.stateId = '';
-            this.selectedLabels = [];            
-            this.startDate = null;
-            this.dueDate = null;
-          },
-          error: (error) => console.log(error)
-        });
-      }
-    }
+  onBlur(event: any, label: any): void {
+    throw new Error('Method not implemented.');
   }
 
   onClose() {
     this.closePopup.emit();
-  }*/
+  }
+
+  onSubmit() {
+    if (!this.taskListId || !this.boardId || !this.selectedState) return;
+
+    let taskName: string = this.form.get('taskName')?.value;
+    let taskDescription: string = this.form.get('taskDescription')?.value;
+    let startDate: Date | null = this.form.get('startDate')?.value;
+    let dueDate: Date | null = this.form.get('dueDate')?.value;
+
+    this.taskService.createTask(this.boardId.toString(), this.taskListId.toString(), 
+      taskName, taskDescription, this.selectedState.id.toString(), this.selectedLabels, 
+      startDate, dueDate).subscribe({
+        next: (task: Task) => {
+          this.taskCreated.emit(task);
+        },
+        error: (error) => console.log(error)
+    });
+  }
 }
