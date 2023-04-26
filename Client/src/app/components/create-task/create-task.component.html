@@ -6,7 +6,7 @@
 
     <div class="form-body">
         <div class="form-group">
-            <label class="name" for="taskName">{{ 'global.name' | translate }}</label>
+            <label class="name" for="taskName">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
             <input class="input" type="text" name="taskName" formControlName="taskName">
         </div>
 
@@ -17,7 +17,7 @@
 
         <div class="inline-group">
             <div class="form-group">
-                <label class="name">{{ 'states.state' | translate }}</label>
+                <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
                 <div class="select" id="state-select">
                     <div class="input select-btn">
                         <label class="state placeholder" *ngIf="selectedState">
@@ -25,13 +25,7 @@
                                 <div class="circle"></div>{{ selectedState.name }}
                             </span>
                         </label>
-                        <i class="icon icon-arrow-down"></i>
                     </div>
-                    <ul id="state-list" class="list">
-                        <ng-container *ngFor="let state in states">
-                            <li class="state closed"><span class="balloon"><div class="circle"></div>{{ state.name }}</span></li>
-                        </ng-container>
-                    </ul>
                 </div>
             </div>
 
@@ -42,13 +36,10 @@
                         <div class="selected-label-list">
                             <ng-container *ngFor="let label in selectedLabels">
                                 <label class="label placeholder">
-                                    <span class="balloon">
-                                        <div class="circle"></div>{{ label.name }}
-                                    </span>
+                                    <span class="balloon">{{ label.name }}</span>
                                 </label>
                             </ng-container>
                         </div>
-                        <i class="icon icon-arrow-down"></i>
                     </div>
                     <ul id="label-list" class="list">
                         <ng-container *ngFor="let label in labels">

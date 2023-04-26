@@ -63,10 +63,14 @@
             flex-direction: column;
 
             .name {
+                display: flex;
+                align-items: center;
                 font-size: 10pt;
                 margin-left: .2em;
                 font-weight: 500;
                 color: rgba($tropical-indigo, .6);
+
+                .asterisk { margin-left: .5em; }
             }
 
             .input {
@@ -92,6 +96,8 @@
 
                 .select-btn {
                     width: 100%;
+                    height: 2.5em;
+                    overflow-x: hidden;
                     display: grid;
                 
                     .icon { 

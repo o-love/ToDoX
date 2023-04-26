@@ -16,8 +16,8 @@
   </div>
 
   <div class="layout">
-    <app-list-detail-table *ngIf="layouts.get('TABLE LAYOUT')" (openCreateTaskPopup)="showPopup = true" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
-    <app-list-detail-kanban *ngIf="layouts.get('KANBAN LAYOUT')" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
+    <app-list-detail-table id="table-layout" *ngIf="layouts.get('TABLE LAYOUT')" (openCreateTaskPopup)="showPopup = true" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
+    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts.get('KANBAN LAYOUT')" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
   </div>
 </div>
 
