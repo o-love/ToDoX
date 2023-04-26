@@ -21,25 +21,12 @@
       </ng-container>
     </tbody>
   </table>
-  <div class="add-btn-container">
-    <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="createTask()">
+  <div class="add-btn-container" (click)="createTask()">
+    <img class="add-btn" src="../../../assets/icons/CkAdd.svg">
   </div>
 </div>
 
-<!--<div class="table-layout">
-    <table class="list">
-      <thead class="column-header">
-        <tr>
-          <th translate>global.name</th>
-          <th translate>global.description</th>
-          <th translate>states.state</th>
-          <th translate>labels.label</th>
-          <th translate>tasks.startDate</th>
-          <th translate>tasks.dueDate</th>
-          <th></th>
-        </tr>
-      </thead>
-
+<!--
       <tbody>
         <ng-container *ngFor="let task of tasks">
           <tr [ngClass]="{ isEditing: task.isEditing }">
@@ -62,8 +49,4 @@
           </tr>
         </ng-container>
       </tbody>
-    </table>
-    <div class="add-btn-container">
-      <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-    </div>
-  </div>-->
+-->
