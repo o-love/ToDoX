@@ -39,54 +39,54 @@
         height: 80%;
         padding-inline: 2%;
 
-        input, textarea {
-            padding: 5px;
-            border-radius: 5px;
-            border: 2px solid rgba($tropical-indigo, 0.4);
-            background-color: rgba($tropical-indigo, 0.05);
-            color: $tropical-indigo;
+        // input, textarea {
+        //     padding: 5px;
+        //     border-radius: 5px;
+        //     border: 2px solid rgba($tropical-indigo, 0.4);
+        //     background-color: rgba($tropical-indigo, 0.05);
+        //     color: $tropical-indigo;
             
-            font-size: 10pt;
-            margin-bottom: 10px;
+        //     font-size: 10pt;
+        //     margin-bottom: 10px;
 
-            &::placeholder { color: rgba($tropical-indigo, 0.5); }
-            &:focus { outline: none; }
-        }
+        //     &::placeholder { color: rgba($tropical-indigo, 0.5); }
+        //     &:focus { outline: none; }
+        // }
 
-        input { height: 2.5em; }
+        // input { height: 2.5em; }
 
-        .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        // .form-group {
+        //     display: flex;
+        //     align-items: center;
+        //     margin-bottom: 10px;
 
-            label {
-                font-size: 10pt;
-                color: rgba($tropical-indigo, 0.6);
-            }
+        //     label {
+        //         font-size: 10pt;
+        //         color: rgba($tropical-indigo, 0.6);
+        //     }
 
-            select {
-                margin-left: 20px;
-                height: 2.5em;
-                width: 100px;
-                border: 2px solid rgba($tropical-indigo, 0.4);
-                background-color: rgba($tropical-indigo, 0.05);
-                color: $tropical-indigo;
-                font-size: 10pt;
-                padding: 5px;
-                border-radius: 5px;
+        //     select {
+        //         margin-left: 20px;
+        //         height: 2.5em;
+        //         width: 100px;
+        //         border: 2px solid rgba($tropical-indigo, 0.4);
+        //         background-color: rgba($tropical-indigo, 0.05);
+        //         color: $tropical-indigo;
+        //         font-size: 10pt;
+        //         padding: 5px;
+        //         border-radius: 5px;
 
-                &:hover { cursor: text; }
-                &:focus { outline: none; }
-            }
-        }
+        //         &:hover { cursor: text; }
+        //         &:focus { outline: none; }
+        //     }
+        // }
 
-        .input-field {
-            input {
-                border: none;
-                background-color: transparent;
-            }
-        }
+        // .input-field {
+        //     input {
+        //         border: none;
+        //         background-color: transparent;
+        //     }
+        // }
     }
 
     .buttons {

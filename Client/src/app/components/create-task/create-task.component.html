@@ -1,4 +1,24 @@
-<form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
+<div class="create-task">
+    <div class="form-header">
+        <h2 translate>Crear tarea</h2>
+        <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg">
+    </div>
+
+    <div class="form-body">
+        <input type="text" name="taskName" placeholder="{{ 'global.name' | translate}}">
+        <textarea  rows="6" cols="30" name="boardDescription" placeholder="{{ 'global.description' | translate }}"></textarea>
+        <div class="form-group">
+            <label>{{ 'states.states' | translate}}:</label>
+            
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
+    </div>
+</div>
+
+<!--<form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">
         <h2 translate>Crear tarea</h2>
         <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
@@ -43,4 +63,4 @@
     <div class="buttons">
         <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
-</form>
+</form>-->

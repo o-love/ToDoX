@@ -24,7 +24,10 @@ import { Form } from 'src/app/models/form';
     ]),
   ],
 })
-export class CreateTaskComponent implements Form {
+export class CreateTaskComponent {
+
+  
+  /*
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private taskService: TaskService, private route: ActivatedRoute, private router: Router) { 
@@ -146,5 +149,5 @@ export class CreateTaskComponent implements Form {
 
   onClose() {
     this.closePopup.emit();
-  }
+  }*/
 }

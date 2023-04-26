@@ -23,6 +23,7 @@
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 <div class="popup" *ngIf="showPopup">
-  <app-create-task *ngIf="showPopup" [boardId]="selectedList.board_id.toString()" [taskListId]="selectedList.id.toString()" (taskCreated)="addTask($event)"
-    (closePopup)="showPopup = false"></app-create-task>
+  <app-create-task *ngIf="showPopup"></app-create-task>
+  <!-- <app-create-task *ngIf="showPopup" [boardId]="selectedList.board_id.toString()" [taskListId]="selectedList.id.toString()" (taskCreated)="addTask($event)"
+    (closePopup)="showPopup = false"></app-create-task> -->
 </div>
