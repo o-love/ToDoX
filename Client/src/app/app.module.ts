@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HttpClient,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +23,7 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
 
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from './services/task-service/task-service.service';
+import { UserAuthService } from './services/user-auth-service/user-auth.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -38,6 +43,7 @@ import { CreateLabelComponent } from './components/create-label/create-label.com
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -78,14 +84,21 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
         useFactory: (http: HttpClient) => {
           return new TranslateHttpLoader(http, './assets/i18n/', '.json');
         },
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
   ],
-  providers: [ // Ensuring that a single instance is created and shared across all components that inject it.
+  providers: [
+    // Ensuring that a single instance is created and shared across all components that inject it.
     BoardService, // So it is available throughout the application
     TaskService,
+    UserAuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

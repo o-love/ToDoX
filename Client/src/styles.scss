@@ -56,3 +56,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: rgba($tropical-indigo, 1);
   }
 }
+
+@media screen and (max-width: 770px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

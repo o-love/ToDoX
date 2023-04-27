@@ -7,8 +7,7 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
 ## Installation
 1. Clone the repository from Github.
 2. Make sure you have Docker installed & running on your machine.
-3. Create a .env file in the Server directory with the following variables:
-
+3. Create a .env file on the root directory with the following variables:
     ```
     TIMEZONE=Europe/Madrid
 
@@ -22,8 +21,17 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
     ```
     *Note that you do not need to modify any of the variables in this file unless you want to change the default configuration. Remember that, if you create a new database user, you will need to grant privileges to access.
 
-4. Run docker-compose up -d to start the application. This command will build and start all the necessary Docker containers.
-5. Follow the additional steps in the 'Sorking with Angular' section below.
+3. Copy the .env.example file in the Server directory, rename it .env and modify the following variables:
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=172.16.0.3
+    DB_PORT=3306
+    DB_DATABASE=todox
+    DB_USERNAME=ps
+    DB_PASSWORD='cQGMlSMYsUb'
+    ```
+5. Run docker-compose up -d to start the application. This command will build and start all the necessary Docker containers.
+6. Follow the additional steps in the 'Sorking with Angular' section below.
 
 
 ## Working with Angular
@@ -33,6 +41,13 @@ Since we haven't been able to set up angular using Docker, we will be working wi
 3. Angular will be deployed on http://http://localhost:xxxx (http://http://localhost:4200 in case no port was declared).
     * Changes will be updated in Real Time. Make sure to commit and push your changes.
     ** To add elements, just run the command inside the Client directory. E.g. to create a component cd to Client and run ng generate component <component_name>.
+
+
+## Database migrations
+To be up to date with all the database migrations, execute the following commands:
+1. docker exec -it todox-app-1 bash to access laravel's container
+2. php artisan migrate to create all the tables of the database
+3. php artisan db:seed --class=StateSeeder to create the 3 basic states
 
 
 ## Commit changes as a group member

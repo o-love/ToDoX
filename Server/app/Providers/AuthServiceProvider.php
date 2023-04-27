@@ -3,7 +3,12 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +30,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::viaRequest('custom-token', function (Request $request) {
+            $token = PersonalAccessToken::findToken(trim(substr($request->header('Authorization'), 6)));
+            return User::findOrFail($token->tokenable_id);
+        });
     }
 }
