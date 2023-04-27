@@ -79,6 +79,7 @@ export class StateListComponent implements OnInit {
         this.fill(this.selectedElement, true);
         this.selectedState = null;
         this.selectedElement = null;
+        this.state.emit();
         return;
       }
     }
