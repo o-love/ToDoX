@@ -36,8 +36,8 @@ const routes: Routes = [
   { path: 'labels', component: LabelDetailComponent},
   { path: 'labels/new', component: CreateLabelComponent },
   { path: 'list-kanban', component: ListDetailKanbanComponent },
-  { path: 'state', component: StateListComponent },
   { path: 'boards', component: BoardListComponent},
+  { path: 'state', component: StateListComponent }
 ];
 
 @NgModule({

@@ -18,7 +18,7 @@
         <div class="inline-group">
             <div class="form-group">
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
-                <div class="select" id="state-select">
+                <div class="select" id="state-select" (click)="openStateSelect()">
                     <div class="input select-btn">
                         <label class="placeholder-text" *ngIf="!selectedState">
                             Select a state...
@@ -29,6 +29,9 @@
                             </span>
                         </label>
                     </div>
+                </div>
+                <div class="popup" *ngIf="openStateSelectPopup">
+                    <app-state-list *ngIf="openStateSelectPopup" (close)="this.openStateSelectPopup = false" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
@@ -41,7 +44,7 @@
                                 Select labels...
                             </label>
                             <ng-container *ngIf="selectedLabels">
-                                <ng-container *ngFor="let label in selectedLabels">
+                                <ng-container *ngFor="let label of selectedLabels">
                                     <label class="label">
                                         <span class="balloon">{{ label.name }}</span>
                                     </label>
@@ -50,7 +53,7 @@
                         </div>
                     </div>
                     <ul id="label-list" class="list">
-                        <ng-container *ngFor="let label in labels">
+                        <ng-container *ngFor="let label of labels">
                             <li class="label closed"><span class="balloon"><i class="icon "></i>{{ label.name }}</span></li>
                         </ng-container>
                     </ul>

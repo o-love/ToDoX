@@ -38,6 +38,9 @@ export class CreateTaskComponent implements Form {
   @Output() taskCreated = new EventEmitter<Task>();
   @Output() closePopup = new EventEmitter<void>();
 
+  openStateSelectPopup: boolean = false;
+  openLabelsPopup: boolean = false;
+
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
       taskName: ['', Validators.required],
@@ -63,8 +66,20 @@ export class CreateTaskComponent implements Form {
     throw new Error('Method not implemented.');
   }
 
+  openStateSelect() {
+    if (this.states) this.openStateSelectPopup = true;
+  }
+
+  openLabels() {
+    this.openLabelsPopup = true;
+  }
+
   onClose() {
     this.closePopup.emit();
+  }
+
+  selectState(state: State) {
+    this.selectedState = state;
   }
 
   onSubmit() {
