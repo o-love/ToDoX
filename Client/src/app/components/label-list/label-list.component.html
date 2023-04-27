@@ -1,7 +1,7 @@
 <div class="label-list">
     <div class="top">
         <div class="btn-top">
-            <h4 class="title" translate>states.states</h4>
+            <h4 class="title" translate>labels.labels</h4>
             <i (click)="onClose()" class="bi bi-x"></i>
         </div>
         <div class="body">
@@ -9,10 +9,10 @@
                 <ng-container *ngFor="let label of labels">
                     <div class="label-card">
                         <div class="left">
-                            <i #check class="bi bi-square"></i>
-                            <div class="balloon"><label class="name">{{label.name}}</label></div>
+                            <i #check (click)="selectLabel(check, label)" (mouseover)="fill(check, false)" (mouseout)="fill(check, false)" class="bi bi-square"></i>
+                            <div class="balloon"><label class="name">{{ label.name }}</label></div>
                         </div>
-                        <i #dropdown class="bi dropdown-btn bi-chevron-down"></i>
+                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
                 </ng-container>
             </ng-container>

@@ -139,8 +139,14 @@
     }
 }
 
-.popup {
+.popup-states {
     position: fixed;
     z-index: 101;
     transform: translate(100%, 0%);
+}
+
+.popup-labels {
+    position: fixed;
+    z-index: 102;
+    transform: translate(100%, -10%);
 }

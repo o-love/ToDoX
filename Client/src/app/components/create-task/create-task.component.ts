@@ -39,7 +39,7 @@ export class CreateTaskComponent implements Form {
   @Output() closePopup = new EventEmitter<void>();
 
   openStateSelectPopup: boolean = false;
-  openLabelsPopup: boolean = false;
+  openLabelsSelectPopup: boolean = false;
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
@@ -66,12 +66,22 @@ export class CreateTaskComponent implements Form {
     throw new Error('Method not implemented.');
   }
 
+  hideStates() {
+    if (this.openStateSelectPopup) this.openStateSelectPopup = false;
+  }
+
+  // ???????????????????
+  hideLabels() {
+    this.openLabelsSelectPopup = false;
+  }
+
   openStateSelect() {
     if (this.states) this.openStateSelectPopup = true;
   }
 
-  openLabels() {
-    this.openLabelsPopup = true;
+  // ????????????????
+  openLabelsSelect() {
+    if (this.labels) this.openLabelsSelectPopup = true;
   }
 
   onClose() {
@@ -80,6 +90,10 @@ export class CreateTaskComponent implements Form {
 
   selectState(state: State) {
     this.selectedState = state;
+  }
+
+  selectLabels(labels: Label[]) {
+    this.selectedLabels = labels;
   }
 
   onSubmit() {

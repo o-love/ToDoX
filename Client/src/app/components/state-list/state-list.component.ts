@@ -85,7 +85,7 @@ export class StateListComponent implements OnInit {
     }
     
     if (element.classList.contains('bi-square-fill')) this.toggleFill(element);
-    if (element.classList.contains('bi-square-clear')) this.toggleClear(element);
+    if (element.classList.contains('bi-square')) this.toggleClear(element);
     this.toggleCheck(element);
     this.selectedState = state;
     this.selectedElement = element;
