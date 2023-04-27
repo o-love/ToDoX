@@ -8,6 +8,7 @@ use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\TaskCommentController;
 
 /*
 |--------------------------------------------------------------------------

@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\TaskComment;
+use App\Models\Task;
+use App\Models\TaskList;
+use App\Models\Board;
 
 class TaskCommentController extends Controller
 {
