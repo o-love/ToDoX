@@ -9,7 +9,7 @@
                 </div>
                 <hr class="divider">
                 <div class="settings">
-                    <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> 
+                    <i class="bi bi-gear-fill"></i>
                     <label translate>global.settings</label>
                 </div>
                 <hr class="divider">
@@ -22,13 +22,13 @@
                             <ng-container>
                                 <div #list class="list-card" (click)="selectList(list)">
                                     <label class="list-name">{{ list.name }}</label>
-                                    <img class="delete-btn" src="../../../assets/icons/Trashcan.svg">
+                                    <i class="delete-btn bi bi-trash3"></i>
                                 </div>
                             </ng-container>
                         </ng-container>
                     </div>
-                    <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-                </div>        
+                    <i #add class="add-btn bi bi-plus-square" (mouseover)="toggleFill(add)" (mouseout)="toggleFill(add)" (click)="showPopup = true"></i>
+                </div>
             </div>
             <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
         </div>

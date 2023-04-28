@@ -41,30 +41,33 @@
     box-sizing: border-box;
     width: 100%;
     margin-top: 15vh;
+    margin-bottom: 2em;
 
-    /*
-    .text {
-      p {
-        padding: 2px 5px;
+    .info {
+      display: flex;
+      flex-direction: column;
+      color: $english-violet;
+      width: 30vw;
+      max-width: 30vw;
+
+      .name { 
+        display: flex;
+        font-size: 16pt; 
+        margin: 0;
+        padding: 0;
+      }
+
+      .description {
         font-size: 10pt;
-        width: 700px;
-        max-width: 700px;
-        height: 3em;
-        max-height: 3em;
-        border: 1px solid rgba($black, .2);
-        border-radius: 5px;
-        background-color: rgba($black, .05);
+        margin-top: .5em;
+        margin-left: .2em;
+        max-width: 100%;
+        max-height: 2rem;
+        opacity: .8;
         white-space: nowrap;
-        overflow: hidden;
+        font-style: italic;
         text-overflow: ellipsis;
       }
-    }*/
-
-    h3 { 
-      display: flex;
-      font-size: 16pt; 
-      margin: 0;
-      padding: 0;
     }
 
     .layout-select {

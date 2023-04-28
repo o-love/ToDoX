@@ -39,16 +39,15 @@
                 justify-content: center;
                 align-items: center;
 
-
-                .settings-btn {
-                    margin-right: 10%;
-                    width: 15px;
-                    height: 15px;
+                .bi-gear-fill {
+                    margin-right: 1em;
+                    font-size: 10pt;
                     &:hover { cursor: pointer; }
                 }
 
                 label {
                     font-size: 11pt;
+                    font-weight: 500;
                     text-transform: uppercase;
                     &:hover { cursor: pointer; }
                 }
@@ -62,7 +61,7 @@
 
                 .lists-header {
                     display: flex;
-                    justify-content: start;
+                    justify-content: flex-start;
                     align-items: center;
                     width: fit-content;
                     height: fit-content;
@@ -98,7 +97,7 @@
                         width: 100%;
                         max-width: 100%;
                         padding: 2px 6px;
-                        margin-bottom: 5px;
+                        margin-bottom: .1em;
 
                         .list-name {
                             font-size: 10pt;
@@ -112,8 +111,8 @@
                         }
 
                         .delete-btn {
-                            width: 15px;
-                            height: 15px;
+                            font-size: 10pt;
+                            color: $bittersweet;
 
                             &:hover {
                                 cursor: pointer;
@@ -133,15 +132,12 @@
 
                 .add-btn {
                     margin-top: 10px;
-                    width: 18px;
-                    height: 18px;
-                    border: 1.5px solid rgba($english-violet, 0.3);
-                    border-radius: 2px;
+                    font-size: 10pt;
                     align-self: center;
+                    color: $english-violet;
 
                     &:hover { 
                         cursor: pointer; 
-                        background-color: rgba($english-violet, 0.05);
                         transform: scale(1.1);
                     }
 
@@ -157,7 +153,6 @@
             margin: 1rem -0.8rem 0 0;
             background-color: $white;
             border-radius: 50%;
-            border: 1px solid $melon-pastel;
             width: 25px;
             height: 25px;
             z-index: 1;

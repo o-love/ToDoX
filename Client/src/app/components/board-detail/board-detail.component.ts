@@ -98,6 +98,11 @@ export class BoardDetailComponent implements OnInit {
     );
   }
 
+  toggleFill(element: HTMLElement) {
+    element.classList.toggle('bi-plus-square');
+    element.classList.toggle('bi-plus-square-fill');
+  }
+
   /*
   editTasklist(tasklist_id: number): void {
     console.log("Tasklist id edit", id);

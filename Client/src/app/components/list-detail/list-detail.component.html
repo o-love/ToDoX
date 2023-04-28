@@ -2,7 +2,10 @@
   <div class="wallpaper"></div>
 
   <div class="header">
-    <h3 class="name">{{ selectedList.name }}</h3>
+    <div class="info">
+      <h3 class="name">{{ selectedList.name }}</h3>
+      <p class="description">{{ selectedList.description }}</p>
+    </div>
     <div #select class="layout-select closed">
       <div class="select-btn" (click)="selectActive()">
         <span #title class="placeholder-text">Kanban Layout</span>
