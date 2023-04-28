@@ -1,8 +1,12 @@
 <div class="create-state" (ngSubmit)="onSubmit()" [formGroup]="stateForm">
+    <div class="top">
+        <h4 class="title">Crear estado</h4>
+        <i class="bi bi-arrow-left"></i>
+    </div>
     <div class="body">
-        <input type="text" placeholder="State name">
+        <input #input type="text" formControlName="name" placeholder="State name">
     </div>
     <div class="bottom">
-        <i class="bi bi-arrow-left"></i><button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
+        <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
     </div>
 </div>

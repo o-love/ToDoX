@@ -1,7 +1,8 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { State } from '../../models/state';
 import { Form } from 'src/app/models/form';
+import { StateService } from 'src/app/services/state-service/state-service.service';
 
 @Component({
   selector: 'app-create-state',
@@ -10,38 +11,44 @@ import { Form } from 'src/app/models/form';
 })
 export class CreateStateComponent implements Form { // implements OnInit
   stateForm!: FormGroup;
-  // states: State[] = [];
-  // displayedColumns: string[] = ['id', 'name', 'actions'];
-  // editingState: State | null = null;
+  
+  @ViewChild('input') input!: ElementRef<any>;
+  @Output() newState = new EventEmitter<State>();
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private fb: FormBuilder, private stateService: StateService) { 
     this.stateForm = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', [Validators.required, Validators.maxLength(20)]]
     });
   }
 
   checkErrors(): boolean {
-    throw new Error('Method not implemented.');
+    let errors: boolean = false;
+
+    const control = this.stateForm.controls['name'];
+
+    if (control.errors) {
+      this.onError(this.input);
+      errors = true;
+    }
+
+    return errors;
   }
 
   resetErrors(): void {
-    throw new Error('Method not implemented.');
+    this.input.nativeElement.style.boxShadow = 'none';
   }
 
   onError(label: ElementRef<any>): void {
-    throw new Error('Method not implemented.');
-  }
-
-  onFocus(event: any, label: any): void {
-    throw new Error('Method not implemented.');
-  }
-  
-  onBlur(event: any, label: any): void {
-    throw new Error('Method not implemented.');
+    label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
 
   onSubmit() {
-    
+    this.resetErrors();
+    if (this.checkErrors()) return;
+
+    // needs change
+    this.stateService.addState(this.stateForm.get('name')?.value); // tiene que devolver un estado
+    this.newState.emit() // tengo que pasar un estado
   }
 
   // ngOnInit(): void {
