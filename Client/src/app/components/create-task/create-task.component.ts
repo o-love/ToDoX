@@ -72,7 +72,9 @@ export class CreateTaskComponent implements Form {
 
   // ???????????????????
   hideLabels() {
+    console.log(this.openLabelsSelectPopup);
     this.openLabelsSelectPopup = false;
+    console.log(this.openLabelsSelectPopup);
   }
 
   openStateSelect() {
@@ -81,7 +83,7 @@ export class CreateTaskComponent implements Form {
 
   // ????????????????
   openLabelsSelect() {
-    if (this.labels) this.openLabelsSelectPopup = true;
+    this.openLabelsSelectPopup = true;
   }
 
   onClose() {

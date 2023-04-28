@@ -20,6 +20,8 @@ export class BoardDetailComponent implements OnInit {
   selectedList!: TaskList;
 
   showPopup: boolean = false;
+  showCreateList: boolean = false;
+  showSettings: boolean = false;
   showListDetail: boolean = false;
 
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
@@ -62,6 +64,8 @@ export class BoardDetailComponent implements OnInit {
 
   hidePopup() {
     if (this.showPopup) this.showPopup = false;
+    if (this.showCreateList) this.showCreateList = false;
+    if (this.showSettings) this.showSettings = false;
   }
 
   toggleSidebar() {
@@ -101,6 +105,20 @@ export class BoardDetailComponent implements OnInit {
   toggleFill(element: HTMLElement) {
     element.classList.toggle('bi-plus-square');
     element.classList.toggle('bi-plus-square-fill');
+  }
+
+  openCreateList() {
+    this.showPopup = true; 
+    this.showCreateList = true;
+  }
+
+  openSettings() {
+    this.showPopup = true;
+    this.showSettings = true;
+  }
+
+  updateBoard(board: Board) {
+    this.board = board;
   }
 
   /*

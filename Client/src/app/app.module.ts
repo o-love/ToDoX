@@ -43,6 +43,7 @@ import { HomeComponent } from './components/home/home.component';
 import { StateListComponent } from './components/state-list/state-list.component';
 import { LabelListComponent } from './components/label-list/label-list.component';
 import { StateDetailComponent } from './components/state-detail/state-detail.component';
+import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { StateDetailComponent } from './components/state-detail/state-detail.com
     StateListComponent,
     LabelListComponent,
     StateDetailComponent,
+    BoardSettingsComponent,
   ],
   imports: [
     // CommonModule,

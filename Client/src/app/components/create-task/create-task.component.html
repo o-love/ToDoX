@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 <label class="name">{{ 'labels.labels' | translate }}</label>
-                <div class="select" id="label-multiselect" (click)="openLabelsSelectPopup = true">
+                <div class="select" id="label-multiselect" (click)="openLabelsSelect()">
                     <div class="input select-btn">
                         <div class="selected-label-list">
                             <label class="placeholder-text" *ngIf="!selectedLabels">

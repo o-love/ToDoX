@@ -8,7 +8,7 @@
                     <!--<p class="author">{{ board?.user.email ??? }}</p>-->
                 </div>
                 <hr class="divider">
-                <div class="settings">
+                <div class="settings" (click)="openSettings()">
                     <i class="bi bi-gear-fill"></i>
                     <label translate>global.settings</label>
                 </div>
@@ -27,7 +27,7 @@
                             </ng-container>
                         </ng-container>
                     </div>
-                    <i #add class="add-btn bi bi-plus-square" (mouseover)="toggleFill(add)" (mouseout)="toggleFill(add)" (click)="showPopup = true"></i>
+                    <i #add class="add-btn bi bi-plus-square" (mouseover)="toggleFill(add)" (mouseout)="toggleFill(add)" (click)="openCreateList()"></i>
                 </div>
             </div>
             <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
@@ -40,7 +40,8 @@
 
     <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
     <div class="popup" *ngIf="showPopup">
-        <app-create-list (listCreated)="addList($event)"
-            (closePopup)="showPopup = false"></app-create-list>
+        <app-create-list *ngIf="showCreateList" (listCreated)="addList($event)"
+            (closePopup)="hidePopup()"></app-create-list>
+        <app-board-settings (boardEdited)="updateBoard($event)" (closeBoardSettings)="hidePopup()" *ngIf="showSettings" [board]="board"></app-board-settings>
     </div>
 </main>
