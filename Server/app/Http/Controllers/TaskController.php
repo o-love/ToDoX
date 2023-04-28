@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\TaskList;
 use App\Models\Board;
 use App\Models\Label;
+use App\Models\TaskComment;
 
 class TaskController extends Controller
 {
@@ -65,10 +66,12 @@ class TaskController extends Controller
     }
 
     // Display the specified resource
-    public function show(TaskList $taskList, Task $task, Board $board)
+    public function show($tasklistId, $taskId, $boardId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // $taskList = TaskList::findOrFail($tasklistId);
+        // $task = Task::with(['taskList', 'state', 'labels', 'comments.user'])->findOrFail($task->id);
+        // $task = $taskList->tasks()->findOrFail($taskId);
+        $task =  Task::findOrFail($taskId);
 
         return response()->json($task);
     }
@@ -106,7 +109,26 @@ class TaskController extends Controller
         return response()->json(null, 204);
     }
 
-    private function convertDate($date) {
+    // Store a comment in a specific task
+    public function storeComment(Request $request, Board $board, Tasklist $tasklist, Task $task, $userId)
+    {
+        $this->validate($request, [
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $comment = new TaskComment([
+            // 'user_id' => auth()->user()->id,
+            'user_id' => $userId,
+            'task_id' => $task->id,
+            'comment' => $request->input('comment'),
+        ]);
+
+        $comment->save();
+        return response()->json($comment, 201); 
+    }
+
+    private function convertDate($date)
+    {
         if ($date != null)
             return Carbon::parse($date)->setTimezone('Europe/Madrid')->format('Y-m-d');
         else return null;

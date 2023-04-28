@@ -24,6 +24,7 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from './services/task-service/task-service.service';
 import { UserAuthService } from './services/user-auth-service/user-auth.service';
+import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -38,12 +39,13 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 
+import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+
 // PROV until front decides
 import { CreateLabelComponent } from './components/create-label/create-label.component';
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
-import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
-import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { AuthInterceptorService } from './services/auth-interceptor-service/auth
     LabelDetailComponent,
     CreateStateComponent,
     LanguageSelectorComponent,
+    CommentComponent,
   ],
   imports: [
     // CommonModule,

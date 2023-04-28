@@ -2,10 +2,11 @@ FROM php:8.1.0-fpm-buster
 
 WORKDIR "/application"
 
-# Install selected extensions and other stuff
+# # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php8.0-mysql php-xdebug libmcrypt-dev \
+    && apt-get -y --no-install-recommends install php8.0-mysql \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    # php-xdebug libmcrypt-dev
 
 # Microsoft SQL Server Extension
 # RUN apt-get update -yqq && \
@@ -17,17 +18,14 @@ RUN apt-get update \
 
 # # PHP
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    libpq-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo pdo_pgsql \
-    && docker-php-ext-install pdo_mysql
-
-RUN apt-get install -y libzip-dev && apt-get install -y libpq-dev \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip exif pcntl
+    # libpq-dev \ libfreetype6-dev \ libjpeg62-turbo-dev \ libpng-dev \ && docker-php-ext-install pdo pdo_pgsql \
+    # && docker-php-ext-configure gd --with-freetype --with-jpeg \ && docker-php-ext-install -j$(nproc) gd \
+
+# RUN apt-get install -y && apt-get install -y libpq-dev \
+    # && docker-php-ext-install zip exif pcntl
 
 # ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 

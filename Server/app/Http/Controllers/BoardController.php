@@ -24,9 +24,7 @@ class BoardController extends Controller
     // Creates a new board
     public function store(Request $request)
     {
-        // $mc = microtime(true);
         $board = Board::create($request->all());
-        // dump(microtime(true) - $mc);
         return new JsonResponse($board, Response::HTTP_OK);
     }
 

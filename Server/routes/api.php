@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\TaskCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +43,18 @@ Route::get('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 
 Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 // Route::put('lists/{taskListId}/tasks', [TaskController::class, 'update'])->name('tasks.update');
 // Route::delete('lists/{taskListId}/tasks', [TaskController::class, 'destroy'])->name('tasks.destroy');
-Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show'])->name('tasks.show');
-Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update'])->name('tasks.update');
-Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show']);
+Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update']);
+Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy']);
+
+// Task comments routes
+Route::get('/boards/{board}/lists/{tasklist}/tasks/{task}/comments', [TaskCommentController::class, 'index']);
+Route::post('/boards/{board}/lists/{tasklist}/tasks/{task}/comments', [TaskCommentController::class, 'store'])->name('tasks.comments.store');
+// Route::put('/boards/{board}/lists/{tasklist}/tasks/{task}/comments', [TaskController::class, 'update'])->name('tasks.comments.store');
+// Route::delete('/boards/{board}/lists/{tasklist}/tasks/{task}/comments', [TaskController::class, 'delete'])->name('tasks.comments.store');
+Route::get('/comments/{commentId}', [TaskCommentController::class, 'show']);
+Route::put('/comments/{commentId}', [TaskCommentController::class, 'update']);
+Route::delete('/comments/{commentId}', [TaskCommentController::class, 'delete']);
 
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
