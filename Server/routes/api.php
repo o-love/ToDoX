@@ -51,7 +51,7 @@ Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskC
 Route::post('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'store'])->name('taskComment.store');
 
 Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'show'])->name('taskComment.show');
-Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'show'])->name('taskComment.destroy');
+Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'destroy'])->name('taskComment.destroy');
 
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
