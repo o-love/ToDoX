@@ -14,7 +14,6 @@ import { CreateLabelComponent } from './components/create-label/create-label.com
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { ListDetailKanbanComponent } from './components/list-detail-kanban/list-detail-kanban.component';
 import { HomeComponent } from './components/home/home.component';
-import { StateListComponent } from './components/state-list/state-list.component';
 import { BoardListComponent } from './components/board-list/board-list.component';
 
 const routes: Routes = [
@@ -36,8 +35,7 @@ const routes: Routes = [
   { path: 'labels', component: LabelDetailComponent},
   { path: 'labels/new', component: CreateLabelComponent },
   { path: 'list-kanban', component: ListDetailKanbanComponent },
-  { path: 'boards', component: BoardListComponent},
-  { path: 'state', component: StateListComponent }
+  { path: 'boards', component: BoardListComponent}
 ];
 
 @NgModule({

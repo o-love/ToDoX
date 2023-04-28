@@ -26,5 +26,5 @@
 
 <div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
 <div class="popup" *ngIf="showPopup">
-  <app-create-task (taskCreated)="addTask($event)" (closePopup)="showPopup = false" [states]="states" [labels]="labels" *ngIf="showPopup"></app-create-task>
+  <app-create-task (taskCreated)="addTask($event)" (closePopup)="showPopup = false" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" *ngIf="showPopup"></app-create-task>
 </div>

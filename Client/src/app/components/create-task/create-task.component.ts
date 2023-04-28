@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { State } from 'src/app/models/state';
 import { ActivatedRoute, Router } from '@angular/router'
@@ -27,11 +27,12 @@ import { Form } from 'src/app/models/form';
 export class CreateTaskComponent implements Form {  
   
   form: FormGroup;
-  selectedState: State | null = null;
-  selectedLabels: Label[] | null = null;
+  
+  @Input() selectedState: State | null = null;
+  selectedLabels: Label[] = [];
 
-  @Input() boardId!: number;
-  @Input() taskListId!: number;
+  @Input() boardId: string | null = null;
+  @Input() taskListId: string | null = null;
   @Input() states: State[] = [];
   @Input() labels: Label[] = [];
 
@@ -41,29 +42,63 @@ export class CreateTaskComponent implements Form {
   statesPopup: boolean = false;
   labelsPopup: boolean = false;
 
+  @ViewChildren('labels') labelsRef!: QueryList<ElementRef<any>>;
+  @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
+  @ViewChild('start') start!: ElementRef<any>;
+  @ViewChild('due') due!: ElementRef<any>;
+  @ViewChild('state') state!: ElementRef<any>;
+
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
-      taskName: ['', Validators.required],
-      taskDescription: ['', []],
+      taskName: ['', [Validators.required, Validators.maxLength(20)]],
+      taskDescription: ['', [Validators.maxLength(200)]],
       startDate: ['', []],
       dueDate: ['', []],
     })
   }
 
   checkErrors(): boolean {
-    throw new Error('Method not implemented.');
+    let errors: boolean = false;
+
+    this.inputs.forEach((label, index) => {
+      const control = this.form.controls[Object.keys(this.form.controls)[index]];
+
+      if (control.errors) {
+        this.onError(label);
+        errors = true;
+      }
+    });
+
+    if (!this.form.get('startDate') && this.form.get('dueDate')) {
+      this.onError(this.start);
+      errors = true;
+    } else {
+      let startDate: Date = new Date(this.form.get('startDate')?.value);
+      let dueDate: Date = new Date(this.form.get('dueDate')?.value);
+
+      if (startDate > dueDate) {
+        this.onError(this.start);
+        this.onError(this.due);
+        errors = true;
+      }
+    }
+
+    if (!this.selectedState) {
+      this.onError(this.state);
+      errors = true;
+    }
+
+    return errors;
   }
+
   resetErrors(): void {
-    throw new Error('Method not implemented.');
+    this.labelsRef.forEach((label) => {
+			label.nativeElement.style.boxShadow = 'none';
+		});
   }
+
   onError(label: ElementRef<any>): void {
-    throw new Error('Method not implemented.');
-  }
-  onFocus(event: any, label: any): void {
-    throw new Error('Method not implemented.');
-  }
-  onBlur(event: any, label: any): void {
-    throw new Error('Method not implemented.');
+    label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
 
   toggleLabels() {
@@ -89,18 +124,29 @@ export class CreateTaskComponent implements Form {
   }
 
   onSubmit() {
-    if (!this.taskListId || !this.boardId || !this.selectedState || !this.selectedLabels) return;
+    this.resetErrors();
+    if (this.checkErrors()) return;
+    if (!this.taskListId || !this.boardId || !this.selectedState) {
+      console.log('me muero');
+      if (!this.taskListId) console.log('tasklist');
+      if (!this.boardId) console.log('board');
+      if (!this.selectedState) console.log('state');
+      return;
+    }
+
+    console.log('holii');
 
     let taskName: string = this.form.get('taskName')?.value;
     let taskDescription: string = this.form.get('taskDescription')?.value;
-    let startDate: Date | null = this.form.get('startDate')?.value;
-    let dueDate: Date | null = this.form.get('dueDate')?.value;
+    let startDate: Date = new Date(this.form.get('startDate')?.value);
+    let dueDate: Date = new Date(this.form.get('dueDate')?.value);
 
-    this.taskService.createTask(this.boardId.toString(), this.taskListId.toString(), 
+    this.taskService.createTask(this.boardId, this.taskListId, 
       taskName, taskDescription, this.selectedState.id.toString(), this.selectedLabels, 
       startDate, dueDate).subscribe({
         next: (task: Task) => {
           this.taskCreated.emit(task);
+          console.log(task);
         },
         error: (error) => console.log(error)
     });

@@ -42,6 +42,8 @@ export class ListDetailComponent implements OnInit {
     this.boardId = this.selectedList.board_id.toString();
     this.taskListId = this.selectedList.id.toString();
 
+    console.log(this.taskListId);
+
     this.getTasks();
     this.getStates();
     this.getLabels();

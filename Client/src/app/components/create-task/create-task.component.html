@@ -7,23 +7,23 @@
     <div class="form-body">
         <div class="form-group">
             <label class="name" for="taskName">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
-            <input class="input" type="text" name="taskName" formControlName="taskName">
+            <input #labels #input class="input" type="text" name="taskName" formControlName="taskName">
         </div>
 
         <div class="form-group">
             <label class="name" for="taskDescription">{{ 'global.description' | translate }}</label>
-            <textarea class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
+            <textarea #labels #input class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
         </div>
 
         <div class="inline-group">
             <div class="form-group">
                 <label class="name">{{ 'global.startDate' | translate }}</label>
-                <input class="input" type="date" name="startDate" formControlName="startDate">
+                <input #labels #start class="input" type="date" name="startDate" formControlName="startDate">
             </div>
 
             <div class="form-group">
                 <label class="name">{{ 'global.dueDate' | translate }}</label>
-                <input class="input" type="date" name="dueDate" formControlName="dueDate">
+                <input #labels #due class="input" type="date" name="dueDate" formControlName="dueDate">
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <div class="form-group" id="state">
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
                 <div class="select" id="state-select" (click)="toggleStates()">
-                    <div class="input select-btn">
+                    <div #labels #state class="input select-btn">
                         <label class="placeholder-text" *ngIf="!selectedState">
                             Select a state...
                         </label>
