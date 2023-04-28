@@ -114,6 +114,10 @@
                 .list { display: none; }
             }
         }
+
+        #state {
+            width: 45%;
+        }
     }
 
     .buttons {
@@ -142,11 +146,11 @@
 .popup-states {
     position: fixed;
     z-index: 101;
-    transform: translate(100%, 0%);
+    transform: translate(100%, -30%);
 }
 
 .popup-labels {
     position: fixed;
     z-index: 102;
-    transform: translate(100%, -10%);
+    transform: translate(0%, 20%);
 }

@@ -1,6 +1,6 @@
 @import '../../../assets/styles/colours';
 
-.state-list {
+.select {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,12 +9,13 @@
     max-height: 200px;
     border-radius: 5px;
     box-shadow: 0 0px 10px rgba($english-violet, .2);
-    background-color: $white    ;
+    background-color: $white;
+    z-index: 103;
 
     padding: .4em .5em;
     color: $english-violet;
 
-    .btn-top {
+    .header {
         display: flex;
         justify-content: space-between;
         margin-bottom: .3em;
@@ -34,14 +35,6 @@
         }
     }
 
-
-    // .divider {
-    //     width: 100%;
-    //     border: 1.5px solid rgba($english-violet, 0.9);
-    //     margin-block: .8em;
-    //     border-radius: 1.5px;
-    // }
-
     .body {
         overflow: scroll;
         max-height: max-content;
@@ -55,7 +48,7 @@
             background-color: transparent;
         }
 
-        .state-card {
+        .select-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -66,14 +59,6 @@
             .left {
                 display: flex;
                 align-items: center;
-
-                .bi-square, .bi-square-fill, .bi-check-square-fill {
-                    font-size: 6pt;
-
-                    &:hover {
-                        cursor: pointer;
-                    }
-                }
 
                 .balloon {
                     display: flex;
@@ -104,6 +89,15 @@
                 &:hover { cursor: pointer; }
             }
         }
+
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: fit-content;
+            height: fit-content;
+            color: $english-violet;
+            width: 10px;
+            height: 10px;
+        }
     }
 
     .bottom {
@@ -112,7 +106,7 @@
         justify-content: flex-end;
         margin-bottom: .5em;
 
-        .btn {
+        .add-btn {
             display: flex;
             align-items: center;
             font-size: 8pt;
@@ -121,6 +115,7 @@
             background-color: rgba($tropical-indigo, .2);
             color: $english-violet;
             font-weight: 500;
+            border-radius: 5px;
 
             .bi {
                 margin: 0 .5em 0 0;
@@ -142,4 +137,9 @@
             }
         }
     }
+}
+
+.empty {
+    font-size: 8pt;
+    font-style: italic;
 }
