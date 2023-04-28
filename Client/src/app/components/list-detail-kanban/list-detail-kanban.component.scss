@@ -1,0 +1,114 @@
+@import '../../../assets/styles/colours';
+
+.kanban-layout {
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+
+    .states {
+        display: flex;
+        align-items: flex-start;
+        width: fit-content;
+        height: fit-content;
+
+        .state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: $white;
+            border-radius: 5px;
+            box-shadow: 0 5px 5px rgba($english-violet, .1);
+            padding: 10px;
+            color: $english-violet;
+            width: 250px;
+            height: fit-content;
+            font-size: 8pt;
+            margin-right: 15px;
+
+            .title {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: fit-content;
+                margin-bottom: 10px;
+
+                .name {
+                    padding: 0;
+                    margin: 0;
+                    font-size: 10pt;
+                    width: 80%;
+                    text-align: start;
+                }
+
+                .bi {
+                    font-size: 8pt;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+            
+
+            .tasks {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 5em;
+                height: fit-content;
+                width: 100%;
+                box-sizing: border-box;
+                background-color: rgba($english-violet, .05);
+                padding: 5px;
+                border-radius: 5px;
+                margin-bottom:5px;
+
+                .task-card {
+                    width: 100%;
+                    min-height: 4em;
+                    box-sizing: content-box;
+                    padding: 2px 5px;
+                    background-color: $white;
+                    border-radius: 5px;
+                    margin-bottom: 1em;
+
+                    .task-name {
+                        outline: none;
+                        border: none;
+                        background-color: $white;
+                        color: $english-violet;
+                    }
+                }
+            }
+
+            .bi-plus-square-fill {
+                font-size: 10pt;
+                color: rgba($tropical-indigo, .8);
+
+                &:hover {
+                    cursor: pointer;
+                    color: $tropical-indigo;
+                    transform: scale(1.1);
+                }
+
+                &:active {
+                    transform: scale(1);
+                }
+            }
+        }
+
+        .bi-plus-circle-fill {
+            font-size: 15pt;
+            color: rgba($tropical-indigo, .8);
+
+            &:hover {
+                cursor: pointer;
+                color: $tropical-indigo;
+                transform: scale(1.1);
+            }
+
+            &:active { transform: scale(1); }
+        }
+    }
+}

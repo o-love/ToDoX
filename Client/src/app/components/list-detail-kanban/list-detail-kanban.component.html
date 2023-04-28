@@ -2,18 +2,18 @@
     <div class="states">
         <ng-container *ngFor="let state of states">
             <div class="state">
-                <h3>{{ state.name }}</h3>
+                <div class="title"><h3 class="name">{{ state.name }}</h3><i class="bi bi-three-dots-vertical"></i></div>
                 <div class="tasks">
                     <ng-container *ngFor="let task of getTasksByStateId(state.id)">
                         <div class="task-card">
-                            <textarea>{{ task.name }}</textarea>
+                            <textarea class="task-name">{{ task.name }}</textarea>
                         </div>
                     </ng-container>
                 </div>
+                <i class="bi bi-plus-square-fill"></i>
             </div>
         </ng-container>
-    
-        <img id="add-state" class="btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
+        <i class="bi bi-plus-circle-fill"></i>
     </div>
 </div>
 

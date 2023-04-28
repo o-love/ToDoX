@@ -1,19 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { State } from '../../models/state';
+import { Form } from 'src/app/models/form';
 
 @Component({
   selector: 'app-create-state',
   templateUrl: './create-state.component.html',
   styleUrls: ['./create-state.component.scss']
 })
-export class CreateStateComponent { // implements OnInit
+export class CreateStateComponent implements Form { // implements OnInit
   stateForm!: FormGroup;
   // states: State[] = [];
   // displayedColumns: string[] = ['id', 'name', 'actions'];
   // editingState: State | null = null;
 
-  // constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) { 
+    this.stateForm = this.fb.group({
+      name: ['', Validators.required]
+    });
+  }
+
+  checkErrors(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  resetErrors(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  onError(label: ElementRef<any>): void {
+    throw new Error('Method not implemented.');
+  }
+
+  onFocus(event: any, label: any): void {
+    throw new Error('Method not implemented.');
+  }
+  
+  onBlur(event: any, label: any): void {
+    throw new Error('Method not implemented.');
+  }
+
+  onSubmit() {
+    
+  }
 
   // ngOnInit(): void {
   //   this.stateForm = this.fb.group({
