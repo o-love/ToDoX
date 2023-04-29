@@ -21,7 +21,11 @@ export class ListDetailComponent implements OnInit {
   boardId: string = '';
   taskListId: string = '';
 
-  showPopup: boolean = false;
+  selectedTask: Task | null = null;
+  selectedState: State | null = null;
+
+  showCreateTaskPopup: boolean = false;
+  showTaskDetailPopup: boolean = false;
 
   @ViewChild('title') selectTitle!: ElementRef<any>;
   @ViewChild('icon') dropdownIcon!: ElementRef<any>;
@@ -87,7 +91,7 @@ export class ListDetailComponent implements OnInit {
 
   addTask(newTask: Task): void {
     this.tasks.push(newTask);
-    this.showPopup = false;
+    this.closePopup();
   }
 
   deleteTask(task_id: number): void {
@@ -102,6 +106,7 @@ export class ListDetailComponent implements OnInit {
             break;
           }
         }
+        this.closePopup();
       }, 
       (error: any) => {
         console.error('Error deleting task:', error);
@@ -109,37 +114,43 @@ export class ListDetailComponent implements OnInit {
     );
   }
 
-  editTask(task_id: number): void {
-    console.log('Task id edit:', task_id);
-
-    this.tasks.forEach((task, index) => {
-      if (task.id == task_id) this.tasks[index].isEditing = true;
-    });
+  saveTaskEdit(task: Task) {
+    for (let i = 0; i < this.tasks.length; i++) {
+      if (this.tasks[i].id == task.id) this.tasks[i] = task;
+    }
   }
 
-  /* NEEDS CHANGE */
-  saveTaskEdit(index: number, labels: Label[]): void {
-    if (!this.selectedList.board_id) return;
+  // editTask(task_id: number): void {
+  //   console.log('Task id edit:', task_id);
 
-    const task = this.tasks[index];
-    this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name, task.description,
-    task.state_id.toString(), labels, task.due_date, task.start_date).subscribe(
-      (response) => {
-        console.log('Task updated: ', response);
-        task.isEditing = false;
-      },
-      (error: any) => {
-        console.error('Error updating task:', error);
-      }
-    ) 
-  }
+  //   this.tasks.forEach((task, index) => {
+  //     if (task.id == task_id) this.tasks[index].isEditing = true;
+  //   });
+  // }
+
+  // /* NEEDS CHANGE */
+  // saveTaskEdit(index: number, labels: Label[]): void {
+  //   if (!this.selectedList.board_id) return;
+
+  //   const task = this.tasks[index];
+  //   this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name, task.description,
+  //   task.state_id.toString(), labels, task.due_date, task.start_date).subscribe(
+  //     (response) => {
+  //       console.log('Task updated: ', response);
+  //       task.isEditing = false;
+  //     },
+  //     (error: any) => {
+  //       console.error('Error updating task:', error);
+  //     }
+  //   ) 
+  // }
   
-  /* NEEDS CHANGE */
-  cancelTaskEdit(index: number): void {
-    this.tasks[index].isEditing = false;
-  }
+  // /* NEEDS CHANGE */
+  // cancelTaskEdit(index: number): void {
+  //   this.tasks[index].isEditing = false;
+  // }
 
-  // OPTIONS
+
   selectLayout(selected_option: ElementRef<any>) {
     this.options.forEach((option) => {
       if (option.nativeElement.classList.contains('checked')) {
@@ -164,5 +175,20 @@ export class ListDetailComponent implements OnInit {
     this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-down');
     this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-up');
     this.select.nativeElement.classList.toggle('closed');
+  }
+
+  closePopup() {
+    if (this.showCreateTaskPopup) this.showCreateTaskPopup = false;
+    if (this.showTaskDetailPopup) this.showTaskDetailPopup = false;
+  }
+
+  openCreateTaskPopup(state: State | null) {
+    this.selectedState = state;
+    this.showCreateTaskPopup = true;
+  }
+
+  openTaskDetailPopup(task: Task) {
+    this.selectedTask = task;
+    this.showTaskDetailPopup = true;
   }
 }

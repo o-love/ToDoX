@@ -25,28 +25,3 @@
     <img class="add-btn" src="../../../assets/icons/CkAdd.svg">
   </div>
 </div>
-
-<!--
-      <tbody>
-        <ng-container *ngFor="let task of tasks">
-          <tr [ngClass]="{ isEditing: task.isEditing }">
-            <ng-container *ngIf="!task.isEditing; else editRow">
-              <td>{{ task.name }}</td>
-              <td>{{ task.description }}</td>
-              <td>{{ stateNames[task.state_id] }}</td>
-              <td>{{ task.label }}--><!--</td>--><!--
-              <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
-              <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
-            </ng-container>
-            <ng-template #editRow>
-              <td><input type="text" [(ngModel)]="task.name"></td>
-              <td><input type="text" [(ngModel)]="task.description"></td>
-              <td>
-                <button (click)="saveTaskEdit(task.id)" translate>global.save</button>
-                <button (click)="cancelTaskEdit(task.id)" translate>global.cancel</button>
-              </td>
-            </ng-template>
-          </tr>
-        </ng-container>
-      </tbody>
--->

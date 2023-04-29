@@ -19,7 +19,8 @@ export class ListDetailTableComponent implements OnInit {
   stateNames: {[key: number]: string} = {};
   showPopup: boolean = false; 
 
-  @Output() openCreateTaskPopup = new EventEmitter<any>();
+  @Output() openCreateTaskPopup = new EventEmitter<State | null>();
+  @Output() openTaskDetailPopup = new EventEmitter<Task>();
 
   ngOnInit(): void {
     this.states.forEach((state) => {
@@ -28,6 +29,10 @@ export class ListDetailTableComponent implements OnInit {
   }
 
   createTask() {
-    this.openCreateTaskPopup.emit();
+    this.openCreateTaskPopup.emit(null);
+  }
+
+  editTask(task: Task) {
+    this.openTaskDetailPopup.emit(task);
   }
 }

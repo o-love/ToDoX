@@ -6,20 +6,16 @@
                 <div class="tasks">
                     <ng-container *ngFor="let task of getTasksByStateId(state.id)">
                         <div class="task-card">
-                            <textarea class="task-name">{{ task.name }}</textarea>
+                            <textarea class="task-name" disabled>{{ task.name }}</textarea>
+                            <div class="options">
+                                <i class="bi bi-pencil-fill" (click)="editTask(task)"></i>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
-                <i class="bi bi-plus-square-fill"></i>
+                <i class="bi bi-plus-square-fill" (click)="createTask(state)"></i>
             </div>
         </ng-container>
         <!-- <i class="bi bi-plus-circle-fill"></i> -->
     </div>
 </div>
-
-<!--
-<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
-<div class="popup" *ngIf="showPopup">
-  <app-create-state *ngIf="showPopup"
-    (closePopup)="showPopup = false"></app-create-state>
-</div>-->

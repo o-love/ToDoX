@@ -35,9 +35,11 @@
 
     tbody tr {
       transition: background 0.25s ease;
+      border-bottom: 2px solid rgba($melon, .05);
 
       &:hover {
-        background: rgba($melon, .4);
+        cursor: pointer;
+        background-color: rgba($melon, .4);
       }
     }
   }
