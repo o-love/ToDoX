@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,7 +17,7 @@ export class LoginFormComponent implements Form {
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required, PasswordValidator.strong()]
@@ -64,12 +65,22 @@ export class LoginFormComponent implements Form {
     this.router.navigate(['/register']);
   }
 
-  onSubmit() {
-    console.log(this.loginForm.value);
-
-		this.resetErrors();
-		if (!this.checkErrors()) {
-      this.router.navigate(['/boards']);
-    }
+  onSubmit() {    
+    console.log("Trying to log in")
+    this.authService.login(
+      this.loginForm.value.email,
+      this.loginForm.value.password
+    ).subscribe(
+      (response) => {
+        console.log("Logged in", response);
+        this.resetErrors();
+        if (!this.checkErrors()) {
+          this.router.navigate(['/profile']);
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }  
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
   selector: 'app-signup-form',
@@ -18,7 +19,7 @@ export class SignupFormComponent implements Form {
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
   @ViewChild('repeatPasswordLabel') repeatPasswordLabel!: ElementRef;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -73,11 +74,21 @@ export class SignupFormComponent implements Form {
   }
 
   onSubmit() {
-    console.log(this.signupForm.value);
-
-		this.resetErrors();
-		if (!this.checkErrors() && this.match()) {
-      this.router.navigate(['/profile']);
-    }
+    this.authService.register(
+      this.signupForm.value.name,
+      this.signupForm.value.email,
+      this.signupForm.value.password
+    ).subscribe(
+      (response) => {
+        console.log(response);
+        this.resetErrors();
+        if (!this.checkErrors() && this.match()) {
+          this.router.navigate(['/login']);
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
