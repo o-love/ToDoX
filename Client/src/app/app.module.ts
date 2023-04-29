@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -76,6 +77,7 @@ import { TaskDetailComponent } from './components/task-detail/task-detail.compon
   ],
   imports: [
     // CommonModule,
+    DragDropModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

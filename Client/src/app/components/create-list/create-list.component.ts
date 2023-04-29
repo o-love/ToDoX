@@ -1,12 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskList } from 'src/app/models/taskList';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Task } from 'src/app/models/task';
-
-// This component will be responsible for creating lists for a user on a board.
 
 @Component({
   selector: 'app-create-list',
@@ -26,7 +23,7 @@ export class CreateListComponent implements Form {
 
   @ViewChild('name') name!: ElementRef<any>;
 
-  constructor(private fb: FormBuilder, private boardService: BoardService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private boardService: BoardService, private route: ActivatedRoute) {
     this.form = this.fb.group({
       listName: ['', [Validators.required]],
       listDescription: ['', []]
@@ -38,7 +35,6 @@ export class CreateListComponent implements Form {
       this.onError(this.name);
       return true;
     } 
-
     return false;
   }
 
@@ -48,14 +44,6 @@ export class CreateListComponent implements Form {
   
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgba(255, 113, 113, 0.7)';
-  }
-
-  onFocus(event: any, label: any) {
-    label.classList.add('focused');
-  }
-
-  onBlur(event: any, label: any) {
-    if (!event.target.value) label.classList.remove('focused');
   }
 
   onSubmit() {
@@ -72,7 +60,6 @@ export class CreateListComponent implements Form {
       },
       error: (error) => console.log(error)
     });
-    
   }
 
   onClose() {

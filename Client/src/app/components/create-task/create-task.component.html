@@ -18,12 +18,12 @@
         <div class="inline-group">
             <div class="form-group">
                 <label class="name">{{ 'global.startDate' | translate }}</label>
-                <input #labels #start class="input" type="date" name="startDate" formControlName="startDate">
+                <input #labels #start class="input" [max]="dueDate" type="date" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}">
             </div>
 
             <div class="form-group">
                 <label class="name">{{ 'global.dueDate' | translate }}</label>
-                <input #labels #due class="input" type="date" name="dueDate" formControlName="dueDate">
+                <input #labels class="input" [min]="startDate" type="date" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
 
@@ -42,8 +42,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="popup-states">
-                    <app-state-list *ngIf="statesPopup" (close)="toggleStates()" (state)="selectState($event)"  [states]="states" [selectedState]="selectedState"></app-state-list>
+                <div class="popup-states" *ngIf="statesPopup">
+                    <app-state-list (close)="toggleStates()" (state)="selectState($event)"  [states]="states" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
@@ -74,8 +74,6 @@
                 <!--</div>
             </div>-->
         <!-- </div> -->
-
-        
     </div>
 
     <div class="buttons">

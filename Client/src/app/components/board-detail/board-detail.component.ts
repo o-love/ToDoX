@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
@@ -80,7 +79,7 @@ export class BoardDetailComponent implements OnInit {
 
   selectList(list: TaskList): void {
     this.selectedList = list;
-    console.log("seleccionada", list);
+    console.log("seleccionada", list.id);
     this.showListDetail = true;
     this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
   }
@@ -120,30 +119,4 @@ export class BoardDetailComponent implements OnInit {
   updateBoard(board: Board) {
     this.board = board;
   }
-
-  /*
-  editTasklist(tasklist_id: number): void {
-    console.log("Tasklist id edit", id);
-    this.lists[id].isEditing = true;
-  }
-
-  saveTasklistEdit(index: number): void {
-    const list = this.lists[index];
-    if (this.boardId){
-      this.boardService.editTasklist(this.board.id.toString(), list.id.toString(), list.name, list.description).subscribe(
-        (response) => {
-          console.log("Tasklist updated:", response);
-          list.isEditing = false;
-          this.getLists();
-        },
-        (error) => {
-          console.error("Error updating tasklist:", error);
-        }
-      );
-    }
-  }
-  
-  cancelTasklistEdit(index: number): void {
-    this.lists[index].isEditing = false;
-  }*/
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
@@ -12,7 +12,7 @@ import { Label } from 'src/app/models/label';
   templateUrl: './list-detail.component.html',
   styleUrls: ['./list-detail.component.scss']
 })
-export class ListDetailComponent implements OnInit {
+export class ListDetailComponent implements OnChanges {
   @Input() selectedList!: TaskList;
   tasks: Task[] = [];
   states: State[] = [];
@@ -37,12 +37,16 @@ export class ListDetailComponent implements OnInit {
 
   layouts: Map<string, boolean> = new Map();
 
-  constructor(private taskService: TaskService, private boardService: BoardService, private route: ActivatedRoute) {
+  constructor(private taskService: TaskService) {
     this.layouts.set('TABLE LAYOUT', false);
     this.layouts.set('KANBAN LAYOUT', true);
   }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.states = [];
+    this.labels = [];
+    this.tasks = [];
+    
     this.boardId = this.selectedList.board_id.toString();
     this.taskListId = this.selectedList.id.toString();
 
@@ -51,7 +55,7 @@ export class ListDetailComponent implements OnInit {
     this.getTasks();
     this.getStates();
     this.getLabels();
-  }
+  }   
 
   private getTasks(): void {
     this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe(

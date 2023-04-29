@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
@@ -9,7 +9,7 @@ import { TaskList } from 'src/app/models/taskList';
   templateUrl: './list-detail-table.component.html',
   styleUrls: ['./list-detail-table.component.scss']
 })
-export class ListDetailTableComponent implements OnInit {
+export class ListDetailTableComponent implements OnChanges {
 
   @Input() selectedList!: TaskList;
   @Input() tasks!: Task[];
@@ -22,7 +22,7 @@ export class ListDetailTableComponent implements OnInit {
   @Output() openCreateTaskPopup = new EventEmitter<State | null>();
   @Output() openTaskDetailPopup = new EventEmitter<Task>();
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.states.forEach((state) => {
       this.stateNames[state.id] = state.name;
     });

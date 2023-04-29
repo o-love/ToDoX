@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { State } from 'src/app/models/state';
 
 @Component({
@@ -6,7 +6,7 @@ import { State } from 'src/app/models/state';
   templateUrl: './state-list.component.html',
   styleUrls: ['./state-list.component.scss']
 })
-export class StateListComponent implements OnInit {
+export class StateListComponent implements OnChanges {
 
   @Input() states: State[] | null = null;
 
@@ -17,7 +17,7 @@ export class StateListComponent implements OnInit {
 
   options: {[key: number]: boolean } = {};
 
-  ngOnInit() {
+  ngOnChanges() {
     this.updateOptions();
   }
 
@@ -25,9 +25,7 @@ export class StateListComponent implements OnInit {
     this.close.emit();
   }
 
-  addNew() {
-
-  }
+  addNew() {}
 
   updateOptions() {
     if (this.states) this.states.forEach((state) => {
@@ -43,7 +41,6 @@ export class StateListComponent implements OnInit {
 
   selectState(state: State) {
     this.selectedState = state;
-    this.updateOptions();
     this.state.emit(this.selectedState);
   }
 }

@@ -30,6 +30,8 @@ export class CreateTaskComponent implements Form {
   
   @Input() selectedState: State | null = null;
   selectedLabels: Label[] = [];
+  startDate: Date | null = null;
+  dueDate: Date | null = null;
 
   @Input() boardId: string | null = null;
   @Input() taskListId: string | null = null;
@@ -45,16 +47,13 @@ export class CreateTaskComponent implements Form {
   @ViewChildren('labels') labelsRef!: QueryList<ElementRef<any>>;
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('start') start!: ElementRef<any>;
-  @ViewChild('due') due!: ElementRef<any>;
   @ViewChild('state') state!: ElementRef<any>;
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
       taskName: ['', [Validators.required, Validators.maxLength(20)]],
       taskDescription: ['', [Validators.maxLength(200)]],
-      startDate: ['', []],
-      dueDate: ['', []],
-    })
+    });
   }
 
   checkErrors(): boolean {
@@ -69,19 +68,10 @@ export class CreateTaskComponent implements Form {
       }
     });
 
-    if (!this.form.get('startDate') && this.form.get('dueDate')) {
+    if (!this.startDate && this.dueDate) {
       this.onError(this.start);
       errors = true;
-    } else {
-      let startDate: Date = new Date(this.form.get('startDate')?.value);
-      let dueDate: Date = new Date(this.form.get('dueDate')?.value);
-
-      if (startDate > dueDate) {
-        this.onError(this.start);
-        this.onError(this.due);
-        errors = true;
-      }
-    }
+    } 
 
     if (!this.selectedState) {
       this.onError(this.state);
@@ -126,20 +116,15 @@ export class CreateTaskComponent implements Form {
   onSubmit() {
     this.resetErrors();
     if (this.checkErrors()) return;
-    if (!this.taskListId || !this.boardId || !this.selectedState) {
-      console.log('me muero');
-      if (!this.taskListId) console.log('tasklist');
-      if (!this.boardId) console.log('board');
-      if (!this.selectedState) console.log('state');
-      return;
-    }
-
-    console.log('holii');
+    if (!this.taskListId || !this.boardId || !this.selectedState) return;
 
     let taskName: string = this.form.get('taskName')?.value;
     let taskDescription: string = this.form.get('taskDescription')?.value;
-    let startDate: Date = new Date(this.form.get('startDate')?.value);
-    let dueDate: Date = new Date(this.form.get('dueDate')?.value);
+    let startDate: Date = new Date();
+    let dueDate: Date = new Date();
+    
+    if (this.startDate) startDate = new Date(this.startDate);
+    if (this.dueDate) dueDate = new Date(this.dueDate);
 
     this.taskService.createTask(this.boardId, this.taskListId, 
       taskName, taskDescription, this.selectedState.id.toString(), this.selectedLabels, 

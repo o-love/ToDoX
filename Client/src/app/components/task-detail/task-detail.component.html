@@ -26,10 +26,8 @@
                 <div *ngIf="statesPopup" class="popup">
                     <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
                 </div>
-
                 <!-- aquí iría el selector de labels -->
                 <!-- <div class="select-input input-2"></div> -->
-
                 <div class="label-input">
                     <label>{{ 'global.startDate' | translate }}</label>
                     <input type="date" [max]="dueDate" class="date-input input-2" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}">
