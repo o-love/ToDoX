@@ -11,18 +11,7 @@ import { Form } from 'src/app/models/form';
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
-  styleUrls: ['./create-task.component.scss'],
-  animations: [
-    trigger('transitionMessages', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0.5s', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('0.5s', style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
+  styleUrls: ['./create-task.component.scss']
 })
 export class CreateTaskComponent implements Form {  
   
@@ -52,7 +41,7 @@ export class CreateTaskComponent implements Form {
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
       taskName: ['', [Validators.required, Validators.maxLength(20)]],
-      taskDescription: ['', [Validators.maxLength(200)]],
+      taskDescription: ['', [Validators.required, Validators.maxLength(200)]],
     });
   }
 
@@ -113,21 +102,11 @@ export class CreateTaskComponent implements Form {
     this.selectedLabels = labels;
   }
 
-  onSubmit() {
-    this.resetErrors();
-    if (this.checkErrors()) return;
-    if (!this.taskListId || !this.boardId || !this.selectedState) return;
-
-    let taskName: string = this.form.get('taskName')?.value;
-    let taskDescription: string = this.form.get('taskDescription')?.value;
-    let startDate: Date = new Date();
-    let dueDate: Date = new Date();
-    
-    if (this.startDate) startDate = new Date(this.startDate);
-    if (this.dueDate) dueDate = new Date(this.dueDate);
+  private createTask(taskName: string, taskDescription: string, selectedState: string, startDate: Date, dueDate: Date) {
+    if (!this.taskListId || !this.boardId) return;
 
     this.taskService.createTask(this.boardId, this.taskListId, 
-      taskName, taskDescription, this.selectedState.id.toString(), this.selectedLabels, 
+      taskName, taskDescription, selectedState, this.selectedLabels, 
       startDate, dueDate).subscribe({
         next: (task: Task) => {
           this.taskCreated.emit(task);
@@ -135,5 +114,21 @@ export class CreateTaskComponent implements Form {
         },
         error: (error) => console.log(error)
     });
+  }
+
+  onSubmit() {
+    this.resetErrors();
+    if (this.checkErrors() || !this.selectedState) return;
+  
+    let taskName: string = this.form.get('taskName')?.value;
+    let taskDescription: string = this.form.get('taskDescription')?.value;
+    let selectedState: string = this.selectedState.id.toString();
+    let startDate: Date = new Date();
+    let dueDate: Date = new Date();
+    
+    if (this.startDate) startDate = new Date(this.startDate);
+    if (this.dueDate) dueDate = new Date(this.dueDate);
+
+    this.createTask(taskName, taskDescription, selectedState, startDate, dueDate);
   }
 }

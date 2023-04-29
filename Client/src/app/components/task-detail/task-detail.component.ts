@@ -34,7 +34,7 @@ export class TaskDetailComponent implements OnInit, Form {
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
-      description: ['', [Validators.maxLength(200)]]
+      description: ['', [Validators.required, Validators.maxLength(200)]]
     })
   }
   

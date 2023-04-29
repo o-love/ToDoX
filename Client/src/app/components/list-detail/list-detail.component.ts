@@ -46,7 +46,7 @@ export class ListDetailComponent implements OnChanges {
     this.states = [];
     this.labels = [];
     this.tasks = [];
-    
+
     this.boardId = this.selectedList.board_id.toString();
     this.taskListId = this.selectedList.id.toString();
 
@@ -118,11 +118,11 @@ export class ListDetailComponent implements OnChanges {
     );
   }
 
-  saveTaskEdit(task: Task) {
-    for (let i = 0; i < this.tasks.length; i++) {
-      if (this.tasks[i].id == task.id) this.tasks[i] = task;
-    }
-  }
+  // saveTaskEdit(task: Task) {
+  //   for (let i = 0; i < this.tasks.length; i++) {
+  //     if (this.tasks[i].id == task.id) this.tasks[i] = task;
+  //   }
+  // }
 
   // editTask(task_id: number): void {
   //   console.log('Task id edit:', task_id);
@@ -133,12 +133,11 @@ export class ListDetailComponent implements OnChanges {
   // }
 
   // /* NEEDS CHANGE */
-  // saveTaskEdit(index: number, labels: Label[]): void {
+  // saveTaskEdit(task: Task): void {
   //   if (!this.selectedList.board_id) return;
 
-  //   const task = this.tasks[index];
   //   this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name, task.description,
-  //   task.state_id.toString(), labels, task.due_date, task.start_date).subscribe(
+  //   task.state_id.toString(), [], task.due_date, task.start_date).subscribe(
   //     (response) => {
   //       console.log('Task updated: ', response);
   //       task.isEditing = false;

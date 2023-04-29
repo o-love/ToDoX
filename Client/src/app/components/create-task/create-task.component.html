@@ -11,7 +11,7 @@
         </div>
 
         <div class="form-group">
-            <label class="name" for="taskDescription">{{ 'global.description' | translate }}</label>
+            <label class="name" for="taskDescription">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
             <textarea #labels #input class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
         </div>
 
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="popup-states" *ngIf="statesPopup">
-                    <app-state-list (close)="toggleStates()" (state)="selectState($event)"  [states]="states" [selectedState]="selectedState"></app-state-list>
+                    <app-state-list (close)="toggleStates()" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
