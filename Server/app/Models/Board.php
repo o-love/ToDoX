@@ -22,6 +22,12 @@ class Board extends Model
         return $this->hasMany(TaskList::class);
     }
 
+    // A Board can have many BoardUsers
+    public function boardUsers()
+    {
+        return $this->belongsToMany(User::class, BoardUser::class);
+    }
+
     // The `manager()` method defines a relationship between the board and the user who manages it.
     // Specifically, it indicates that a board belongs to a user, and that the foreign key for the user
     // is stored in the `manager_id` attribute of the board table.

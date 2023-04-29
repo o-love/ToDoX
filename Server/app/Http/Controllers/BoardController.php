@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Board;
+use App\Models\User;
+use App\Models\BoardUser;
 use Symfony\Component\HttpFoundation\Response;
 
 class BoardController extends Controller

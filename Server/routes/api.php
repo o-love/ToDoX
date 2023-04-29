@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\BoardUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
 //     Route::post('/states', [StateController::class, 'store']);
 // });
 
+// User routes
 Route::apiResource('users', \App\Http\Controllers\UserController::class);
 
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
@@ -73,3 +75,7 @@ Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Control
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
+
+// BoardUser routes
+Route::get('boardusers', [BoardUserController::class, 'index']);
+Route::post('boardusers', [BoardUserController::class, 'grantPermission']);
