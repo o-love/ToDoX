@@ -27,7 +27,7 @@ class TaskCommentController extends Controller
         $taskComment = new TaskComment([
             'content' => $request->input('content'),
             'task_id' => $taskId,
-            'user_id' => 1,
+            'user_id' => Auth::user(),
         ]);
         $taskComment->save();
 
