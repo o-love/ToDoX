@@ -8,23 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class TaskComment extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['user_id', 'task_id', 'comment'];
+    protected $fillable = ['task_id', 'user_id', 'content'];
     protected $table = 'task_comment';
 
-    // A TaskComment belongs to a Task
-    public function task()
+    // A comment belongs to a task.
+    public function task() 
     {
-        return $this->belongsTo(Task::class, 'tasklist_id');
+        return $this->belongsTo(Task::class, 'task_id');
     }
 
+    // A comment belongs to a user.
     public function user()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function scopeLatestFirst($query)
-    {
-        return $query->orderBy('created_at', 'desc');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

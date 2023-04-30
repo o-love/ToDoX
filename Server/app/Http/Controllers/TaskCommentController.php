@@ -9,40 +9,40 @@ use App\Models\Task;
 
 class TaskCommentController extends Controller
 {
-    // Display a listing of the resource
+    //Returns all comments of a task
     public function index($boardId, $listId, $taskId)
     {
-        $comments = TaskComment::where('task_id', $taskId)->latestFirst()->get();
-        // $comments = TaskComment::where(function ($query) use ($taskId) {
-        //     $query->where('id', $taskId);
-        // })->latestFirst()->get();
-        return response()->json($comments);
+        $task = Task::findOrFail($taskId);
+        $taskComment = TaskComment::where('task_id', $taskId)->get();
+
+        return response()->json($taskComment);
     }
 
-    // Store a newly created resource in storage
-    public function store(Request $request, $boardId, $tasklistId, $taskId, $userId)
+    // Creates a new comment in a specific task
+    public function store(Request $request, $boardId, $tasklistId, $taskId)
     {
-        $comment = TaskComment::create([
-            // 'user_id' => auth()->user()->id,
-            'user_id' => $userId,
+        //TODO: change user_id to track user creating the coment.
+        $taskComment = new TaskComment([
+            'content' => $request->input('content'),
             'task_id' => $taskId,
-            'comment' => $request->input('comment'),
+            'user_id' => Auth::user(),
         ]);
+        $taskComment->save();
 
         $task = Task::findOrFail($taskId);
-        $task->taskcomments($comment);
-        
-        return response()->json($comment, 201);
+        $task->TaskComment($taskComment);
+
+        return response()->json($taskComment, 201);
     }
 
-    // Display the specified resource
-    public function show($commentId)
+    public function show($boardId, $taskListId, $taskId, $taskCommentId)
     {
-        $comment = TaskComment::findOrFail($commentId);
-        return response()->json($comment, 201);
+        $task = Task::findOrFail($taskId);
+        $taskComment = $task->TaskComment()->findOrFail($taskCommentId);
+    
+        return response()->json($taskComment);
     }
 
-    // Update the specified resource in storage
     public function update(Request $request, $commentId)
     {
         $comment = TaskComment::findOrFail($commentId);
@@ -53,11 +53,11 @@ class TaskCommentController extends Controller
         return response()->json($comment, 201);
     }
 
-    // Remove the specified resource from storage
-    public function destroy($commentId)
+    public function destroy($boardId, $taskListId, $taskId, $taskCommentId)
     {
-        $comment = TaskComment::findOrFail($commentId);
-        $comment->delete();
+        $task = Task::findOrFail($taskId);
+        $taskComment = $task->TaskComment()->findOrFail($taskCommentId);
+        $taskComment->delete();
 
         return response()->json(null, 204);
     }

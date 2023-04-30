@@ -31,7 +31,7 @@ class Task extends Model
     }
 
     // A Task can have many TaskComments
-    public function taskcomments()
+    public function taskComment()
     {
         return $this->hasMany(TaskComment::class);
     }
