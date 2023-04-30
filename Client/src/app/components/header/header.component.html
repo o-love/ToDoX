@@ -4,7 +4,7 @@
         <app-language-selector class="language-select"></app-language-selector>
         <div *ngIf="isLogged" class="profile">
             <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
-            <label class="user-name">{{ user.name }}<!--{{ this.userService.user.name }}--></label>
+            <!--<label class="user-name">{{ user.name }}{{ this.userService.user.name }}</label>-->
         </div>
         <div *ngIf="!isLogged" class="btn-section">
             <button id="login-btn" (click)="onLogin()" translate>global.login</button>

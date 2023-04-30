@@ -11,11 +11,11 @@ import { User } from 'src/app/models/user';
 export class HeaderComponent {
   isLogged: boolean = true;
 
-  user: User = {
-    name: 'sara',
-    email: 'saragonza.lez0608@gmail.com',
-    password: 'Hola!9'
-  }
+  // user: User = {
+  //   name: 'sara',
+  //   email: 'saragonza.lez0608@gmail.com',
+  //   password: 'Hola!9'
+  // }
 
   constructor(private router: Router) {}
 

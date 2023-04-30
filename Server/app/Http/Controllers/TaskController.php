@@ -44,7 +44,7 @@ class TaskController extends Controller
         // Check that the due date is greater than the start date
         if ($start_date && $due_date && $start_date > $due_date)
             return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
-        
+
         $task = new Task([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -71,7 +71,7 @@ class TaskController extends Controller
         // $taskList = TaskList::findOrFail($tasklistId);
         // $task = Task::with(['taskList', 'state', 'labels', 'comments.user'])->findOrFail($task->id);
         // $task = $taskList->tasks()->findOrFail($taskId);
-        $task =  Task::findOrFail($taskId);
+        $task = Task::findOrFail($taskId);
 
         return response()->json($task);
     }
@@ -124,13 +124,27 @@ class TaskController extends Controller
         ]);
 
         $comment->save();
-        return response()->json($comment, 201); 
+        return response()->json($comment, 201);
     }
+
+    // Change the state of a task
+    public function changeState(Request $request, $boardId, $taskListId, $taskId, )
+    {
+        $taskList = TaskList::findOrFail($taskListId);
+        $task = $taskList->tasks()->findOrFail($taskId);
+
+        $task->state_id = $request->input('state_id');
+        $task->save();
+
+        return response()->json($task, 200);
+    }
+
 
     private function convertDate($date)
     {
         if ($date != null)
             return Carbon::parse($date)->setTimezone('Europe/Madrid')->format('Y-m-d');
-        else return null;
+        else
+            return null;
     }
 }

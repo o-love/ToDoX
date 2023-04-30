@@ -59,30 +59,30 @@ export class TaskDetailComponent implements OnInit, Form {
   onClose() {
     if (!this.task) return; 
 
-    if (this.selectedState) this.task.state_id = this.selectedState.id; 
+    // if (this.selectedState) this.task.state_id = this.selectedState.id; 
 
-    let dueDate = new Date();
-    let startDate = new Date();
-    if (this.dueDate) dueDate = new Date(this.dueDate);
-    if (this.startDate) startDate = new Date(this.startDate);
+    // let dueDate = new Date();
+    // let startDate = new Date();
+    // if (this.dueDate) dueDate = new Date(this.dueDate);
+    // if (this.startDate) startDate = new Date(this.startDate);
 
-    this.task.due_date = dueDate;
-    this.task.start_date = startDate;
+    // this.task.due_date = dueDate;
+    // this.task.start_date = startDate;
 
-    this.editTask();
+    // this.editTask();
   }
 
   private editTask() {
-    if (!this.boardId || !this.taskListId || !this.task) return;
+    // if (!this.boardId || !this.taskListId || !this.task) return;
 
-    this.taskService.editTask(this.boardId, this.taskListId, this.task.id.toString(), this.task.name, this.task.description, this.task.state_id.toString(),
-    [], this.task.start_date, this.task.due_date).subscribe({
-      next: (task: Task) => {
-        this.close.emit(task);
-        console.log(task);
-      },
-      error: (error) => console.log(error)
-    });
+    // this.taskService.editTask(this.boardId, this.taskListId, this.task.id.toString(), this.task.name, this.task.description, this.task.state_id.toString(),
+    // [], this.task.start_date, this.task.due_date).subscribe({
+    //   next: (task: Task) => {
+    //     this.close.emit(task);
+    //     console.log(task);
+    //   },
+    //   error: (error) => console.log(error)
+    // });
   }
 
   onDelete() {
@@ -145,5 +145,30 @@ export class TaskDetailComponent implements OnInit, Form {
     this.task.name = this.form.get('name')?.value;
     this.task.description = this.form.get('description')?.value;
     this.toggleDisable();
+  }
+
+  // Función para editar, para probar la conexión con la api, si da error 500 avísame
+  // Cuando cargas una tarea, no estás llamando a la función getTaskById del task service, verdad?
+  // Porque acabo de arreglar la ruta, por eso...
+  onSaveEdit() { // Debería funcionar pero no le puedo dar click xD
+    if (!this.boardId || !this.taskListId || !this.task) return;
+    console.log("Editando");
+    this.taskService.editTask(this.boardId, this.taskListId, this.task.id.toString(), this.task.name, this.task.description, this.task.state_id.toString(),
+    [], this.task.start_date, this.task.due_date).subscribe({
+      next: (task: Task) => {
+        this.close.emit(task);
+        console.log(task);
+      },
+      error: (error) => console.log(error)
+    });
+    console.log("Terminada la edición");
+  }
+
+  // Donde hagas el drag & drop de la task, añadete el contenido de esta funcion o llama a esta funcion, lo que quieras
+  changeTaksState(boardId: string, listId: string, taskId: string, stateId: string): void {
+    this.taskService.changeTaskState(boardId, listId, taskId, stateId)
+      .subscribe(task => {
+        // Lo que carajo quieras hacer en front xD
+      });
   }
 }

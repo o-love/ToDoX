@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
-import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 
 @Component({
@@ -100,10 +99,10 @@ export class ProfileComponent {
   }
 
   checkPassword(): boolean {
-    if (this.user && this.user.password != this.passwordForm.get('oldPassword')?.value) {
-      this.onError(this.oldPasswordLabel);
-      return false;
-    }
+    // if (this.user && this.user.password != this.passwordForm.get('oldPassword')?.value) {
+    //   this.onError(this.oldPasswordLabel);
+    //   return false;
+    // }
 
     return true;
   }
@@ -115,8 +114,8 @@ export class ProfileComponent {
     
     let check: boolean = this.checkPassword();
     if (!this.checkErrors(this.passwordForm, this.passwordLabels) && check) {
-      if (this.user) this.user.password = this.passwordForm.get('newPassword')?.value;
-      this.passwordForm.reset();
+      // if (this.user) this.user.password = this.passwordForm.get('newPassword')?.value;
+      // this.passwordForm.reset();
 
       // this.authService.updatePassword(this.userPassword).subscribe((response) => {
       //   console.log("Changing password", response);
