@@ -52,7 +52,7 @@ export class ProfileComponent {
       this.user = response;
       this.emailForm.controls['currentEmail'].setValue(response.email);
       // this.passwordForm.controls['oldPassword'].setValue(response.password);
-    });    
+    });
   }
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
@@ -75,18 +75,18 @@ export class ProfileComponent {
 
   resetErrors(labels: QueryList<ElementRef>) {
     labels.forEach((label) => {
-			label.nativeElement.style.boxShadow = 'none';
-		});
+      label.nativeElement.style.boxShadow = 'none';
+    });
   }
 
   saveEmail() {
     console.log(this.emailForm.value);
 
     this.resetErrors(this.emailLabels);
-		if (!this.checkErrors(this.emailForm, this.emailLabels)) {
+    if (!this.checkErrors(this.emailForm, this.emailLabels)) {
       this.userEmail = this.emailForm.get('newEmail')?.value;
-      this.emailForm.setValue({currentEmail: this.userEmail, newEmail: ''});
-      
+      this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+
       if (this.user && this.userEmail) {
         const user: User = { id: this.user.id, name: this.user.name, email: this.userEmail };
         this.authService.updateUser(user).subscribe((response) => {
@@ -108,20 +108,17 @@ export class ProfileComponent {
   }
 
   savePassword() {
-    console.log(this.passwordForm.value);
-
-    this.resetErrors(this.passwordLabels);
-    
-    let check: boolean = this.checkPassword();
-    if (!this.checkErrors(this.passwordForm, this.passwordLabels) && check) {
-      // if (this.user) this.user.password = this.passwordForm.get('newPassword')?.value;
-      // this.passwordForm.reset();
-
-      // this.authService.updatePassword(this.userPassword).subscribe((response) => {
-      //   console.log("Changing password", response);
-      //   this.passwordForm.reset();
-      // });
-    }
+    const oldPassword = this.passwordForm.value.oldPassword;
+    const newPassword = this.passwordForm.value.newPassword;
+    console.log("Entrando al auth");
+    this.authService.updatePassword(newPassword).subscribe(
+      response => {
+        // alert('Contraseña actualizada exitosamente.');
+        // localStorage.setItem('token', response.token.split('|')[1]);
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   logout() {
