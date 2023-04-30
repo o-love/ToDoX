@@ -46,7 +46,8 @@ Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class,
 Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show']);
 Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update']);
 Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy']);
-Route::put('boards/{boardId}/tasklists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'changeState']);
+Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'changeState']);
+// Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'checkState']);
 
 // Task comments routes
 Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'index']);

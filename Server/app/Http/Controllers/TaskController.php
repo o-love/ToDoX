@@ -114,7 +114,7 @@ class TaskController extends Controller
     }
 
     // Change the state of a task
-    public function changeState(Request $request, $boardId, $taskListId, $taskId, )
+    public function changeState(Request $request, $boardId, $taskListId, $taskId)
     {
         // $taskList = TaskList::findOrFail($taskListId);
         // $task = $taskList->tasks()->findOrFail($taskId);
@@ -125,6 +125,11 @@ class TaskController extends Controller
         $task->save();
 
         return response()->json($task, 200);
+    }
+
+    public function checkState($boardId, $taskListId, $taskId) {
+        $task = Task::findOrFail($taskId);
+        return response()->json($task->state);
     }
 
 

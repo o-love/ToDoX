@@ -163,12 +163,4 @@ export class TaskDetailComponent implements OnInit, Form {
     });
     console.log("Terminada la edición");
   }
-
-  // Donde hagas el drag & drop de la task, añadete el contenido de esta funcion o llama a esta funcion, lo que quieras
-  changeTaksState(boardId: string, listId: string, taskId: string, stateId: string): void {
-    this.taskService.changeTaskState(boardId, listId, taskId, stateId)
-      .subscribe(task => {
-        // Lo que carajo quieras hacer en front xD
-      });
-  }
 }
