@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
@@ -79,3 +80,7 @@ Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Control
 // BoardUser routes
 Route::get('boardusers', [BoardUserController::class, 'index']);
 Route::post('boardusers', [BoardUserController::class, 'grantPermission']);
+
+// Permissions
+Route::get ('permissions/{boardId}/{userId}', [PermissionController::class, 'getPermissionsForUser']);
+Route::get ('roles/{permission}', [PermissionController::class, 'getRole']);

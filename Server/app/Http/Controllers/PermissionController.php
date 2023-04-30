@@ -14,138 +14,144 @@ class PermissionController extends Controller
                                 ->where('user_id', $userId)
                                 ->value('permission');
         return $this->permissionsOfRole($permission);
-        
     }
 
-    public function permissionsOfRole($permission)
+    public function getRole($permission)
     {
-        $permissions = array();
-
-        $roles = array(
-            1 => array(
-                //Permisos de tablero
-                'Crear_tablero' => true,
-                'Editar_tablero' => true,
-                'Leer_tablero' => true,
-                'Eliminar_tablero' => true,
-
-                //Permisos de lista
-                'Crear_lista' => true,
-                'Editar_lista' => true,
-                'Leer_lista' => true,
-                'Eliminar_lista' => true,
-
-                //Permisos de tarea
-                'Crear_tarea' => true,
-                'Editar_tarea' => true,
-                'Leer_tarea' => true,
-                'Eliminar_tarea' => true,
-
-                //Permisos de estado
-                'Crear_estado' => true,
-                'Editar_estado' => true,
-                'Leer_estado' => true,
-                'Eliminar_estado' => true,
-
-                //Otros permisos
-                'asignar_usuarios_a_tablero' => true,
-                'actualizar_estado_tarea' => true,
-                'poner_descripcion_tarea' => true,
-                'añadir_comentario_tarea' => true,
-                'asignar_tarea_a_usuario' => true,
-                'establecer_fecha_en_tarea' => true,
-                'añadir_propiedades_a_una_tarea' => true,
-                'editar_permisos' => true
-            ),
-            2 => array(
-                //Permisos de tablero
-                'Crear_tablero' => false,
-                'Editar_tablero' => false,
-                'Leer_tablero' => false,
-                'Eliminar_tablero' => false,
-
-                //Permisos de lista
-                'Crear_lista' => true,
-                'Editar_lista' => true,
-                'Leer_lista' => true,
-                'Eliminar_lista' => true,
-
-                //Permisos de tarea
-                'Crear_tarea' => true,
-                'Editar_tarea' => true,
-                'Leer_tarea' => true,
-                'Eliminar_tarea' => true,
-
-                //Permisos de estado
-                'Crear_estado' => true,
-                'Editar_estado' => true,
-                'Leer_estado' => true,
-                'Eliminar_estado' => true,
-
-                //Permisos de etiquetas
-                'Crear_etiqueta' => true,
-                'Editar_etiqueta' => true,
-                'Leer_etiqueta' => true,
-                'Eliminar_etiqueta' => true,
-
-                //Otros permisos
-                'asignar_usuarios_a_tablero' => false,
-                'actualizar_estado_tarea' => true,
-                'poner_descripcion_tarea' => true,
-                'añadir_comentario_tarea' => true,
-                'asignar_tarea_a_usuario' => true,
-                'establecer_fecha_en_tarea' => true,
-                'añadir_propiedades_a_una_tarea' => true,
-                'editar_permisos' => false
-            ),
-            3 => array(
-                //Permisos de tablero
-                'Crear_tablero' => false,
-                'Editar_tablero' => false,
-                'Leer_tablero' => true,
-                'Eliminar_tablero' => false,
-
-                //Permisos de lista
-                'Crear_lista' => false,
-                'Editar_lista' => false,
-                'Leer_lista' => true,
-                'Eliminar_lista' => false,
-
-                //Permisos de tarea
-                'Crear_tarea' => true,
-                'Editar_tarea' => true,
-                'Leer_tarea' => true,
-                'Eliminar_tarea' => false,
-
-                //Permisos de estado
-                'Crear_estado' => false,
-                'Editar_estado' => false,
-                'Leer_estado' => true,
-                'Eliminar_estado' => false,
-
-                //Permisos de etiquetas
-                'Crear_etiqueta' => false,
-                'Editar_etiqueta' => false,
-                'Leer_etiqueta' => true,
-                'Eliminar_etiqueta' => false,
-
-                //Otros permisos
-                'asignar_usuarios_a_tablero' => false,
-                'actualizar_estado_tarea' => true,
-                'poner_descripcion_tarea' => false,
-                'añadir_comentario_tarea' => true,
-                'asignar_tarea_a_usuario' => false,
-                'establecer_fecha_en_tarea' => true,
-                'añadir_propiedades_a_una_tarea' => true,
-                'editar_permisos' => false
-            )
-        );
-
-        if(array_key_exists($permission, $roles)) {
-            $permissions = $roles[$permission];
-        }
-
-        return $permissions;
+        $roles = [
+                    1 => 'Gestor',
+                    2 => 'Desarrollador',
+                    3 => 'Integrante'
+                ];
+        return isset($roles[$permission]) ? $roles[$permission] : null;
     }
 
+    function permissionsOfRole($permission)
+    {
+        return [
+            1 => [
+                //Board permissions
+                'Create_board' => true,
+                'Update_board' => true,
+                'Read_board' => true,
+                'Delete_tablero' => true,
+
+                //TaskList permissions
+                'Create_tasklist' => true,
+                'Update_tasklist' => true,
+                'Read_tasklist' => true,
+                'Delete_tasklist' => true,
+
+                //Task permissions
+                'Create_task' => true,
+                'Update_task' => true,
+                'Read_task' => true,
+                'Delete_task' => true,
+
+                //State permissions
+                'Create_state' => true,
+                'Update_state' => true,
+                'Read_state' => true,
+                'Delete_state' => true,
+
+                //Label permissions
+                'Create_label' => true,
+                'Update_label' => true,
+                'Read_label' => true,
+                'Delete_label' => true,
+
+                //Other permissions
+                'assign_users_to_board' => true,
+                'update_task_status' => true,
+                'put_task_description' => true,
+                'add_comment_task' => true,
+                'assign_task_to_user' => true,
+                'set_date_on_task' => true,
+                'add_properties_to_a_task' => true,
+                'edit_permissions' => true,
+            ],
+            2 => [
+                //Board permissions
+                'Create_board' => false,
+                'Update_board' => false,
+                'Read_board' => false,
+                'Delete_board' => false,
+
+                //TaskList permissions
+                'Create_tasklist' => true,
+                'Update_tasklist' => true,
+                'Read_tasklist' => true,
+                'Delete_tasklist' => true,
+
+                //Task permissions
+                'Create_task' => true,
+                'Update_task' => true,
+                'Read_task' => true,
+                'Delete_task' => true,
+
+                //State permissions
+                'Create_state' => true,
+                'Update_state' => true,
+                'Read_state' => true,
+                'Delete_state' => true,
+
+                //Label permissions
+                'Create_label' => true,
+                'Update_label' => true,
+                'Read_label' => true,
+                'Delete_label' => true,
+
+                //Other permissions
+                'assign_users_to_board' => false,
+                'update_task_status' => true,
+                'put_task_description' => true,
+                'add_comment_task' => true,
+                'assign_task_to_user' => true,
+                'set_date_on_task' => true,
+                'add_properties_to_a_task' => true,
+                'edit_permissions' => false,
+            ],
+            3 => [
+                //Board permissions
+                'Create_board' => false,
+                'Update_board' => false,
+                'Read_board' => true,
+                'Delete_board' => false,
+
+                //TaskList permissions
+                'Create_tasklist' => false,
+                'Update_tasklist' => false,
+                'Read_tasklist' => true,
+                'Delete_tasklist' => false,
+
+                //Task permissions
+                'Create_task' => true,
+                'Update_task' => true,
+                'Read_task' => true,
+                'Delete_task' => false,
+
+                //State permissions
+                'Create_state' => false,
+                'Update_state' => false,
+                'Read_state' => true,
+                'Delete_state' => false,
+
+                //Label permissions
+                'Create_label' => false,
+                'Update_label' => false,
+                'Read_label' => true,
+                'Delete_label' => false,
+
+                //Other permissions
+                'assign_users_to_board' => false,
+                'update_task_status' => true,
+                'put_task_description' => false,
+                'add_comment_task' => true,
+                'assign_task_to_user' => false,
+                'set_date_on_task' => true,
+                'add_properties_to_a_task' => true,
+                'edit_permissions' => false,
+            ]
+        ];
+    }
 }

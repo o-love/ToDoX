@@ -58,7 +58,14 @@ export class BoardService {
       user_id: 1,
       permission: 1
     };
-    return this.http.post(`${this.apiUrl}/boardusers`, boardUser);
+  
+    return this.authService.getRoleOfUser(1).pipe(
+      mergeMap((permissions) => {
+        console.log(`Nivel de permisos: Tablero: ${permissions}, Listas: ${permissions}, Tareas: ${permissions}, Estados: ${permissions}, Etiquetas:
+        ${permissions}`);
+        return this.http.post(`${this.apiUrl}/boardusers`, boardUser);
+      })
+    );
   }
 
   // Gets all taskLists from backend related to a certain board by boardId

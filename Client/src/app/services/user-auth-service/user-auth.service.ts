@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map} from 'rxjs';
 import { User } from 'src/app/models/user';
 
 @Injectable({
@@ -78,5 +78,14 @@ export class UserAuthService {
     return this.http.post(`${this.apiUrl}/myUser/updatepassword`, {
       password: password,
     });
+  }
+
+  getPermissions(boardId: string): Observable<any> {
+    const userId = 1;
+    return this.http.get(`${this.apiUrl}/permissions/${boardId}/${userId}`);
+  }
+
+  getRoleOfUser(permission: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/roles/${permission}`, { responseType: 'text' });
   }
 }
