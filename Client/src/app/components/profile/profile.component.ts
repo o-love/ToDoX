@@ -51,7 +51,6 @@ export class ProfileComponent {
       console.log("User", response);
       this.user = response;
       this.emailForm.controls['currentEmail'].setValue(response.email);
-      // this.passwordForm.controls['oldPassword'].setValue(response.password);
     });
   }
   onError(label: ElementRef) {
