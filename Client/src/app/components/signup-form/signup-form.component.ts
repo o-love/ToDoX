@@ -74,6 +74,7 @@ export class SignupFormComponent implements Form {
   }
 
   onSubmit() {
+    console.log("Trying to create account");
     this.authService.register(
       this.signupForm.value.name,
       this.signupForm.value.email,
@@ -85,6 +86,7 @@ export class SignupFormComponent implements Form {
         if (!this.checkErrors() && this.match()) {
           this.router.navigate(['/login']);
         }
+      console.log("Account created", response);
       },
       (error) => {
         console.log(error);

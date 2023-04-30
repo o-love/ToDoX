@@ -75,7 +75,8 @@ export class LoginFormComponent implements Form {
         console.log("Logged in", response);
         this.resetErrors();
         if (!this.checkErrors()) {
-          this.router.navigate(['/profile']);
+          // this.router.navigate(['/profile']);
+          this.router.navigate(['/boards']);  // SOLO PARA LA PRESENTACION SP1
         }
       },
       (error) => {

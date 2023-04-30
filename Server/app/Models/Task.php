@@ -15,7 +15,7 @@ class Task extends Model
     // A Task belongs to a TaskList
     public function taskList()
     {
-        return $this->belongsTo(TaskList::class, 'tasklist_id');
+        return $this->belongsTo(TaskList::class);
     }
 
     // A Task belongs to a State
