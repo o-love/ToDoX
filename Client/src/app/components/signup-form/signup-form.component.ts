@@ -21,10 +21,10 @@ export class SignupFormComponent implements Form {
 
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.signupForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, PasswordValidator.strong()],
-      repeatPassword: ['', Validators.required]
+      name: ['', [Validators.required, Validators.maxLength(70)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
+      password: ['', Validators.required, PasswordValidator.strong(), Validators.maxLength(70)],
+      repeatPassword: ['', Validators.required, Validators.maxLength(70)]
     });
   }
 
@@ -61,7 +61,7 @@ export class SignupFormComponent implements Form {
     if (!event.target.value) label.classList.remove('focused');
   }
 
-  match(): boolean {
+  private match(): boolean {
     if (this.signupForm.get('password')?.value != this.signupForm.get('repeatPassword')?.value) {
       this.onError(this.repeatPasswordLabel);
       return false;

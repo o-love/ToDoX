@@ -1,0 +1,21 @@
+<div class="kanban-layout">
+    <div class="states" cdkDropListGroup>
+        <ng-container *ngFor="let state of states">
+            <div class="state">
+                <div class="title"><h3 class="name">{{ state.name }}</h3><i class="bi bi-three-dots-vertical"></i></div>
+                <div cdkDropList [cdkDropListData]="stateTasks[state.id]" (cdkDropListDropped)="drop($event, state.id)" id="{{ state.id }}"  class="tasks">
+                    <ng-container *ngFor="let task of stateTasks[state.id]">
+                        <div #taskcard class="task-card" cdkDrag (cdkDragEntered)="onDragEntered(task)">
+                            <textarea class="task-name" disabled>{{ task.name }}</textarea>
+                            <div class="options">
+                                <i class="bi bi-pencil-fill" (click)="editTask(task)"></i>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <i class="bi bi-plus-square-fill" (click)="createTask(state)"></i>
+            </div>
+        </ng-container>
+        <!-- <i class="bi bi-plus-circle-fill"></i> -->
+    </div>
+</div>

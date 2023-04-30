@@ -1,0 +1,136 @@
+@import '../../../assets/styles/colours';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,600';
+
+.table-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 750px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: .25em;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba($tropical-indigo, 0.2);
+
+  .task-table {
+    background-color: rgba($tropical-indigo, .8);
+    border-collapse: collapse;
+    font-family: 'Open Sans', sans-serif;
+
+    th {
+      border-bottom: 1px solid rgba($white, .4);
+      color: $melon-pastel;
+      font-weight: 600;
+      font-size: 12pt;
+      padding: .4em 2em;
+      text-align: left;
+    }
+
+    td {
+      font-size: 10pt;
+      color: $english-violet;
+      background-color: $white;
+      padding: .4em 2em;
+    }
+
+    tbody tr {
+      transition: background 0.25s ease;
+      border-bottom: 2px solid rgba($melon, .05);
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgba($melon, .4);
+      }
+    }
+  }
+
+  .add-btn-container {
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: $white;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba($black, 0.02);
+
+      .add-btn {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active .add-btn {
+      transform: scale(1);
+    }
+  }
+}
+
+/*
+    .table-layout {
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      border-radius: 5px;
+      border: 1px solid rgba($black, 0.2);
+      overflow: hidden;
+      width: fit-content;
+      margin-top: 20px;
+
+      table {
+        border-collapse: collapse;
+        width: 900px;
+        max-width: 900px;
+        background-color: #fff;
+        
+        overflow: hidden;
+    
+        thead {
+          background-color: #f2f2f2;
+          border-bottom: 1px solid rgba($black, 0.2);
+          th {
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
+          }
+        }
+    
+        tbody {
+          tr {
+            &:hover {
+              background-color: #f2f2f2;
+            }
+    
+            td {
+              padding: 12px;
+              font-size: 16px;
+              color: #333;
+              border-bottom: 1px solid #ddd;
+            }
+          }
+        }
+      }
+
+      .add-btn-container {
+        padding: 5px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        &:hover {
+          cursor: pointer;
+          background-color: rgba($black, 0.02);
+
+          .add-btn {
+            transform: scale(1.1);
+          }
+        }
+
+        &:active .add-btn {
+          transform: scale(1);
+        }
+      }
+    }*/

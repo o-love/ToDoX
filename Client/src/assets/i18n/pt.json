@@ -11,7 +11,11 @@
         "color": "Cor",
         "settings": "Configurações",
         "save": "Salvar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "state": "Estado",
+        "label": "Etiqueta",
+        "startDate": "Data de Início",
+        "dueDate": "Data de Conclusão"
     },
     "welcome": {
         "title": "Comece a trabalhar de forma",

@@ -25,6 +25,7 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "feather-icons": "^4.29.0",
     "jquery": "^3.6.4",
     "ng2-datepicker": "^12.0.0",
     "ngx-bootstrap": "^10.2.0",

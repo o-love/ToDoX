@@ -10,17 +10,17 @@ header {
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     box-sizing: border-box;
     padding-right: 20px;
-    height: 8vh;
+    height: 9vh;
 
     box-shadow: 0 2px 5px rgba($black, 0.2);
 
     .logo {
-        width: 250px;
-        height: 100%;
-
+        height: 65%;
+        margin-left: 20px;
         &:hover { cursor: pointer; }
     }
 
@@ -39,8 +39,8 @@ header {
             padding: 5px 0px 5px 0px;
     
             .profile-pic {
-                width: 38px;
-                height: 38px;
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
     
                 &:hover { 
@@ -51,7 +51,7 @@ header {
     
             .user-name {
                 text-align: center;
-                font-size: 8pt;
+                font-size: 1.5vh;
                 font-weight: bold;
             }
         }
@@ -63,11 +63,11 @@ header {
             width: 13em;
 
             #login-btn { 
-                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(6rem, 2.8em, 10pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -0.5px, 0.5px); 
             }    
 
             #signup-btn { 
-                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(6rem, 2.8em, 10pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -0.5px, 0.5px); 
             }
         }
     }

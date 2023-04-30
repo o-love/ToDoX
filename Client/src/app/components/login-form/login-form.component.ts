@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
 import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
@@ -19,8 +19,8 @@ export class LoginFormComponent implements Form {
 
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, PasswordValidator.strong()]
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
+      password: ['', Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]
     });
   }
 

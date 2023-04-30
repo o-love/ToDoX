@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from 'src/app/models/user';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 import { User } from 'src/app/models/user';
@@ -15,10 +16,15 @@ export class ProfileComponent {
   passwordForm: FormGroup;
 
   user!: User;
-  userEmail: string = 'ejemplo@ejemplo.com';
-  userPassword: string = 'Hola!9';
-
+  userEmail: string = '';
+  userPassword: string = '';
   darkMode: boolean = false;
+
+  // user: User = {
+  //   name: 'sara',
+  //   email: 'saragonza.lez0608@gmail.com',
+  //   password: 'Hola!9'
+  // }
 
   @ViewChildren('email') emailLabels!: QueryList<ElementRef>;
   @ViewChild('currentEmailLabel') currentEmailLabel!: ElementRef;
@@ -31,12 +37,12 @@ export class ProfileComponent {
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.emailForm = this.fb.group({
       currentEmail: ['', Validators.required],
-      newEmail: ['', [Validators.required, Validators.email]]
+      newEmail: ['', [Validators.required, Validators.email, Validators.maxLength(70)]]
     })
 
     this.passwordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required], PasswordValidator.strong()]
+      newPassword: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]]
       // confirmPassword: ['', [Validators.required, PasswordValidator.match('newPassword')]] 
     })
   }
@@ -49,7 +55,6 @@ export class ProfileComponent {
       // this.passwordForm.controls['oldPassword'].setValue(response.password);
     });    
   }
-  
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
@@ -95,7 +100,7 @@ export class ProfileComponent {
   }
 
   checkPassword(): boolean {
-    if (this.userPassword != this.passwordForm.get('oldPassword')?.value) {
+    if (this.user && this.user.password != this.passwordForm.get('oldPassword')?.value) {
       this.onError(this.oldPasswordLabel);
       return false;
     }
@@ -110,7 +115,7 @@ export class ProfileComponent {
     
     let check: boolean = this.checkPassword();
     if (!this.checkErrors(this.passwordForm, this.passwordLabels) && check) {
-      this.userPassword = this.passwordForm.get('newPassword')?.value;
+      if (this.user) this.user.password = this.passwordForm.get('newPassword')?.value;
       this.passwordForm.reset();
 
       // this.authService.updatePassword(this.userPassword).subscribe((response) => {

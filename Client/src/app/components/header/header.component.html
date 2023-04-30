@@ -1,12 +1,12 @@
 <header>
-    <img class="logo" src="../../../assets/placeholder.png" (click)="goHome()">
+    <img class="logo" src="../../../assets/logo.png" (click)="goHome()">
     <div class="right-side">
-        <app-language-selector></app-language-selector>
-        <div *ngIf="!this.showLoginButton" class="profile">
+        <app-language-selector class="language-select"></app-language-selector>
+        <div *ngIf="isLogged" class="profile">
             <img class="profile-pic" src="../../../assets/icons/IoPersonCircle.svg" (click)="goProfile()">
-            <label class="user-name">Lorem Ipsum</label>
+            <label class="user-name">{{ user.name }}<!--{{ this.userService.user.name }}--></label>
         </div>
-        <div *ngIf="this.showLoginButton" class="btn-section">
+        <div *ngIf="!isLogged" class="btn-section">
             <button id="login-btn" (click)="onLogin()" translate>global.login</button>
             <button id="signup-btn" (click)="onSignUp()" translate>global.register</button>
         </div>

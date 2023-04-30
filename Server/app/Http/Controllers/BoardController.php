@@ -13,12 +13,15 @@ class BoardController extends Controller
     public function index()
     {
         // $mc = microtime(true);
-        $boards = Board::all();
+        $boards = Board::all(); 
         // dump(gettype($boards));
         // $boards = Board::with('name')->get();
+        // $boards = Board::select('id', 'name')->get();
         // dump(microtime(true) - $mc);
         // die();
         return new JsonResponse($boards, Response::HTTP_OK);
+        // return new JsonResponse([], Response::HTTP_OK);
+        // return response()->json([]);
     }
 
     // Creates a new board

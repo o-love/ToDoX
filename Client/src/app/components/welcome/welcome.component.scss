@@ -177,11 +177,11 @@
             margin-top: 60px;
 
             #login-btn { 
-                @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -2px, 4px); 
             }
 
             #signup-btn { 
-                @include btn(9em, 2.8em, 14pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(9em, 2.8em, 14pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -2px, 4px); 
             }
         }
     }

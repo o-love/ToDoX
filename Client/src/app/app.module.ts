@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -46,6 +42,14 @@ import { CreateLabelComponent } from './components/create-label/create-label.com
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { ListDetailKanbanComponent } from './components/list-detail-kanban/list-detail-kanban.component';
+import { ListDetailTableComponent } from './components/list-detail-table/list-detail-table.component';
+// import { HomeComponent } from './components/home/home.component';
+import { StateListComponent } from './components/state-list/state-list.component';
+import { LabelListComponent } from './components/label-list/label-list.component';
+import { StateDetailComponent } from './components/state-detail/state-detail.component';
+import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
+import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 
 @NgModule({
   declarations: [
@@ -67,9 +71,18 @@ import { CommentComponent } from './components/comment/comment.component';
     CreateStateComponent,
     LanguageSelectorComponent,
     CommentComponent,
+    ListDetailKanbanComponent,
+    ListDetailTableComponent,
+    // HomeComponent,
+    StateListComponent,
+    LabelListComponent,
+    StateDetailComponent,
+    BoardSettingsComponent,
+    TaskDetailComponent,
   ],
   imports: [
     // CommonModule,
+    DragDropModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
