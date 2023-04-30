@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user-service/user-service.service';
+import { User } from 'src/app/models/user';
 
 
 @Component({
@@ -9,7 +9,15 @@ import { UserService } from 'src/app/services/user-service/user-service.service'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router, public userService: UserService) {}
+  isLogged: boolean = true;
+
+  user: User = {
+    name: 'sara',
+    email: 'saragonza.lez0608@gmail.com',
+    password: 'Hola!9'
+  }
+
+  constructor(private router: Router) {}
 
   goHome() {
     this.router.navigate(['']);

@@ -40,7 +40,7 @@ import { CreateStateComponent } from './components/create-state/create-state.com
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 import { ListDetailKanbanComponent } from './components/list-detail-kanban/list-detail-kanban.component';
 import { ListDetailTableComponent } from './components/list-detail-table/list-detail-table.component';
-import { HomeComponent } from './components/home/home.component';
+// import { HomeComponent } from './components/home/home.component';
 import { StateListComponent } from './components/state-list/state-list.component';
 import { LabelListComponent } from './components/label-list/label-list.component';
 import { StateDetailComponent } from './components/state-detail/state-detail.component';
@@ -68,7 +68,7 @@ import { TaskDetailComponent } from './components/task-detail/task-detail.compon
     LanguageSelectorComponent,
     ListDetailKanbanComponent,
     ListDetailTableComponent,
-    HomeComponent,
+    // HomeComponent,
     StateListComponent,
     LabelListComponent,
     StateDetailComponent,

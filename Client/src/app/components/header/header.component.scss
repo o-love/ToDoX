@@ -39,8 +39,8 @@ header {
             padding: 5px 0px 5px 0px;
     
             .profile-pic {
-                width: 6vh;
-                height: 6vh;
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
     
                 &:hover { 
@@ -51,7 +51,7 @@ header {
     
             .user-name {
                 text-align: center;
-                font-size: 1.4vh;
+                font-size: 1.5vh;
                 font-weight: bold;
             }
         }
