@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\TaskList;
-use App\Models\Board;
-use App\Models\Label;
-use App\Models\TaskComment;
 
 class TaskController extends Controller
 {
@@ -55,7 +52,8 @@ class TaskController extends Controller
         ]);
         $task->save();
 
-        $taskList = TaskList::findOrFail($taskListId);
+        // TODO: Unknown column 'task_list_id' - even forcing tasklist_id, ask a teac
+        // $taskList = TaskList::findOrFail($taskListId);
         // $taskList->tasks()->save($task);
 
         $selectedLabels = $request->input('selectedLabels');
@@ -77,10 +75,12 @@ class TaskController extends Controller
     }
 
     // Update the specified resource in storage
-    public function update(Request $request, TaskList $taskList, Task $task, Board $board)
+    public function update(Request $request, $tasklistId, $taskId, $boardId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // $taskList = TaskList::findOrFail($taskList->id);
+        // $task = $taskList->tasks()->findOrFail($task->id);
+
+        $task = Task::findOrFail($taskId);
 
         $start_date = $request->input('start_date');
         $due_date = $request->input('due_date');
@@ -100,38 +100,26 @@ class TaskController extends Controller
     }
 
     // Remove the specified resource from storage
-    public function destroy(TaskList $taskList, Task $task, Board $board)
+    public function destroy($boardId, $tasklistId, $taskId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // \Log::info('Request received for deleting task', [
+        // ]);
+
+        // $taskList = TaskList::findOrFail($tasklistId);
+        // $task = $taskList->tasks()->find($taskId);
+        $task = Task::findOrFail($taskId);
         $task->delete();
 
         return response()->json(null, 204);
     }
 
-    // Store a comment in a specific task
-    public function storeComment(Request $request, Board $board, Tasklist $tasklist, Task $task, $userId)
-    {
-        $this->validate($request, [
-            'comment' => 'required|string|max:500',
-        ]);
-
-        $comment = new TaskComment([
-            // 'user_id' => auth()->user()->id,
-            'user_id' => $userId,
-            'task_id' => $task->id,
-            'comment' => $request->input('comment'),
-        ]);
-
-        $comment->save();
-        return response()->json($comment, 201);
-    }
-
     // Change the state of a task
     public function changeState(Request $request, $boardId, $taskListId, $taskId, )
     {
-        $taskList = TaskList::findOrFail($taskListId);
-        $task = $taskList->tasks()->findOrFail($taskId);
+        // $taskList = TaskList::findOrFail($taskListId);
+        // $task = $taskList->tasks()->findOrFail($taskId);
+
+        $task = Task::findOrFail($taskId);
 
         $task->state_id = $request->input('state_id');
         $task->save();
