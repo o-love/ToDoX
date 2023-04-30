@@ -4,7 +4,7 @@
         <img class="close-btn" src="../../../assets/icons/IoChevronBackCircle.svg" (click)="onClose()">
     </div>
     <div class="form-body">
-        <input #name type="text" [(ngModel)]="listName" name="listName" placeholder="{{ 'global.name' | translate }} *" (focus)="onFocus($event, name)" (blur)="onBlur($event, name)" formControlName="listName">
+        <input #name type="text" [(ngModel)]="listName" name="listName" placeholder="{{ 'global.name' | translate }} *" formControlName="listName">
         <textarea rows="6" cols="30" [(ngModel)]="listDescription" name="listDescription" placeholder="{{ 'global.description' | translate }}" formControlName="listDescription"></textarea>
     </div>
     <div class="buttons">

@@ -1,69 +1,31 @@
 <div class="list-detail-container">
   <div class="wallpaper"></div>
 
-  <div class="content">
-    <div class="text">
-      <h3>{{ taskList?.name }}</h3>
-      <p>{{ taskList?.description }}</p>
+  <div class="header">
+    <div class="info">
+      <h3 class="name">{{ selectedList.name }}</h3>
+      <p class="description">{{ selectedList.description }}</p>
     </div>
+    <div #select class="layout-select closed">
+      <div class="select-btn" (click)="selectActive()">
+        <span #title class="placeholder-text">Kanban Layout</span>
+        <i #icon class="icon icon-arrow-down"></i>
+      </div>
+      <ul class="option-list">
+        <li #option #table id="table" class="option closed" (click)="selectLayout(tableOption)"><span class="left"><i class="icon icon-list"></i>Table Layout</span><i class="icon icon-check"></i></li>
+        <li #option #kanban id="kanban" class="option closed checked" (click)="selectLayout(kanbanOption)"><span class="left"><i class="icon icon-chart"></i>Kanban Layout</span><i class="icon icon-check"></i></li>
+      </ul>
+    </div>
+  </div>
 
-    <div class="table-container">
-      <table class="list">
-        <thead class="column-header">
-          <tr>
-            <th translate>global.name</th>
-            <th translate>global.description</th>
-            <th translate>states.state</th>
-            <th translate>labels.label</th>
-            <th translate>tasks.startDate</th>
-            <th translate>tasks.dueDate</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let task of tasks; let i = index">
-            <tr [ngClass]="{ isEditing: task.isEditing }">
-              <ng-container *ngIf="!task.isEditing; else editRow">
-                <td>{{ task.name }}</td>
-                <td>{{ task.description }}</td>
-                <td>{{ stateNames[task.state_id] }}</td>
-                <td></td><!-- {{ task.label }}-->
-                <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
-                <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
-                <!-- <td class="task-buttons">
-                  <img class="edit-btn" src="../../../assets/icons/Edit.svg" (click)="editTask(i)">
-                  <img class="delete-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteTask(task.id)">
-                </td> -->
-              </ng-container>
-              <ng-template #editRow>
-                <td><input type="text" [(ngModel)]="task.name"></td>
-                <td><input type="text" [(ngModel)]="task.description"></td>
-                <!-- <td>
-                  <select [(ngModel)]="selectedState">
-                    <option *ngFor="let state of stateNames" [value]="state.id">{{ state.name }}</option>
-                  </select>
-                </td>
-                <td></td>
-                <td><input type="text" [(ngModel)]="task.start_date"></td>
-                <td><input type="text" [(ngModel)]="task.due_date"></td> -->
-                <td>
-                  <button (click)="saveTaskEdit(i)" translate>global.save</button>
-                  <button (click)="cancelTaskEdit(i)" translate>global.cancel</button>
-                </td>
-              </ng-template>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-      <div class="add-btn-container">
-        <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-      </div>  
-    </div>
+  <div class="layout">
+    <app-list-detail-table id="table-layout" *ngIf="layouts.get('TABLE LAYOUT')" (openCreateTaskPopup)="openCreateTaskPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
+    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts.get('KANBAN LAYOUT')" (openCreateTaskPopup)="openCreateTaskPopup($event)" (openTaskDetailPopup)="openTaskDetailPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
   </div>
 </div>
 
-<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
-<div class="popup" *ngIf="showPopup">
-  <app-create-task *ngIf="showPopup" [boardId]="boardId" [taskListId]="taskListId" (taskCreated)="addTask($event)"
-    (closePopup)="showPopup = false"></app-create-task>
+<div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup" (click)="closePopup()"></div>
+<div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup">
+  <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="addTask($event)" (closePopup)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
+  <app-task-detail *ngIf="showTaskDetailPopup" (deleteTask)="deleteTask($event)" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
 </div>

@@ -3,18 +3,16 @@ import { Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 
-// This component will be responsible for displaying the list of all available boards
-
 @Component({
   selector: 'app-board-list',
   templateUrl: './board-list.component.html',
   styleUrls: ['./board-list.component.scss']
 })
 export class BoardListComponent implements OnInit {
-  constructor(private boardService: BoardService, private router: Router) { }
-
   boards: Board[] = [];
-  showAddPopup = false;
+  showAddPopup: boolean = false;
+
+  constructor(private boardService: BoardService, private router: Router) { }
 
   ngOnInit(): void {
     this.getBoards();
@@ -32,26 +30,39 @@ export class BoardListComponent implements OnInit {
     );
   }
 
-  viewBoard(id: number) {
-    this.router.navigate(['/boards', id]); //name + '-' +
-    // When accessing by url, id is not received - REV.
-    // this.router.navigateByUrl(`/boards/${name}`, { state: { boardId: id } });
+  hidePopup() {
+    if (this.showAddPopup) this.showAddPopup = false;
+  }
+
+  viewBoard(board_id: number) {
+    this.router.navigate(['/boards', board_id]);
   }
 
   addBoard(newBoard: Board) {
     this.boards.push(newBoard);
-    this.showAddPopup = false;
-    this.getBoards();
+    this.hidePopup();
   }
 
-  deleteBoard(id: number): void {
-    console.log("Board id delete", id);
-    this.boardService.deleteBoard(id).subscribe(() => {
-      this.getBoards();
-    });
-    console.log("Deleted board", id);
+  deleteBoard(board_id: number): void {
+    this.boardService.deleteBoard(board_id).subscribe(
+      () => {
+        for (let index = 0; index < this.boards.length; index++) {
+          if (this.boards[index].id == board_id) {
+            this.boards.splice(index, 1);
+            console.log('Deleted board:', board_id);
+            break;
+          }
+        }
+      },
+      (error: any) => {
+        console.error('Error deleting board:', error);
+      }
+    );
   }
 
+  // THIS WILL BE USED WHEN ADDED EDIT BTN
+
+  /*
   editBoard(id: number): void {
     console.log("Board id edit", id);
     this.boards[id].isEditing = true;
@@ -63,19 +74,14 @@ export class BoardListComponent implements OnInit {
       (response) => {
         console.log("Board updated:", response);
         board.isEditing = false;
-        this.getBoards();
       },
       (error) => {
         console.error("Error updating board:", error);
       }
     );
   }
-  
+
   cancelBoardEdit(index: number): void {
     this.boards[index].isEditing = false;
-  }
-
-  hidePopup() {
-    if (this.showAddPopup) this.showAddPopup = false;
-  }
+  }*/
 }

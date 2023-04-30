@@ -1,6 +1,9 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from 'src/app/models/user';
 import { PasswordValidator } from 'src/app/validators/password.validator';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -11,10 +14,16 @@ export class ProfileComponent {
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
-  userEmail: string = 'ejemplo@ejemplo.com';
-  userPassword: string = 'Hola!9';
-
+  user!: User;
+  userEmail: string = '';
+  userPassword: string = '';
   darkMode: boolean = false;
+
+  // user: User = {
+  //   name: 'sara',
+  //   email: 'saragonza.lez0608@gmail.com',
+  //   password: 'Hola!9'
+  // }
 
   @ViewChildren('email') emailLabels!: QueryList<ElementRef>;
   @ViewChild('currentEmailLabel') currentEmailLabel!: ElementRef;
@@ -24,18 +33,27 @@ export class ProfileComponent {
   @ViewChild('oldPasswordLabel') oldPasswordLabel!: ElementRef;
   @ViewChild('newPasswordLabel') newPasswordLabel!: ElementRef;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.emailForm = this.fb.group({
-      currentEmail: [this.userEmail],
-      newEmail: ['', [Validators.required, Validators.email]]
+      currentEmail: ['', Validators.required],
+      newEmail: ['', [Validators.required, Validators.email, Validators.maxLength(70)]]
     })
 
     this.passwordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required], PasswordValidator.strong()]
+      newPassword: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]]
+      // confirmPassword: ['', [Validators.required, PasswordValidator.match('newPassword')]] 
     })
   }
-  
+
+  ngOnInit() {
+    this.authService.getMyUser().subscribe((response) => {
+      console.log("User", response);
+      this.user = response;
+      this.emailForm.controls['currentEmail'].setValue(response.email);
+      // this.passwordForm.controls['oldPassword'].setValue(response.password);
+    });    
+  }
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
@@ -68,14 +86,23 @@ export class ProfileComponent {
 		if (!this.checkErrors(this.emailForm, this.emailLabels)) {
       this.userEmail = this.emailForm.get('newEmail')?.value;
       this.emailForm.setValue({currentEmail: this.userEmail, newEmail: ''});
+      
+      if (this.user && this.userEmail) {
+        const user: User = { id: this.user.id, name: this.user.name, email: this.userEmail };
+        this.authService.updateUser(user).subscribe((response) => {
+          console.log(response);
+          this.userEmail = response.email;
+          this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+        });
+      }
     }
   }
 
   checkPassword(): boolean {
-    if (this.userPassword != this.passwordForm.get('oldPassword')?.value) {
-      this.onError(this.oldPasswordLabel);
-      return false;
-    }
+    // if (this.user && this.user.password != this.passwordForm.get('oldPassword')?.value) {
+    //   this.onError(this.oldPasswordLabel);
+    //   return false;
+    // }
 
     return true;
   }
@@ -87,9 +114,19 @@ export class ProfileComponent {
     
     let check: boolean = this.checkPassword();
     if (!this.checkErrors(this.passwordForm, this.passwordLabels) && check) {
-      this.userPassword = this.passwordForm.get('newPassword')?.value;
-      this.passwordForm.reset();
+      // if (this.user) this.user.password = this.passwordForm.get('newPassword')?.value;
+      // this.passwordForm.reset();
+
+      // this.authService.updatePassword(this.userPassword).subscribe((response) => {
+      //   console.log("Changing password", response);
+      //   this.passwordForm.reset();
+      // });
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/..']);
   }
 
   toggleDarkMode() {

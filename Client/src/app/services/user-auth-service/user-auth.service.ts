@@ -39,8 +39,7 @@ export class UserAuthService {
       email: email,
       password: password,
     };
-
-    return this.http.post<User>(`${this.apiUrl}/user`, user);
+    return this.http.post<User>(`${this.apiUrl}/users`, user);
   }
 
   logout() {

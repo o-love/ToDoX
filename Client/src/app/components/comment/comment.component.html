@@ -1,0 +1,25 @@
+<!-- <div class="comment-container">
+    <div class="new-comment">
+        <textarea [(ngModel)]="newComment" placeholder="Write a comment..."></textarea>
+        <button (click)="addComment()">Add</button>
+    </div>
+
+    <div class="comments">
+        <div *ngFor="let comment of comments" class="comment">
+            <div class="comment-header">
+                <h5>{{ comment.username }}</h5>
+                <p>{{ comment.date | date }}</p>
+            </div>
+            <div class="comment-body">
+                <p *ngIf="!comment.isEditing">{{ comment.text }}</p>
+                <textarea *ngIf="comment.isEditing" [(ngModel)]="comment.text"></textarea>
+            </div>
+            <div class="comment-footer">
+                <button (click)="editComment(comment)">Edit</button>
+                <button (click)="saveComment(comment)" *ngIf="comment.isEditing">Save</button>
+                <button (click)="cancelEdit(comment)" *ngIf="comment.isEditing">Cancel</button>
+                <button (click)="deleteComment(comment)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div> -->

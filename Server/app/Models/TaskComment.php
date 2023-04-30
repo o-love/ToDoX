@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TaskComment extends Model
 {
     use HasFactory;
-
     protected $fillable = ['task_id', 'user_id', 'content'];
     protected $table = 'task_comment';
 
