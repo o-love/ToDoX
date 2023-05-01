@@ -16,7 +16,7 @@ export class BoardDetailComponent implements OnInit {
   tasks: Task[] = [];
 
   boardId = this.route.snapshot.paramMap.get('boardId');
-  selectedList!: TaskList;
+  selectedList: TaskList | null = null;
 
   showPopup: boolean = false;
   showCreateList: boolean = false;
@@ -77,23 +77,34 @@ export class BoardDetailComponent implements OnInit {
     this.selectList(newList);
   }
 
-  selectList(list: TaskList): void {
+  selectList(list: TaskList | null): void {
     this.selectedList = list;
-    console.log("seleccionada", list.id);
-    this.showListDetail = true;
-    this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
+    if (this.selectedList) {
+      this.router.navigate(['lists', this.selectedList.id], { relativeTo: this.route, replaceUrl: true });
+      this.showListDetail = true;
+    } else {
+      this.router.navigate(['boards', this.boardId]);
+      this.showListDetail = false;
+    }
   }
 
-  deleteTasklist(tasklist_id: number): void {
+  deleteTaskList(tasklist_id: number): void {
+    let list_index = 0;
+
+    for (let index = 0; index < this.lists.length; index++) {
+      if (this.lists[index].id == tasklist_id) {
+        this.lists.splice(index, 1);
+        list_index = index - 1;   
+        break;
+      }
+    }
+
+    if (list_index >= 0) this.selectList(this.lists[list_index]);
+    else this.selectList(null);
+
     this.boardService.deleteTasklist(this.board.id.toString(), tasklist_id.toString()).subscribe(
       () => {
-        for (let index = 0; index < this.lists.length; index++) {
-          if (this.lists[index].id == tasklist_id) {
-            this.lists.splice(index, 1);
-            console.log('Deleted list:', tasklist_id);
-            break;
-          }
-        }
+        console.log('Deleted list:', tasklist_id);
       },
       (error: any) => {
         console.error('Error deleting tasklist:', error);

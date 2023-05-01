@@ -15,7 +15,7 @@ import { TaskService } from 'src/app/services/task-service/task-service.service'
 })
 export class ListDetailKanbanComponent implements OnChanges {
 
-  @Input() selectedList!: TaskList;
+  @Input() selectedList: TaskList | null = null;
   @Input() tasks!: Task[];
   @Input() states!: State[];
   @Input() labels!: Label[];

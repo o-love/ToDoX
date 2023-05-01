@@ -11,7 +11,7 @@ import { TaskList } from 'src/app/models/taskList';
 })
 export class ListDetailTableComponent implements OnChanges {
 
-  @Input() selectedList!: TaskList;
+  @Input() selectedList: TaskList | null = null;
   @Input() tasks!: Task[];
   @Input() states!: State[];
   @Input() labels!: Label[];

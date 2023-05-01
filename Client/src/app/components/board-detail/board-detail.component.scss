@@ -101,11 +101,13 @@
 
                         .list-name {
                             font-size: 10pt;
-                            max-width: 70%;
+                            width: 88%;
+                            max-width: 88%;
                             margin: 0px;
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
+                            border-right: 2px solid rgba($english-violet, 0.1);
 
                             &:hover { cursor: pointer; }
                         }

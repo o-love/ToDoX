@@ -20,9 +20,9 @@
                     <div class="dropdown">
                         <ng-container *ngFor="let list of lists; let i = index">
                             <ng-container>
-                                <div #list class="list-card" (click)="selectList(list)">
-                                    <label class="list-name">{{ list.name }}</label>
-                                    <i class="delete-btn bi bi-trash3"></i>
+                                <div #list class="list-card">
+                                    <label class="list-name" (click)="selectList(list)">{{ list.name }}</label>
+                                    <i class="delete-btn bi bi-trash3" (click)="deleteTaskList(list.id)"></i>
                                 </div>
                             </ng-container>
                         </ng-container>

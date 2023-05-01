@@ -2,7 +2,7 @@
   <div class="wallpaper"></div>
 
   <div class="header">
-    <div class="info">
+    <div *ngIf="selectedList" class="info">
       <h3 class="name">{{ selectedList.name }}</h3>
       <p class="description">{{ selectedList.description }}</p>
     </div>

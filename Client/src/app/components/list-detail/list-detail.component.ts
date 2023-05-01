@@ -13,7 +13,7 @@ import { Label } from 'src/app/models/label';
   styleUrls: ['./list-detail.component.scss']
 })
 export class ListDetailComponent implements OnChanges {
-  @Input() selectedList!: TaskList;
+  @Input() selectedList: TaskList | null = null;
   tasks: Task[] = [];
   states: State[] = [];
   labels: Label[] = [];
@@ -44,6 +44,8 @@ export class ListDetailComponent implements OnChanges {
   }
 
   ngOnChanges() {
+    if (!this.selectedList) return;
+
     this.states = [];
     this.labels = [];
     this.tasks = [];
@@ -121,7 +123,7 @@ export class ListDetailComponent implements OnChanges {
   }
 
   deleteTask(task_id: number): void {
-    if (!this.selectedList.board_id) return;
+    if (!this.selectedList || !this.selectedList.board_id) return;
 
     this.taskService.deleteTask(this.boardId, this.taskListId, task_id.toString()).subscribe(
       () => {
