@@ -60,7 +60,7 @@ Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{task
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
 // Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
 Route::get('/states/{stateId}/name', [StateController::class, 'getStateName']);
-// Route::post('/states', 'StateController@show');
+// Route::get('/states', 'StateController@show');
 
 // Label routes
 Route::get('labels', [LabelController::class, 'index']);
