@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 
 @Component({
@@ -9,15 +10,7 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  isLogged: boolean = true;
-
-  // user: User = {
-  //   name: 'sara',
-  //   email: 'saragonza.lez0608@gmail.com',
-  //   password: 'Hola!9'
-  // }
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, public userService: UserAuthService) {}
 
   goHome() {
     this.router.navigate(['']);
