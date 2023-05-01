@@ -109,6 +109,8 @@ export class ListDetailComponent implements OnChanges {
   }
 
   editTask(task: Task): void {
+    if (!this.selectedTask) return;
+    console.log('task id:', task.id);
     this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name,
     task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
       next: (task: Task) => {
