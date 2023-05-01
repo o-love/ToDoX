@@ -30,7 +30,7 @@ class TaskCommentController extends Controller
             'user_id' => Auth::user()->id,
             // 'user_id' => '1'
         ]);
-        // $taskComment->save();
+        $taskComment->save();
 
         // $task = $this->findTaskOrFail($taskId);
         // $task->TaskComment($taskComment);

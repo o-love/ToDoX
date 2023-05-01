@@ -33,14 +33,7 @@ class TaskController extends Controller
 
         $start_date = $this->convertDate($request->input('start_date'));
         $due_date = $this->convertDate($request->input('due_date'));
-
-        /* Validate start and due dates */
-        // If a due date is selected, a start date must be selected as well
-        if ($due_date && !$start_date)
-            return response()->json(['error' => 'Due date must be selected if start date is selected'], 400);
-        // Check that the due date is greater than the start date
-        if ($start_date && $due_date && $start_date > $due_date)
-            return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
+        [$start_date, $due_date] = $this->validateDates($start_date, $due_date);
 
         $task = new Task([
             'name' => $request->input('name'),
@@ -77,17 +70,18 @@ class TaskController extends Controller
     // Update the specified resource in storage
     public function update(Request $request, $tasklistId, $taskId, $boardId)
     {
+        \Log::info('Request received for editing task', [
+        ]);
+
         // $taskList = TaskList::findOrFail($taskList->id);
         // $task = $taskList->tasks()->findOrFail($task->id);
 
         $task = Task::findOrFail($taskId);
 
-        $start_date = $request->input('start_date');
-        $due_date = $request->input('due_date');
-
-        // Validate the start and due dates
-        $this->validateDates($start_date, $due_date);
-
+        $start_date = $this->convertDate($request->input('start_date'));
+        $due_date = $this->convertDate($request->input('due_date'));
+        [$start_date, $due_date] = $this->validateDates($start_date, $due_date);
+        
         $task->update([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -132,12 +126,24 @@ class TaskController extends Controller
         return response()->json($task->state);
     }
 
-
     private function convertDate($date)
     {
         if ($date != null)
             return Carbon::parse($date)->setTimezone('Europe/Madrid')->format('Y-m-d');
         else
             return null;
+    }
+
+    private function validateDates($start_date, $due_date)
+    {        
+        /* Validate start and due dates */
+        // If a due date is selected, a start date must be selected as well
+        if ($due_date && !$start_date)
+            return response()->json(['error' => 'Due date must be selected if start date is selected'], 400);
+        // Check that the due date is greater than the start date
+        if ($start_date && $due_date && $start_date > $due_date)
+            return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
+
+        return [$start_date, $due_date];
     }
 }
