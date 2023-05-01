@@ -11,7 +11,7 @@
                 placeholder="{{ 'global.password' | translate }}" (focus)="onFocus($event, passwordLabel)" (blur)="onBlur($event, passwordLabel)">
         </div>
         <div class="bottom">
-            <button class="login-btn qt-btn" type="submit">{{ 'global.login' | translate | uppercase }}</button>
+            <button class="login-btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.login' | translate | uppercase }}</button>
             <a href="register" translate>login.noAccountLink</a>
         </div>
     </form>

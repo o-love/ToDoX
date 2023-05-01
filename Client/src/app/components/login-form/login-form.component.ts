@@ -17,10 +17,12 @@ export class LoginFormComponent implements Form {
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
 
+  loading: boolean = false;
+
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
-      password: ['', Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]
+      password: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]]
     });
   }
 
@@ -66,22 +68,21 @@ export class LoginFormComponent implements Form {
   }
 
   onSubmit() {    
-    console.log("Trying to log in")
-    this.authService.login(
-      this.loginForm.value.email,
-      this.loginForm.value.password
-    ).subscribe(
-      (response) => {
-        console.log("Logged in", response);
-        this.resetErrors();
-        if (!this.checkErrors()) {
-          // this.router.navigate(['/profile']);
-          this.router.navigate(['/boards']);  // SOLO PARA LA PRESENTACION SP1
-        }
+    console.log("trying to log in...")
+    this.resetErrors();
+    if (this.checkErrors()) return;
+
+    this.loading = true;
+    this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
+    .subscribe({
+      next: (response) => {
+        console.log("logged in", response);        
+        // this.router.navigate(['/profile']);
+        this.router.navigate(['/boards']);  // SOLO PARA LA PRESENTACION SP1
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
       }
-    );
+    });
   }  
 }

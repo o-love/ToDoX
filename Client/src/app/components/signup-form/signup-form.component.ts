@@ -19,12 +19,14 @@ export class SignupFormComponent implements Form {
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
   @ViewChild('repeatPasswordLabel') repeatPasswordLabel!: ElementRef;
 
+  loading: boolean = false;
+
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.signupForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(70)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
-      password: ['', Validators.required, PasswordValidator.strong(), Validators.maxLength(70)],
-      repeatPassword: ['', Validators.required, Validators.maxLength(70)]
+      password: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]],
+      repeatPassword: ['', [Validators.required, Validators.maxLength(70)]]
     });
   }
 
@@ -74,23 +76,18 @@ export class SignupFormComponent implements Form {
   }
 
   onSubmit() {
-    console.log("Trying to create account");
-    this.authService.register(
-      this.signupForm.value.name,
-      this.signupForm.value.email,
-      this.signupForm.value.password
-    ).subscribe(
-      (response) => {
-        console.log(response);
-        this.resetErrors();
-        if (!this.checkErrors() && this.match()) {
-          this.router.navigate(['/login']);
-        }
-      console.log("Account created", response);
+    console.log("trying to create account...");
+    this.resetErrors();
+    if (this.checkErrors() || !this.match()) return;
+
+    this.loading = true;
+    this.authService.register(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password)
+    .subscribe({
+      next: (response) => {
+        console.log("account created", response);
+        this.router.navigate(['/profile']);
       },
-      (error) => {
-        console.log(error);
-      }
-    );
+      error: (error) => console.log(error)
+    });
   }
 }

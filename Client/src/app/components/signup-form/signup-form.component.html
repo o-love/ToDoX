@@ -14,6 +14,6 @@
             <input #label #repeatPasswordLabel type="password" id="repeat-password" formControlName="repeatPassword" name="repeatPassword" class="form-control" placeholder="{{ 'register.repeatPassword' | translate}}"
                 (focus)="onFocus($event, repeatPasswordLabel)" (blur)="onBlur($event, repeatPasswordLabel)">
         </div>
-        <button class="signup-btn qt-btn" type="submit">{{ 'global.register' | translate | uppercase }}</button>
+        <button class="signup-btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.register' | translate | uppercase }}</button>
     </form>
 </main>
