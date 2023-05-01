@@ -7,6 +7,7 @@ use App\Models\TaskComment;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 
 class TaskCommentController extends Controller
 {
@@ -25,11 +26,11 @@ class TaskCommentController extends Controller
         //TODO: change user_id to track user creating the coment.
         $taskComment = new TaskComment([
             'content' => $request->input('content'),
-            // 'task_id' => $taskId,
-            'user_id' => Auth::user(),
+            'task_id' => $taskId,
+            'user_id' => Auth::user()->id,
             // 'user_id' => '1'
         ]);
-        // $taskComment->save();
+        $taskComment->save();
 
         // $task = $this->findTaskOrFail($taskId);
         // $task->TaskComment($taskComment);      
