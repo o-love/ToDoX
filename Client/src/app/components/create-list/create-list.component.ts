@@ -25,8 +25,8 @@ export class CreateListComponent implements Form {
 
   constructor(private fb: FormBuilder, private boardService: BoardService, private route: ActivatedRoute) {
     this.form = this.fb.group({
-      listName: ['', [Validators.required]],
-      listDescription: ['', []]
+      listName: ['', [Validators.required, Validators.maxLength(20)]],
+      listDescription: ['', [Validators.maxLength(100)]]
     });
   }
 

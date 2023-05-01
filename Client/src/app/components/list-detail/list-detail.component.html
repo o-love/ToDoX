@@ -3,7 +3,7 @@
 
   <div class="header">
     <div *ngIf="selectedList" class="info">
-      <h3 class="name">{{ selectedList.name }}</h3>
+      <div class="top"><h3 class="name">{{ selectedList.name }}</h3><i class="bi bi-pencil-square"></i></div>
       <p class="description">{{ selectedList.description }}</p>
     </div>
     <div #select class="layout-select closed">
