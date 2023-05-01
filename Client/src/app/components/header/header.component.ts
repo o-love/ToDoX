@@ -13,7 +13,8 @@ export class HeaderComponent {
   constructor(private router: Router, public userService: UserAuthService) {}
 
   goHome() {
-    this.router.navigate(['']);
+    if (!this.userService.isLoggedIn()) this.router.navigate(['']);
+    if (this.userService.isLoggedIn()) this.router.navigate(['boards']);
   }
 
   goProfile() {
