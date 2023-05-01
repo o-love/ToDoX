@@ -59,6 +59,7 @@ export class TaskDetailComponent implements OnInit, Form {
       name: this.task.name,
       description: this.task.description
     });
+    console.log(this.form.value);
   }
 
   onClose() {
@@ -110,6 +111,7 @@ export class TaskDetailComponent implements OnInit, Form {
     this.inputs.forEach((label) => {
 			label.nativeElement.style.boxShadow = 'none';
 		});
+    this.start.nativeElement.style.boxShadow = 'none';
   }
 
   onError(label: ElementRef<any>): void {
