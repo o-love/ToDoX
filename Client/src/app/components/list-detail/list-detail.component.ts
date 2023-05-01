@@ -36,6 +36,7 @@ export class ListDetailComponent implements OnChanges {
   @ViewChild('kanban') kanbanOption!: ElementRef<any>;
 
   layouts: Map<string, boolean> = new Map();
+  timeout: boolean = false;
 
   constructor(private taskService: TaskService) {
     this.layouts.set('TABLE LAYOUT', false);
@@ -49,13 +50,14 @@ export class ListDetailComponent implements OnChanges {
 
     this.boardId = this.selectedList.board_id.toString();
     this.taskListId = this.selectedList.id.toString();
-
-    console.log(this.taskListId);
-
-    this.getTasks();
-    this.getStates();
+    this.reload();
     this.getLabels();
   }   
+
+  reload() {
+    this.getTasks();
+    this.getStates();
+  }
 
   private getTasks(): void {
     this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe(
@@ -93,9 +95,27 @@ export class ListDetailComponent implements OnChanges {
     )
   }
 
-  addTask(newTask: Task): void {
-    this.tasks.push(newTask);
-    this.closePopup();
+  changeTaksState(state_id: string, reload: boolean): void {
+    if (!this.selectedTask) return;
+
+    this.taskService.changeTaskState(this.boardId, this.taskListId, this.selectedTask.id.toString(), state_id).subscribe(
+      (task: Task) => {
+        console.log('saved task:', task);
+        if (reload) this.reload();
+      },
+      (error: any) => {
+        console.log('Se produjo un error:', error);
+    });
+  }
+
+  editTask(task: Task): void {
+    this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name,
+    task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
+      next: (task: Task) => {
+        console.log('saved task:', task);
+      },
+      error: (error) => console.log(error)
+    });
   }
 
   deleteTask(task_id: number): void {
@@ -103,13 +123,7 @@ export class ListDetailComponent implements OnChanges {
 
     this.taskService.deleteTask(this.boardId, this.taskListId, task_id.toString()).subscribe(
       () => {
-        for (let index = 0; index < this.tasks.length; index++) {
-          if (this.tasks[index].id == task_id) {
-            this.tasks.splice(index, 1);
-            console.log('Deleted task:', task_id);
-            break;
-          }
-        }
+        this.reload();
         this.closePopup();
       }, 
       (error: any) => {
@@ -117,42 +131,6 @@ export class ListDetailComponent implements OnChanges {
       }
     );
   }
-
-  // saveTaskEdit(task: Task) {
-  //   for (let i = 0; i < this.tasks.length; i++) {
-  //     if (this.tasks[i].id == task.id) this.tasks[i] = task;
-  //   }
-  // }
-
-  // editTask(task_id: number): void {
-  //   console.log('Task id edit:', task_id);
-
-  //   this.tasks.forEach((task, index) => {
-  //     if (task.id == task_id) this.tasks[index].isEditing = true;
-  //   });
-  // }
-
-  // /* NEEDS CHANGE */
-  // saveTaskEdit(task: Task): void {
-  //   if (!this.selectedList.board_id) return;
-
-  //   this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name, task.description,
-  //   task.state_id.toString(), [], task.due_date, task.start_date).subscribe(
-  //     (response) => {
-  //       console.log('Task updated: ', response);
-  //       task.isEditing = false;
-  //     },
-  //     (error: any) => {
-  //       console.error('Error updating task:', error);
-  //     }
-  //   ) 
-  // }
-  
-  // /* NEEDS CHANGE */
-  // cancelTaskEdit(index: number): void {
-  //   this.tasks[index].isEditing = false;
-  // }
-
 
   selectLayout(selected_option: ElementRef<any>) {
     this.options.forEach((option) => {
@@ -183,15 +161,24 @@ export class ListDetailComponent implements OnChanges {
   closePopup() {
     if (this.showCreateTaskPopup) this.showCreateTaskPopup = false;
     if (this.showTaskDetailPopup) this.showTaskDetailPopup = false;
+    this.selectedTask = null;
   }
 
   openCreateTaskPopup(state: State | null) {
-    this.selectedState = state;
+    this.selectState(state);
     this.showCreateTaskPopup = true;
   }
 
   openTaskDetailPopup(task: Task) {
-    this.selectedTask = task;
+    this.selectTask(task);
     this.showTaskDetailPopup = true;
+  }
+
+  selectState(state: State | null) {
+    this.selectedState = state;
+  }
+
+  selectTask(task: Task | null) {
+    this.selectedTask = task;
   }
 }

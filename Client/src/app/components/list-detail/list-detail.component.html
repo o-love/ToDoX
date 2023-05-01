@@ -20,12 +20,12 @@
 
   <div class="layout">
     <app-list-detail-table id="table-layout" *ngIf="layouts.get('TABLE LAYOUT')" (openCreateTaskPopup)="openCreateTaskPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
-    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts.get('KANBAN LAYOUT')" (openCreateTaskPopup)="openCreateTaskPopup($event)" (openTaskDetailPopup)="openTaskDetailPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
+    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts.get('KANBAN LAYOUT')" (taskDragged)="selectTask($event)" (stateChanged)="changeTaksState($event, false)" (openCreateTaskPopup)="openCreateTaskPopup($event)" (openTaskDetailPopup)="openTaskDetailPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
   </div>
 </div>
 
 <div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup" (click)="closePopup()"></div>
 <div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup">
-  <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="addTask($event)" (closePopup)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
-  <app-task-detail *ngIf="showTaskDetailPopup" (deleteTask)="deleteTask($event)" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
+  <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="reload()" (close)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
+  <app-task-detail *ngIf="showTaskDetailPopup" (close)="closePopup()" (stateChanged)="changeTaksState($event, true)" (editTask)="editTask($event)" (deleteTask)="deleteTask($event)" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
 </div>

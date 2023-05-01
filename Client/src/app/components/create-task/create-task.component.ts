@@ -27,8 +27,8 @@ export class CreateTaskComponent implements Form {
   @Input() states: State[] = [];
   @Input() labels: Label[] = [];
 
-  @Output() taskCreated = new EventEmitter<Task>();
-  @Output() closePopup = new EventEmitter<void>();
+  @Output() taskCreated = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
 
   statesPopup: boolean = false;
   labelsPopup: boolean = false;
@@ -37,6 +37,8 @@ export class CreateTaskComponent implements Form {
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('start') start!: ElementRef<any>;
   @ViewChild('state') state!: ElementRef<any>;
+
+  loading: boolean = false;
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.form = this.fb.group({
@@ -91,7 +93,7 @@ export class CreateTaskComponent implements Form {
   }
 
   onClose() {
-    this.closePopup.emit();
+    this.close.emit();
   }
 
   selectState(state: State) {
@@ -109,8 +111,9 @@ export class CreateTaskComponent implements Form {
       taskName, taskDescription, selectedState, this.selectedLabels, 
       startDate, dueDate).subscribe({
         next: (task: Task) => {
-          this.taskCreated.emit(task);
-          console.log(task);
+          console.log('created task:', task);
+          this.taskCreated.emit();
+          this.close.emit();
         },
         error: (error) => console.log(error)
     });
@@ -129,6 +132,7 @@ export class CreateTaskComponent implements Form {
     if (this.startDate) startDate = new Date(this.startDate);
     if (this.dueDate) dueDate = new Date(this.dueDate);
 
+    this.loading = true;
     this.createTask(taskName, taskDescription, selectedState, startDate, dueDate);
   }
 }
