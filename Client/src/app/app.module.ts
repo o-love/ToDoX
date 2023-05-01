@@ -50,6 +50,7 @@ import { LabelListComponent } from './components/label-list/label-list.component
 import { StateDetailComponent } from './components/state-detail/state-detail.component';
 import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { ListSettingsComponent } from './components/list-settings/list-settings.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { TaskDetailComponent } from './components/task-detail/task-detail.compon
     StateDetailComponent,
     BoardSettingsComponent,
     TaskDetailComponent,
+    ListSettingsComponent,
   ],
   imports: [
     // CommonModule,

@@ -10,7 +10,6 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
   styleUrls: ['./board-settings.component.scss']
 })
 export class BoardSettingsComponent implements Form, OnInit {
-
   form: FormGroup;
 
   @Input() board: Board | null = null; 

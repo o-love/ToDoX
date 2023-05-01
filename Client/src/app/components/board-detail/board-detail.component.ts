@@ -102,14 +102,26 @@ export class BoardDetailComponent implements OnInit {
     if (list_index >= 0) this.selectList(this.lists[list_index]);
     else this.selectList(null);
 
-    this.boardService.deleteTasklist(this.board.id.toString(), tasklist_id.toString()).subscribe(
-      () => {
-        console.log('Deleted list:', tasklist_id);
-      },
-      (error: any) => {
-        console.error('Error deleting tasklist:', error);
+    this.boardService.deleteTasklist(this.board.id.toString(), tasklist_id.toString()).subscribe({
+      next: () => console.log('deleted list:', tasklist_id),
+      error: (error: any) => console.error('Error deleting tasklist:', error)
+    });
+  }
+
+  editTaskList(taskList: TaskList): void {
+    if (!this.selectedList || !this.boardId) return;
+    
+    for (let list of this.lists) {
+      if (list.id == this.selectedList.id) {
+        list = taskList;
+        break;
       }
-    );
+    }
+
+    this.boardService.editTasklist(this.boardId, this.selectedList.id.toString(), taskList.name, taskList.description).subscribe({
+      next: (taskList: TaskList) => console.log('saved list:', taskList),
+      error: (error: any) => console.error('Error editing taskList:', error)
+    })
   }
 
   toggleFill(element: HTMLElement) {

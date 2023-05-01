@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
 import { State } from 'src/app/models/state';
@@ -14,6 +13,9 @@ import { Label } from 'src/app/models/label';
 })
 export class ListDetailComponent implements OnChanges {
   @Input() selectedList: TaskList | null = null;
+  @Output() taskListEdited = new EventEmitter<TaskList>();
+  @Output() taskListDeleted = new EventEmitter<number>();
+
   tasks: Task[] = [];
   states: State[] = [];
   labels: Label[] = [];
@@ -26,6 +28,7 @@ export class ListDetailComponent implements OnChanges {
 
   showCreateTaskPopup: boolean = false;
   showTaskDetailPopup: boolean = false;
+  showSettingsPopup: boolean = false;
 
   @ViewChild('title') selectTitle!: ElementRef<any>;
   @ViewChild('icon') dropdownIcon!: ElementRef<any>;
@@ -97,6 +100,20 @@ export class ListDetailComponent implements OnChanges {
     )
   }
 
+  editTaskList(taskList: TaskList) {
+    if (!this.selectedList) return;
+    this.selectedList.name = taskList.name;
+    this.selectedList.description = taskList.description;
+    this.taskListEdited.emit(taskList);
+  }
+
+  deleteTaskList() {
+    if (!this.selectedList) return;
+    this.taskListDeleted.emit(this.selectedList.id);
+    let $this = this;
+    setTimeout(function() { $this.closePopup() }, 1000);
+  }
+
   changeTaksState(state_id: string, reload: boolean): void {
     if (!this.selectedTask) return;
 
@@ -165,7 +182,12 @@ export class ListDetailComponent implements OnChanges {
   closePopup() {
     if (this.showCreateTaskPopup) this.showCreateTaskPopup = false;
     if (this.showTaskDetailPopup) this.showTaskDetailPopup = false;
+    if (this.showSettingsPopup) this.showSettingsPopup = false;
     this.selectedTask = null;
+  }
+
+  openSettingsPopup() {
+    this.showSettingsPopup = true;
   }
 
   openCreateTaskPopup(state: State | null) {

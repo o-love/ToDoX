@@ -3,7 +3,7 @@
 
   <div class="header">
     <div *ngIf="selectedList" class="info">
-      <div class="top"><h3 class="name">{{ selectedList.name }}</h3><i class="bi bi-pencil-square"></i></div>
+      <div class="top"><h3 class="name">{{ selectedList.name }}</h3><i class="bi bi-pencil-square" (click)="openSettingsPopup()"></i></div>
       <p class="description">{{ selectedList.description }}</p>
     </div>
     <div #select class="layout-select closed">
@@ -24,8 +24,9 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup" (click)="closePopup()"></div>
-<div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup">
+<div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup" (click)="closePopup()"></div>
+<div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup">
   <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="reload()" (close)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
   <app-task-detail *ngIf="showTaskDetailPopup" (close)="closePopup()" (stateChanged)="changeTaksState($event, true)" (editTask)="editTask($event)" (deleteTask)="deleteTask($event)" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
+  <app-list-settings *ngIf="showSettingsPopup" (deleteList)="deleteTaskList()" (listEdited)="editTaskList($event)" (close)="closePopup()" [list]="selectedList"></app-list-settings>
 </div>

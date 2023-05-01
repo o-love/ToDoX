@@ -182,7 +182,6 @@
                 width: 100%;
                 justify-content: flex-end;
                 
-
                 .delete-btn {
                     @include btn(8em, 2em, 10pt, $white, $light-red, 2px solid $light-red, 2px, transparent, 0px, 1px);
                     text-transform: uppercase;
