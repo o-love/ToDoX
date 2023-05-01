@@ -51,20 +51,20 @@ class TaskListController extends Controller
         return response()->json($list);
     }
 
-    // Returns a single Board by ID
-    public function show($boardId, $listId)
+    // Returns a single Tasklist by ID
+    public function show($boardId, $taskListId)
     {
         $board = Board::findOrFail($boardId);
-        $taskList = $board->taskLists()->findOrFail($listId);
+        $taskList = $board->taskLists()->findOrFail($taskListId);
 
         return response()->json($taskList);
     }
 
-    // Updates an existing Board by ID
-    public function update(Request $request, $boardId, $listId)
+    // Updates an existing Tasklist by ID
+    public function update(Request $request, $boardId, $taskListId)
     {
         $board = Board::findOrFail($boardId);
-        $taskList = $board->taskLists()->findOrFail($listId);
+        $taskList = $board->taskLists()->findOrFail($taskListId);
 
         $taskList->name = $request->input('name');
         $taskList->description = $request->input('description');
@@ -73,11 +73,11 @@ class TaskListController extends Controller
         return response()->json($taskList, 200);
     }
 
-    // Deletes a Board by ID
-    public function destroy($boardId, $listId)
+    // Deletes a Tasklist by ID
+    public function destroy($boardId, $taskListId)
     {
         $board = Board::findOrFail($boardId);
-        $taskList = $board->taskLists()->findOrFail($listId);
+        $taskList = $board->taskLists()->findOrFail($taskListId);
         $taskList->delete();
 
         return response()->json(null, 204);

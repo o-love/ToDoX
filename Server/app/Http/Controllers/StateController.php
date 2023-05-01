@@ -44,19 +44,19 @@ class StateController extends Controller
         return response()->json(['state' => $state], 200);
     }
 
-    public function destroy($id)
+    public function destroy($stateId)
     {
-        $state = State::findOrFail($id);
+        $state = State::findOrFail($stateId);
         $state->delete();
 
         return response()->json(null, 204);
     }
 
-    public function assignToList(Request $request, $listId)
+    public function assignToList(Request $request, $taskListId)
     {
         $stateIds = $request->input('state_ids');
 
-        $list = TaskList::findOrFail($listId);
+        $list = TaskList::findOrFail($taskListId);
 
         foreach ($stateIds as $stateId) {
             $state = State::findOrFail($stateId);
