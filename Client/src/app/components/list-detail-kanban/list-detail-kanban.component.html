@@ -2,7 +2,7 @@
     <div class="states" cdkDropListGroup>
         <ng-container *ngFor="let state of states">
             <div class="state">
-                <div class="title"><h3 class="name">{{ state.name }}</h3><i class="bi bi-three-dots-vertical"></i></div>
+                <div class="title"><h3 class="name">{{ state.name }}</h3><!--<i class="bi bi-three-dots-vertical"></i>--></div>
                 <div cdkDropList [cdkDropListData]="stateTasks[state.id]" (cdkDropListDropped)="drop($event, state.id)" id="{{ state.id }}"  class="tasks">
                     <ng-container *ngFor="let task of stateTasks[state.id]">
                         <div #taskcard class="task-card" cdkDrag (cdkDragEntered)="onDragEntered(task)">
