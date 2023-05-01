@@ -57,7 +57,7 @@ class TaskController extends Controller
     }
 
     // Display the specified resource
-    public function show($tasklistId, $taskId, $boardId)
+    public function show($boardId, $tasklistId, $taskId)
     {
         // $taskList = TaskList::findOrFail($tasklistId);
         // $task = Task::with(['taskList', 'state', 'labels', 'comments.user'])->findOrFail($task->id);
@@ -68,9 +68,10 @@ class TaskController extends Controller
     }
 
     // Update the specified resource in storage
-    public function update(Request $request, $tasklistId, $taskId, $boardId)
+    public function update(Request $request, $boardId, $tasklistId, $taskId)
     {
         \Log::info('Request received for editing task', [
+            'task_id' => $taskId,
         ]);
 
         // $taskList = TaskList::findOrFail($taskList->id);
@@ -81,7 +82,7 @@ class TaskController extends Controller
         $start_date = $this->convertDate($request->input('start_date'));
         $due_date = $this->convertDate($request->input('due_date'));
         [$start_date, $due_date] = $this->validateDates($start_date, $due_date);
-        
+
         $task->update([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
