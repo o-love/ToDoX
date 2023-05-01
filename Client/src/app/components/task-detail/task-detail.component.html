@@ -1,15 +1,13 @@
-<form class="task-detail" (ngSubmit)="save()" [formGroup]="form">
+<form class="task-detail" [formGroup]="form">
     <div class="form-header">
         <div class="left">
-            <input #input *ngIf="task" class="input" type="text" name="name" placeholder="{{ task.name }}" formControlName="name">
-            <i class="info-btn bi bi-pencil-fill" *ngIf="disabled" (click)="toggleDisable()"></i>
-            <button type="submit" *ngIf="!disabled"><i class="info-btn bi bi-check-square"></i></button>
+            <input #input (keyup)="onKeyUp($event)" *ngIf="task" class="input" type="text" name="name" placeholder="{{ task.name }}" formControlName="name">
         </div>
         <i class="close-btn bi bi-x-circle-fill" (click)="onClose()"></i>
     </div>
     <div class="body">
         <div class="body-left">
-            <textarea *ngIf="task" #input rows="5" class="input" type="text" name="description" placeholder="{{ task.description}}" formControlName="description"></textarea>
+            <textarea #input (keyup)="onKeyUp($event)" *ngIf="task" rows="5" class="input" type="text" name="description" placeholder="{{ task.description}}" formControlName="description"></textarea>
             <div class="comment-section">
                 <h4>Comentarios</h4>
                 <div class="comments-container"></div> <!--aquí iría la vista de comentarios-->
@@ -30,17 +28,16 @@
                 <!-- <div class="select-input input-2"></div> -->
                 <div class="label-input">
                     <label>{{ 'global.startDate' | translate }}</label>
-                    <input type="date" [max]="dueDate" class="date-input input-2" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}">
+                    <input #input #start type="date" [max]="dueDate" class="date-input input-2" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
                 </div>
 
                 <div class="label-input">
                     <label>{{ 'global.dueDate' | translate }}</label>
-                    <input type="date" [min]="startDate" class="date-input input-2" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}">
+                    <input type="date" [min]="startDate" class="date-input input-2" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
                 </div>
             </div>
             <div class="bottom">
-                <button type="submit" class="saveEdit" (click)="onSaveEdit()">Guardar</button>
-                <div class="delete-btn" (click)="onDelete()">Borrar <i class="bi bi-trash-fill"></i></div>
+                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
             </div>
         </div>
     </div>

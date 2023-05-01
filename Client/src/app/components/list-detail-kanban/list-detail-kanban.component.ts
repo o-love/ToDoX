@@ -20,7 +20,9 @@ export class ListDetailKanbanComponent implements OnChanges {
   @Input() states!: State[];
   @Input() labels!: Label[];
 
+  @Output() taskDragged = new EventEmitter<Task | null>();
   @Output() taskEdited = new EventEmitter<Task>();
+  @Output() stateChanged = new EventEmitter<string>();
   @Output() openTaskDetailPopup = new EventEmitter<Task>();
   @Output() openCreateTaskPopup = new EventEmitter<State>();
 
@@ -49,6 +51,7 @@ export class ListDetailKanbanComponent implements OnChanges {
 
   onDragEntered(task: Task) {
     this.draggingTask = task;
+    this.draggedTask(this.draggingTask);
   }
 
   drop(event: CdkDragDrop<Task[]>, state_id: number) {
@@ -65,9 +68,9 @@ export class ListDetailKanbanComponent implements OnChanges {
 
     if (this.draggingTask) {
       this.draggingTask.state_id = state_id;
-      this.taskEdited.emit(this.draggingTask);
-      this.changeTaksState(this.selectedList.id.toString(), state_id.toString(), this.draggingTask.id.toString(), state_id.toString());
+      this.editState(state_id.toString());
       this.draggingTask = null;
+      this.draggedTask(null);
     }
   }
 
@@ -79,12 +82,11 @@ export class ListDetailKanbanComponent implements OnChanges {
     this.openCreateTaskPopup.emit(state);
   }
 
-  changeTaksState(boardId: string, listId: string, taskId: string, stateId: string): void {
-    this.taskService.changeTaskState(boardId, listId, taskId, stateId)
-      .subscribe(task => {
-      },
-      error => {
-        console.log('Se produjo un error:', error);
-      });
+  draggedTask(task: Task | null) {
+    this.taskDragged.emit(task);
+  }
+
+  editState(state_id: string) {
+    this.stateChanged.emit(state_id);
   }
 }

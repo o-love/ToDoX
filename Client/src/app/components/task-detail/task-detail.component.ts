@@ -1,9 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Query, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -24,14 +23,19 @@ export class TaskDetailComponent implements OnInit, Form {
   dueDate: Date | null = null;
 
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
+  @ViewChild('start') start!: ElementRef<any>;
 
-  disabled: boolean = true;
   statesPopup: boolean = false;
+  timeout: any = null;
 
-  @Output() close = new EventEmitter<Task>();
+  @Output() close = new EventEmitter<void>();
+  @Output() stateChanged = new EventEmitter<string>();
   @Output() deleteTask = new EventEmitter<number>();
+  @Output() editTask = new EventEmitter<Task>();
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  loading: boolean = false;
+
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
       description: ['', [Validators.required, Validators.maxLength(200)]]
@@ -42,7 +46,10 @@ export class TaskDetailComponent implements OnInit, Form {
     if (!this.states || !this.task) return; 
 
     for (let state of this.states) {
-      if (state.id == this.task.state_id) this.selectedState = state;
+      if (state.id == this.task.state_id) {
+        this.selectedState = state;
+        break;
+      }
     }
 
     this.startDate = this.task.start_date;
@@ -51,42 +58,18 @@ export class TaskDetailComponent implements OnInit, Form {
     this.form.setValue({
       name: this.task.name,
       description: this.task.description
-    })
-    this.form.controls['name'].disable();
-    this.form.controls['description'].disable();
+    });
   }
 
   onClose() {
-    if (!this.task) return; 
-
-    // if (this.selectedState) this.task.state_id = this.selectedState.id; 
-
-    // let dueDate = new Date();
-    // let startDate = new Date();
-    // if (this.dueDate) dueDate = new Date(this.dueDate);
-    // if (this.startDate) startDate = new Date(this.startDate);
-
-    // this.task.due_date = dueDate;
-    // this.task.start_date = startDate;
-
-    // this.editTask();
+    this.close.emit();
   }
 
-  private editTask() {
-    // if (!this.boardId || !this.taskListId || !this.task) return;
-
-    // this.taskService.editTask(this.boardId, this.taskListId, this.task.id.toString(), this.task.name, this.task.description, this.task.state_id.toString(),
-    // [], this.task.start_date, this.task.due_date).subscribe({
-    //   next: (task: Task) => {
-    //     this.close.emit(task);
-    //     console.log(task);
-    //   },
-    //   error: (error) => console.log(error)
-    // });
-  }
-
-  onDelete() {
+  onDelete(btn: HTMLElement) {
     if (!this.boardId || !this.taskListId || !this.task) return;
+    btn.style.backgroundColor = "rgba(255, 113, 113)";
+    btn.style.color = "white";
+    this.loading = true;
     this.deleteTask.emit(this.task.id);
   }
 
@@ -100,6 +83,7 @@ export class TaskDetailComponent implements OnInit, Form {
 
   changeState(state: State) {
     this.selectedState = state;
+    this.stateChanged.emit(this.selectedState.id.toString());
   }
 
   checkErrors(): boolean {
@@ -114,6 +98,11 @@ export class TaskDetailComponent implements OnInit, Form {
       }
     });
 
+    if (!this.startDate && this.dueDate) {
+      this.onError(this.start);
+      errors = true;
+    }
+
     return errors;
   }
 
@@ -127,40 +116,29 @@ export class TaskDetailComponent implements OnInit, Form {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   } 
 
-  toggleDisable() {
-    this.disabled = !this.disabled;
-    if (this.disabled) {
-      this.form.controls['name'].disable();
-      this.form.controls['description'].disable();
-    } else {
-      this.form.controls['name'].enable();
-      this.form.controls['description'].enable();
-    }
+  onKeyUp(event: any) {
+    clearTimeout(this.timeout);
+    let $this = this;
+    this.timeout = setTimeout(function() {
+      if (event.keyCode != 13) {
+        $this.save();
+      }
+    }, 1000);
   }
 
   save() {
     this.resetErrors();
-    if (this.checkErrors() || !this.task) return;
+    if (this.checkErrors() || !this.boardId || !this.taskListId || !this.task) return;
 
+    console.log('saving...');
+    
     this.task.name = this.form.get('name')?.value;
     this.task.description = this.form.get('description')?.value;
-    this.toggleDisable();
-  }
-
-  // Función para editar, para probar la conexión con la api, si da error 500 avísame
-  // Cuando cargas una tarea, no estás llamando a la función getTaskById del task service, verdad?
-  // Porque acabo de arreglar la ruta, por eso...
-  onSaveEdit() { // Debería funcionar pero no le puedo dar click xD
-    if (!this.boardId || !this.taskListId || !this.task) return;
-    console.log("Editando");
-    this.taskService.editTask(this.boardId, this.taskListId, this.task.id.toString(), this.task.name, this.task.description, this.task.state_id.toString(),
-    [], this.task.start_date, this.task.due_date).subscribe({
-      next: (task: Task) => {
-        this.close.emit(task);
-        console.log(task);
-      },
-      error: (error) => console.log(error)
-    });
-    console.log("Terminada la edición");
+    if (this.selectedState) this.task.state_id = this.selectedState.id;
+    if (this.startDate) this.task.start_date = new Date(this.startDate);
+    if (this.dueDate) this.task.due_date = new Date(this.dueDate);
+  
+    console.log('new task:', this.task);
+    this.editTask.emit(this.task);
   }
 }
