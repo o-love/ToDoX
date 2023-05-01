@@ -19,19 +19,15 @@ export class ProfileComponent {
   userPassword: string = '';
   darkMode: boolean = false;
 
-  // user: User = {
-  //   name: 'sara',
-  //   email: 'saragonza.lez0608@gmail.com',
-  //   password: 'Hola!9'
-  // }
-
   @ViewChildren('email') emailLabels!: QueryList<ElementRef>;
   @ViewChild('currentEmailLabel') currentEmailLabel!: ElementRef;
   @ViewChild('newEmailLabel') newEmailLabel!: ElementRef;
 
   @ViewChildren('password') passwordLabels!: QueryList<ElementRef>;
-  @ViewChild('oldPasswordLabel') oldPasswordLabel!: ElementRef;
   @ViewChild('newPasswordLabel') newPasswordLabel!: ElementRef;
+
+  loading_email: boolean = false;
+  loading_password: boolean = false;
 
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.emailForm = this.fb.group({
@@ -41,18 +37,22 @@ export class ProfileComponent {
 
     this.passwordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]]
-      // confirmPassword: ['', [Validators.required, PasswordValidator.match('newPassword')]] 
+      newPassword: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]],
+      confirmPassword: ['', [Validators.required, Validators.maxLength(70)]] 
     })
   }
 
   ngOnInit() {
-    this.authService.getMyUser().subscribe((response) => {
-      console.log("User", response);
-      this.user = response;
-      this.emailForm.controls['currentEmail'].setValue(response.email);
+    this.authService.getMyUser().subscribe({
+      next: (user: User) => {
+        console.log("user:", user);
+        this.user = user;
+        this.emailForm.controls['currentEmail'].setValue(user.email);
+      },
+      error: (error: any) => console.error('error retrieving user:', error)
     });
   }
+
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
@@ -61,11 +61,13 @@ export class ProfileComponent {
     let errors: boolean = false;
 
     labels.forEach((label, index) => {
-      const control = form.controls[Object.keys(form.controls)[index]];
+      if (index < Object.keys(form.controls).length) {
+        const control = form.controls[Object.keys(form.controls)[index]];
 
-      if (control.errors) {
-        this.onError(label);
-        errors = true;
+        if (control.errors) {
+          this.onError(label);
+          errors = true;
+        }
       }
     })
 
@@ -82,45 +84,46 @@ export class ProfileComponent {
     console.log(this.emailForm.value);
 
     this.resetErrors(this.emailLabels);
-    if (!this.checkErrors(this.emailForm, this.emailLabels)) {
-      this.userEmail = this.emailForm.get('newEmail')?.value;
-      this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+    if (this.checkErrors(this.emailForm, this.emailLabels) || !this.user || !this.userEmail) return;
+    
+    this.userEmail = this.emailForm.value.newEmail;
+    this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
 
-      if (this.user && this.userEmail) {
-        const user: User = { id: this.user.id, name: this.user.name, email: this.userEmail };
-        this.authService.updateUser(user).subscribe((response) => {
-          console.log(response);
-          this.userEmail = response.email;
-          this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
-        });
-      }
-    }
-  }
-
-  checkPassword(): boolean {
-    // if (this.user && this.user.password != this.passwordForm.get('oldPassword')?.value) {
-    //   this.onError(this.oldPasswordLabel);
-    //   return false;
-    // }
-
-    return true;
+    const user: User = { id: this.user.id, name: this.user.name, email: this.userEmail };
+    this.loading_email = true;
+    this.authService.updateUser(user).subscribe({
+      next: (user: User) => {
+        console.log(user);
+        this.userEmail = user.email;
+        this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+        this.loading_email = false;
+      } 
+    });
   }
 
   savePassword() {
-    const oldPassword = this.passwordForm.value.oldPassword;
-    const newPassword = this.passwordForm.value.newPassword;
-    console.log("Entrando al auth");
-    this.authService.updatePassword(newPassword).subscribe(
-      response => {
-        // alert('Contraseña actualizada exitosamente.');
+    this.resetErrors(this.passwordLabels);
+    if (this.checkErrors(this.passwordForm, this.passwordLabels)) return;
+
+    let newPassword: string = this.passwordForm.value.newPassword;
+
+    console.log("updating password...");
+    this.loading_password = true;
+    this.authService.updatePassword(newPassword).subscribe({
+      next: (response) => {
+        console.log('password updated succesfully');
         // localStorage.setItem('token', response.token.split('|')[1]);
+        this.loading_password = false;
       },
-      error => {
+      error: (error) => {
         console.log(error);
-      });
+        this.onError(this.newPasswordLabel);
+      }
+    });
   }
 
   logout() {
+    console.log('loging out');
     this.authService.logout();
     this.router.navigate(['/..']);
   }

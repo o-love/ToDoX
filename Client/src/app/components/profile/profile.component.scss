@@ -4,70 +4,73 @@
 .subheader {
     background-color: rgba($tropical-indigo, 0.6);
     position: relative;
-    height: 16vh;
+    height: 120px;
+    width: 100%;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     box-shadow: inset 0px -10px 10px -10px $tropical-indigo;
 
     .info {
         display: flex;
-
+        justify-content: space-between;
         width: 100%;
-        margin-left: 35px;
-        transform: translateY(8vh);
+        margin-inline: 2%;
+        transform: translateY(60px);
 
         z-index: 1;
 
-        .profile-pic {
-            background-color: $melon-pastel;
-            border-radius: 50%;
-            border: 4px solid white;
+        .left {
+            display: flex;
 
-            width: 125px;
-            height: 125px;
+            .profile-pic {
+                background-color: $melon-pastel;
+                border-radius: 50%;
+                border: 4px solid white;
+
+                width: 110px;
+                height: 110px;
+            }
+
+            .name-edit {
+                margin: 0 0 .5em 2em;
+                align-self: flex-end;
+                height: fit-content;
+                display: flex;
+                align-items: center;
+
+                .name {
+                    font-size: 20pt;
+                    font-weight: 500;
+                    margin-right: 2em;
+                }
+
+                .edit-btn {
+                    font-size: 12pt;
+                    color: $tropical-indigo;
+
+                    &:hover { cursor: pointer; }
+                    &:active { transform: scale(.9); }
+                }
+            }
         }
 
-        .name-edit {
-            margin-left: 30px;
-            transform: translateY(25%);
-            box-sizing: content-box;
-            display: flex;
-            align-items: center;
-            width: 60%;
+        .logout-btn {
+            align-self: end;
+            font-size: 14pt;
+            color: $tropical-indigo;
+            margin-bottom: .8em;
 
-            .name {
-                margin: 0 20px 5px 0;
-                font-size: 20pt;
-                font-weight: 500;
-            }
-
-            #edit {
-                display: none;
-                /* a cambiar en el siguiente sprint !! */
-
-                width: 35px;
-                height: 35px;
-                margin-bottom: 10px;
-
-                /*fill: $tropical-indigo;*/
-
-                &:hover {
-                    transform: scale(1.1);
-                    cursor: pointer;
-                }
-
-                &:active {
-                    transform: translateY(2px);
-                }
-            }
+            &:hover { cursor: pointer; }
+            &:active { transform: scale(.9); }
         }
     }
 }
 
 .content {
-    margin-top: 10vh;
+    margin-top: 50px;
     padding: 20px 20px 20px 45px;
     width: 100%;
     
@@ -80,11 +83,11 @@
             width: fit-content;
             box-sizing: border-box;
             padding: 0 4px 7px 4px;
-            margin: 0 0 40px 0;
+            margin: 0 0 20px 0;
             font-size: 17pt;
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
-            border-bottom: 2px solid $melon;
+            border-bottom: 4px solid $melon;
         }
 
         .section-content {
@@ -95,6 +98,7 @@
                 display: flex;
                 flex-direction: column;
                 margin-right: 10%;
+                
 
                 .subtitle {
                     display: flex;
@@ -103,39 +107,39 @@
                     margin-bottom: 15px;
 
                     .subtitle-icon {
-                        width: 22px;
-                        height: 22px;
+                        font-size: 15pt;
+                        color: $tropical-indigo;
                     }
 
                     .subtitle-name {
-                        margin: 0 0 0 20px;
-                        font-size: 17pt;
+                        margin: 0 0 0 1em;
+                        font-size: 16pt;
                     }
                 }
 
                 .subsection-content {
                     display: flex;
                     flex-direction: column;
-                    justify-content: space-between;
-
-                    height: 130px;
-
+                    width: fit-content;
                     margin-top: 5px;
                     margin-bottom: 40px;
+                    padding-left: 10%;
 
                     .field-container {
                         display: flex;
                         justify-content: space-between;
+                        box-sizing: border-box;
+                        margin-bottom: 1em;
                         width: 420px;
 
                         .field {
-                            width: 220px;
+                            width: 55%;
                             height: 2em;
-                            border: 2px solid rgba($tropical-indigo, 0.6);
+                            border: 2px solid rgba($tropical-indigo, 0.4);
                             background-color: rgba($tropical-indigo, 0.05);
                             border-radius: 5px;
 
-                            padding-left: 5px;
+                            padding-inline: 5px;
                             color: $tropical-indigo;
                             font-size: 10pt;
 
@@ -145,24 +149,23 @@
                         
                             &:focus {
                                 outline: none;
-                                border-color: rgba($tropical-indigo, 0.3);
+                                border-color: rgba($tropical-indigo, 0.2);
                             }
-                        }
-
-                        .asterisk {
-                            color: $bittersweet;
                         }
 
                         #email {
                             pointer-events: none;
-                        }
-
-                        #currentEmail {
-                            background-color: rgba($tropical-indigo, 0.4);
+                            background-color: rgba($english-violet, .08);
+                            border: none;
                         }
 
                         label {
                             font-weight: 500;
+
+                            .asterisk {
+                                color: $light-red;
+                                margin-left: .5em;
+                            }
 
                             &:focus {
                                 border-color: transparent;
@@ -171,10 +174,17 @@
                     }
 
                     .save-btn {
-                        width: 8em;
-                        font-size: 10pt;
+                        width: 6em;
+                        font-size: 8pt;
+                        border-radius: 10px;
                         text-transform: uppercase;
                         align-self: end;
+
+                        .spinner {
+                            margin-left: -1em;
+                            width: 15px;
+                            height: 15px;
+                        }
                     }
                 }
             }
