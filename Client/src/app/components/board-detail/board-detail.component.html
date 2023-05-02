@@ -33,7 +33,7 @@
             <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
         </div>
         <div class="list-detail-container" *ngIf="showListDetail">
-            <app-list-detail (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList"></app-list-detail>
+            <app-list-detail (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
         </div>
     </div>
 

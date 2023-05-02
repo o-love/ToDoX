@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 const routes: Routes = [
   /*

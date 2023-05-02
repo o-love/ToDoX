@@ -27,6 +27,6 @@
 <div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup" (click)="closePopup()"></div>
 <div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup">
   <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="reload()" (close)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
-  <app-task-detail *ngIf="showTaskDetailPopup" (close)="closePopup()" (stateChanged)="changeTaksState($event, true)" (editTask)="editTask($event)" (deleteTask)="deleteTask($event)" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
+  <app-task-detail *ngIf="showTaskDetailPopup" (close)="closePopup()" (stateChanged)="changeTaksState($event, true)" (editTask)="editTask($event)" (deleteTask)="deleteTask($event)" [user]="user" [usersId]="usersId" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
   <app-list-settings *ngIf="showSettingsPopup" (deleteList)="deleteTaskList()" (listEdited)="editTaskList($event)" (close)="closePopup()" [list]="selectedList"></app-list-settings>
 </div>

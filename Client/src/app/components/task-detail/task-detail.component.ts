@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-task-detail',
@@ -17,6 +18,8 @@ export class TaskDetailComponent implements OnInit, Form {
   @Input() taskListId: string | null = null;
   @Input() states: State[] | null = null;
   @Input() task: Task | null = null;
+  @Input() usersId: {[key: number]: User} = {}
+  @Input() user: User | null = null;
   
   selectedState: State | null = null;
   startDate: Date | null = null;

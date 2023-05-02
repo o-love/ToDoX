@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
+import { User } from 'src/app/models/user';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
   selector: 'app-board-detail',
@@ -18,15 +20,20 @@ export class BoardDetailComponent implements OnInit {
   boardId = this.route.snapshot.paramMap.get('boardId');
   selectedList: TaskList | null = null;
 
+  user: User | null = null;
+  usersId: {[key: number]: User} = {};
+
   showCreateList: boolean = false;
   showSettings: boolean = false;
   showListDetail: boolean = false;
 
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
 
-  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
 
   ngOnInit(): void {
+    this.getMyUser();
+    this.getAllUsers();
     this.getBoard();
     this.getLists();
   }
@@ -58,6 +65,28 @@ export class BoardDetailComponent implements OnInit {
         }
       );
     }
+  }
+
+  private getMyUser() {
+    if (this.userService.isLoggedIn()) {
+      this.userService.getMyUser().subscribe({
+        next: (user: User) => {
+          this.user = user;
+          console.log('user retrieved:', user);
+        },
+        error: (error: any) => console.error('error retrieving user:', error)
+      })
+    }
+  }
+
+  private getAllUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (users: User[]) => { 
+        console.log('users retrieved:', users);
+        for (let user of users) this.usersId[user.id] = user;
+      },
+      error: (error: any) => console.error('error retrieving all users:', error)
+    })
   }
 
   closePopup() {
