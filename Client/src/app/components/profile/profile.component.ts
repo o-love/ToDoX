@@ -14,7 +14,7 @@ export class ProfileComponent {
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
-  user!: User;
+  user: User | null = null;
   userEmail: string = '';
   userPassword: string = '';
   darkMode: boolean = false;
@@ -61,13 +61,11 @@ export class ProfileComponent {
     let errors: boolean = false;
 
     labels.forEach((label, index) => {
-      if (index < Object.keys(form.controls).length) {
-        const control = form.controls[Object.keys(form.controls)[index]];
+      const control = form.controls[Object.keys(form.controls)[index]];
 
-        if (control.errors) {
-          this.onError(label);
-          errors = true;
-        }
+      if (control.errors) {
+        this.onError(label);
+        errors = true;
       }
     })
 
@@ -81,15 +79,15 @@ export class ProfileComponent {
   }
 
   saveEmail() {
-    console.log(this.emailForm.value);
+    console.log('updating email...');
 
     this.resetErrors(this.emailLabels);
-    if (this.checkErrors(this.emailForm, this.emailLabels) || !this.user || !this.userEmail) return;
-    
-    this.userEmail = this.emailForm.value.newEmail;
-    this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+    if (this.checkErrors(this.emailForm, this.emailLabels) || !this.user) {
+      if (!this.user) console.log('user doesn\'t exist');
+      return;
+    } 
 
-    const user: User = { id: this.user.id, name: this.user.name, email: this.userEmail };
+    const user: User = { id: this.user.id, name: this.user.name, email: this.emailForm.value.newEmail };
     this.loading_email = true;
     this.authService.updateUser(user).subscribe({
       next: (user: User) => {
@@ -102,24 +100,27 @@ export class ProfileComponent {
   }
 
   savePassword() {
-    this.resetErrors(this.passwordLabels);
-    if (this.checkErrors(this.passwordForm, this.passwordLabels)) return;
+    // DESCOMENTAR CUANDO FUNCIONE Y ESTÉ LA FUNCIÓN DEL SERVICIO PA COMPARAR CONTRASEÑAS !!!
 
-    let newPassword: string = this.passwordForm.value.newPassword;
+    // console.log("updating password...");
 
-    console.log("updating password...");
-    this.loading_password = true;
-    this.authService.updatePassword(newPassword).subscribe({
-      next: (response) => {
-        console.log('password updated succesfully');
-        // localStorage.setItem('token', response.token.split('|')[1]);
-        this.loading_password = false;
-      },
-      error: (error) => {
-        console.log(error);
-        this.onError(this.newPasswordLabel);
-      }
-    });
+    // this.resetErrors(this.passwordLabels);
+    // if (this.checkErrors(this.passwordForm, this.passwordLabels)) return;
+
+    // let newPassword: string = this.passwordForm.value.newPassword;
+
+    // this.loading_password = true;
+    // this.authService.updatePassword(newPassword).subscribe({
+    //   next: (response) => {
+    //     console.log('password updated succesfully');
+    //     // localStorage.setItem('token', response.token.split('|')[1]);
+    //     this.loading_password = false;
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //     this.onError(this.newPasswordLabel);
+    //   }
+    // });
   }
 
   logout() {
