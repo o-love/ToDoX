@@ -19,9 +19,10 @@ export class TaskCommentService {
   }
 
   // Create a task comment for a certain task
-  addTaskComment(boardId: number, listId: number, taskId: number, userId: number, comment: string): Observable<TaskComment> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments/${userId}`;
-    return this.http.post<TaskComment>(url, { comment });
+  addTaskComment(boardId: number, listId: number, taskId: number, userId: number, content: string): Observable<TaskComment> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`;
+    console.log("content", content);
+    return this.http.post<TaskComment>(url, { content, userId });
   }
 
   // Show information from a comment
