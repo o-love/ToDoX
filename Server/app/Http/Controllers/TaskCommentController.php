@@ -23,12 +23,16 @@ class TaskCommentController extends Controller
     // Creates a new comment in a specific task
     public function store(Request $request, $boardId, $tasklistId, $taskId)
     {
+        \Log::info('Request received for creating taskcomment', [
+            $request->input('content')
+        ]);
+
         //TODO: change user_id to track user creating the coment.
         $taskComment = new TaskComment([
             'content' => $request->input('content'),
             'task_id' => $taskId,
-            'user_id' => Auth::user()->id,
-            // 'user_id' => '1'
+            // 'user_id' => Auth::user()->id,
+            'user_id' => $request->input('userId') // TODO: eliminate this, add user auth
         ]);
         $taskComment->save();
 

@@ -70,9 +70,9 @@ class TaskController extends Controller
     // Update the specified resource in storage
     public function update(Request $request, $boardId, $tasklistId, $taskId)
     {
-        \Log::info('Request received for editing task', [
-            'task_id' => $taskId,
-        ]);
+        // \Log::info('Request received for editing task', [
+        //     'task_id' => $taskId,
+        // ]);
 
         // $taskList = TaskList::findOrFail($taskList->id);
         // $task = $taskList->tasks()->findOrFail($task->id);
