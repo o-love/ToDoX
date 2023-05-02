@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -19,6 +20,7 @@ class ProfileController extends Controller
     public function updatePassword(UpdatePasswordRequest $request)
     {
         if (!Hash::check($request->oldpassword, Auth::user()->password)) {
+            error_log("wrong password");
             return response("Wrong Password", 500);
         }
 
@@ -26,6 +28,6 @@ class ProfileController extends Controller
             'password' => Hash::make($request->newpassword),
         ]);
 
-        return response(`{res:"Password Updated"}`, 200);
+        return response("{}", 200);
     }
 }

@@ -132,7 +132,10 @@ export class ProfileComponent {
     this.authService.updatePassword(oldPassword, newPassword).subscribe({
       next: (response: boolean) => {
         if (response) console.log('password updated succesfully');
-        else this.onError(this.oldPasswordLabel);
+        else {
+          console.log('password not updated');
+          this.onError(this.oldPasswordLabel);
+        }
         // localStorage.setItem('token', response.token.split('|')[1]);
         this.passwordForm.reset();
         this.loading_password = false;
