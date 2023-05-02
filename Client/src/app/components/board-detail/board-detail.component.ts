@@ -18,7 +18,6 @@ export class BoardDetailComponent implements OnInit {
   boardId = this.route.snapshot.paramMap.get('boardId');
   selectedList: TaskList | null = null;
 
-  showPopup: boolean = false;
   showCreateList: boolean = false;
   showSettings: boolean = false;
   showListDetail: boolean = false;
@@ -61,8 +60,7 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  hidePopup() {
-    if (this.showPopup) this.showPopup = false;
+  closePopup() {
     if (this.showCreateList) this.showCreateList = false;
     if (this.showSettings) this.showSettings = false;
   }
@@ -73,7 +71,7 @@ export class BoardDetailComponent implements OnInit {
 
   addList(newList: TaskList) {
     this.lists.push(newList);
-    this.hidePopup();
+    this.closePopup();
     this.selectList(newList);
   }
 
@@ -130,12 +128,10 @@ export class BoardDetailComponent implements OnInit {
   }
 
   openCreateList() {
-    this.showPopup = true; 
     this.showCreateList = true;
   }
 
   openSettings() {
-    this.showPopup = true;
     this.showSettings = true;
   }
 
