@@ -75,8 +75,8 @@ export class UserAuthService {
   }
 
   updatePassword(
-    newPassword: string,
-    oldPassword: string
+    oldPassword: string,
+    newPassword: string
   ): Observable<boolean> {
     // true if success, false if not
     return this.http
@@ -89,7 +89,10 @@ export class UserAuthService {
         { observe: 'response' }
       )
       .pipe(
-        map((res: any) => res.status === 200),
+        map((res: any) => {
+          console.log(res);
+          return res.status === 200;
+        }),
         catchError(() => of(false))
       );
   }
