@@ -86,7 +86,7 @@ export class BoardSettingsComponent implements Form, OnChanges {
 
   save() {
     this.resetErrors();
-    if (!this.checkErrors || !this.board) return;
+    if (this.checkErrors() || !this.board) return;
 
     console.log('saving...');
 

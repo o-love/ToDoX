@@ -128,10 +128,11 @@ export class BoardDetailComponent implements OnInit {
     this.board.name = board.name;
     this.board.description = board.description;
 
-    this.boardService.editBoard(parseInt(this.boardId), this.board.name, this.board.description).subscribe({
-      next: (board) => console.log('saved board:', board),
-      error: (error: any) => console.error('error editing board:', error)
-    })
+    console.log('editing board...')
+    this.boardService.editBoard(parseInt(this.boardId), this.board.name, this.board.description).subscribe(
+      () => console.log('saved board'),
+      (error: any) => console.error('error editing board:', error)
+    )
   }
 
   toggleFill(element: HTMLElement) {
