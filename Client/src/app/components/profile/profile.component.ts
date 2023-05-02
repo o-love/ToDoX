@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
+  infoForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
@@ -26,10 +27,17 @@ export class ProfileComponent {
   @ViewChildren('password') passwordLabels!: QueryList<ElementRef>;
   @ViewChild('newPasswordLabel') newPasswordLabel!: ElementRef;
 
+  @ViewChildren('info') infoLabels!: QueryList<ElementRef>;
+
+  disabled: boolean = true;
   loading_email: boolean = false;
   loading_password: boolean = false;
 
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
+    this.infoForm = this.fb.group({
+      name: ['', [Validators.required, Validators.maxLength(60)]]
+    })
+
     this.emailForm = this.fb.group({
       currentEmail: ['', Validators.required],
       newEmail: ['', [Validators.required, Validators.email, Validators.maxLength(70)]]
@@ -43,11 +51,14 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
+    this.infoForm.controls['name'].disable();
+
     this.authService.getMyUser().subscribe({
       next: (user: User) => {
         console.log("user:", user);
         this.user = user;
         this.emailForm.controls['currentEmail'].setValue(user.email);
+        this.infoForm.controls['name'].setValue(user.name);
       },
       error: (error: any) => console.error('error retrieving user:', error)
     });
@@ -55,6 +66,12 @@ export class ProfileComponent {
 
   onError(label: ElementRef) {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
+  }
+
+  toggleDisable() {
+    this.disabled = !this.disabled;
+    if (this.disabled) this.infoForm.controls['name'].disable();
+    else this.infoForm.controls['name'].enable();
   }
 
   checkErrors(form: FormGroup, labels: QueryList<ElementRef>): boolean {
@@ -121,6 +138,20 @@ export class ProfileComponent {
     //     this.onError(this.newPasswordLabel);
     //   }
     // });
+  }
+
+  saveInfo() {
+    console.log('updating user...');
+    
+    this.resetErrors(this.infoLabels);
+    if (this.checkErrors(this.infoForm, this.infoLabels) || !this.user) return;
+
+    this.user.name = this.infoForm.value.name;
+    this.toggleDisable();
+    this.authService.updateUser(this.user).subscribe({
+      next: (user: User) => console.log('user updated:', user),
+      error: (error: any) => console.error('error updating user:', error)
+    })
   }
 
   logout() {

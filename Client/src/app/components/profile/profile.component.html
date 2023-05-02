@@ -3,10 +3,12 @@
         <div class="info">
             <div class="left">
                 <div class="profile-pic"></div>
-                <div class="name-edit">
-                    <div *ngIf="user" class="name">{{ user.name }}</div>
-                    <i class="edit-btn bi bi-pencil-square"></i>
-                </div>
+                <form class="name-edit" [formGroup]="infoForm">
+                    <input #name #info *ngIf="user" type="text" name="name" class="name field" placeholder="{{ user.name }}" formControlName="name">
+                    <!-- <div *ngIf="user" class="name">{{ user.name }}</div> -->
+                    <i *ngIf="disabled" class="edit-btn bi bi-pencil-square" (click)="toggleDisable()"></i>
+                    <i *ngIf="!disabled" class="edit-btn bi bi-check-square" (click)="saveInfo()"></i>
+                </form>
             </div>
             <i class="logout-btn bi bi-box-arrow-right" (click)="logout()"></i>
         </div>
