@@ -25,6 +25,7 @@ export class ProfileComponent {
   @ViewChild('newEmailLabel') newEmailLabel!: ElementRef;
 
   @ViewChildren('password') passwordLabels!: QueryList<ElementRef>;
+  @ViewChild('oldPasswordLabel') oldPasswordLabel!: ElementRef;
   @ViewChild('newPasswordLabel') newPasswordLabel!: ElementRef;
 
   @ViewChildren('info') infoLabels!: QueryList<ElementRef>;
@@ -119,25 +120,28 @@ export class ProfileComponent {
   savePassword() {
     // DESCOMENTAR CUANDO FUNCIONE Y ESTÉ LA FUNCIÓN DEL SERVICIO PA COMPARAR CONTRASEÑAS !!!
 
-    // console.log("updating password...");
+    console.log("updating password...");
 
-    // this.resetErrors(this.passwordLabels);
-    // if (this.checkErrors(this.passwordForm, this.passwordLabels)) return;
+    this.resetErrors(this.passwordLabels);
+    if (this.checkErrors(this.passwordForm, this.passwordLabels)) return;
 
-    // let newPassword: string = this.passwordForm.value.newPassword;
+    let oldPassword: string = this.passwordForm.value.oldPassword;
+    let newPassword: string = this.passwordForm.value.newPassword;
 
-    // this.loading_password = true;
-    // this.authService.updatePassword(newPassword).subscribe({
-    //   next: (response) => {
-    //     console.log('password updated succesfully');
-    //     // localStorage.setItem('token', response.token.split('|')[1]);
-    //     this.loading_password = false;
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //     this.onError(this.newPasswordLabel);
-    //   }
-    // });
+    this.loading_password = true;
+    this.authService.updatePassword(oldPassword, newPassword).subscribe({
+      next: (response: boolean) => {
+        if (response) console.log('password updated succesfully');
+        else this.onError(this.oldPasswordLabel);
+        // localStorage.setItem('token', response.token.split('|')[1]);
+        this.passwordForm.reset();
+        this.loading_password = false;
+      },
+      error: (error) => {
+        console.log(error);
+        this.onError(this.newPasswordLabel);
+      }
+    });
   }
 
   saveInfo() {

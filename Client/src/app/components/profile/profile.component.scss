@@ -73,12 +73,29 @@
         }
 
         .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width:8em;
             align-self: end;
-            font-size: 14pt;
+            font-size: 10pt;
+            font-weight: 500;
             color: $tropical-indigo;
+            box-sizing: border-box;
+            border-radius: 5px;
+            padding: .1em;
+            padding-inline: .5em;
+
+            .bi {
+                font-size: 14pt;
+            }
+
             margin-bottom: .8em;
 
-            &:hover { cursor: pointer; }
+            &:hover { 
+                cursor: pointer; 
+                background-color: rgba($tropical-indigo, 0.2);
+            }
             &:active { transform: scale(.9); }
         }
     }
