@@ -3,6 +3,8 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
 import { Board } from 'src/app/models/board';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
+import { User } from 'src/app/models/user'; // TODO: ELIMINATE AFTER SP1 PRESENTATION
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service'; // TODO: ELIMINATE AFTER SP1 PRESENTATION
 
 @Component({
   selector: 'app-create-board',
@@ -14,7 +16,7 @@ export class CreateBoardComponent implements Form {
 
   @ViewChild('name') name!: ElementRef<any>; 
 
-  constructor(private boardService: BoardService, private fb: FormBuilder) { 
+  constructor(private boardService: BoardService, private fb: FormBuilder, private userServ: UserAuthService) { 
     this.form = this.fb.group({
       boardName: ['', Validators.required],
       boardDescription: ['']
@@ -56,22 +58,43 @@ export class CreateBoardComponent implements Form {
   }
 
   onSubmit() {
-    console.log("board: ", this.boardName, " description: ", this.boardDescription);
+    // console.log("board: ", this.boardName, " description: ", this.boardDescription);
     this.resetErrors();
     if (this.checkErrors()) return;
     
-    this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
-      next: (board) => {
-        this.boardCreated.emit(board);
+    // TODO: UNCOMMENT AFTER SP1 PRESENTATION
+    // this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
+    //   next: (board) => {
+    //     this.boardCreated.emit(board);
 
-        this.boardService.getBoards().subscribe((boards: Board[]) => {
+    //     this.boardService.getBoards().subscribe((boards: Board[]) => {
+    //       this.boardCreated.emit(board);
+    //     });
+
+    //     this.boardName = '';
+    //     this.boardDescription = '';
+    //   },
+    //   error: (error) => console.log(error)
+    // });
+
+    // TODO: ELIMINATE AFTER SP1 PRESENTATION
+    this.userServ.getMyUser().subscribe((user: User) => {
+      this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
+        next: (board) => {
           this.boardCreated.emit(board);
-        });
-
-        this.boardName = '';
-        this.boardDescription = '';
-      },
-      error: (error) => console.log(error)
+  
+          console.log("User", user.name, "with id", user.id, "created board", board.name, "with id", board.id,
+          "with permission level: 1 and role: manager");
+  
+          this.boardService.getBoards().subscribe((boards: Board[]) => {
+            this.boardCreated.emit(board);
+          });
+  
+          this.boardName = '';
+          this.boardDescription = '';
+        },
+        error: (error) => console.log(error)
+      });
     });
   }
 }
