@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class ProfileController extends Controller
 {
@@ -19,8 +18,12 @@ class ProfileController extends Controller
 
     public function updatePassword(UpdatePasswordRequest $request)
     {
+        if (!Hash::check($request->oldpassword, Auth::user()->password)) {
+            return response("Wrong Password", 500);
+        }
+
         User::whereId(auth()->user()->id)->update([
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->newpassword),
         ]);
 
         return response(`{res:"Password Updated"}`, 200);

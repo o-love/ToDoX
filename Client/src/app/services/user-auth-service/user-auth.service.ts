@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { User } from 'src/app/models/user';
 
 @Injectable({
@@ -74,9 +74,23 @@ export class UserAuthService {
       .pipe(map((data: any) => data.data));
   }
 
-  updatePassword(password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/myUser/updatepassword`, {
-      password: password,
-    });
+  updatePassword(
+    newPassword: string,
+    oldPassword: string
+  ): Observable<boolean> {
+    // true if success, false if not
+    return this.http
+      .post(
+        `${this.apiUrl}/myUser/updatepassword`,
+        {
+          newpassword: newPassword,
+          oldpassword: oldPassword,
+        },
+        { observe: 'response' }
+      )
+      .pipe(
+        map((res: any) => res.status === 200),
+        catchError(() => of(false))
+      );
   }
 }
