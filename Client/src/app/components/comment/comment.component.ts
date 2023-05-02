@@ -62,7 +62,7 @@ export class CommentComponent implements OnInit {
   sendMessage() {
     if (this.disable) return;
     console.log('sending comment...');
-    let message: string = this.form.value.message;
+    let message: string = this.form.value.text;
     this.form.controls['text'].disable();
     this.addComment(message);
   }
@@ -88,7 +88,7 @@ export class CommentComponent implements OnInit {
     this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.task.id, this.user.id, message).subscribe({
       next: (comment: TaskComment) => {
         this.comments.push(comment);
-        this.form.value['text'].setValue('');
+        this.form.controls['text'].setValue('');
         this.form.controls['text'].enable();
         console.log('saved comment:', comment);
       },
