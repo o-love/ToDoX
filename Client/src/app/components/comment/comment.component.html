@@ -11,7 +11,7 @@
         </ng-container>
     </div>
     <form class="message-input" [formGroup]="form">
-        <input (keyup)="onKeyUp()" type="text" class="input" placeholder="Type..." formControlName="text">
+        <input (keyup)="onKeyUp()" type="text" class="input" placeholder="Send a comment..." formControlName="text">
         <button [disabled]="disable" class="btn-container"><i #send class="bi bi-send" (click)="sendMessage()"></i></button>
     </form>
 </div>

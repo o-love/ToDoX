@@ -110,6 +110,7 @@
                 .select-input {
                     display: flex;
                     align-items: center;
+                    border: 2px solid rgba($english-violet, .2);
 
                     .state-balloon {
                         display: flex;
