@@ -128,11 +128,10 @@ export class BoardDetailComponent implements OnInit {
     this.board.name = board.name;
     this.board.description = board.description;
 
-    console.log('editing board...')
-    this.boardService.editBoard(parseInt(this.boardId), this.board.name, this.board.description).subscribe(
-      () => console.log('saved board'),
-      (error: any) => console.error('error editing board:', error)
-    )
+    this.boardService.editBoard(parseInt(this.boardId), board.name, board.description).subscribe(
+      () => console.log('board saved:', board),
+      (error: any) => console.log(error)
+    ) 
   }
 
   toggleFill(element: HTMLElement) {
@@ -146,9 +145,5 @@ export class BoardDetailComponent implements OnInit {
 
   openSettings() {
     this.showSettings = true;
-  }
-
-  updateBoard(board: Board) {
-    this.board = board;
   }
 }

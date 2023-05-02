@@ -20,6 +20,7 @@ export class BoardSettingsComponent implements Form, OnChanges {
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('savebtn') savebtn!: ElementRef<any>;
 
+  timeout: any;
   loading: boolean = false;
 
   constructor(private fb: FormBuilder) {
@@ -76,8 +77,9 @@ export class BoardSettingsComponent implements Form, OnChanges {
   }
 
   onKeyUp(event: any) {
+    clearTimeout(this.timeout);
     let $this = this;
-    setTimeout(function() {
+    this.timeout = setTimeout(function() {
       if (event.keyCode != 13) {
         $this.save();
       }

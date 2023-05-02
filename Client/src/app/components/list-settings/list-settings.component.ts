@@ -20,6 +20,7 @@ export class ListSettingsComponent implements Form, OnChanges {
   @ViewChild('savebtn') savebtn!: ElementRef<any>;
 
   loading: boolean = false;
+  timeout: any;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -75,8 +76,9 @@ export class ListSettingsComponent implements Form, OnChanges {
   }
 
   onKeyUp(event: any) {
+    clearTimeout(this.timeout);
     let $this = this;
-    setTimeout(function() {
+    this.timeout = setTimeout(function() {
       if (event.keyCode != 13) {
         $this.save();
       }

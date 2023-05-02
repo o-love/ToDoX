@@ -26,7 +26,7 @@ export class TaskDetailComponent implements OnInit, Form {
   @ViewChild('start') start!: ElementRef<any>;
 
   statesPopup: boolean = false;
-  timeout: any = null;
+  timeout: any;
 
   @Output() close = new EventEmitter<void>();
   @Output() stateChanged = new EventEmitter<string>();
