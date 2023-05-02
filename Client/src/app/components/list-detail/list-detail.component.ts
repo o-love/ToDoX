@@ -5,6 +5,7 @@ import { State } from 'src/app/models/state';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from 'src/app/services/task-service/task-service.service';
 import { Label } from 'src/app/models/label';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-list-detail',
@@ -13,6 +14,8 @@ import { Label } from 'src/app/models/label';
 })
 export class ListDetailComponent implements OnChanges {
   @Input() selectedList: TaskList | null = null;
+  @Input() usersId: {[key: number]: User} = {}
+  @Input() user: User | null = null;
   @Output() taskListEdited = new EventEmitter<TaskList>();
   @Output() taskListDeleted = new EventEmitter<number>();
 

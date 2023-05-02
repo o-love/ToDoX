@@ -1,25 +1,17 @@
-<!-- <div class="comment-container">
-    <div class="new-comment">
-        <textarea [(ngModel)]="newComment" placeholder="Write a comment..."></textarea>
-        <button (click)="addComment()">Add</button>
+<div class="comment-container">
+    <div class="comment-section">
+        <ng-container *ngFor="let comment of comments">
+            <div class="comment">
+                <div class="message">
+                    <p class="text">{{ comment.comment }}</p>
+                    <div *ngIf="isFromMyUser(comment.user_id)" class="options"><i class="edit-btn bi bi-pencil-fill"></i><i  class="delete-btn bi bi-trash3-fill"></i></div>
+                </div>
+                <div class="footer"><label>{{ usersId[comment.user_id] }}</label></div>
+            </div>
+        </ng-container>
     </div>
-
-    <div class="comments">
-        <div *ngFor="let comment of comments" class="comment">
-            <div class="comment-header">
-                <h5>{{ comment.username }}</h5>
-                <p>{{ comment.date | date }}</p>
-            </div>
-            <div class="comment-body">
-                <p *ngIf="!comment.isEditing">{{ comment.text }}</p>
-                <textarea *ngIf="comment.isEditing" [(ngModel)]="comment.text"></textarea>
-            </div>
-            <div class="comment-footer">
-                <button (click)="editComment(comment)">Edit</button>
-                <button (click)="saveComment(comment)" *ngIf="comment.isEditing">Save</button>
-                <button (click)="cancelEdit(comment)" *ngIf="comment.isEditing">Cancel</button>
-                <button (click)="deleteComment(comment)">Delete</button>
-            </div>
-        </div>
-    </div>
-</div> -->
+    <form class="message-input" [formGroup]="form">
+        <input (keyup)="onKeyUp()" type="text" class="input" placeholder="Send a comment..." formControlName="text">
+        <button [disabled]="disable" class="btn-container"><i #send class="bi bi-send" (click)="sendMessage()"></i></button>
+    </form>
+</div>
