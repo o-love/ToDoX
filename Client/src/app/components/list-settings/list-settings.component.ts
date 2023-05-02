@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form } from 'src/app/models/form';
 import { TaskList } from 'src/app/models/taskList';
 
 @Component({
@@ -7,7 +8,7 @@ import { TaskList } from 'src/app/models/taskList';
   templateUrl: './list-settings.component.html',
   styleUrls: ['./list-settings.component.scss']
 })
-export class ListSettingsComponent implements OnChanges {
+export class ListSettingsComponent implements Form, OnChanges {
   form: FormGroup;
 
   @Input() list: TaskList | null = null; 
@@ -18,7 +19,6 @@ export class ListSettingsComponent implements OnChanges {
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('savebtn') savebtn!: ElementRef<any>;
 
-  timeout: any = null;
   loading: boolean = false;
 
   constructor(private fb: FormBuilder) {
@@ -75,9 +75,8 @@ export class ListSettingsComponent implements OnChanges {
   }
 
   onKeyUp(event: any) {
-    clearTimeout(this.timeout);
     let $this = this;
-    this.timeout = setTimeout(function() {
+    setTimeout(function() {
       if (event.keyCode != 13) {
         $this.save();
       }

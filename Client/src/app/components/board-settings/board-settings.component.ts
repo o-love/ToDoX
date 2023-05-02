@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
 import { Form } from 'src/app/models/form';
@@ -9,31 +9,33 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
   templateUrl: './board-settings.component.html',
   styleUrls: ['./board-settings.component.scss']
 })
-export class BoardSettingsComponent implements Form, OnInit {
+export class BoardSettingsComponent implements Form, OnChanges {
   form: FormGroup;
 
   @Input() board: Board | null = null; 
-  @Output() closeBoardSettings = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
   @Output() boardEdited = new EventEmitter<Board>();
+  @Output() deleteBoard = new EventEmitter<void>();
 
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('savebtn') savebtn!: ElementRef<any>;
-  disabled: boolean = true;
 
-  constructor(private fb: FormBuilder, private boardService: BoardService) {
+  loading: boolean = false;
+
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(60)]],
-      description: ['',  [Validators.maxLength(60)]]
+      name: ['', [Validators.required, Validators.maxLength(20)]],
+      description: ['',  [Validators.maxLength(100)]]
     });
   }
 
-  ngOnInit() {
+  ngOnChanges() {
+    if (!this.board) return;
+
     this.form.setValue({
-      name: this.board?.name,
-      description: this.board?.description
+      name: this.board.name,
+      description: this.board.description
     })
-    this.form.controls['name'].disable();
-    this.form.controls['description'].disable();
   }
 
   checkErrors(): boolean {
@@ -62,35 +64,36 @@ export class BoardSettingsComponent implements Form, OnInit {
   }
 
   onClose() {
-    this.closeBoardSettings.emit();
+    this.close.emit();
   }
 
-  toggleEdit() {
-    this.disabled = !this.disabled;
-    if (this.disabled) {
-      this.form.controls['name'].disable();
-      this.form.controls['description'].disable();
-    } else {
-      this.form.controls['name'].enable();
-      this.form.controls['description'].enable();
-    }
-  }
-
-  onSubmit() {
-    this.resetErrors();
+  onDelete(btn: HTMLElement) {
     if (!this.board) return;
-    if (!this.checkErrors()) {
-      this.boardService.editBoard(this.board.id, this.board.name, this.board.description).subscribe(
-        () => {
-          if (!this.board) return; 
-          this.boardEdited.emit(this.board);
-          this.board.name = this.form.get('name')?.value;
-          this.board.description = this.form.get('description')?.value;
-        },
-        (error: any) => console.log(error)
-      ) 
-    }
-    console.log('name:', this.board.name, 'description:', this.board.description);
-    this.toggleEdit();
+    btn.style.backgroundColor = "rgba(255, 113, 113)";
+    btn.style.color = "white";
+    this.loading = true;
+    this.deleteBoard.emit();
+  }
+
+  onKeyUp(event: any) {
+    let $this = this;
+    setTimeout(function() {
+      if (event.keyCode != 13) {
+        $this.save();
+      }
+    }, 1000);
+  }
+
+  save() {
+    this.resetErrors();
+    if (!this.checkErrors || !this.board) return;
+
+    console.log('saving...');
+
+    this.board.name = this.form.get('name')?.value;
+    this.board.description = this.form.get('description')?.value;
+
+    console.log('new board:', this.board);
+    this.boardEdited.emit(this.board);
   }
 }

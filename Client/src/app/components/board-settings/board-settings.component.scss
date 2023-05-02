@@ -22,24 +22,12 @@
         align-items: center;
         justify-content: space-between;
 
-        .header {
-            display: flex;
-            align-items: center;
-
-            .title {
-                margin: 0;
-                padding: 0;
-                text-align: start;
-                font-weight: 500;
-                font-size: 15pt;
-            }
-
-            .bi {
-                margin-left: 1em;
-                font-size: 12pt;
-            
-                &:hover { cursor: pointer; }
-            }
+        .title {
+            margin: 0;
+            padding: 0;
+            text-align: start;
+            font-weight: 500;
+            font-size: 15pt;
         }
 
         .close-btn {
@@ -108,22 +96,27 @@
     .bottom {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
 
-        .ok-btn {
-            border-radius: 10px;
-            width: 4em;
-            font-size: 10pt;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .delete-btn {
+            @include btn(8em, 2em, 10pt, $white, $light-red, 2px solid $light-red, 2px, transparent, 0px, 1px);
             text-transform: uppercase;
+            cursor: pointer;
 
-            &:active {
+            &:hover {
+                background-color: $light-red;
                 color: $white;
-                border: 2px solid $white;
-                outline: none;
+            }
+
+            .bi {
+                margin-left: .5em;
+                font-size: 8pt;
+            }
+
+            .spinner {
+                margin-left: -8px;
+                width: 25px;
+                height: 25px;
             }
         }
     }

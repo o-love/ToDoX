@@ -122,6 +122,18 @@ export class BoardDetailComponent implements OnInit {
     })
   }
 
+  editBoard(board: Board): void {
+    if (!this.boardId) return;
+
+    this.board.name = board.name;
+    this.board.description = board.description;
+
+    this.boardService.editBoard(parseInt(this.boardId), this.board.name, this.board.description).subscribe({
+      next: (board) => console.log('saved board:', board),
+      error: (error: any) => console.error('error editing board:', error)
+    })
+  }
+
   toggleFill(element: HTMLElement) {
     element.classList.toggle('bi-plus-square');
     element.classList.toggle('bi-plus-square-fill');
