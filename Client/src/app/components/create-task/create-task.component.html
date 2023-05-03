@@ -1,46 +1,82 @@
 <form class="create-task" (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-header">
         <h2 translate>Crear tarea</h2>
-        <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
+        <img class="close-btn" (click)="onClose()" src="../../../assets/icons/IoCloseCircle.svg">
     </div>
 
     <div class="form-body">
-        <input #required type="text" [(ngModel)]="taskName" name="taskName" placeholder="{{ 'global.name' | translate}}" formControlName="taskName">
-        <textarea  rows="6" cols="30" [(ngModel)]="taskDescription" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="taskDescription"></textarea>
         <div class="form-group">
-            <label>{{ 'states.states' | translate}}:</label>
-            <select [(ngModel)]="selectedState" name="state" #required formControlName="selectedState">
-                <option *ngFor="let state of states" [value]="state.id | number">{{state.name}}</option>
-            </select>
+            <label class="name" for="taskName">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
+            <input #labels #input class="input" type="text" name="taskName" formControlName="taskName">
         </div>
 
-        <div class="input-field">
-            <mat-form-field appearance="outline">
-                <mat-label>{{ 'tasks.startDate' | translate}}</mat-label>
-                <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" name="startDate" formControlName="startDate">
-                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-    
-        <div class="input-field">
-            <mat-form-field appearance="outline">
-                <mat-label>{{ 'tasks.dueDate' | translate }}</mat-label>
-                <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="dueDate" name="dueDate" formControlName="dueDate">
-                <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #dueDatePicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-        
         <div class="form-group">
-            <label>{{ 'labels.labels' | translate }}:</label>
-            <select multiple [(ngModel)]="selectedLabels" name="labels" formControlName="labels">
-                <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
-            </select>
+            <label class="name" for="taskDescription">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
+            <textarea #labels #input class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
         </div>
+
+        <div class="inline-group">
+            <div class="form-group">
+                <label class="name">{{ 'global.startDate' | translate }}</label>
+                <input #labels #start class="input" [max]="dueDate" type="date" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}">
+            </div>
+
+            <div class="form-group">
+                <label class="name">{{ 'global.dueDate' | translate }}</label>
+                <input #labels class="input" [min]="startDate" type="date" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}">
+            </div>
+        </div>
+
+        <!-- <div class="inline-group"> -->
+            <div class="form-group" id="state">
+                <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
+                <div class="select" id="state-select" (click)="toggleStates()">
+                    <div #labels #state class="input select-btn">
+                        <label class="placeholder-text" *ngIf="!selectedState">
+                            Select a state...
+                        </label>
+                        <label class="state" *ngIf="selectedState">
+                            <span class="balloon">
+                                <div class="circle"></div>{{ selectedState.name }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="popup-states" *ngIf="statesPopup">
+                    <app-state-list (close)="toggleStates()" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
+                </div>
+            </div>
+
+            <!--
+            <div class="form-group">
+                <label class="name">{{ 'labels.labels' | translate }}</label>
+                <div class="select" id="label-multiselect" (click)="toggleLabels()">
+                    <div class="input select-btn">
+                        <div class="selected-label-list">
+                            <label class="placeholder-text" *ngIf="!selectedLabels">
+                                Select labels...
+                            </label>
+                            <ng-container *ngIf="selectedLabels">
+                                <ng-container *ngFor="let label of selectedLabels">
+                                    <label class="label">
+                                        <span class="balloon">{{ label.name }}</span>
+                                    </label>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="popup-labels" >
+                        <app-select-state-label *ngIf="labelsPopup" (close)="close(true)" [states]="states" [selectedState]="selectedState"></app-select-state-label>
+                    </div>
+                --><!-- <div class="popup-labels" *ngIf="openLabelsSelectPopup">
+                        <app-label-list *ngIf="openLabelsSelectPopup" (closeLabel)="hideLabels()" (label)="selectLabels($event)" [labels]="labels" [selectedLabels]="selectedLabels"></app-label-list>
+                    </div> -->
+                <!--</div>
+            </div>-->
+        <!-- </div> -->
     </div>
 
     <div class="buttons">
-        <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
+        <button class="btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.ok' | translate }}</button>
     </div>
 </form>

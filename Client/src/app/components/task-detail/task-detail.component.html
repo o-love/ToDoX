@@ -1,0 +1,44 @@
+<form class="task-detail" [formGroup]="form">
+    <div class="form-header">
+        <div class="left">
+            <input #input (keyup)="onKeyUp($event)" *ngIf="task" class="input" type="text" name="name" placeholder="{{ task.name }}" formControlName="name">
+        </div>
+        <i class="close-btn bi bi-x-circle-fill" (click)="onClose()"></i>
+    </div>
+    <div class="body">
+        <div class="body-left">
+            <textarea #input (keyup)="onKeyUp($event)" *ngIf="task" rows="5" class="input" type="text" name="description" placeholder="{{ task.description}}" formControlName="description"></textarea>
+            <div class="comment-section">
+                <h4>Comentarios</h4>
+                <app-comment class="comment-container" [user]="user" [usersId]="usersId" [boardId]="boardId" [taskListId]="taskListId" [task]="task"></app-comment>
+            </div>
+        </div>
+        <div class="body-right">
+            <div class="top">
+                <div class="select-input input-2" (click)="openStates()">
+                    <div *ngIf="selectedState" class="state-balloon">
+                        <i class="bi bi-circle-fill"></i>
+                        <label class="state-name">{{ selectedState.name }}</label>
+                    </div>
+                </div>
+                <div *ngIf="statesPopup" class="popup">
+                    <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
+                </div>
+                <!-- aquí iría el selector de labels -->
+                <!-- <div class="select-input input-2"></div> -->
+                <div class="label-input">
+                    <label>{{ 'global.startDate' | translate }}</label>
+                    <input #start type="date" [max]="dueDate" class="date-input input-2" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
+                </div>
+
+                <div class="label-input">
+                    <label>{{ 'global.dueDate' | translate }}</label>
+                    <input type="date" [min]="startDate" class="date-input input-2" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
+                </div>
+            </div>
+            <div class="bottom">
+                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
+            </div>
+        </div>
+    </div>
+</form>

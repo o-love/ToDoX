@@ -2,44 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Board;
+use Symfony\Component\HttpFoundation\Response;
 
 class BoardController extends Controller
 {
     // Returns all boards
     public function index()
     {
-        $boards = Board::all();
-        return response()->json($boards);
+        // $mc = microtime(true);
+        $boards = Board::all(); 
+        // dump(gettype($boards));
+        // $boards = Board::with('name')->get();
+        // $boards = Board::select('id', 'name')->get();
+        // dump(microtime(true) - $mc);
+        // die();
+        return new JsonResponse($boards, Response::HTTP_OK);
+        // return new JsonResponse([], Response::HTTP_OK);
+        // return response()->json([]);
     }
 
     // Creates a new board
     public function store(Request $request)
     {
-        $board = Board::create([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);    
-
-        return response()->json([
-            'message' => 'Board created successfully',
-            'board' => $board
-        ], 201);
+        $board = Board::create($request->all());
+        return new JsonResponse($board, Response::HTTP_OK);
     }
 
     // Returns a single Board by ID
     public function show($id)
     {
         $board = Board::findOrFail($id);
-
         return response()->json($board);
     }
 
     // Updates an existing Board by ID
     public function update(Request $request, $id)
     {
-        $board = Board::find($id);
+        $board = Board::findOrFail($id);
         $board->name = $request->name;
         $board->description = $request->description;
         $board->save();

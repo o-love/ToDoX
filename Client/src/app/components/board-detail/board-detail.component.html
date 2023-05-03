@@ -1,45 +1,49 @@
-<div #sidebar class="board-detail">
-    <div class="sidebar-container">
-        <div class="sidebar">
-            <div class="board-info">
-                <h2>{{ board?.name }}</h2>
-                <!--This is the board's author email-->
-                <!--<p class="author">{{ board?.user.email ??? }}</p>-->
-            </div>
-            <hr class="divider">
-            <div class="settings">
-                <img class="settings-btn" src="../../../assets/icons/GoGear.svg" alt=""> 
-                <label translate>global.settings</label>
-            </div>
-            <hr class="divider">
-            <div class="lists-container">
-                <div class="lists-header">
-                    <h4 class="title" translate>boards.boardLists</h4>
+<main *ngIf="board" class="main-board-detail">
+    <div #sidebar class="board-detail">
+        <div class="sidebar-container">
+            <div class="sidebar">
+                <div class="board-info">
+                    <h2>{{ board.name }}</h2>
+                    <!--This is the board's author email-->
+                    <!--<p class="author">{{ board?.user.email ??? }}</p>-->
                 </div>
-                <div class="dropdown">
-                    <ng-container *ngFor="let list of lists; let i = index">
-                        <ng-container>
-                            <div #list class="list-card" (click)="selectList(list, i)">
-                                <label class="list-name">{{ list.name }}</label>
-                                <img class="delete-btn" src="../../../assets/icons/Trashcan.svg">
-                            </div>
+                <hr class="divider">
+                <div class="settings" (click)="openSettings()">
+                    <i class="bi bi-gear-fill"></i>
+                    <label translate>global.settings</label>
+                </div>
+                <hr class="divider">
+                <div class="lists-container">
+                    <div class="lists-header">
+                        <h4 class="title" translate>boards.boardLists</h4>
+                    </div>
+                    <div class="dropdown">
+                        <ng-container *ngFor="let list of lists; let i = index">
+                            <ng-container>
+                                <div #list class="list-card">
+                                    <label class="list-name" (click)="selectList(list)">{{ list.name }}</label>
+                                    <i class="delete-btn bi bi-trash3" (click)="deleteTaskList(list.id)"></i>
+                                </div>
+                            </ng-container>
                         </ng-container>
-                    </ng-container>
+                    </div>
+                    <i #add class="add-btn bi bi-plus-square" (mouseover)="toggleFill(add)" (mouseout)="toggleFill(add)" (click)="openCreateList()"></i>
                 </div>
-                <img class="add-btn" src="../../../assets/icons/CkAdd.svg" (click)="showPopup = true">
-            </div>        
+            </div>
+            <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
         </div>
-        <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
+        <div class="list-detail-container">
+            <div *ngIf="!showListDetail" class="create-list">
+                <label>{{ "lists.title" | translate }}</label>
+                <button class="add-btn" (click)="openCreateList()"><i class="bi bi-plus"></i></button>
+            </div>
+            <app-list-detail *ngIf="showListDetail" (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
+        </div>
     </div>
-    <div class="list-detail-container" *ngIf="showListDetail">
-        <app-list-detail [selectedList]="selectedList"></app-list-detail>
+
+    <div class="overlay" *ngIf="showCreateList || showSettings" (click)="closePopup()"></div>
+    <div class="popup" *ngIf="showCreateList || showSettings">
+        <app-create-list *ngIf="showCreateList" (listCreated)="addList($event)" (closePopup)="closePopup()"></app-create-list>
+        <app-board-settings *ngIf="showSettings" (boardEdited)="editBoard($event)" (closeBoardSettings)="closePopup()" [board]="board"></app-board-settings>
     </div>
-</div>
-
-
-<div class="overlay" *ngIf="showPopup" (click)="showPopup = false"></div>
-<div class="popup" *ngIf="showPopup">
-    <app-create-list (listCreated)="addList($event)"
-        (closePopup)="showPopup = false"></app-create-list>
-</div>
-
+</main>

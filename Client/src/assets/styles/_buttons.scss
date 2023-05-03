@@ -19,7 +19,7 @@
     }
 }
 
-@mixin btn($width, $height, $font-size, $background-color, $font-color, $stroke, $border-radius, $color) {
+@mixin btn($width, $height, $font-size, $background-color, $font-color, $stroke, $border-radius, $color, $up-y, $down-y) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,9 +36,9 @@
     border-radius: $border-radius;
 
     &:hover {
-        box-shadow: 0 5px 10px $color;
-        transform: translateY(-2px);
+        box-shadow: 0 $down-y 10px $color;
+        transform: translateY($up-y);
     }
 
-    &:active { transform: translateY(4px); }
+    &:active { transform: translateY($down-y); }
 }

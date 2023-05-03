@@ -177,11 +177,11 @@
             margin-top: 60px;
 
             #login-btn { 
-                @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(9em, 2.8em, 14pt, $tropical-indigo, $white, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -2px, 4px); 
             }
 
             #signup-btn { 
-                @include btn(9em, 2.8em, 14pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6)); 
+                @include btn(9em, 2.8em, 14pt, transparent, $tropical-indigo, 2px solid $tropical-indigo, 10px, rgba($tropical-indigo, 0.6), -2px, 4px); 
             }
         }
     }
@@ -198,5 +198,47 @@
         opacity: 0;
         border-radius: 50%;
         transform: translateY(-1000px) rotate(720deg);
+    }
+}
+
+
+@media screen and (max-width: 770px) {
+    .welcome {
+      height: auto;
+      padding-top: 8vh;
+
+
+        .content {
+          font-size: 28pt;
+          align-items: center;
+          position: absolute;
+          left: 50px;
+  
+          #purple {
+            font-size: 30pt;
+          }
+        }
+  
+        .btn-section {
+          flex-direction: column;
+          width: 100%;
+          margin-top: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          left: 60px;
+
+  
+          #login-btn {
+            width: 100%;
+            margin-bottom: 20px;
+          }
+        }
+
+        .background {
+            height: 84%;
+            width: 100%;
+      }
     }
 }

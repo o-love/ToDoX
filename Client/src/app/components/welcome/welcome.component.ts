@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private userService: UserAuthService) { }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      console.log("welcome login button", data['showLoginButton']);
-    });
+    if (this.userService.isLoggedIn()) this.router.navigate(['/boards']);
   }
   
   onLogin() {

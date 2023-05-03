@@ -1,0 +1,38 @@
+<div class="label-list">
+    <div class="top">
+        <div class="btn-top">
+            <h4 class="title" translate>labels.labels</h4>
+            <i (click)="onClose()" class="bi bi-x"></i>
+        </div>
+        <div class="body">
+            <ng-container *ngIf="labels">
+                <ng-container *ngFor="let label of labels">
+                    <div class="label-card">
+                        <div class="left">
+                            <i #check (click)="selectLabel(check, label)" (mouseover)="fill(check, false)" (mouseout)="fill(check, false)" class="bi bi-square"></i>
+                            <div class="balloon"><label class="name">{{ label.name }}</label></div>
+                        </div>
+                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <!-- <ng-container *ngIf="states">
+                <ng-container *ngFor="let state of states">
+                    <div class="state-card">
+                        <div class="left">
+                            <i #check (click)="selectState(check, state)" (mouseover)="fill(check, false)" (mouseout)="fill(check, false)"  class="bi bi-square"></i>
+                            <div class="balloon">
+                                <i class="bi bi-circle-fill"></i>
+                                <label class="name">{{ state.name }}</label>
+                            </div>
+                        </div>
+                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
+                    </div>
+                </ng-container>
+            </ng-container> -->
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="btn"><i class="bi bi-plus-lg"></i><label>New</label></div>
+    </div>
+</div>

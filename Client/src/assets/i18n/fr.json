@@ -11,7 +11,11 @@
         "color": "Couleur",
         "settings": "Paramètres",
         "save": "Sauvegarder",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "state": "État",
+        "label": "Étiquette",
+        "startDate": "Date de début",
+        "dueDate": "Date d'échéance"
     },
 
     "welcome": {
@@ -38,6 +42,7 @@
     },
 
     "lists": {
+        "title": "Il n'y a pas de listes sur ce forum. Créer une!"
     },
 
     "tasks": {

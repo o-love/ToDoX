@@ -11,7 +11,11 @@
         "color": "Color",
         "settings": "Settings",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "state": "Status",
+        "label": "Label",
+        "startDate": "Start Date",
+        "dueDate": "Due Date"
     },
 
     "welcome": {
@@ -38,6 +42,7 @@
     },
 
     "lists": {
+        "title": "There are no lists on this board. Create one!"
     },
 
     "tasks": {

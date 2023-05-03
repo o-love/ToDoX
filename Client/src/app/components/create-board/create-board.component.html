@@ -8,6 +8,6 @@
     <textarea rows="6" cols="30" [(ngModel)]="boardDescription" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="boardDescription"></textarea>
   </div>
   <div class="buttons">
-    <button class="btn qt-btn" type="submit">{{ 'global.ok' | translate }}</button>
+    <button class="btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.ok' | translate }}</button>
   </div>
 </form>

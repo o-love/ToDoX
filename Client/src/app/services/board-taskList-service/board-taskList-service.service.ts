@@ -56,6 +56,10 @@ export class BoardService {
     return this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
   }
 
+  // REVISAR STATE IDS. Todas las listas empiezan con el mismo número de stateids... por lo que 
+  // se deberían crear state ids base y en esta función habrá que quitar el argumento de stateIds
+  // y en la constante lista le atribuimos SIEMPRE los mismos stateIds !!!!!!!!!!!!!!!
+
   // Creates a new taskList in backend related to a board by boardId
   createList(boardId: string, listName: string, listDescription: string, stateIds: number[]): Observable<any> {
     const list = {

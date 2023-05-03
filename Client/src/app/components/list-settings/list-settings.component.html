@@ -1,0 +1,19 @@
+<form class="list-settings" *ngIf="list" [formGroup]="form">
+    <div class="top">
+        <h3 class="title" translate>global.settings</h3>
+        <i class="close-btn bi bi-x-circle-fill" (click)="onClose()"></i>
+    </div>
+    <div class="body">
+        <div class="form-group">
+            <label for="name" translate>global.name</label>
+            <input #input (keyup)="onKeyUp($event)" formControlName="name" class="input" name="name" type="text" placeholder="{{ list.name }}">
+        </div>
+        <div class="form-group">
+            <label for="description" translate>global.description</label>
+            <textarea #input (keyup)="onKeyUp($event)" formControlName="description" rows="6" cols="30" class="input" name="description" type="text" placeholder="{{ list.description }}"></textarea>
+        </div>
+    </div>
+    <div class="bottom">
+        <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
+    </div>
+</form>

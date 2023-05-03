@@ -1,0 +1,143 @@
+@import '../../../assets/styles/colours';
+
+.label-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 150px;
+    height: 160px;
+    max-height: 200px;
+    border-radius: 5px;
+    box-shadow: 0 0px 10px rgba($english-violet, .2);
+    background-color: $white    ;
+
+    padding: .4em .5em;
+    color: $english-violet;
+
+    .btn-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: .3em;
+
+        .title {
+            font-size: 9pt;
+            font-weight: 500;
+            margin: .1em 0 0 .1em;
+            padding: 0;
+        }
+
+        .bi-x {
+            margin: -.2em -.2em 0 0;
+            font-size: 12pt;
+
+            &:hover { cursor: pointer; }
+        }
+    }
+
+
+    // .divider {
+    //     width: 100%;
+    //     border: 1.5px solid rgba($english-violet, 0.9);
+    //     margin-block: .8em;
+    //     border-radius: 1.5px;
+    // }
+
+    .body {
+        overflow: scroll;
+        max-height: max-content;
+
+        &::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        .label-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding-inline: .1em;
+            margin-bottom: .4em;
+
+            .left {
+                display: flex;
+                align-items: center;
+
+                .bi-square, .bi-square-fill, .bi-check-square-fill {
+                    font-size: 6pt;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .balloon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    font-size: 8pt;
+                    margin-left: .6em;
+                    min-width: fit-content;
+                    width: 8em;
+                    box-sizing: border-box;
+                    padding: .8em .6em;
+                    border-radius: 1.2em;
+                    height: 1.2em;
+                    background-color: rgba($english-violet, .2);
+
+                    .name {
+                        font-weight: 500;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .dropdown-btn {
+                font-size: 8pt;
+                margin-right: .1em;
+                &:hover { cursor: pointer; }
+            }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: .5em;
+
+        .btn {
+            display: flex;
+            align-items: center;
+            font-size: 8pt;
+            height: 2em;
+            padding: .1em .5em;
+            background-color: rgba($tropical-indigo, .2);
+            color: $english-violet;
+            font-weight: 500;
+
+            .bi {
+                margin: 0 .5em 0 0;
+                &:hover { cursor: pointer; }
+            }
+
+            label {
+                margin: 0;
+                &:hover { cursor: pointer; }
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba($tropical-indigo, .4);
+            }
+
+            &:active {
+                outline: none;
+            }
+        }
+    }
+}

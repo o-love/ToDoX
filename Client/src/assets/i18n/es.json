@@ -11,7 +11,11 @@
         "color": "Color",
         "settings": "Configuración",
         "save": "Guardar",        
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "state": "Estado",
+        "label": "Etiqueta",
+        "startDate": "Fecha de Inicio",
+        "dueDate": "Fecha de Fin"
     },
 
     "welcome": {
@@ -38,6 +42,7 @@
     },
 
     "lists": {
+        "title": "No hay listas en este tablero. ¡Crea una!"
     },
 
     "tasks": {

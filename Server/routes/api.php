@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\TaskListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\TaskCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,15 +43,25 @@ Route::get('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 
 Route::post('boards/{boardId}/lists/{taskListId}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 // Route::put('lists/{taskListId}/tasks', [TaskController::class, 'update'])->name('tasks.update');
 // Route::delete('lists/{taskListId}/tasks', [TaskController::class, 'destroy'])->name('tasks.destroy');
-Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show'])->name('tasks.show');
-Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update'])->name('tasks.update');
-Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'show']);
+Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update']);
+Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy']);
+Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'changeState']);
+// Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'checkState']);
+
+// Task comments routes
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'index']);
+Route::middleware('auth:api')->post('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'store'])->name('taskComment.store');
+// Route::post('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments', [TaskCommentController::class, 'store'])->name('taskComment.store');
+Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'show'])->name('taskComment.show');
+Route::put('/comments/{commentId}', [TaskCommentController::class, 'update'])->name('taskComment.update');
+Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'destroy'])->name('taskComment.destroy');
 
 // State routes
 Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
 // Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
 Route::get('/states/{stateId}/name', [StateController::class, 'getStateName']);
-// Route::post('/states', 'StateController@show');
+// Route::get('/states', 'StateController@show');
 
 // Label routes
 Route::get('labels', [LabelController::class, 'index']);
@@ -64,9 +74,13 @@ Route::post('labels', [LabelController::class, 'store'])->name('labels.store');
 //     Route::post('/states', [StateController::class, 'store']);
 // });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('users', \App\Http\Controllers\UserController::class);
+
+Route::post('login', [\App\Http\Controllers\AuthController::class, 'store']);
+
+Route::middleware('auth:api')->get('myUser', [\App\Http\Controllers\ProfileController::class, 'index']);
+
+Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Controllers\ProfileController::class, 'updatePassword']);
 
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful

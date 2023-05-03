@@ -43,6 +43,13 @@ Since we haven't been able to set up angular using Docker, we will be working wi
     ** To add elements, just run the command inside the Client directory. E.g. to create a component cd to Client and run ng generate component <component_name>.
 
 
+## Database migrations
+To be up to date with all the database migrations, execute the following commands:
+1. docker exec -it todox-app-1 bash to access laravel's container
+2. php artisan migrate to create all the tables of the database
+3. php artisan db:seed --class=StateSeeder to create the 3 basic states
+
+
 ## Commit changes as a group member
 1. Once you cloned the repository, create a new branch for your feature or bug fix using the following command:
     ```
