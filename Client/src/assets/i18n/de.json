@@ -36,7 +36,9 @@
         "addBtn": "+ Hinzufügen",
         "boardLists": "Listen"
     },
-    "lists": {},
+    "lists": {
+        "title": "Es gibt keine Listen auf diesem Board. Erstelle einen!"
+    },
     "tasks": {
         "startDate": "Startdatum",
         "dueDate": "Fälligkeitsdatum"

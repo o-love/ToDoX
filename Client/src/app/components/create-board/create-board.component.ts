@@ -29,6 +29,8 @@ export class CreateBoardComponent implements Form {
   @Output() boardCreated = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<void>();
 
+  loading: boolean = false;
+
   onClose() {
     this.closePopup.emit();
   }
@@ -58,11 +60,11 @@ export class CreateBoardComponent implements Form {
   }
 
   onSubmit() {
-    // console.log("board: ", this.boardName, " description: ", this.boardDescription);
     this.resetErrors();
     if (this.checkErrors()) return;
     
     // TODO: UNCOMMENT AFTER SP1 PRESENTATION
+    // this.loading = true;
     // this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
     //   next: (board) => {
     //     this.boardCreated.emit(board);
@@ -71,6 +73,7 @@ export class CreateBoardComponent implements Form {
     //       this.boardCreated.emit(board);
     //     });
 
+    //     this.loading = false;
     //     this.boardName = '';
     //     this.boardDescription = '';
     //   },
@@ -78,6 +81,7 @@ export class CreateBoardComponent implements Form {
     // });
 
     // TODO: ELIMINATE AFTER SP1 PRESENTATION
+    this.loading = true;
     this.userServ.getMyUser().subscribe((user: User) => {
       this.boardService.createBoard(this.boardName, this.boardDescription).subscribe({
         next: (board) => {
@@ -90,6 +94,7 @@ export class CreateBoardComponent implements Form {
             this.boardCreated.emit(board);
           });
   
+          this.loading = false;
           this.boardName = '';
           this.boardDescription = '';
         },

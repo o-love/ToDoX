@@ -36,7 +36,9 @@
         "addBtn": "+ Adicionar",
         "boardLists": "Listas"
     },
-    "lists": {},
+    "lists": {  
+        "title": "Não há listas neste quadro. Crie um!"
+    },
     "tasks": {
         "startDate": "Data de Início",
         "dueDate": "Data de Conclusão"

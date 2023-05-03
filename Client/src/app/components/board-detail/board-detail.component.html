@@ -32,8 +32,12 @@
             </div>
             <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
         </div>
-        <div class="list-detail-container" *ngIf="showListDetail">
-            <app-list-detail (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
+        <div class="list-detail-container">
+            <div *ngIf="!showListDetail" class="create-list">
+                <label>{{ "lists.title" | translate }}</label>
+                <button class="add-btn" (click)="openCreateList()"><i class="bi bi-plus"></i></button>
+            </div>
+            <app-list-detail *ngIf="showListDetail" (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
         </div>
     </div>
 

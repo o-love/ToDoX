@@ -97,8 +97,8 @@ export class CommentComponent implements OnInit {
   }
 
   editComment(comment: TaskComment, message: string) {
-    comment.comment = message;
-    this.taskCommentService.updateTaskComment(comment.id, comment.comment).subscribe({
+    comment.content = message;
+    this.taskCommentService.updateTaskComment(comment.id, comment.content).subscribe({
       next: (comment: TaskComment) => {
         this.comments[this.comments.indexOf(comment)] = comment;
         console.log('saved comment edit:', comment);

@@ -3,8 +3,8 @@
         <ng-container *ngFor="let comment of comments">
             <div class="comment">
                 <div class="message">
-                    <p class="text">{{ comment.comment }}</p>
-                    <div *ngIf="isFromMyUser(comment.user_id)" class="options"><i class="edit-btn bi bi-pencil-fill"></i><i  class="delete-btn bi bi-trash3-fill"></i></div>
+                    <p class="text">{{ comment.content }}</p>
+                    <!-- <div *ngIf="isFromMyUser(comment.user_id)" class="options"><i class="edit-btn bi bi-pencil-fill"></i><i  class="delete-btn bi bi-trash3-fill"></i></div> -->
                 </div>
                 <div class="footer"><label>{{ usersId[comment.user_id].email }}</label></div>
             </div>

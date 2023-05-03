@@ -14,7 +14,7 @@ export class HeaderComponent {
 
   goHome() {
     if (!this.userService.isLoggedIn()) this.router.navigate(['']);
-    if (this.userService.isLoggedIn()) this.router.navigate(['boards']);
+    else this.router.navigate(['boards']);
   }
 
   goProfile() {
