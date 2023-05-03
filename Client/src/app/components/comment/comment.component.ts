@@ -22,13 +22,13 @@ export class CommentComponent implements OnInit {
   @Input() user: User | null = null;
 
   comments: TaskComment[] = [];
-  
+
   timeout: any;
   disable: boolean = true;
 
   @ViewChild('send') send!: ElementRef<any>;
 
-  constructor(private fb: FormBuilder, private taskCommentService: TaskCommentService, private taskService: TaskService, private userService: UserAuthService) { 
+  constructor(private fb: FormBuilder, private taskCommentService: TaskCommentService, private taskService: TaskService, private userService: UserAuthService) {
     this.form = this.fb.group({
       text: ['', [Validators.required, Validators.maxLength(40)]]
     })
@@ -44,8 +44,8 @@ export class CommentComponent implements OnInit {
     if (this.form.controls['text'].errors)  {
       console.log(this.form.controls['text'].errors);
       return true;
-    } 
-    
+    }
+
     return false;
   }
 
@@ -78,14 +78,14 @@ export class CommentComponent implements OnInit {
       next: (comments: TaskComment[]) => {
         this.comments = comments;
         console.log('task comments retrieved:', comments);
-      }, 
+      },
       error: (error: any) => console.error('error retrieving comments:', error)
     })
   }
 
   addComment(message: string) {
     if (!this.boardId || !this.taskListId || !this.task || !this.user) return;
-    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.task.id, this.user.id, message).subscribe({
+    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.task.id, message).subscribe({
       next: (comment: TaskComment) => {
         this.comments.push(comment);
         this.form.controls['text'].setValue('');
@@ -115,5 +115,5 @@ export class CommentComponent implements OnInit {
       },
       error: (error: any) => console.error('error deleting comment:', error)
     })
-  }  
+  }
 }
