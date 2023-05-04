@@ -1,12 +1,14 @@
-<mat-form-field appearance="outline" [style.width]="'5em'" [style.height]="'1.8em'">
-    <mat-select [(value)]="selectedLang" (selectionChange)="switchLanguage()" panelClass="my-select-panel-class">
-        <mat-select-trigger>
-            <img [src]="'assets/flags/' + selectedLang + '.png'" class="flag" />
-        </mat-select-trigger>
-        <mat-option value="en">EN</mat-option>
-        <mat-option value="es">ES</mat-option>
-        <mat-option value="de">DE</mat-option>
-        <mat-option value="it">IT</mat-option>
-        <mat-option value="pt">PT</mat-option>
-    </mat-select>
-</mat-form-field>
+<div #select class="language-select closed">
+    <div class="select-btn" (click)="selectActive()">
+        <span #title class="placeholder-text"><img class="flag" *ngIf="selectedLang" [src]="'assets/flags/' + selectedLang + '.png'"></span>
+        <i #icon class="icon icon-arrow-down"></i>
+    </div>
+    <ul class="option-list">
+        <li #option #en class="option closed" (click)="selectLang('en')">English</li>
+        <li #option #es class="option closed" (click)="selectLang('es')">Español</li>
+        <li #option #de class="option closed" (click)="selectLang('de')">Deutsch</li>
+        <li #option #it class="option closed" (click)="selectLang('fr')">Français</li>
+        <li #option #it class="option closed" (click)="selectLang('it')">Italiano</li>
+        <li #option #pt class="option closed" (click)="selectLang('pt')">Português</li>
+    </ul>
+</div>

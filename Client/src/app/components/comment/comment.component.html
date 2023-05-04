@@ -1,0 +1,17 @@
+<div class="comment-container">
+    <div class="comment-section">
+        <ng-container *ngFor="let comment of comments">
+            <div class="comment">
+                <div class="message">
+                    <p class="text">{{ comment.content }}</p>
+                    <!-- <div *ngIf="isFromMyUser(comment.user_id)" class="options"><i class="edit-btn bi bi-pencil-fill"></i><i  class="delete-btn bi bi-trash3-fill"></i></div> -->
+                </div>
+                <div class="footer"><label>{{ usersId[comment.user_id].email }}</label></div>
+            </div>
+        </ng-container>
+    </div>
+    <form class="message-input" [formGroup]="form">
+        <input (keyup)="onKeyUp()" type="text" class="input" placeholder="Send a comment..." formControlName="text">
+        <button [disabled]="disable" class="btn-container"><i #send class="bi bi-send" (click)="sendMessage()"></i></button>
+    </form>
+</div>

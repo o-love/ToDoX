@@ -11,7 +11,11 @@
         "color": "Farbe",
         "settings": "Einstellungen",
         "save": "Speichern",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "state": "Zustand",
+        "label": "Etikett",
+        "startDate": "Startdatum",
+        "dueDate": "Enddatum"
     },
     "welcome": {
         "title": "Beginnen Sie mit der Arbeit in einer",
@@ -32,7 +36,9 @@
         "addBtn": "+ Hinzufügen",
         "boardLists": "Listen"
     },
-    "lists": {},
+    "lists": {
+        "title": "Es gibt keine Listen auf diesem Board. Erstelle einen!"
+    },
     "tasks": {
         "startDate": "Startdatum",
         "dueDate": "Fälligkeitsdatum"

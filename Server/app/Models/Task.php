@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-
     protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date'];
     protected $table = 'task';
     // protected $primaryKey = "uuid";
@@ -16,7 +15,7 @@ class Task extends Model
     // A Task belongs to a TaskList
     public function taskList()
     {
-        return $this->belongsTo(TaskList::class, 'tasklist_id');
+        return $this->belongsTo(TaskList::class);
     }
 
     // A Task belongs to a State
@@ -31,8 +30,14 @@ class Task extends Model
         return $this->belongsToMany(Label::class, 'task_label', 'task_id', 'label_id');
     }
 
+    // A Task can have many TaskComments
+    public function taskComment()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
     public function isPastDue()
-{
+    {
     if ($this->labels()->where('type', 'date')->exists()) {
         $dateLabel = $this->labels()->where('type', 'date')->first();
         $dateValue = $dateLabel->typevalue;
@@ -54,5 +59,5 @@ class Task extends Model
     // .overdue {
     //     color: red;
     // }
-}
+    }
 }

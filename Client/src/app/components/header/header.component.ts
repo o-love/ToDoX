@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 
 @Component({
@@ -8,29 +10,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Input() showLoginButton: boolean = false;
-  
-  constructor(private router: Router) {
-    
-  }
-
-  ngOnInit() {
-    console.log('showLoginButton:', this.showLoginButton);
-  }
+  constructor(private router: Router, public userService: UserAuthService) {}
 
   goHome() {
-    this.router.navigate(['/']);
+    if (!this.userService.isLoggedIn()) this.router.navigate(['']);
+    else this.router.navigate(['boards']);
   }
 
   goProfile() {
-    this.router.navigate(['./profile']);
+    this.router.navigate(['profile']);
   }
 
   onLogin() {
-    this.router.navigate(['./login']);
+    this.router.navigate(['login']);
   }
 
   onSignUp() {
-    this.router.navigate(['./signup']);
+    this.router.navigate(['signup']);
   }
 }

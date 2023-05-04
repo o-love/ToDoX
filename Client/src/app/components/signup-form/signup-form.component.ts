@@ -20,10 +20,10 @@ export class SignupFormComponent implements Form {
 
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.signupForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, PasswordValidator.strong()],
-      repeatPassword: ['', Validators.required]
+      name: ['', [Validators.required, Validators.maxLength(70)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],
+      password: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]],
+      repeatPassword: ['', [Validators.required, Validators.maxLength(70)]]
     });
   }
 
@@ -60,7 +60,7 @@ export class SignupFormComponent implements Form {
     if (!event.target.value) label.classList.remove('focused');
   }
 
-  match(): boolean {
+  private match(): boolean {
     if (this.signupForm.get('password')?.value != this.signupForm.get('repeatPassword')?.value) {
       this.onError(this.repeatPasswordLabel);
       return false;
@@ -73,21 +73,19 @@ export class SignupFormComponent implements Form {
   }
 
   onSubmit() {
-    this.authService.register(
-      this.signupForm.value.name,
-      this.signupForm.value.email,
-      this.signupForm.value.password
-    ).subscribe(
-      (response) => {
-        console.log(response);
-        this.resetErrors();
-        if (!this.checkErrors() && this.match()) {
-          this.router.navigate(['/profile']);
-        }
+    console.log("trying to create account...");
+    this.resetErrors();
+    if (this.checkErrors() || !this.match()) return;
+
+    this.loading = true;
+    this.authService.register(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password)
+    .subscribe({
+      next: (response) => {
+        console.log("account created", response);
+        // this.router.navigate(['/profile']);
+        this.router.navigate(['/login']);
       },
-      (error) => {
-        console.log(error);
-      }
-    );
+      error: (error) => console.log(error)
+    });
   }
 }

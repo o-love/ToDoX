@@ -11,7 +11,11 @@
         "color": "Colore",
         "settings": "Impostazioni",
         "save": "Salva",
-        "cancel": "Annulla"
+        "cancel": "Annulla",
+        "state": "Stato",
+        "label": "Etichetta",
+        "startDate": "Data di inizio",
+        "dueDate": "Data di fine"
     },
     "welcome": {
         "title": "Inizia a lavorare in modo",
@@ -32,7 +36,9 @@
         "addBtn": "+ Aggiungi",
         "boardLists": "Liste"
     },
-    "lists": {},
+    "lists": {
+        "title": "Non ci sono liste in questa bacheca. Crearne uno!"
+    },
     "tasks": {
         "startDate": "Data di inizio",
         "dueDate": "Data di scadenza"

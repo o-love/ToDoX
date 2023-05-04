@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
+import { User } from 'src/app/models/user';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
   selector: 'app-board-detail',
@@ -11,226 +13,166 @@ import { BoardService } from 'src/app/services/board-taskList-service/board-task
   styleUrls: ['./board-detail.component.scss']
 })
 export class BoardDetailComponent implements OnInit {
-  board: Board | undefined;
+  board!: Board;
   lists: TaskList[] = [];
   tasks: Task[] = [];
 
   boardId = this.route.snapshot.paramMap.get('boardId');
-  selectedList: TaskList | undefined;
+  selectedList: TaskList | null = null;
 
-  showPopup: boolean = false;
+  user: User | null = null;
+  usersId: {[key: number]: User} = {};
+
+  showCreateList: boolean = false;
+  showSettings: boolean = false;
   showListDetail: boolean = false;
 
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
 
-  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
 
   ngOnInit(): void {
-    console.log("boardid", this.boardId);
-
+    this.getMyUser();
+    this.getAllUsers();
     this.getBoard();
     this.getLists();
+  }
+
+  getBoard(): void {
+    if (this.boardId) {
+      this.boardService.getBoard(this.boardId).subscribe(
+        (board: Board) => {
+          console.log('Board retrieved:', board);
+          this.board = board;
+        },
+        (error: any) => {
+          console.error('Error retrieving board:', error);
+        }
+      );
+    }
+  }
+
+  getLists(): void {
+    if (this.boardId) {
+      this.boardService.getTaskListsByBoardId(this.boardId.toString()).subscribe(
+        (lists: TaskList[]) => {
+          console.log('Lists retrieved:', lists);
+          this.lists = lists;
+          if (this.lists.length > 0) this.selectList(this.lists[0]);
+        },
+        (error: any) => {
+          console.error('Error retrieving lists:', error);
+        }
+      );
+    }
+  }
+
+  private getMyUser() {
+    if (this.userService.isLoggedIn()) {
+      this.userService.getMyUser().subscribe({
+        next: (user: User) => {
+          this.user = user;
+          console.log('user retrieved:', user);
+        },
+        error: (error: any) => console.error('error retrieving user:', error)
+      })
+    }
+  }
+
+  private getAllUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (users: User[]) => { 
+        console.log('users retrieved:', users);
+        for (let user of users) this.usersId[user.id] = user;
+      },
+      error: (error: any) => console.error('error retrieving all users:', error)
+    })
+  }
+
+  closePopup() {
+    if (this.showCreateList) this.showCreateList = false;
+    if (this.showSettings) this.showSettings = false;
   }
 
   toggleSidebar() {
     this.sidebar.nativeElement.classList.toggle('sidebar-closed');
   }
 
-  getBoard(): void {
-    if (this.boardId) {
-      this.boardService.getBoard(this.boardId).subscribe(
-        (board: Board) => {
-          console.log('Board retrieved:', board);
-          this.board = board;
-        },
-        (error: any) => {
-          console.error('Error retrieving board:', error);
-        }
-      );
-    }
-  }
-
-  getLists(): void {
-    if (this.boardId) {
-      this.boardService.getTaskListsByBoardId(this.boardId).subscribe(
-        (lists: TaskList[]) => {
-          console.log('Lists retrieved:', lists);
-          this.lists = lists;
-        },
-        (error: any) => {
-          console.error('Error retrieving lists:', error);
-        }
-      );
-    }
-  }
-
   addList(newList: TaskList) {
     this.lists.push(newList);
-    this.showPopup = false;
-    this.getLists();
+    this.closePopup();
+    this.selectList(newList);
   }
 
-  selectList(list: TaskList, index: number): void {
+  selectList(list: TaskList | null): void {
     this.selectedList = list;
-    console.log("seleccionada", list);
-    this.showListDetail = true;
-    this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
-  }
-
-  deleteTasklist(id: number): void {
-    console.log("Delete tasklist", id);
-    if (this.boardId) {
-      this.boardService.deleteTasklist(this.boardId, id.toString()).subscribe(() => {
-        this.getLists();
-      });
-      console.log("Deleted tasklist", id);
+    if (this.selectedList) {
+      this.router.navigate(['lists', this.selectedList.id], { relativeTo: this.route, replaceUrl: true });
+      this.showListDetail = true;
+    } else {
+      this.router.navigate(['boards', this.boardId]);
+      this.showListDetail = false;
     }
   }
 
-  editTasklist(id: number): void {
-    console.log("Tasklist id edit", id);
-    this.lists[+id].isEditing = true;
-  }
+  deleteTaskList(tasklist_id: number): void {
+    let list_index = 0;
 
-  saveTasklistEdit(index: number): void {
-    const list = this.lists[index];
-    if (this.boardId){
-      this.boardService.editTasklist(this.boardId, list.id.toString(), list.name, list.description).subscribe(
-        (response) => {
-          console.log("Tasklist updated:", response);
-          list.isEditing = false;
-          this.getLists();
-        },
-        (error) => {
-          console.error("Error updating tasklist:", error);
-        }
-      );
+    for (let index = 0; index < this.lists.length; index++) {
+      if (this.lists[index].id == tasklist_id) {
+        this.lists.splice(index, 1);
+        list_index = index - 1;   
+        break;
+      }
     }
-  }
-  
-  cancelTasklistEdit(index: number): void {
-    this.lists[index].isEditing = false;
-  }
 
-  /*
-  board: Board | undefined;
-  lists: TaskList[] = [];
-  tasks: Task[] = [];
+    if (list_index >= 0) this.selectList(this.lists[list_index]);
+    else this.selectList(null);
 
-  boardId = this.route.snapshot.paramMap.get('boardId'); //  string = '';
-  selectedList: TaskList | undefined;
-
-  sidebarVisible: boolean = true;
-  dropdownVisible: boolean = false;
-  showPopup: boolean = false;
-  showListDetail: boolean = false;
-
-  editingListName: string | null = null;
-
-  @ViewChild('sidebar') sidebar!: ElementRef<any>;
-
-  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router) { }
-
-  ngOnInit(): void {
-    // const state = history.state;
-    // this.boardId = state.boardId;
-    console.log("boardid", this.boardId);
-    this.getBoard();
-    this.getLists();
-    // this.route.paramMap.subscribe(params => {
-    //   this.boardId = params.get('boardId');
-    //   const listId = params.get('listId');
-    //   if (listId) {
-    //     this.showListDetail = true;
-    //     this.getList(listId);
-    //   } else {
-    //     this.getBoard();
-    //     this.getLists();
-    //   }
-    // });
+    this.boardService.deleteTasklist(this.board.id.toString(), tasklist_id.toString()).subscribe({
+      next: () => console.log('deleted list:', tasklist_id),
+      error: (error: any) => console.error('Error deleting tasklist:', error)
+    });
   }
 
-  getBoard(): void {
-    if (this.boardId) {
-      this.boardService.getBoard(this.boardId).subscribe(
-        (board: Board) => {
-          console.log('Board retrieved:', board);
-          this.board = board;
-        },
-        (error: any) => {
-          console.error('Error retrieving board:', error);
-        }
-      );
+  editTaskList(taskList: TaskList): void {
+    if (!this.selectedList || !this.boardId) return;
+    
+    for (let list of this.lists) {
+      if (list.id == this.selectedList.id) {
+        list = taskList;
+        break;
+      }
     }
+
+    this.boardService.editTasklist(this.boardId, this.selectedList.id.toString(), taskList.name, taskList.description).subscribe({
+      next: (taskList: TaskList) => console.log('saved list:', taskList),
+      error: (error: any) => console.error('Error editing taskList:', error)
+    })
   }
 
-  getLists(): void {
-    if (this.boardId) {
-      this.boardService.getTaskListsByBoardId(this.boardId).subscribe(
-        (lists: TaskList[]) => {
-          console.log('Lists retrieved:', lists);
-          this.lists = lists;
-        },
-        (error: any) => {
-          console.error('Error retrieving lists:', error);
-        }
-      );
-    }
+  editBoard(board: Board): void {
+    if (!this.boardId) return;
+
+    this.board.name = board.name;
+    this.board.description = board.description;
+
+    this.boardService.editBoard(parseInt(this.boardId), board.name, board.description).subscribe(
+      () => console.log('board saved:', board),
+      (error: any) => console.log(error)
+    ) 
   }
 
-  toggleDropdown(): void {
-    this.dropdownVisible = !this.dropdownVisible;
+  toggleFill(element: HTMLElement) {
+    element.classList.toggle('bi-plus-square');
+    element.classList.toggle('bi-plus-square-fill');
   }
 
-  toggleComponent(): void {
-    this.sidebar.nativeElement.classList.toggle("close");
+  openCreateList() {
+    this.showCreateList = true;
   }
 
-  addList(newList: TaskList) {
-    this.lists.push(newList);
-    this.showPopup = false;
-    this.getLists();
+  openSettings() {
+    this.showSettings = true;
   }
-
-  selectList(list: TaskList): void {
-    this.selectedList = list;
-    console.log("seleccionada", list);
-    this.showListDetail = true;
-    this.router.navigate(['lists', list.id], { relativeTo: this.route, replaceUrl: true });
-  }
-
-  deleteTasklist(id: number): void {
-    console.log("Delete tasklist", id);
-    if (this.boardId) {
-      this.boardService.deleteTasklist(this.boardId, id.toString()).subscribe(() => {
-        this.getLists();
-      });
-      console.log("Deleted tasklist", id);
-    }
-  }
-
-  editTasklist(id: number): void {
-    console.log("Tasklist id edit", id);
-    this.lists[+id].isEditing = true;
-  }
-
-  saveTasklistEdit(index: number): void {
-    const list = this.lists[index];
-    if (this.boardId){
-      this.boardService.editTasklist(this.boardId, list.id.toString(), list.name, list.description).subscribe(
-        (response) => {
-          console.log("Tasklist updated:", response);
-          list.isEditing = false;
-          this.getLists();
-        },
-        (error) => {
-          console.error("Error updating tasklist:", error);
-        }
-      );
-    }
-  }
-  
-  cancelTasklistEdit(index: number): void {
-    this.lists[index].isEditing = false;
-  }*/
 }

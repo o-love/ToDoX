@@ -1,0 +1,143 @@
+@import "../../../assets/styles/colours";
+@import "../../../assets/styles/buttons";
+
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: rgba($english-violet, .05);
+    border-radius: 5px;
+    border: 2px solid rgba($english-violet, .2);
+
+    .comment-section {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        min-height: calc(100% - 2em);
+        height: calc(100% - 2em);
+        max-height: calc(100% - 2em);
+        font-size: 10pt;
+
+        &::-webkit-scrollbar { width: 0.2em; }
+        &::-webkit-scrollbar-track { background-color: transparent; }
+        &::-webkit-scrollbar-thumb { border: transparent; }
+
+        .comment {
+            display: flex;
+            flex-direction: column;
+            margin: .5em;
+            margin-bottom: 1em;
+
+            .message {
+                display: flex;
+                justify-content: space-between;
+                background-color: $white;
+                font-size: 10pt;
+                width: 12em;
+                max-width: 12em;
+                height: 2.2em;
+                max-height: 2.2em;
+
+                padding: .5em;
+                border-radius: 5px;
+
+                .text {
+                    width: 10em;
+                    max-width: 10em;
+                    height: 100%;
+                    font-size: 8pt;
+                    color: $english-violet;
+                }  
+
+                .options {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .bi {
+                        color: rgba($english-violet, .6);
+                        border-radius: 2px;
+                        margin-bottom: .2em;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: rgba($tropical-indigo, .8);
+                            color: $tropical-indigo;
+                        }
+                    }
+                }
+            }
+
+            .footer {
+                display: flex;
+
+                label {
+                    font-size: 6pt;
+                    margin-left: .1em;
+                }
+            }
+        }
+    }
+
+    .message-input {
+        display: flex;
+        background-color: $white;
+        width: 100%;
+        height: 2em;
+        max-height: 2em;
+        font-size: 10pt;
+
+        box-shadow: 0 -.1em 3px rgba($english-violet, .1);
+
+        .input {
+            width: 90%;
+            border: none;
+            padding: .2em;
+            padding-left: .3em;
+            font-size: 8pt;
+            color: $tropical-indigo;
+            align-items: center;
+
+            &::placeholder {
+                color: rgba($tropical-indigo, .6);
+                font-style: italic;
+            }
+
+            &:focus { outline: none;}
+        }
+
+        .btn-container {
+            width: 10%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: none;
+	        border: none;
+	        outline: none;
+
+            &:disabled {
+                .bi-send {
+                    font-size: 10pt;                 
+                    color: rgba($tropical-indigo, .6);
+                }
+
+                &:hover { cursor: default; }
+            }
+
+            &:not(:disabled) {
+                .bi-send {
+                    font-size: 10pt;                 
+                    color: $tropical-indigo;
+                }
+                
+                &:hover { cursor: pointer; }
+                &:active .bi-send { transform: scale(.9); } 
+            }
+        }
+    }
+}

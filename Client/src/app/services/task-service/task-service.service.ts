@@ -46,15 +46,15 @@ export class TaskService {
 
   // Updates a task by id, list id and board id - REV opt with createTask
   editTask(
-    boardId: string, listId: string, taskId: string, name: string, description: string,
+    boardId: string, listId: string, taskId: string, taskName: string, taskDescription: string,
     stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
   ): Observable<Task> {
     const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
     const task = {
-      name: name,
-      description: description,
+      name: taskName,
+      description: taskDescription,
       state_id: stateId,
-      // selectedLabels: selectedLabels,
+      selectedLabels: selectedLabels,
       start_date: startDate,
       due_date: dueDate
     };
@@ -95,5 +95,12 @@ export class TaskService {
     }
     const url = `${this.apiUrl}/labels`;
     return this.http.post<Label>(url, label);
+  }
+
+  // Changes the state of a task
+  changeTaskState(boardId: string, listId: string, taskId: string, stateId: string): Observable<Task> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/state`;
+    const body = { state_id: stateId };
+    return this.http.put<Task>(url, body);
   }
 }

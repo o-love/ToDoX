@@ -1,67 +1,77 @@
-<div class="subheader">
-    <div class="info">
-        <div class="profile-pic"></div>
-        <div class="name-edit">
-            <div class="name">Lorem Ipsum</div>
-            <img id="edit" src="../../../assets/icons/Edit.svg">
-        </div>
-    </div>
-</div>
-
-<div class="content">
-    <div id="settings" class="section">
-        <h2 class="title" translate>global.settings</h2>
-
-        <div class="section-content">
-            <form id="email-form" class="subsection" (ngSubmit)="saveEmail()" [formGroup]="emailForm">
-                <div class="subtitle">
-                    <img class="subtitle-icon" src="../../../assets/icons/FiMail.svg">
-                    <h3 class="subtitle-name" translate>global.emailShort</h3>
-                </div>
-            
-                <div class="subsection-content">
-                    <div class="field-container">
-                        <label for="email" translate>users.email.currentEmail</label>
-                        <input #email #currentEmailLabel id="email" type="email" class="field" formControlName="currentEmail" readonly placeholder="">
-                    </div>
-                    <div class="field-container">
-                        <label for="newEmail" translate>users.email.newEmail</label>
-                        <input #email #newEmailLabel id="newEmail" class="field" type="email" formControlName="newEmail">
-                    </div>
-                    <button class="save-btn qt-btn" type="submit" translate>{{ 'global.save' }}</button>
-                </div>
-            </form>
-        
-            <form id="password-form" class="subsection" (ngSubmit)="savePassword()" [formGroup]="passwordForm">
-                <div class="subtitle">
-                    <img class="subtitle-icon" src="../../../assets/icons/FiLock.svg">
-                    <h3 class="subtitle-name" translate>global.password</h3>
-                </div>
-            
-                <div class="subsection-content">
-                    <div class="field-container">
-                        <label id="asterisk-label">
-                            <label for="password" translate>users.password.currentPassword</label>
-                            <span class="asterisk"> *</span>
-                        </label>
-                        <input #password #oldPasswordLabel id="password" class="field" type="password" formControlName="oldPassword">
-                    
-                    </div>
-                    <div class="field-container">
-                        <label for="newPassword" translate>users.password.newPassword</label>
-                        <input #password #newPasswordLabel id="newPassword" class="field" type="password" formControlName="newPassword">
-                    </div>
-                    <button class="save-btn qt-btn" translate>{{ 'global.save' }}</button>
-                </div>
-            </form>
+<main>
+    <div class="subheader">
+        <div class="info">
+            <div class="left">
+                <div class="profile-pic"></div>
+                <form class="name-edit" [formGroup]="infoForm">
+                    <input #name #info *ngIf="user" type="text" name="name" class="name field" placeholder="{{ user.name }}" formControlName="name">
+                    <!-- <div *ngIf="user" class="name">{{ user.name }}</div> -->
+                    <i *ngIf="disabled" class="edit-btn bi bi-pencil-square" (click)="toggleDisable()"></i>
+                    <i *ngIf="!disabled" class="edit-btn bi bi-check-square" (click)="saveInfo()"></i>
+                </form>
+            </div>
+            <div class="logout-btn" (click)="logout()">LOG OUT<i class="bi bi-box-arrow-right"></i></div>
         </div>
     </div>
 
-    <div id="preferencies" class="section">
-        <h2 class="title" translate>user.preferences</h2>
-        <div class="subsection">
-            <label translate>user.theme.dark</label> <!-- users.theme.light ngIf selected? -->
-            <button class="darkmode" (click)="toggleDarkMode()">{{ darkMode ? 'Desactivar' : 'Activar' }}</button>
+    <div class="content">
+        <div id="settings" class="section">
+            <h2 class="title" translate>global.settings</h2>
+
+            <div class="section-content">
+                <form id="email-form" class="subsection" (ngSubmit)="saveEmail()" [formGroup]="emailForm">
+                    <div class="subtitle">
+                        <i class="subtitle-icon bi bi-envelope"></i>
+                        <h3 class="subtitle-name" translate>global.emailShort</h3>
+                    </div>
+
+                    <div class="subsection-content">
+                        <div class="field-container">
+                            <label for="email" translate>users.email.currentEmail</label>
+                            <input #email #currentEmailLabel id="email" type="email" class="field"
+                                formControlName="currentEmail" readonly placeholder="">
+                        </div>
+                        <div class="field-container">
+                            <label for="newEmail" translate>users.email.newEmail</label>
+                            <input #email #newEmailLabel id="newEmail" class="field" type="email"
+                                formControlName="newEmail">
+                        </div>
+                        <button class="save-btn qt-btn" type="submit" translate><img *ngIf="loading_email" class="spinner" src="../../../assets/spinner.gif">{{ 'global.save' }}</button>
+                    </div>
+                </form>
+
+                <form id="password-form" class="subsection" (ngSubmit)="savePassword()" [formGroup]="passwordForm">
+                    <div class="subtitle">
+                        <i class="subtitle-icon bi bi-lock"></i>
+                        <h3 class="subtitle-name" translate>global.password</h3>
+                    </div>
+
+                    <div class="subsection-content">
+                        <div class="field-container">
+                            <label id="asterisk-label">
+                                <label for="password" translate>users.password.currentPassword</label>
+                                <span class="asterisk"> *</span>
+                            </label>
+                            <input #password #oldPasswordLabel id="password" class="field" type="password"
+                                formControlName="oldPassword">
+
+                        </div>
+                        <div class="field-container">
+                            <label for="newPassword" translate>users.password.newPassword</label>
+                            <input #password #newPasswordLabel id="newPassword" class="field" type="password"
+                                formControlName="newPassword">
+                        </div>
+                        <button class="save-btn qt-btn" translate><img *ngIf="loading_password" class="spinner" src="../../../assets/spinner.gif">{{ 'global.save' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="preferencies" class="section">
+            <h2 class="title" translate>user.preferences</h2>
+            <div class="subsection">
+                <label translate>user.theme.dark</label> <!-- users.theme.light ngIf selected? -->
+                <button class="darkmode" (click)="toggleDarkMode()">{{ darkMode ? 'Desactivar' : 'Activar' }}</button>
+            </div>
         </div>
     </div>
-</div>
+</main>

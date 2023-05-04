@@ -44,9 +44,9 @@ class LabelController extends Controller
         return response()->json($label, 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $labelId)
     {
-        $label = Label::findOrFail($id);
+        $label = Label::findOrFail($labelId);
         $label->update($request->all());
         
         return response()->json($label, 200);
@@ -62,9 +62,9 @@ class LabelController extends Controller
         // ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($labelId)
     {
-        $label = Label::findOrFail($id);
+        $label = Label::findOrFail($labelId);
         $label->delete();
 
         return response()->json(null, 204);

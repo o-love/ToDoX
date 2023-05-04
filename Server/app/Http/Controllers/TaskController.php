@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\TaskList;
-use App\Models\Board;
-use App\Models\Label;
 
 class TaskController extends Controller
 {
@@ -35,15 +33,8 @@ class TaskController extends Controller
 
         $start_date = $this->convertDate($request->input('start_date'));
         $due_date = $this->convertDate($request->input('due_date'));
+        [$start_date, $due_date] = $this->validateDates($start_date, $due_date);
 
-        /* Validate start and due dates */
-        // If a due date is selected, a start date must be selected as well
-        if ($due_date && !$start_date)
-            return response()->json(['error' => 'Due date must be selected if start date is selected'], 400);
-        // Check that the due date is greater than the start date
-        if ($start_date && $due_date && $start_date > $due_date)
-            return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
-        
         $task = new Task([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -54,7 +45,8 @@ class TaskController extends Controller
         ]);
         $task->save();
 
-        $taskList = TaskList::findOrFail($taskListId);
+        // TODO: Unknown column 'task_list_id' - even forcing tasklist_id, ask a teac
+        // $taskList = TaskList::findOrFail($taskListId);
         // $taskList->tasks()->save($task);
 
         $selectedLabels = $request->input('selectedLabels');
@@ -65,25 +57,31 @@ class TaskController extends Controller
     }
 
     // Display the specified resource
-    public function show(TaskList $taskList, Task $task, Board $board)
+    public function show($boardId, $tasklistId, $taskId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // $taskList = TaskList::findOrFail($tasklistId);
+        // $task = Task::with(['taskList', 'state', 'labels', 'comments.user'])->findOrFail($task->id);
+        // $task = $taskList->tasks()->findOrFail($taskId);
+        $task = Task::findOrFail($taskId);
 
         return response()->json($task);
     }
 
     // Update the specified resource in storage
-    public function update(Request $request, TaskList $taskList, Task $task, Board $board)
+    public function update(Request $request, $boardId, $tasklistId, $taskId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // \Log::info('Request received for editing task', [
+        //     'task_id' => $taskId,
+        // ]);
 
-        $start_date = $request->input('start_date');
-        $due_date = $request->input('due_date');
+        // $taskList = TaskList::findOrFail($taskList->id);
+        // $task = $taskList->tasks()->findOrFail($task->id);
 
-        // Validate the start and due dates
-        $this->validateDates($start_date, $due_date);
+        $task = Task::findOrFail($taskId);
+
+        $start_date = $this->convertDate($request->input('start_date'));
+        $due_date = $this->convertDate($request->input('due_date'));
+        [$start_date, $due_date] = $this->validateDates($start_date, $due_date);
 
         $task->update([
             'name' => $request->input('name'),
@@ -97,18 +95,56 @@ class TaskController extends Controller
     }
 
     // Remove the specified resource from storage
-    public function destroy(TaskList $taskList, Task $task, Board $board)
+    public function destroy($boardId, $tasklistId, $taskId)
     {
-        $taskList = TaskList::findOrFail($taskList->id);
-        $task = $taskList->tasks()->findOrFail($task->id);
+        // \Log::info('Request received for deleting task', [
+        // ]);
+
+        // $taskList = TaskList::findOrFail($tasklistId);
+        // $task = $taskList->tasks()->find($taskId);
+        $task = Task::findOrFail($taskId);
         $task->delete();
 
         return response()->json(null, 204);
     }
 
-    private function convertDate($date) {
+    // Change the state of a task
+    public function changeState(Request $request, $boardId, $taskListId, $taskId)
+    {
+        // $taskList = TaskList::findOrFail($taskListId);
+        // $task = $taskList->tasks()->findOrFail($taskId);
+
+        $task = Task::findOrFail($taskId);
+
+        $task->state_id = $request->input('state_id');
+        $task->save();
+
+        return response()->json($task, 200);
+    }
+
+    public function checkState($boardId, $taskListId, $taskId) {
+        $task = Task::findOrFail($taskId);
+        return response()->json($task->state);
+    }
+
+    private function convertDate($date)
+    {
         if ($date != null)
             return Carbon::parse($date)->setTimezone('Europe/Madrid')->format('Y-m-d');
-        else return null;
+        else
+            return null;
+    }
+
+    private function validateDates($start_date, $due_date)
+    {        
+        /* Validate start and due dates */
+        // If a due date is selected, a start date must be selected as well
+        if ($due_date && !$start_date)
+            return response()->json(['error' => 'Due date must be selected if start date is selected'], 400);
+        // Check that the due date is greater than the start date
+        if ($start_date && $due_date && $start_date > $due_date)
+            return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
+
+        return [$start_date, $due_date];
     }
 }

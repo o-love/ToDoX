@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +20,7 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
 import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from './services/task-service/task-service.service';
 import { UserAuthService } from './services/user-auth-service/user-auth.service';
+import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -38,12 +35,22 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
 import { ListDetailComponent } from './components/list-detail/list-detail.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 
+import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+
 // PROV until front decides
 import { CreateLabelComponent } from './components/create-label/create-label.component';
 import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 import { CreateStateComponent } from './components/create-state/create-state.component';
-import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
-import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
+import { CommentComponent } from './components/comment/comment.component';
+import { ListDetailKanbanComponent } from './components/list-detail-kanban/list-detail-kanban.component';
+import { ListDetailTableComponent } from './components/list-detail-table/list-detail-table.component';
+// import { HomeComponent } from './components/home/home.component';
+import { StateListComponent } from './components/state-list/state-list.component';
+import { LabelListComponent } from './components/label-list/label-list.component';
+import { StateDetailComponent } from './components/state-detail/state-detail.component';
+import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
+import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { ListSettingsComponent } from './components/list-settings/list-settings.component';
 
 @NgModule({
   declarations: [
@@ -64,9 +71,20 @@ import { AuthInterceptorService } from './services/auth-interceptor-service/auth
     LabelDetailComponent,
     CreateStateComponent,
     LanguageSelectorComponent,
+    CommentComponent,
+    ListDetailKanbanComponent,
+    ListDetailTableComponent,
+    // HomeComponent,
+    StateListComponent,
+    LabelListComponent,
+    StateDetailComponent,
+    BoardSettingsComponent,
+    TaskDetailComponent,
+    ListSettingsComponent,
   ],
   imports: [
     // CommonModule,
+    DragDropModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
