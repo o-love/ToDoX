@@ -66,6 +66,20 @@ class StateController extends Controller
         return response()->json($list->states);
     }
 
+    public function deassignFromList(Request $request, $taskListId) 
+    {
+        $stateIds = $request->input('state_ids');
+
+        $list = TaskList::findOrFail($taskListId);
+
+        foreach ($stateIds as $stateId) {
+            $state = State::findOrFail($stateId);
+            $list->states()->detach($state);
+        }
+
+        return response()->json($list->states);
+    }
+
     public function getStateName($stateId)
     {
         $state = State::findOrFail($stateId);
