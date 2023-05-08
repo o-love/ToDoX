@@ -1,0 +1,11 @@
+<form class="state" *ngIf="state" [formGroup]="form">
+    <i (click)="onClose()" class="bi bi-x"></i>
+    <div class="content">
+        <input #input (keyup)="onKeyUp($event)" formControlName="name" type="text" name="name">
+        <hr class="divider">
+        <div (click)="onDelete()" class="delete-btn">
+            <i class="bi bi-trash3-fill"></i>
+            <label translate>Borrar</label>
+        </div>
+    </div>
+</form>

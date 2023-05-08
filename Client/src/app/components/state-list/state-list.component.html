@@ -15,14 +15,14 @@
                                 <label class="name">{{ state.name }}</label>
                             </div>
                         </div>
-                        <!-- <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i> -->
+                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
                 </ng-container>
                 <label *ngIf="states.length == 0" class="empty">No hay estados</label>
             </ng-container>
         </div>
     </div>
-    <!-- <div class="bottom">
+    <div class="bottom">
         <div class="add-btn" (click)="addNew()"><i class="bi bi-plus-lg"></i><label>New</label></div>
-    </div> -->
+    </div>
 </div>
