@@ -29,7 +29,7 @@ export class TaskService {
   // Creates a new task in backend related to a taskList related to a board
   createTask(
     boardId: string, listId: string, taskName: string, taskDescription: string,
-    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
+    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null, statePosition = 0
   ): Observable<Task> {
     const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`;
     const task = {
@@ -39,7 +39,8 @@ export class TaskService {
       state_id: stateId,
       selectedLabels: selectedLabels,
       start_date: startDate,
-      due_date: dueDate
+      due_date: dueDate,
+      state_position: statePosition,
     };
     return this.http.post<Task>(url, task);
   }
