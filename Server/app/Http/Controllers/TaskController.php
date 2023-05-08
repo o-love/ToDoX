@@ -42,6 +42,7 @@ class TaskController extends Controller
             'state_id' => $request->input('state_id'),
             'due_date' => $due_date,
             'start_date' => $start_date,
+            'state_position' => $request->input('state_position'),
         ]);
         $task->save();
 
@@ -88,7 +89,8 @@ class TaskController extends Controller
             'description' => $request->input('description'),
             'state_id' => $request->input('state_id'),
             'due_date' => $due_date,
-            'start_date' => $start_date
+            'start_date' => $start_date,
+            'state_position' => $request->input('state_position'),
         ]);
 
         return response()->json($task, 201);
@@ -136,7 +138,7 @@ class TaskController extends Controller
     }
 
     private function validateDates($start_date, $due_date)
-    {        
+    {
         /* Validate start and due dates */
         // If a due date is selected, a start date must be selected as well
         if ($due_date && !$start_date)
