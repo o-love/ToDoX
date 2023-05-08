@@ -17,6 +17,8 @@ export class LoginFormComponent implements Form {
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;
 
+  loading: boolean = false;
+
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, Validators.maxLength(70)]],

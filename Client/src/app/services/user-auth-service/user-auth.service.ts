@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { User } from 'src/app/models/user';
+import { StringMappingType } from 'typescript';
 
 @Injectable({
   providedIn: 'root',
@@ -97,12 +98,7 @@ export class UserAuthService {
       );
   }
 
-  getPermissions(boardId: string): Observable<any> {
-    const userId = 1;
-    return this.http.get(`${this.apiUrl}/permissions/${boardId}/${userId}`);
-  }
-
-  getRoleOfUser(permission: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/roles/${permission}`, { responseType: 'text' });
+  getPermissions(boardUserId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/permissions/${boardUserId}`);
   }
 }

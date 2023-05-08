@@ -8,27 +8,9 @@ use App\Models\BoardUser;
 
 class PermissionController extends Controller
 {
-    public function getPermissionsForUser($boardId, $userId)
-    {
-        $permission = BoardUser::where('board_id', $boardId)
-                                ->where('user_id', $userId)
-                                ->value('permission');
-        return $this->permissionsOfRole($permission);
-    }
-
-    public function getRole($permission)
-    {
-        $roles = [
-                    1 => 'Gestor',
-                    2 => 'Desarrollador',
-                    3 => 'Integrante'
-                ];
-        return isset($roles[$permission]) ? $roles[$permission] : null;
-    }
-
     function permissionsOfRole($permission)
     {
-        return [
+        $permissions = [
             1 => [
                 //Board permissions
                 'Create_board' => true,
@@ -153,5 +135,6 @@ class PermissionController extends Controller
                 'edit_permissions' => false,
             ]
         ];
+        return $permissions[$permission];
     }
 }

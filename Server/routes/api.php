@@ -23,7 +23,9 @@ use App\Http\Controllers\TaskCommentController;
 
 // Board routes
 Route::get('boards', [BoardController::class, 'index']);
-Route::post('boards', [BoardController::class, 'store'])->name('boards.store');
+Route::middleware(['auth:api'])->group(function () {
+    Route::post('boards', [BoardController::class, 'store'])->name('boards.store');
+});
 // Route::put('boards', [BoardController::class, 'update'])->name('boards.update');
 // Route::delete('boards', [BoardController::class, 'destroy'])->name('boards.store');
 Route::get('boards/{boardId}', [BoardController::class, 'show'])->name('boards.show');
@@ -48,6 +50,7 @@ Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController
 Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'update']);
 Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'destroy']);
 Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'changeState']);
+Route::put('boards/{boardId}/lists/{taskListId}/tasks/{taskId}', [TaskController::class, 'move']);
 // Route::get('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/state',  [TaskController::class, 'checkState']);
 
 // Task comments routes
@@ -86,10 +89,5 @@ Route::middleware('auth:api')->post('/myUser/updatepassword', [\App\Http\Control
 // Route::resource('boards', BoardController::class); // Boards resource routes - resftful
 // Route::resource('boards.lists', BoardListController::class)->shallow(); // Lists resource routes - resftful
 
-// BoardUser routes
-Route::get('boardusers', [BoardUserController::class, 'index']);
-Route::post('boardusers', [BoardUserController::class, 'grantPermission']);
-
 // Permissions
-Route::get ('permissions/{boardId}/{userId}', [PermissionController::class, 'getPermissionsForUser']);
-Route::get ('roles/{permission}', [PermissionController::class, 'getRole']);
+Route::get ('permissions/{boardUserId}', [PermissionController::class, 'getPermissionsForUser']);

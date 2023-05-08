@@ -18,6 +18,8 @@ export class SignupFormComponent implements Form {
   @ViewChild('passwordLabel') passwordLabel!: ElementRef;
   @ViewChild('repeatPasswordLabel') repeatPasswordLabel!: ElementRef;
 
+  loading: boolean = false;
+
   constructor(private router: Router, private fb: FormBuilder, private authService: UserAuthService) {
     this.signupForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(70)]],
