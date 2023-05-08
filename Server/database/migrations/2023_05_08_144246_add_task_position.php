@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('task', function (Blueprint $table) {
-            $table->unsignedInteger('state_position')->nullable();
+            $table->unsignedInteger('state_position')->nullable()->default(0);
         });
     }
 
