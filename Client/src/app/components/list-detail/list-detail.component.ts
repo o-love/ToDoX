@@ -60,7 +60,7 @@ export class ListDetailComponent implements OnChanges {
     this.taskListId = this.selectedList.id.toString();
     this.reload();
     this.getLabels();
-  }   
+  }
 
   reload() {
     this.getTasks();
@@ -96,7 +96,7 @@ export class ListDetailComponent implements OnChanges {
       (labels: Label[]) => {
         console.log('Labels retrieved:', labels);
         this.labels = labels;
-      }, 
+      },
       (error: any) => {
         console.error('Error retrieving labels:', error);
       }
@@ -132,9 +132,13 @@ export class ListDetailComponent implements OnChanges {
 
   editTask(task: Task): void {
     if (!this.selectedTask) return;
+    this.unrestrictedEditTask(task);
+  }
+
+  unrestrictedEditTask(task: Task): void {
     console.log('task id:', task.id);
     this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name,
-    task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
+      task.description, task.state_id.toString(), [], task.start_date, task.due_date, task.state_position).subscribe({
       next: (task: Task) => {
         console.log('saved task:', task);
       },
@@ -149,7 +153,7 @@ export class ListDetailComponent implements OnChanges {
       () => {
         this.reload();
         this.closePopup();
-      }, 
+      },
       (error: any) => {
         console.error('Error deleting task:', error);
       }
@@ -161,7 +165,7 @@ export class ListDetailComponent implements OnChanges {
       if (option.nativeElement.classList.contains('checked')) {
         option.nativeElement.classList.toggle('checked');
         this.layouts.set(option.nativeElement.innerText.toString(), false);
-      }  
+      }
     });
 
     this.selectTitle.nativeElement.innerText = selected_option.nativeElement.innerText;

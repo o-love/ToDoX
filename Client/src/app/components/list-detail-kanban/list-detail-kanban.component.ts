@@ -47,6 +47,16 @@ export class ListDetailKanbanComponent implements OnChanges {
 
       this.stateTasks[state.id] = tasks;
     })
+
+    this.initializeAllStateListOrdering();
+  }
+
+  private initializeAllStateListOrdering() {
+    for (let stateTasksKey in this.stateTasks) {
+      this.stateTasks[stateTasksKey].sort((a, b) => {
+        return a.state_position - b.state_position;
+      });
+    }
   }
 
   onDragEntered(task: Task) {
@@ -72,6 +82,17 @@ export class ListDetailKanbanComponent implements OnChanges {
       this.draggingTask = null;
       this.draggedTask(null);
     }
+
+    this.updateStateListOrdering(state_id);
+  }
+
+  private updateStateListOrdering(state_id: number) {
+    this.stateTasks[state_id].forEach((value, index) => {
+      if (value.state_position !== index) {
+        value.state_position = index;
+        this.taskEdited.emit(value);
+      }
+    })
   }
 
   editTask(task: Task) {
