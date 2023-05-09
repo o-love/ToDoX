@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren } from '@angular/core';
 import { State } from 'src/app/models/state';
 
 @Component({
@@ -15,7 +15,11 @@ export class StateListComponent implements OnChanges {
   @Output() close = new EventEmitter<void>();
   @Output() state = new EventEmitter<State>();
 
+  @ViewChildren('dropdown') dropdown!: QueryList<ElementRef>;
+
   options: {[key: number]: boolean } = {};
+
+  stateOpened: number | null = null;
 
   ngOnChanges() {
     this.updateOptions();
@@ -32,6 +36,15 @@ export class StateListComponent implements OnChanges {
       if (this.selectedState?.id == state.id) this.options[state.id] = true;
       else this.options[state.id] = false;
     });
+  }
+
+  openState(element: HTMLElement, state: number) {
+    this.dropdown.forEach((label) => {
+      if (label.nativeElement != element && label.nativeElement.classList.contains('bi-chevron-up')) this.toggleDropdown(label.nativeElement);
+    })
+    this.toggleDropdown(element);
+    if (element.classList.contains('bi-chevron-up')) this.stateOpened = state;
+    else this.stateOpened = null;
   }
 
   toggleDropdown(element: HTMLElement) {

@@ -15,8 +15,9 @@
                                 <label class="name">{{ state.name }}</label>
                             </div>
                         </div>
-                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
+                        <i #dropdown (click)="openState(dropdown, state.id)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
+                    <app-state-detail *ngIf="stateOpened == state.id" [state]="state"></app-state-detail>
                 </ng-container>
                 <label *ngIf="states.length == 0" class="empty">No hay estados</label>
             </ng-container>
