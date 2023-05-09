@@ -54,7 +54,7 @@ export class ListDetailKanbanComponent implements OnChanges {
   private initializeAllStateListOrdering() {
     for (let stateTasksKey in this.stateTasks) {
       this.stateTasks[stateTasksKey].sort((a, b) => {
-        return a.state_position - b.state_position;
+        return b.state_position - a.state_position;
       });
     }
   }
@@ -88,6 +88,7 @@ export class ListDetailKanbanComponent implements OnChanges {
 
   private updateStateListOrdering(state_id: number) {
     this.stateTasks[state_id].forEach((value, index) => {
+      index = this.stateTasks[state_id].length - index - 1;
       if (value.state_position !== index) {
         value.state_position = index;
         this.taskEdited.emit(value);
