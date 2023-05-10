@@ -109,11 +109,12 @@ export class TaskService {
     return this.http.put<Task>(url, body);
   }
 
-  MoveTask(boardId: string, listId: string, taskId: string, NewlistTaskId: string, selectedLabels: Label[]): Observable<Task> {
+  MoveTask(boardId: string, listId: string, taskId: string, NewlistTaskId: string, NewstateId: string, selectedLabels: Label[]): Observable<Task> {
     const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
     const body = { tasklist_id: NewlistTaskId,
-      selectedLabels: selectedLabels
-    }
+      selectedLabels: selectedLabels,
+      state_id: NewstateId
+    };
     return this.http.put<Task>(url, body);
   }
 

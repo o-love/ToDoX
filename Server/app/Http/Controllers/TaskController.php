@@ -154,6 +154,7 @@ class TaskController extends Controller
     public function move(Request $request,$boardId, $taskListId, $taskId){
         $task = Task::findOrFail($taskId);
         $task->tasklist_id = $request->input('tasklist_id');
+        $task->state_id = $request->input('state_id');
         $task->save();
         return response()->json($task, 201);
     }
