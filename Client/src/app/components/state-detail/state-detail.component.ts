@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { State } from 'src/app/models/state';
@@ -8,7 +8,7 @@ import { State } from 'src/app/models/state';
   templateUrl: './state-detail.component.html',
   styleUrls: ['./state-detail.component.scss']
 })
-export class StateDetailComponent implements Form {
+export class StateDetailComponent implements Form, OnInit {
 
   form: FormGroup;
 
@@ -26,6 +26,12 @@ export class StateDetailComponent implements Form {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]]
     })
+  }
+
+  ngOnInit(): void {
+    if (!this.state) return;
+
+    this.form.setValue({name: this.state.name});
   }
 
   checkErrors(): boolean {

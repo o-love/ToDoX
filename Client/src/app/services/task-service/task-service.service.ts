@@ -11,12 +11,27 @@ import { Label } from 'src/app/models/label';
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
 
+  tasks: Task[] | undefined;
+
   constructor(private http: HttpClient) { }
 
   // Gets all tasks from backend related to a certain list from a certain board
   getTasksByTaskListId(boardId: string, listId: string): Observable<Task[]> {
     const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`;
-    return this.http.get<Task[]>(url);
+    if (!this.tasks) {
+      const http = this.http.get<Task[]>(url);
+      
+      http.subscribe({
+        next: (tasks: Task[]) => {
+          console.log(tasks);
+          this.tasks = tasks;
+        },
+        error: (err: any) => console.error(err)
+      });
+
+      return http;
+    }
+    else return of(this.tasks);
   }
 
   // Gets a task by id, taskList id and board id - REV

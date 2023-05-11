@@ -1,5 +1,5 @@
 export interface TaskList {
-    id: number;
+    id: string;
     name: string;
     description: string;
     board_id: number;

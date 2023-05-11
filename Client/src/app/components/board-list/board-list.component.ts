@@ -19,6 +19,7 @@ export class BoardListComponent implements OnInit {
   }
 
   getBoards(): void {
+    console.log('loading boards...');
     this.boardService.getBoards().subscribe(
       (boards: Board[]) => {
         console.log('Boards retrieved:', boards);
