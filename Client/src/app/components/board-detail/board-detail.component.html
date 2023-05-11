@@ -44,6 +44,6 @@
     <div class="overlay" *ngIf="showCreateList || showSettings" (click)="closePopup()"></div>
     <div class="popup" *ngIf="showCreateList || showSettings">
         <app-create-list *ngIf="showCreateList" (listCreated)="addList($event)" (closePopup)="closePopup()"></app-create-list>
-        <app-board-settings *ngIf="showSettings" (boardEdited)="editBoard($event)" (closeBoardSettings)="closePopup()" [board]="board"></app-board-settings>
+        <app-board-settings *ngIf="showSettings" (boardEdited)="editBoard($event)" (close)="closePopup()" [board]="board"></app-board-settings>
     </div>
 </main>
