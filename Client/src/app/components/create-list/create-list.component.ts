@@ -1,10 +1,10 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskList } from 'src/app/models/taskList';
 import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Label } from 'src/app/models/label';
+import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
 
 @Component({
   selector: 'app-create-list',
@@ -23,7 +23,7 @@ export class CreateListComponent implements Form {
 
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private boardService: BoardService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private taskListService: TaskListService, private route: ActivatedRoute) {
     this.form = this.fb.group({
       listName: ['', [Validators.required, Validators.maxLength(20)]],
       listDescription: ['', [Validators.maxLength(100)]]
@@ -60,7 +60,7 @@ export class CreateListComponent implements Form {
   private createList(listName: string, listDescription: string) {
     if (!this.boardId) return;
 
-    this.boardService.createList(this.boardId, listName, listDescription, []).subscribe({
+    this.taskListService.createList(this.boardId, listName, listDescription, []).subscribe({
       next: (list: TaskList) => {
         console.log('created list:', list);
         this.listCreated.emit(list);

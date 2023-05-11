@@ -7,39 +7,87 @@ import { TaskComment } from 'src/app/models/taskComment';
   providedIn: 'root'
 })
 export class TaskCommentService {
-
   private apiUrl = 'http://localhost:8082/api';
 
-  constructor(private http: HttpClient) { }
+  taskComments: Map<number, Map<number, TaskComment>> = new Map();
+
+  constructor(private http: HttpClient) {}
+
+  private setComment(taskId: number, comment: TaskComment) {
+    let mapComments = this.taskComments.get(taskId);
+    if (!mapComments) mapComments = new Map();
+    mapComments.set(comment.id, comment);
+    this.taskComments.set(taskId, mapComments);
+  }
 
   // Get task comments from a certain task
   getTaskComments(boardId: number, listId: number, taskId: number): Observable<TaskComment[]> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`;
-    return this.http.get<TaskComment[]>(url);
+    const mapComments = this.taskComments.get(taskId);
+    if (mapComments) return of(Array.from(mapComments.values()));
+
+    const http = this.http.get<TaskComment[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`);
+    
+    http.subscribe({
+      next: (comments: TaskComment[]) => {
+        let mapComments = this.taskComments.get(taskId);
+        if (!mapComments) mapComments = new Map();
+        comments.forEach((comment) => mapComments?.set(comment.id, comment));
+        this.taskComments.set(taskId, mapComments);
+      }
+    })
+
+    return http;
   }
 
   // Create a task comment for a certain task
   addTaskComment(boardId: number, listId: number, taskId: number, userId: number, content: string): Observable<TaskComment> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`;
-    console.log("content", content);
-    return this.http.post<TaskComment>(url, { content, userId });
+    const http = this.http.post<TaskComment>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`, { content: content, user_id: userId });
+
+    http.subscribe({
+      next: (comment: TaskComment) => this.setComment(taskId, comment)
+    })
+
+    return http;
   }
 
   // Show information from a comment
-  getTaskComment(commentId: number): Observable<TaskComment> {
-    const url = `${this.apiUrl}/comments/${commentId}`;
-    return this.http.get<TaskComment>(url);
+  getTaskComment(taskId: number, commentId: number): Observable<TaskComment> {
+    const comment = this.taskComments.get(taskId)?.get(commentId);
+    if (comment) return of(comment);
+
+    const http = this.http.get<TaskComment>(`${this.apiUrl}/comments/${commentId}`);
+
+    http.subscribe({
+      next: (comment: TaskComment) => this.setComment(taskId, comment)
+    })
+
+    return http;
   }
 
   // Update a comment
-  updateTaskComment(commentId: number, comment: string): Observable<TaskComment> {
-    const url = `${this.apiUrl}/comments/${commentId}`;
-    return this.http.put<TaskComment>(url, { comment });
+  updateTaskComment(taskId: number, commentId: number, comment: string): Observable<TaskComment> {
+    const http = this.http.put<TaskComment>(`${this.apiUrl}/comments/${commentId}`, { comment });
+
+    http.subscribe({
+      next: (comment: TaskComment) => this.setComment(taskId, comment)
+    })
+
+    return http;
   }
 
   // Delete a comment
-  deleteTaskComment(commentId: number): Observable<any> {
-    const url = `${this.apiUrl}/comments/${commentId}`;
-    return this.http.delete(url);
+  deleteTaskComment(taskId: number, commentId: number): Observable<any> {
+    const http = this.http.delete(`${this.apiUrl}/comments/${commentId}`);
+
+    http.subscribe({
+      next: () => {
+        let mapComments = this.taskComments.get(taskId);
+        if (!mapComments) mapComments = new Map();
+        else mapComments.delete(commentId);
+        this.taskComments.set(taskId, mapComments);
+      }
+    })
+    
+    return http;
   }
 }

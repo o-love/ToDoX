@@ -7,70 +7,91 @@ import { TaskList } from 'src/app/models/taskList';
   providedIn: 'root'
 })
 export class TaskListService {
+  private apiUrl = 'http://localhost:8082/api/boards';
 
-  private apiUrl = 'http://localhost:8082/api';
-
-  boardLists: Map<string, string[]> = new Map<string, string[]>();
-  lists: Map<string, TaskList> = new Map<string, TaskList>();
+  boardLists: Map<string, Map<string, TaskList>> = new Map();
 
   constructor(private http: HttpClient) { }
 
-  // REVISAR STATE IDS. Todas las listas empiezan con el mismo número de stateids... por lo que 
-  // se deberían crear state ids base y en esta función habrá que quitar el argumento de stateIds
-  // y en la constante lista le atribuimos SIEMPRE los mismos stateIds !!!!!!!!!!!!!!! 
+  getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
+    const lists = this.boardLists.get(boardId)?.values();
+    if (lists) return of(Array.from(lists));
 
-  getTaskListsByBoardId(boardId: string): Observable<TaskList[] | undefined> {
-    if (this.boardLists.has(boardId)) {
-      let listsId: string[] | undefined = this.boardLists.get(boardId);
-      let lists: TaskList[];
+    const http = this.http.get<TaskList[]>(`${this.apiUrl}/${boardId}/lists`);
 
-      if (listsId) {
-
+    http.subscribe({
+      next: (lists: TaskList[]) => {
+        let mapLists: Map<string, TaskList> = new Map();
+        lists.forEach((list) => mapLists.set(list.id, list))
+        this.boardLists.set(boardId, mapLists);
       }
-    }
-
-    const http = this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
-    
-    // http.subscribe({
-    //   next: (lists: TaskList[]) => {
-    //     console.log('lists retrieved:', lists);
-    //     this.boardLists.set(boardId, lists);
-    //     lists.forEach((list) => {
-    //       if (!this.lists.has(list.id)) this.lists.set(list.id, list);
-    //     })
-    //   },
-    //   error: (err: any) => console.error('error retrieving lists by board id:', err)
-    // })
+    })
 
     return http;
   }
 
-  // Gets a taskList by id and board id
-  getList(boardId: string, taskListId: string): Observable<TaskList> {
-    return this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
+  getListById(boardId: string, taskListId: string): Observable<TaskList> {
+    const lists = this.boardLists.get(boardId);
+    if (lists) {
+      const list = lists.get(taskListId);
+      if (list) return of(list);
+    } 
+
+    const http = this.http.get<TaskList>(`${this.apiUrl}/${boardId}/lists/${taskListId}`);    
+
+    http.subscribe({
+      next: (list: TaskList) => {
+        let boardLists = this.boardLists.get(boardId);
+        if (!boardLists) boardLists = new Map<string, TaskList>();
+        boardLists.set(taskListId, list);
+      }
+    })
+
+    return http;
   }
 
-  // Creates a new taskList in backend related to a board by boardId
-  createList(boardId: string, listName: string, listDescription: string, stateIds: number[]): Observable<any> {
-    const list = {
-      name: listName,
-      description: listDescription,
-      board_id: boardId,
-      state_ids: stateIds,
-    };
-    return this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, list);
+  createList(boardId: string, name: string, description: string): Observable<any> {
+    const http = this.http.post(`${this.apiUrl}/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [1, 2, 3] });
+
+    http.subscribe({
+      next: (list: any) => {
+        let boardLists = this.boardLists.get(boardId);
+        if (!boardLists) boardLists = new Map<string, TaskList>();
+        boardLists.set(list.id, list);
+        this.boardLists.set(boardId, boardLists);
+      }
+    })
+
+    return http;
   }
 
-  // Updates a tasklist by id and board id
   editTasklist(boardId: string, taskListId: string, name: string, description: string): Observable<TaskList> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}`;
-    const taskList = { name, description };
-    return this.http.put<TaskList>(url, taskList);
+    const http = this.http.put<TaskList>(`${this.apiUrl}/${boardId}/lists/${taskListId}`, { name: name, description: description });
+
+    http.subscribe({
+      next: (list: TaskList) => {
+        let boardLists = this.boardLists.get(boardId);
+        if (!boardLists) boardLists = new Map<string, TaskList>();
+        boardLists.set(taskListId, list);
+        this.boardLists.set(boardId, boardLists);
+      }
+    })
+
+    return http;
   }
 
-  // Deletes a tasklist by id and board id
   deleteTasklist(boardId: string, taskListId: string): Observable<any> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}`;
-    return this.http.delete(url);
+    const http = this.http.delete(`${this.apiUrl}/${boardId}/lists/${taskListId}`);
+
+    http.subscribe({
+      next: () => {
+        let boardLists = this.boardLists.get(boardId);
+        if (boardLists) boardLists.delete(taskListId);
+        else boardLists = new Map<string, TaskList>();
+        this.boardLists.set(boardId, boardLists);
+      }
+    })
+
+    return http;
   }
 }

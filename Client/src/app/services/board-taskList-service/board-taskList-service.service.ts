@@ -7,59 +7,44 @@ import { Board } from 'src/app/models/board';
   providedIn: 'root'
 })
 export class BoardService {
-  private apiUrl = 'http://localhost:8082/api';
+  private apiUrl = 'http://localhost:8082/api/boards';
 
   constructor(private http: HttpClient) { }
 
   boards: Map<string, Board> = new Map<string, Board>();
 
   getBoards(): Observable<Board[]> {
-    const http = this.http.get<Board[]>(`${this.apiUrl}/boards`);
+    const http = this.http.get<Board[]>(`${this.apiUrl}`);
 
     http.subscribe({
-      next: (boards: Board[]) => {
-        console.log('boards retrieved:', boards);
-        boards.forEach((board) => {
-          this.boards.set(board.id, board);
-        })
-      },
-      error: (err: any) => console.error('error retrieving all boards:', err)
+      next: (boards: Board[]) => boards.forEach((board) => this.boards.set(board.id, board))
     })
 
     return http;
   }
 
-  getBoardById(id: string): Observable<Board | undefined> {
-    const url = `${this.apiUrl}/boards/${id}`;
+  getBoardById(id: string): Observable<Board> {
+    const board = this.boards.get(id);
+    if (board) return of(board);
 
-    if (this.boards.has(id)) return of(this.boards.get(id));
-
-    const http = this.http.get<Board>(url);
+    const http = this.http.get<Board>(`${this.apiUrl}/${id}`);
 
     http.subscribe({
-      next: (board: Board) => {
-        console.log('board retrieved:', board);
-        this.boards.set(board.id, board);
-      }, 
-      error: (err: any) => console.error('error retrieving board by id:', err)
+      next: (board: Board) => this.boards.set(board.id, board)
     })
 
     return http;
   }
 
   editBoard(id: string, name: string, description: string): Observable<any> {
-    const http = this.http.put(`${this.apiUrl}/boards/${id}`, {name, description});
-    
-    const board: Board | undefined = this.boards.get(id);
-    if (board) {
-      board.name = name;
-      board.description = description;
-    }
+    const http = this.http.put(`${this.apiUrl}/${id}`, { name: name, description: description });
 
     http.subscribe({
       next: () => {
-        if (board) { 
-          console.log('board saved:', id);
+        const board = this.boards.get(id);
+        if (board) {
+          board.name = name;
+          board.description = description;
           this.boards.set(id, board);
         }
       },
@@ -70,28 +55,20 @@ export class BoardService {
   }
 
   deleteBoard(id: string): Observable<any> {
-    const http = this.http.delete(`${this.apiUrl}/boards/${id}`);
+    const http = this.http.delete(`${this.apiUrl}/${id}`);
 
     http.subscribe({
-      next: () => {
-        console.log('board deleted:', id);
-        this.boards.delete(id);
-      },
-      error: (err: any) => console.error('error deleting board:', err)
+      next: () => this.boards.delete(id)
     })
 
     return http;
   }
 
   createBoard(name: string, description: string): Observable<any> {
-    const http =  this.http.post(`${this.apiUrl}/boards`, {name, description});
+    const http =  this.http.post(`${this.apiUrl}`, { name: name, description: description });
 
     http.subscribe({
-      next: (board: any) => {
-        console.log('board created:', board);
-        this.boards.set(board.id, board);
-      },
-      error: (err: any) => console.error('error creating board:', err)
+      next: (board: any) => this.boards.set(board.id, board)
     })
 
     return http;
