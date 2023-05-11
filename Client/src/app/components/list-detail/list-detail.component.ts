@@ -13,11 +13,11 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./list-detail.component.scss']
 })
 export class ListDetailComponent implements OnChanges {
-  @Input() selectedList: TaskList | null = null;
+  @Input() selectedList: string | null = null;
   @Input() usersId: {[key: number]: User} = {}
   @Input() user: User | null = null;
   @Output() taskListEdited = new EventEmitter<TaskList>();
-  @Output() taskListDeleted = new EventEmitter<number>();
+  @Output() taskListDeleted = new EventEmitter<string>();
 
   tasks: Task[] = [];
   states: State[] = [];

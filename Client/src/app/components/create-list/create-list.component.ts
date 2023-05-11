@@ -3,7 +3,6 @@ import { TaskList } from 'src/app/models/taskList';
 import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Label } from 'src/app/models/label';
 import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
 
 @Component({
@@ -16,7 +15,7 @@ export class CreateListComponent implements Form {
 
   boardId = this.route.snapshot.paramMap.get('boardId');
 
-  @Output() listCreated = new EventEmitter<any>();
+  @Output() listCreated = new EventEmitter<string>();
   @Output() closePopup = new EventEmitter<void>();
 
   @ViewChild('name') name!: ElementRef<any>;
@@ -25,17 +24,16 @@ export class CreateListComponent implements Form {
 
   constructor(private fb: FormBuilder, private taskListService: TaskListService, private route: ActivatedRoute) {
     this.form = this.fb.group({
-      listName: ['', [Validators.required, Validators.maxLength(20)]],
-      listDescription: ['', [Validators.maxLength(100)]]
+      name: ['', [Validators.required, Validators.maxLength(20)]],
+      description: ['', [Validators.maxLength(100)]]
     });
   }
 
+  
+
   checkErrors(): boolean {
-    if (this.form.controls['listName'].errors) {
-      this.onError(this.name);
-      return true;
-    } 
-    return false;
+    if (this.form.controls['name'].errors) this.onError(this.name);
+    return (this.form.controls['name'].errors != null);
   }
 
   resetErrors(): void {
@@ -50,26 +48,23 @@ export class CreateListComponent implements Form {
     this.resetErrors();
     if (this.checkErrors()) return;
     
-    let listName: string = this.form.get('listName')?.value;
-    let listDescription: string = this.form.get('listDescription')?.value;
+    let name: string = this.form.get('name')?.value;
+    let description: string = this.form.get('description')?.value;
 
     this.loading = true;
-    this.createList(listName, listDescription);
+    this.createList(name, description);
   }
 
-  private createList(listName: string, listDescription: string) {
+  private createList(name: string, description: string) {
     if (!this.boardId) return;
 
-    this.taskListService.createList(this.boardId, listName, listDescription, []).subscribe({
+    // change when labels are added
+    this.taskListService.createList(this.boardId, name, description).subscribe({
       next: (list: TaskList) => {
-        console.log('created list:', list);
-        this.listCreated.emit(list);
-      },
-      error: (error) => console.log(error)
-    });
+        console.log('list created:', list);
+        this.listCreated.emit(list.id);
+        this.loading = false;
+      }
+    })
   } 
-
-  onClose() {
-    this.closePopup.emit();
-  }
 }

@@ -5,6 +5,7 @@ import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
 import { User } from 'src/app/models/user';
 import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
 import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class BoardDetailComponent implements OnInit {
   tasks: Task[] = [];
 
   boardId = this.route.snapshot.paramMap.get('boardId');
-  selectedList: TaskList | null = null;
+  selectedList: string | null = null;
 
   user: User | null = null;
   usersId: {[key: number]: User} = {};
@@ -29,7 +30,7 @@ export class BoardDetailComponent implements OnInit {
 
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
 
-  constructor(private boardService: BoardService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
+  constructor(private boardService: BoardService, private taskListService: TaskListService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
 
   ngOnInit(): void {
     this.getMyUser();
@@ -38,35 +39,31 @@ export class BoardDetailComponent implements OnInit {
     this.getLists();
   }
 
-  getBoard(): void {
-    if (this.boardId) {
-      this.boardService.getBoard(this.boardId).subscribe(
-        (board: Board) => {
-          console.log('Board retrieved:', board);
-          this.board = board;
-        },
-        (error: any) => {
-          console.error('Error retrieving board:', error);
-        }
-      );
-    }
+  private getBoard(): void {
+    if (!this.boardId) return;
+
+    console.log('getting board...');
+    this.boardService.getBoardById(this.boardId).subscribe({
+      next: (board: Board) => {
+        this.board = board
+        console.log('board retrieved:', board);
+      }
+    })
   }
 
-  getLists(): void {
-    if (this.boardId) {
-      this.boardService.getTaskListsByBoardId(this.boardId.toString()).subscribe(
-        (lists: TaskList[]) => {
-          console.log('Lists retrieved:', lists);
-          this.lists = lists;
-          if (this.lists.length > 0) this.selectList(this.lists[0]);
-        },
-        (error: any) => {
-          console.error('Error retrieving lists:', error);
-        }
-      );
-    }
+  private getLists(): void {
+    if (!this.boardId) return;
+
+    this.taskListService.getTaskListsByBoardId(this.boardId).subscribe({
+      next: (lists: TaskList[]) => {
+        this.lists = lists;
+        console.log('lists retrieved:', lists);
+        if (this.lists.length > 0) this.selectList(this.lists[0].id);
+      }
+    })
   }
 
+  // change after refactoring user-service
   private getMyUser() {
     if (this.userService.isLoggedIn()) {
       this.userService.getMyUser().subscribe({
@@ -79,6 +76,7 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
+  // change after refactoring user-service
   private getAllUsers() {
     this.userService.getAllUsers().subscribe({
       next: (users: User[]) => { 
@@ -98,56 +96,41 @@ export class BoardDetailComponent implements OnInit {
     this.sidebar.nativeElement.classList.toggle('sidebar-closed');
   }
 
-  addList(newList: TaskList) {
-    this.lists.push(newList);
-    this.closePopup();
+  addList(newList: string) {
+    this.getLists();
     this.selectList(newList);
+    this.closePopup();
   }
 
-  selectList(list: TaskList | null): void {
+  selectList(list: string | null): void {
     this.selectedList = list;
-    if (this.selectedList) {
-      this.router.navigate(['lists', this.selectedList.id], { relativeTo: this.route, replaceUrl: true });
-      this.showListDetail = true;
-    } else {
-      this.router.navigate(['boards', this.boardId]);
-      this.showListDetail = false;
-    }
+    console.log('selected list:', list);
+    if (this.selectedList) this.router.navigate(['lists', this.selectedList], { relativeTo: this.route, replaceUrl: true });
+    else this.router.navigate(['boards', this.boardId]);
+    this.showListDetail = this.selectedList ? true : false;
   }
 
-  deleteTaskList(tasklist_id: number): void {
-    let list_index = 0;
+  deleteTaskList(tasklist_id: string): void {
+    if (!this.boardId) return;
 
-    for (let index = 0; index < this.lists.length; index++) {
-      if (this.lists[index].id == tasklist_id) {
-        this.lists.splice(index, 1);
-        list_index = index - 1;   
-        break;
-      }
-    }
-
-    if (list_index >= 0) this.selectList(this.lists[list_index]);
-    else this.selectList(null);
-
-    this.boardService.deleteTasklist(this.board.id.toString(), tasklist_id.toString()).subscribe({
-      next: () => console.log('deleted list:', tasklist_id),
-      error: (error: any) => console.error('Error deleting tasklist:', error)
-    });
+    console.log('deleting tasklist %d...', tasklist_id);
+    this.taskListService.deleteTasklist(this.boardId, tasklist_id).subscribe({
+      next: () => {
+        this.getLists()
+        console.log('deleted tasklist');
+      } 
+    })
   }
 
+  // do this inside list-detail ?
   editTaskList(taskList: TaskList): void {
     if (!this.selectedList || !this.boardId) return;
-    
-    for (let list of this.lists) {
-      if (list.id == this.selectedList.id) {
-        list = taskList;
-        break;
-      }
-    }
 
-    this.boardService.editTasklist(this.boardId, this.selectedList.id.toString(), taskList.name, taskList.description).subscribe({
-      next: (taskList: TaskList) => console.log('saved list:', taskList),
-      error: (error: any) => console.error('Error editing taskList:', error)
+    this.taskListService.editTasklist(this.boardId, this.selectedList, taskList.name, taskList.description).subscribe({
+      next: (taskList: TaskList) => {
+        this.getLists();
+        console.log('edited tasklist:', taskList);
+      }
     })
   }
 
@@ -157,10 +140,12 @@ export class BoardDetailComponent implements OnInit {
     this.board.name = board.name;
     this.board.description = board.description;
 
-    this.boardService.editBoard(parseInt(this.boardId), board.name, board.description).subscribe(
-      () => console.log('board saved:', board),
-      (error: any) => console.log(error)
-    ) 
+    this.boardService.editBoard(this.boardId, board.name, board.description).subscribe({
+      next: (board: any) => {
+        this.getBoard()
+        console.log('board edited:', board)
+      }
+    }) 
   }
 
   toggleFill(element: HTMLElement) {
@@ -174,5 +159,9 @@ export class BoardDetailComponent implements OnInit {
 
   openSettings() {
     this.showSettings = true;
+  }
+
+  show(): boolean {
+    return this.showCreateList || this.showSettings;
   }
 }

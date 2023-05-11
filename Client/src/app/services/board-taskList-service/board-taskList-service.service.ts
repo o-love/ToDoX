@@ -7,14 +7,14 @@ import { Board } from 'src/app/models/board';
   providedIn: 'root'
 })
 export class BoardService {
-  private apiUrl = 'http://localhost:8082/api/boards';
+  private apiUrl = 'http://localhost:8082/api';
 
   constructor(private http: HttpClient) { }
 
   boards: Map<string, Board> = new Map<string, Board>();
 
   getBoards(): Observable<Board[]> {
-    const http = this.http.get<Board[]>(`${this.apiUrl}`);
+    const http = this.http.get<Board[]>(`${this.apiUrl}/boards`);
 
     http.subscribe({
       next: (boards: Board[]) => boards.forEach((board) => this.boards.set(board.id, board)),
@@ -28,7 +28,7 @@ export class BoardService {
     const board = this.boards.get(id);
     if (board) return of(board);
 
-    const http = this.http.get<Board>(`${this.apiUrl}/${id}`);
+    const http = this.http.get<Board>(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
       next: (board: Board) => this.boards.set(board.id, board),
@@ -39,7 +39,7 @@ export class BoardService {
   }
 
   editBoard(id: string, name: string, description: string): Observable<any> {
-    const http = this.http.put(`${this.apiUrl}/${id}`, { name: name, description: description });
+    const http = this.http.put(`${this.apiUrl}/boards/${id}`, { name: name, description: description });
 
     http.subscribe({
       next: () => {
@@ -57,7 +57,7 @@ export class BoardService {
   }
 
   deleteBoard(id: string): Observable<any> {
-    const http = this.http.delete(`${this.apiUrl}/${id}`);
+    const http = this.http.delete(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
       next: () => this.boards.delete(id),
@@ -68,11 +68,7 @@ export class BoardService {
   }
 
   createBoard(name: string, description: string): Observable<any> {
-    const http =  this.http.post(`${this.apiUrl}`, { name: name, description: description });
-
-    // http.pipe(
-    //   tap((board: any))
-    // )
+    const http =  this.http.post(`${this.apiUrl}/boards`, { name: name, description: description });
 
     http.subscribe({
       next: (board: any) => this.boards.set(board.id, board),
