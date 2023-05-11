@@ -18,71 +18,47 @@ export class BoardListComponent implements OnInit {
     this.getBoards();
   }
 
-  getBoards(): void {
+  private getBoards(): void {
     console.log('loading boards...');
-    this.boardService.getBoards().subscribe(
-      (boards: Board[]) => {
-        console.log('Boards retrieved:', boards);
+
+    this.boardService.getBoards().subscribe({
+      next: (boards: Board[]) => {
         this.boards = boards;
+        console.log('boards retrieved:', boards);
       },
-      (error: any) => {
-        console.error('Error retrieving boards:', error);
-      }
-    );
+      error: (err: any) => console.error('error getting boards:', err)
+    })
+  }
+
+  show() {
+    return this.showAddPopup;
   }
 
   hidePopup() {
     if (this.showAddPopup) this.showAddPopup = false;
   }
 
-  viewBoard(board_id: number) {
+  openAddPopup() {
+    if (!this.showAddPopup) this.showAddPopup = true;
+  }
+
+  viewBoard(board_id: string) {
     this.router.navigate(['/boards', board_id]);
   }
 
-  addBoard(newBoard: Board) {
-    this.boards.push(newBoard);
+  addBoard() {
+    this.getBoards();
     this.hidePopup();
   }
 
-  deleteBoard(board_id: number): void {
-    this.boardService.deleteBoard(board_id).subscribe(
-      () => {
-        for (let index = 0; index < this.boards.length; index++) {
-          if (this.boards[index].id == board_id) {
-            this.boards.splice(index, 1);
-            console.log('Deleted board:', board_id);
-            break;
-          }
-        }
-      },
-      (error: any) => {
-        console.error('Error deleting board:', error);
+  deleteBoard(board_id: string): void {
+    console.log('deleting board...');
+
+    this.boardService.deleteBoard(board_id).subscribe({
+      next: () => {
+        console.log('board deleted');
+        this.getBoards()
       }
-    );
+    });
   }
-
-  // THIS WILL BE USED WHEN ADDED EDIT BTN
-
-  /*
-  editBoard(id: number): void {
-    console.log("Board id edit", id);
-    this.boards[id].isEditing = true;
-  }
-
-  saveBoardEdit(index: number): void {
-    const board = this.boards[index];
-    this.boardService.editBoard(board.id, board.name, board.description).subscribe(
-      (response) => {
-        console.log("Board updated:", response);
-        board.isEditing = false;
-      },
-      (error) => {
-        console.error("Error updating board:", error);
-      }
-    );
-  }
-
-  cancelBoardEdit(index: number): void {
-    this.boards[index].isEditing = false;
-  }*/
 }

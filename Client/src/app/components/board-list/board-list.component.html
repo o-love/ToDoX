@@ -13,10 +13,10 @@
         </div>
     </ng-container>
 </div>
-<button class="add-btn qt-btn" (click)="showAddPopup = true" translate>boards.addBtn</button>
+<button class="add-btn qt-btn" (click)="openAddPopup()" translate>boards.addBtn</button>
 
-<div class="overlay" *ngIf="showAddPopup" (click)="hidePopup()"></div>
-<div class="popup" *ngIf="showAddPopup">
-    <app-create-board *ngIf="showAddPopup" (boardCreated)="addBoard($event)"
-        (closePopup)="showAddPopup = false"></app-create-board>
+<div class="overlay" *ngIf="show()" (click)="hidePopup()"></div>
+<div class="popup" *ngIf="show()">
+    <app-create-board *ngIf="show()" (boardCreated)="addBoard()"
+        (closePopup)="hidePopup()"></app-create-board>
 </div>
