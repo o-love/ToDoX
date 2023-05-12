@@ -21,6 +21,7 @@ class StateController extends Controller
         $state = new State([
             'name' => $request->input('name'),
         ]);
+        $state->save();
 
         $taskList = TaskList::findOrFail($taskListId);
         $taskList->states()->attach($state);
@@ -52,7 +53,7 @@ class StateController extends Controller
         return response()->json(null, 204);
     }
 
-    public function assignToList(Request $request, $taskListId)
+    public function assignToList(Request $request, $boardId, $taskListId)
     {
         $stateIds = $request->input('state_ids');
 
@@ -66,7 +67,7 @@ class StateController extends Controller
         return response()->json($list->states);
     }
 
-    public function deassignFromList(Request $request, $taskListId) 
+    public function deassignFromList(Request $request, $boardId, $taskListId) 
     {
         $stateIds = $request->input('state_ids');
 

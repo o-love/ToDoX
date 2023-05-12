@@ -57,9 +57,14 @@ Route::put('/comments/{commentId}', [TaskCommentController::class, 'update'])->n
 Route::delete('boards/{boardId}/lists/{taskListId}/tasks/{taskId}/comments/{taskCommentId}', [TaskCommentController::class, 'destroy'])->name('taskComment.destroy');
 
 // State routes
-Route::get('/boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
-// Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
-Route::get('/states/{stateId}/name', [StateController::class, 'getStateName']);
+Route::get('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'index']);
+Route::post('boards/{boardId}/lists/{taskListId}/states', [StateController::class, 'store'])->name('states.store');
+Route::get('boards/{boardId}/lists/{taskListId}/states/{stateId}', [StateController::class, 'show'])->name('states.show');
+Route::put('states/{stateId}', [StateController::class, 'update'])->name('states.update');
+Route::delete('states/{stateId}', [StateController::class, 'destroy'])->name('states.destroy');
+Route::put('boards/{boardId}/lists/{taskListId}/assignStates', [StateController::class, 'assignToList'])->name('states.assignToList');
+Route::put('boards/{boardId}/lists/{taskListId}/deassignStates', [StateController::class, 'deassignFromList'])->name('states.deassignFromList');
+Route::get('states/{stateId}/name', [StateController::class, 'getStateName']);
 // Route::get('/states', 'StateController@show');
 
 // Label routes
