@@ -55,8 +55,8 @@ export class StateService {
     state.name = name;
   }
 
-  updateStateApi(boardId: number, listId: number, stateId: number, name: string):  Observable<State> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`;
+  updateStateApi(stateId: number, name: string):  Observable<State> {
+    const url = `${this.apiUrl}/states/${stateId}`;
     return this.http.put<State>(url, { name });
   }
 
@@ -71,8 +71,8 @@ export class StateService {
     this.states.splice(stateIndex, 1);
   }
 
-  deleteStateApi(boardId: number, listId: number, stateId: number): Observable<State> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`;
+  deleteStateApi(stateId: number): Observable<State> {
+    const url = `${this.apiUrl}/states/${stateId}`;
     return this.http.delete<State>(url);
   }
 }
