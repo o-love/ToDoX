@@ -37,6 +37,7 @@
                 </div>
             </div>
             <div class="bottom">
+                <div #btn class="copy-move-btn" (click)="toggleCopyMove()">Move/Copy <i class="bi bi-clipboard"></i></div>
                 <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
             </div>
         </div>

@@ -20,7 +20,7 @@ export class TaskDetailComponent implements OnInit, Form {
   @Input() task: Task | null = null;
   @Input() usersId: {[key: number]: User} = {}
   @Input() user: User | null = null;
-  
+
   selectedState: State | null = null;
   startDate: Date | null = null;
   dueDate: Date | null = null;
@@ -29,6 +29,7 @@ export class TaskDetailComponent implements OnInit, Form {
   @ViewChild('start') start!: ElementRef<any>;
 
   statesPopup: boolean = false;
+  copyMovePopup: boolean = false;
   timeout: any;
 
   @Output() close = new EventEmitter<void>();
@@ -44,9 +45,9 @@ export class TaskDetailComponent implements OnInit, Form {
       description: ['', [Validators.required, Validators.maxLength(200)]]
     })
   }
-  
+
   ngOnInit(): void {
-    if (!this.states || !this.task) return; 
+    if (!this.states || !this.task) return;
 
     for (let state of this.states) {
       if (state.id == this.task.state_id) {
@@ -84,6 +85,18 @@ export class TaskDetailComponent implements OnInit, Form {
     this.statesPopup = false;
   }
 
+  toggleCopyMove(){
+    this.copyMovePopup = !this.copyMovePopup;
+  }
+
+  openCopyMove() {
+    this.copyMovePopup = true;
+  }
+
+  closeCopyMove() {
+    this.copyMovePopup = false;
+  }
+
   changeState(state: State) {
     this.selectedState = state;
     this.stateChanged.emit(this.selectedState.id.toString());
@@ -118,7 +131,7 @@ export class TaskDetailComponent implements OnInit, Form {
 
   onError(label: ElementRef<any>): void {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
-  } 
+  }
 
   onKeyUp(event: any) {
     clearTimeout(this.timeout);
@@ -135,13 +148,13 @@ export class TaskDetailComponent implements OnInit, Form {
     if (this.checkErrors() || !this.boardId || !this.taskListId || !this.task) return;
 
     console.log('saving...');
-    
+
     this.task.name = this.form.get('name')?.value;
     this.task.description = this.form.get('description')?.value;
     if (this.selectedState) this.task.state_id = this.selectedState.id;
     if (this.startDate) this.task.start_date = new Date(this.startDate);
     if (this.dueDate) this.task.due_date = new Date(this.dueDate);
-  
+
     console.log('new task:', this.task);
     this.editTask.emit(this.task);
   }
