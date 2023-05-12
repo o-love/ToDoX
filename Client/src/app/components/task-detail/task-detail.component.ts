@@ -1,9 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
+import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
+import { StateService } from 'src/app/services/state-service/state-service.service';
+import { TaskService } from 'src/app/services/task-service/task-service.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -12,82 +16,92 @@ import { User } from 'src/app/models/user';
 })
 export class TaskDetailComponent implements OnInit, Form {
 
-  form: FormGroup;
+  @Input() taskId: number | null = null;
 
-  @Input() boardId: string | null = null;
-  @Input() taskListId: string | null = null;
-  @Input() states: State[] | null = null;
-  @Input() task: Task | null = null;
+  // this will be changed / delete once user-service is refactored
+  
   @Input() usersId: {[key: number]: User} = {}
   @Input() user: User | null = null;
-  
+
+  @Output() edited: EventEmitter<Task> = new EventEmitter();
+  @Output() deleted: EventEmitter<number> = new EventEmitter();
+  @Output() close: EventEmitter<void> = new EventEmitter();
+
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  taskListId = this.route.snapshot.paramMap.get('listId');
+
+  task: Task | null = null;
+
+  states: State[] = [];
+  labels: Label[] = [];
+
+  @ViewChildren('input') inputs!: QueryList<ElementRef>;
+  @ViewChild('start') start!: ElementRef;
+
+  form: FormGroup;
   selectedState: State | null = null;
   startDate: Date | null = null;
   dueDate: Date | null = null;
 
-  @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
-  @ViewChild('start') start!: ElementRef<any>;
+  showStates: boolean = false;
 
-  statesPopup: boolean = false;
   timeout: any;
-
-  @Output() close = new EventEmitter<void>();
-  @Output() stateChanged = new EventEmitter<string>();
-  @Output() deleteTask = new EventEmitter<number>();
-  @Output() editTask = new EventEmitter<Task>();
-
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private taskService: TaskService, private stateService: StateService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
       description: ['', [Validators.required, Validators.maxLength(200)]]
-    })
-  }
-  
-  ngOnInit(): void {
-    if (!this.states || !this.task) return; 
-
-    for (let state of this.states) {
-      if (state.id == this.task.state_id) {
-        this.selectedState = state;
-        break;
-      }
-    }
-
-    this.startDate = this.task.start_date;
-    this.dueDate = this.task.due_date;
-
-    this.form.setValue({
-      name: this.task.name,
-      description: this.task.description
     });
   }
 
-  onClose() {
-    this.close.emit();
+  // ng -----------------------------------------------------------------------------
+  
+  ngOnInit(): void {
+    this.getTask();
+    this.getStates();
   }
 
-  onDelete(btn: HTMLElement) {
-    if (!this.boardId || !this.taskListId || !this.task) return;
-    btn.style.backgroundColor = "rgba(255, 113, 113)";
-    btn.style.color = "white";
-    this.loading = true;
-    this.deleteTask.emit(this.task.id);
+  // getters ------------------------------------------------------------------------
+
+  private getTask() {
+    if (!this.boardId || !this.taskListId || !this.taskId) return;
+    console.log('loading task %d of list %d from board %d', this.taskId, this.taskListId, this.boardId);
+    this.taskService.getTaskById(this.boardId, this.taskListId, this.taskId).subscribe({
+      next: (task: Task) => {
+        this.task = task;
+        this.startDate = this.task.start_date;
+        this.dueDate = this.task.due_date;
+        this.form.setValue({name: this.task.name, description: this.task.description});
+        console.log('task retrieved:', task);
+      }
+    })
   }
 
-  openStates() {
-    this.statesPopup = true;
+  private getStates() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading states of list %d from board %d...', this.taskListId, this.boardId);
+    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
+      next: (states: State[]) => { 
+        this.states = states;
+        console.log('states retrieved:', states);
+        this.getSelectedState();
+      }
+    });
+  }
+  
+  // here should be a getter method for labels when CRUD for labels is done
+
+  // back should do this not front. and this method would reference state service
+  private getSelectedState() {
+    if (!this.task || !this.states) return;
+    for (let state of this.states) if (state.id == this.task.state_id) {
+      this.selectedState = state;
+      break;
+    }
   }
 
-  closeStates() {
-    this.statesPopup = false;
-  }
-
-  changeState(state: State) {
-    this.selectedState = state;
-    this.stateChanged.emit(this.selectedState.id.toString());
-  }
+  // forms --------------------------------------------------------------------------
 
   checkErrors(): boolean {
     let errors: boolean = false;
@@ -119,6 +133,35 @@ export class TaskDetailComponent implements OnInit, Form {
   onError(label: ElementRef<any>): void {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   } 
+  
+  // modals -------------------------------------------------------------------------
+
+  openStates() {
+    if (!this.showStates) this.showStates = true;
+  }
+
+  closeStates() {
+    if (this.showStates) this.showStates = false;
+  }
+
+  changeState(state: State) {
+    this.selectedState = state;
+    this.save();
+  }
+
+  // events -------------------------------------------------------------------------
+
+  onClose() {
+    this.close.emit();
+  }
+
+  onDelete(btn: HTMLElement) {
+    if (!this.boardId || !this.taskListId || !this.task) return;
+    btn.style.backgroundColor = "rgba(255, 113, 113)";
+    btn.style.color = "white";
+    this.loading = true;
+    this.deleted.emit(this.task.id);
+  }
 
   onKeyUp(event: any) {
     clearTimeout(this.timeout);
@@ -129,6 +172,8 @@ export class TaskDetailComponent implements OnInit, Form {
       }
     }, 1000);
   }
+
+  // submit -------------------------------------------------------------------------
 
   save() {
     this.resetErrors();
@@ -143,6 +188,6 @@ export class TaskDetailComponent implements OnInit, Form {
     if (this.dueDate) this.task.due_date = new Date(this.dueDate);
   
     console.log('new task:', this.task);
-    this.editTask.emit(this.task);
+    this.edited.emit(this.task);
   }
 }

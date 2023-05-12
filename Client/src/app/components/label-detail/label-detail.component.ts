@@ -17,11 +17,11 @@ export class LabelDetailComponent implements OnInit {
   }
 
   getLabels(): void {
-    this.taskService.getLabels().subscribe(
-      labels => {
-        this.labels = labels;
-        console.log("Retrieved labels", this.labels);
-      }
-    );
+    // this.taskService.getLabels().subscribe(
+    //   labels => {
+    //     this.labels = labels;
+    //     console.log("Retrieved labels", this.labels);
+    //   }
+    // );
   }
 }

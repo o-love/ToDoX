@@ -96,24 +96,24 @@ export class CommentComponent implements OnInit {
     })
   }
 
-  editComment(comment: TaskComment, message: string) {
-    comment.content = message;
-    this.taskCommentService.updateTaskComment(comment.id, comment.content).subscribe({
-      next: (comment: TaskComment) => {
-        this.comments[this.comments.indexOf(comment)] = comment;
-        console.log('saved comment edit:', comment);
-      },
-      error: (error: any) => console.error('error editing comment:', error)
-    })
-  }
+  // editComment(comment: TaskComment, message: string) {
+  //   comment.content = message;
+  //   this.taskCommentService.updateTaskComment(comment.id, comment.content).subscribe({
+  //     next: (comment: TaskComment) => {
+  //       this.comments[this.comments.indexOf(comment)] = comment;
+  //       console.log('saved comment edit:', comment);
+  //     },
+  //     error: (error: any) => console.error('error editing comment:', error)
+  //   })
+  // }
 
-  deleteComment(comment: TaskComment) {
-    this.taskCommentService.deleteTaskComment(comment.id).subscribe({
-      next: () => {
-        this.comments.splice(this.comments.indexOf(comment), 1);
-        console.log('deleted comment:', comment);
-      },
-      error: (error: any) => console.error('error deleting comment:', error)
-    })
-  }  
+  // deleteComment(comment: TaskComment) {
+  //   this.taskCommentService.deleteTaskComment(comment.id).subscribe({
+  //     next: () => {
+  //       this.comments.splice(this.comments.indexOf(comment), 1);
+  //       console.log('deleted comment:', comment);
+  //     },
+  //     error: (error: any) => console.error('error deleting comment:', error)
+  //   })
+  // }  
 }

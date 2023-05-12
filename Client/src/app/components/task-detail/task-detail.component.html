@@ -21,7 +21,7 @@
                         <label class="state-name">{{ selectedState.name }}</label>
                     </div>
                 </div>
-                <div *ngIf="statesPopup" class="popup">
+                <div *ngIf="showStates" class="popup">
                     <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
                 </div>
                 <!-- aquí iría el selector de labels -->

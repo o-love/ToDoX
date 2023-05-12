@@ -32,12 +32,16 @@ export class BoardDetailComponent implements OnInit {
 
   constructor(private boardService: BoardService, private taskListService: TaskListService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
 
+  // ng -----------------------------------------------------------------------------
+
   ngOnInit(): void {
     this.getMyUser();
     this.getAllUsers();
     this.getBoard();
     this.getLists();
   }
+
+  // getters ------------------------------------------------------------------------
 
   private getBoard(): void {
     if (!this.boardId) return;
@@ -58,7 +62,7 @@ export class BoardDetailComponent implements OnInit {
       next: (lists: TaskList[]) => {
         this.lists = lists;
         console.log('lists retrieved:', lists);
-        if (this.lists.length > 0) this.selectList(this.lists[0].id);
+        if (this.lists.length > 0 && !this.selectedList) this.selectList(this.lists[0].id);
       }
     })
   }
@@ -87,21 +91,8 @@ export class BoardDetailComponent implements OnInit {
     })
   }
 
-  closePopup() {
-    if (this.showCreateList) this.showCreateList = false;
-    if (this.showSettings) this.showSettings = false;
-  }
-
-  toggleSidebar() {
-    this.sidebar.nativeElement.classList.toggle('sidebar-closed');
-  }
-
-  addList(newList: string) {
-    this.getLists();
-    this.selectList(newList);
-    this.closePopup();
-  }
-
+  // selectors ----------------------------------------------------------------------
+  
   selectList(list: string | null): void {
     this.selectedList = list;
     console.log('selected list:', list);
@@ -110,35 +101,10 @@ export class BoardDetailComponent implements OnInit {
     this.showListDetail = this.selectedList ? true : false;
   }
 
-  deleteTaskList(tasklist_id: string): void {
-    if (!this.boardId) return;
-
-    console.log('deleting tasklist %d...', tasklist_id);
-    this.taskListService.deleteTasklist(this.boardId, tasklist_id).subscribe({
-      next: () => {
-        this.getLists()
-        console.log('deleted tasklist');
-      } 
-    })
-  }
-
-  // do this inside list-detail ?
-  editTaskList(taskList: TaskList): void {
-    if (!this.selectedList || !this.boardId) return;
-
-    this.taskListService.editTasklist(this.boardId, this.selectedList, taskList.name, taskList.description).subscribe({
-      next: (taskList: TaskList) => {
-        this.getLists();
-        console.log('edited tasklist:', taskList);
-      }
-    })
-  }
+  // board --------------------------------------------------------------------------
 
   editBoard(board: Board): void {
     if (!this.boardId) return;
-
-    this.board.name = board.name;
-    this.board.description = board.description;
 
     this.boardService.editBoard(this.boardId, board.name, board.description).subscribe({
       next: (board: any) => {
@@ -148,20 +114,58 @@ export class BoardDetailComponent implements OnInit {
     }) 
   }
 
+  // tasklists ----------------------------------------------------------------------
+
+  addList(newList: string) {
+    this.getLists();
+    this.selectList(newList);
+    this.hideModals();
+  }
+
+  taskListEdited(): void {
+    this.getLists();
+  }
+
+  deleteTaskList(tasklist_id: string): void {
+    if (!this.boardId) return;
+
+    console.log('deleting tasklist %d...', tasklist_id);
+    this.taskListService.deleteTasklist(this.boardId, tasklist_id).subscribe({
+      next: () => {
+        this.selectList(null);
+        console.log('deleted tasklist');
+        this.getLists()
+      } 
+    })
+  }
+
+  // toggle -------------------------------------------------------------------------
+
+  toggleSidebar() {
+    this.sidebar.nativeElement.classList.toggle('sidebar-closed');
+  }
+
   toggleFill(element: HTMLElement) {
     element.classList.toggle('bi-plus-square');
     element.classList.toggle('bi-plus-square-fill');
   }
+  
+  // modals -------------------------------------------------------------------------
+  
+  show(): boolean {
+    return this.showCreateList || this.showSettings;
+  }
 
+  hideModals() {
+    if (this.showCreateList) this.showCreateList = false;
+    if (this.showSettings) this.showSettings = false;
+  }
+  
   openCreateList() {
     this.showCreateList = true;
   }
 
   openSettings() {
     this.showSettings = true;
-  }
-
-  show(): boolean {
-    return this.showCreateList || this.showSettings;
   }
 }

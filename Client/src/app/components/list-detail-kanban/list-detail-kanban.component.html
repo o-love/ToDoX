@@ -8,7 +8,7 @@
                         <div #taskcard class="task-card" cdkDrag (cdkDragEntered)="onDragEntered(task)">
                             <textarea class="task-name" disabled>{{ task.name }}</textarea>
                             <div class="options">
-                                <i class="bi bi-pencil-fill" (click)="editTask(task)"></i>
+                                <i class="bi bi-pencil-fill" (click)="viewTask(task)"></i>
                             </div>
                         </div>
                     </ng-container>

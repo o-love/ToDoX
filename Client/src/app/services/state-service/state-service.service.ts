@@ -34,6 +34,8 @@ export class StateService {
     return http;
   }
 
+  // back needs to add a http request for a GET in api/boards/boardId/lists/listId/states/stateId
+
   // addState(name: string): void {
   //   if (this.states.find(state => state.name === name)) {
   //     throw new Error(`State "${name}" already exists`);

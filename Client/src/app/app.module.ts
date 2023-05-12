@@ -51,6 +51,7 @@ import { StateDetailComponent } from './components/state-detail/state-detail.com
 import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { ListSettingsComponent } from './components/list-settings/list-settings.component';
+import { LayoutSelectorComponent } from './components/layout-selector/layout-selector.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ListSettingsComponent } from './components/list-settings/list-settings.
     BoardSettingsComponent,
     TaskDetailComponent,
     ListSettingsComponent,
+    LayoutSelectorComponent,
   ],
   imports: [
     // CommonModule,

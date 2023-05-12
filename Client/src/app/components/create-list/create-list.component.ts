@@ -29,7 +29,9 @@ export class CreateListComponent implements Form {
     });
   }
 
-  
+  onClose(): void {
+    this.closePopup.emit();
+  }
 
   checkErrors(): boolean {
     if (this.form.controls['name'].errors) this.onError(this.name);

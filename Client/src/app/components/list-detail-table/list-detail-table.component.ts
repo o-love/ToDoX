@@ -19,8 +19,10 @@ export class ListDetailTableComponent implements OnChanges {
   stateNames: {[key: number]: string} = {};
   showPopup: boolean = false; 
 
-  @Output() openCreateTaskPopup = new EventEmitter<State | null>();
-  @Output() openTaskDetailPopup = new EventEmitter<Task>();
+  @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateTask: EventEmitter<null> = new EventEmitter();
+
+  // ng -----------------------------------------------------------------------------
 
   ngOnChanges(): void {
     this.states.forEach((state) => {
@@ -28,11 +30,13 @@ export class ListDetailTableComponent implements OnChanges {
     });
   }
 
+  // tasks --------------------------------------------------------------------------
+
   createTask() {
-    this.openCreateTaskPopup.emit(null);
+    this.openCreateTask.emit(null);
   }
 
   editTask(task: Task) {
-    this.openTaskDetailPopup.emit(task);
+    this.openTaskDetail.emit(task.id);
   }
 }

@@ -18,18 +18,18 @@ export class CreateLabelComponent {
   constructor(private taskService: TaskService) {}
 
   onSubmit() {
-    if (this.labelName) {
-      this.taskService.createLabel(this.labelName, this.labelColor, this.labelDescription).subscribe({//, this.labelType).subscribe({
-        next: (label: Label) => {
-          this.createdLabel.emit(label);
-          this.labelName = '';
-          this.labelColor = '';
-          this.labelDescription = '';
-          // this.labelType = '';
-        },
-        error: (error) => console.log(error)
-      });
-      console.log("creating label", this.labelName, this.labelColor, this.labelDescription, this.labelType);
-    }
+    // if (this.labelName) {
+    //   this.taskService.createLabel(this.labelName, this.labelColor, this.labelDescription).subscribe({//, this.labelType).subscribe({
+    //     next: (label: Label) => {
+    //       this.createdLabel.emit(label);
+    //       this.labelName = '';
+    //       this.labelColor = '';
+    //       this.labelDescription = '';
+    //       // this.labelType = '';
+    //     },
+    //     error: (error) => console.log(error)
+    //   });
+    //   console.log("creating label", this.labelName, this.labelColor, this.labelDescription, this.labelType);
+    // }
   }
 }

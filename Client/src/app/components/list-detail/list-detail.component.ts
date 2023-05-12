@@ -2,10 +2,12 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 import { TaskList } from 'src/app/models/taskList';
 import { Task } from 'src/app/models/task';
 import { State } from 'src/app/models/state';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 import { TaskService } from 'src/app/services/task-service/task-service.service';
 import { Label } from 'src/app/models/label';
 import { User } from 'src/app/models/user';
+import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
+import { ActivatedRoute } from '@angular/router';
+import { StateService } from 'src/app/services/state-service/state-service.service';
 
 @Component({
   selector: 'app-list-detail',
@@ -13,201 +15,175 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./list-detail.component.scss']
 })
 export class ListDetailComponent implements OnChanges {
-  @Input() selectedList: string | null = null;
-  @Input() usersId: {[key: number]: User} = {}
-  @Input() user: User | null = null;
-  @Output() taskListEdited = new EventEmitter<TaskList>();
-  @Output() taskListDeleted = new EventEmitter<string>();
 
+  taskList: TaskList | null = null;
+
+  // expected to change / delete after refactoring user service
+  @Input() usersId: {[key: number]: User} = {};
+  @Input() user: User | null = null;
+
+  @Output() edited: EventEmitter<void> = new EventEmitter();
+  @Output() deleted: EventEmitter<string> = new EventEmitter();
+
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  taskListId = this.route.snapshot.paramMap.get('listId');
+  
   tasks: Task[] = [];
   states: State[] = [];
   labels: Label[] = [];
 
-  boardId: string = '';
-  taskListId: string = '';
+  selectedTask: number | null = null;
+  selectedState: number | null = null;
 
-  selectedTask: Task | null = null;
-  selectedState: State | null = null;
+  loading: boolean = false;
 
-  showCreateTaskPopup: boolean = false;
-  showTaskDetailPopup: boolean = false;
-  showSettingsPopup: boolean = false;
+  showSettings: boolean = false;
+  showCreateTask: boolean = false;
+  showTaskDetail: boolean = false;
 
-  @ViewChild('title') selectTitle!: ElementRef<any>;
-  @ViewChild('icon') dropdownIcon!: ElementRef<any>;
-  @ViewChild('select') select!: ElementRef<any>;
+  layouts: {[key: number]: boolean} = { 0: false, 1: true };
 
-  @ViewChildren('option') options!: QueryList<ElementRef<any>>;
-  @ViewChild('table') tableOption!: ElementRef<any>;
-  @ViewChild('kanban') kanbanOption!: ElementRef<any>;
+  constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService) {}
 
-  layouts: Map<string, boolean> = new Map();
-  timeout: boolean = false;
+  // ng -----------------------------------------------------------------------------
 
-  constructor(private taskService: TaskService) {
-    this.layouts.set('TABLE LAYOUT', false);
-    this.layouts.set('KANBAN LAYOUT', true);
-  }
-
-  ngOnChanges() {
-    if (!this.selectedList) return;
-
-    this.states = [];
-    this.labels = [];
-    this.tasks = [];
-
-    this.boardId = this.selectedList.board_id.toString();
-    this.taskListId = this.selectedList.id.toString();
+  ngOnChanges(): void {
+    this.getTaskList();
     this.reload();
-    this.getLabels();
-  }   
-
-  reload() {
-    this.getTasks();
-    this.getStates();
   }
 
-  private getTasks(): void {
-    this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe(
-      (tasks: Task[]) => {
-        console.log('Tasks retrieved:', tasks);
-        this.tasks = tasks;
-      },
-      (error: any) => {
-        console.error('Error retieving tasks:', error);
+  // update -------------------------------------------------------------------------
+
+  // when labels are added a get labels method must be created and added here
+  reload() {
+    this.getStates();
+    this.getTasks();
+  } 
+
+  // getters ------------------------------------------------------------------------
+
+  private getTaskList() {
+    if (!this.boardId || !this.taskListId) return;
+
+    console.log('loading tasklist %d...', this.taskListId);
+    this.taskListService.getListById(this.boardId, this.taskListId).subscribe({
+      next: (taskList: TaskList) => {
+        this.taskList = taskList;
+        console.log('tasklist retrieved:', taskList);
       }
-    )
+    })
   }
 
   private getStates() {
-    this.taskService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe(
-      (states: State[]) => {
-        console.log('States retrieved:', states);
+    if (!this.boardId || !this.taskListId) return;
+
+    console.log('loading tasklist %d states...', this.taskListId);
+    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
+      next: (states: State[]) => {
         this.states = states;
-      },
-      (error: any) => {
-        console.error('Error retrieving states:', error);
+        console.log('states retrieved:', states);
       }
-    );
+    })
   }
 
-  private getLabels() {
-    this.taskService.getLabels().subscribe(
-      (labels: Label[]) => {
-        console.log('Labels retrieved:', labels);
-        this.labels = labels;
-      }, 
-      (error: any) => {
-        console.error('Error retrieving labels:', error);
+  private getTasks() {
+    if (!this.boardId || !this.taskListId) return;
+
+    console.log('loading tasklist %d tasks...', this.taskListId);
+    this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe({
+      next: (tasks: Task[]) => {
+        this.tasks = tasks;
+        console.log('tasks retrieved:', tasks);
       }
-    )
+    })
   }
+
+  // get labels method must be included here when CRUD for labels is done
+
+  // lists --------------------------------------------------------------------------
 
   editTaskList(taskList: TaskList) {
-    if (!this.selectedList) return;
-    this.selectedList.name = taskList.name;
-    this.selectedList.description = taskList.description;
-    this.taskListEdited.emit(taskList);
+    if (!this.boardId || !this.taskListId || !this.taskList) return;
+
+    this.taskListService.editTasklist(this.boardId, this.taskListId, taskList.name, taskList.description).subscribe({
+      next: (taskList: TaskList) => {
+        this.getTaskList();
+        console.log('edited tasklist:', taskList);
+        this.edited.emit();
+      }
+    })
   }
 
   deleteTaskList() {
-    if (!this.selectedList) return;
-    this.taskListDeleted.emit(this.selectedList.id);
+    if (!this.boardId || !this.taskListId) return;
+
     let $this = this;
-    setTimeout(function() { $this.closePopup() }, 1000);
+    setTimeout(function() { $this.deleted.emit($this.taskListId?.toString()) }, 1000);
   }
 
-  changeTaksState(state_id: string, reload: boolean): void {
-    if (!this.selectedTask) return;
-
-    this.taskService.changeTaskState(this.boardId, this.taskListId, this.selectedTask.id.toString(), state_id).subscribe(
-      (task: Task) => {
-        console.log('saved task:', task);
-        if (reload) this.reload();
-      },
-      (error: any) => {
-        console.log('Se produjo un error:', error);
-    });
-  }
-
+  // tasks --------------------------------------------------------------------------
+  
   editTask(task: Task): void {
-    if (!this.selectedTask) return;
-    console.log('task id:', task.id);
-    this.taskService.editTask(this.boardId, this.taskListId, task.id.toString(), task.name,
-    task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
+    if (!this.boardId || !this.taskListId || !this.selectedTask) return;
+
+    console.log('editing task %d...', this.selectedTask);
+    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
       next: (task: Task) => {
-        console.log('saved task:', task);
-      },
-      error: (error) => console.log(error)
-    });
-  }
-
-  deleteTask(task_id: number): void {
-    if (!this.selectedList || !this.selectedList.board_id) return;
-
-    this.taskService.deleteTask(this.boardId, this.taskListId, task_id.toString()).subscribe(
-      () => {
+        console.log('edited task:', task);
         this.reload();
-        this.closePopup();
-      }, 
-      (error: any) => {
-        console.error('Error deleting task:', error);
       }
-    );
+    })
   }
 
-  selectLayout(selected_option: ElementRef<any>) {
-    this.options.forEach((option) => {
-      if (option.nativeElement.classList.contains('checked')) {
-        option.nativeElement.classList.toggle('checked');
-        this.layouts.set(option.nativeElement.innerText.toString(), false);
-      }  
-    });
+  deleteTask(taskId: number): void {
+    if (!this.boardId || !this.taskListId) return;
 
-    this.selectTitle.nativeElement.innerText = selected_option.nativeElement.innerText;
-
-    this.options.forEach((option) => {
-      if (option.nativeElement.innerText == selected_option.nativeElement.innerText) {
-        option.nativeElement.classList.toggle('checked');
-        this.layouts.set(option.nativeElement.innerText.toString(), true);
+    this.taskService.deleteTask(this.boardId, this.taskListId, taskId).subscribe({
+      next: () => {
+        this.reload();
+        this.hideModals();
       }
-    });
-
-    this.selectActive();
+    })
   }
 
-  selectActive() {
-    this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-down');
-    this.dropdownIcon.nativeElement.classList.toggle('icon-arrow-up');
-    this.select.nativeElement.classList.toggle('closed');
+  // selectors ----------------------------------------------------------------------
+
+  selectTask(taskId: number | null) {
+    this.selectedTask = taskId;
   }
 
-  closePopup() {
-    if (this.showCreateTaskPopup) this.showCreateTaskPopup = false;
-    if (this.showTaskDetailPopup) this.showTaskDetailPopup = false;
-    if (this.showSettingsPopup) this.showSettingsPopup = false;
-    this.selectedTask = null;
+  selectState(stateId: number | null) {
+    this.selectedState = stateId;
   }
 
-  openSettingsPopup() {
-    this.showSettingsPopup = true;
+  selectLayout(index: number) {
+    this.layouts[index] = !this.layouts[index];
   }
 
-  openCreateTaskPopup(state: State | null) {
-    this.selectState(state);
-    this.showCreateTaskPopup = true;
+  // modals -------------------------------------------------------------------------
+
+  show(): boolean {
+    return this.showCreateTask || this.showSettings || this.showTaskDetail;
   }
 
-  openTaskDetailPopup(task: Task) {
-    this.selectTask(task);
-    this.showTaskDetailPopup = true;
+  hideModals() {
+    if (this.showCreateTask) this.showCreateTask = false;
+    if (this.showTaskDetail) this.showTaskDetail = false;
+    if (this.showSettings) this.showSettings = false;
+    this.selectTask(null);
   }
 
-  selectState(state: State | null) {
-    this.selectedState = state;
+  openSettings() {
+    this.showSettings = true;
   }
 
-  selectTask(task: Task | null) {
-    this.selectedTask = task;
+  openCreateTask(stateId: number | null) {
+    this.selectState(stateId);
+    this.showCreateTask = true;
+  }
+
+  openTaskDetail(taskId: number) {
+    this.selectTask(taskId);
+    this.showTaskDetail = true;
   }
 }

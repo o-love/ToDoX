@@ -47,7 +47,7 @@ export class CreateStateComponent implements Form { // implements OnInit
     if (this.checkErrors()) return;
 
     // needs change
-    this.stateService.addState(this.stateForm.get('name')?.value); // tiene que devolver un estado
+    // this.stateService.addState(this.stateForm.get('name')?.value); // tiene que devolver un estado
     this.newState.emit() // tengo que pasar un estado
   }
 
