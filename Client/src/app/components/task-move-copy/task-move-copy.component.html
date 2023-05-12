@@ -1,7 +1,7 @@
 <div>
   <div>
-    <div class="select-tabs" [class.selected]="isCopy">Copy</div>
-    <div class="select-tabs" [class.selected]="!isCopy">Move</div>
+    <div class="select-tabs" [class.selected]="isCopy" (click)="setIsCopy(true)">Copy</div>
+    <div class="select-tabs" [class.selected]="!isCopy" (click)="setIsCopy(false)">Move</div>
   </div>
 
   <div class="options">
@@ -18,7 +18,7 @@
   </div>
 
   <button type="submit" (click)="submit()">
-    <ng-container *ngIf="isCopy">Clone</ng-container>
+    <ng-container *ngIf="isCopy">Copy</ng-container>
     <ng-container *ngIf="!isCopy">Move</ng-container>
   </button>
 

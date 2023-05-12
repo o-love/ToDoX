@@ -32,13 +32,7 @@ export class TaskMoveCopyComponent {
 
 
   constructor(private boardService: BoardService, private taskListService: TaskListService, private taskService: TaskService, private stateService: StateService) {
-    // TODO: Test values, remove on final version before merging to develop
-    this.boardId = '2';
-    this.taskListId = '2';
-    this.taskService.getTask(this.boardId, this.taskListId, '1').subscribe((task) => {
-      this.task = task;
-      this.positionNumber = task.state_position;
-    });
+
   }
 
   ngOnInit() {
@@ -75,12 +69,19 @@ export class TaskMoveCopyComponent {
     }
   }
 
+  setIsCopy(value: boolean) {
+    this.isCopy = value;
+  }
+
   submit() {
     if (this.task === undefined || this.positionNumber === undefined || this.taskListId === undefined || this.boardId === undefined || this.selectedBoard === undefined) return;
 
     if (this.isCopy) {
       // TODO: Look into labels, how it work and copy it. Need to wait for Alberto to implement label services.
       this.taskService.createTask(this.boardId, this.taskListId, this.task?.name, this.task?.description, this.task?.state_id.toString(), [], this.task?.start_date, this.task?.due_date, this.positionNumber);
+    }
+    else {
+      // TODO: Move tasks from board, tasklist, state, and position.
     }
   }
 
