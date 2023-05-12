@@ -24,6 +24,11 @@
                 <div *ngIf="statesPopup" class="popup">
                     <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
                 </div>
+
+                <div *ngIf="copyMovePopup" class="popup">
+                    <app-task-move-copy [boardId]="boardId!" [taskListId]="taskListId!" [task]="task!"></app-task-move-copy>
+                </div>
+
                 <!-- aquí iría el selector de labels -->
                 <!-- <div class="select-input input-2"></div> -->
                 <div class="label-input">

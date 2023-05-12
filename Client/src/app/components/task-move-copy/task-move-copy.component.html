@@ -1,3 +1,25 @@
 <div>
+  <div>
+    <div class="select-tabs" [class.selected]="isCopy">Copy</div>
+    <div class="select-tabs" [class.selected]="!isCopy">Move</div>
+  </div>
+
+  <div class="options">
+      <select class="form-select" [(ngModel)]="selectedBoard" (change)="updateTaskLists()">
+        <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+      </select>
+      <select class="form-select" [(ngModel)]="selectedTaskList" (change)="updateStates()">
+        <option *ngFor="let taskList of taskLists" [ngValue]="taskList">{{taskList.name}}</option>
+      </select>
+      <select class="form-select" [(ngModel)]="selectedState">
+        <option *ngFor="let state of states" [ngValue]="state">{{state.name}}</option>
+      </select>
+      <input [(ngModel)]="positionNumber">
+  </div>
+
+  <button type="submit" (click)="submit()">
+    <ng-container *ngIf="isCopy">Clone</ng-container>
+    <ng-container *ngIf="!isCopy">Move</ng-container>
+  </button>
 
 </div>
