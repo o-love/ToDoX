@@ -28,7 +28,7 @@ export class TaskMoveCopyComponent {
   selectedBoard: Board | undefined;
   selectedTaskList: TaskList | undefined;
   selectedState: State | undefined;
-  positionNumber: number | undefined;
+  positionNumber: number = 0;
 
 
   constructor(private boardService: BoardService, private taskListService: TaskListService, private taskService: TaskService, private stateService: StateService) {
@@ -69,6 +69,12 @@ export class TaskMoveCopyComponent {
     }
   }
 
+  updatePosition() {
+    if (this.selectedState) {
+      this.positionNumber = this.selectedState.tasks.length;
+    }
+  }
+
   setIsCopy(value: boolean) {
     this.isCopy = value;
   }
@@ -78,11 +84,19 @@ export class TaskMoveCopyComponent {
 
     if (this.isCopy) {
       // TODO: Look into labels, how it work and copy it. Need to wait for Alberto to implement label services.
-      this.taskService.createTask(this.boardId, this.taskListId, this.task?.name, this.task?.description, this.task?.state_id.toString(), [], this.task?.start_date, this.task?.due_date, this.positionNumber);
+      this.taskService.createTask(this.boardId, this.taskListId, this.task?.name, this.task?.description, this.task?.state_id.toString(), [], this.task?.start_date, this.task?.due_date, this.convertPositionNumber());
     }
     else {
       // TODO: Move tasks from board, tasklist, state, and position.
     }
+  }
+
+  convertPositionNumber(): number {
+    if (!(this.positionNumber && this.selectedState)) {
+      return 0;
+    }
+
+    return Math.abs(this.selectedState.tasks.length - this.positionNumber);
   }
 
 }

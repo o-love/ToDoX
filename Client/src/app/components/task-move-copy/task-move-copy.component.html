@@ -11,7 +11,7 @@
       <select class="form-select" [(ngModel)]="selectedTaskList" (change)="updateStates()">
         <option *ngFor="let taskList of taskLists" [ngValue]="taskList">{{taskList.name}}</option>
       </select>
-      <select class="form-select" [(ngModel)]="selectedState">
+      <select class="form-select" [(ngModel)]="selectedState" (change)="updatePosition()">
         <option *ngFor="let state of states" [ngValue]="state">{{state.name}}</option>
       </select>
       <input [(ngModel)]="positionNumber">
