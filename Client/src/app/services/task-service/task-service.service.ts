@@ -26,6 +26,11 @@ export class TaskService {
   //   return this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}`);
   // }
 
+  getTask(boardId: string, listId: string, taskId: string) {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`;
+    return this.http.get<Task>(url);
+  }
+
   // Creates a new task in backend related to a taskList related to a board
   createTask(
     boardId: string, listId: string, taskName: string, taskDescription: string,
