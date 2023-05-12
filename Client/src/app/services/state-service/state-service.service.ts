@@ -26,12 +26,22 @@ export class StateService {
     return this.states.find(state => state.id === id);
   }
 
+  getStateApi(boardId: number, listId: number, stateId: number): Observable<State> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`;
+    return this.http.get<State>(url);
+  }
+
   addState(name: string): void {
     if (this.states.find(state => state.name === name)) {
       throw new Error(`State "${name}" already exists`);
     }
     const id = this.states.length > 0 ? Math.max(...this.states.map(state => state.id)) + 1 : 1;
     this.states.push({ id, name, tasks: [] });
+  }
+
+  addStateApi(boardId: number, listId: number, name: string): Observable<State> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states`;
+    return this.http.post<State>(url, { name });
   }
 
   updateState(id: number, name: string): void {
@@ -45,6 +55,11 @@ export class StateService {
     state.name = name;
   }
 
+  updateStateApi(boardId: number, listId: number, stateId: number, name: string):  Observable<State> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`;
+    return this.http.put<State>(url, { name });
+  }
+
   deleteState(id: number): void {
     const stateIndex = this.states.findIndex(state => state.id === id);
     if (stateIndex === -1) {
@@ -54,5 +69,10 @@ export class StateService {
       throw new Error(`State with ID ${id} has tasks assigned and cannot be deleted`);
     }
     this.states.splice(stateIndex, 1);
+  }
+
+  deleteStateApi(boardId: number, listId: number, stateId: number): Observable<State> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`;
+    return this.http.delete<State>(url);
   }
 }
