@@ -9,7 +9,7 @@
   padding: 1rem;
   border-radius: 5px;
 
-  * {
+  #tabs, #options, #submit {
     margin-top: 5px;
     margin-bottom: 5px;
   }
@@ -34,11 +34,35 @@
   }
 }
 
-.options {
+#options {
   display: grid;
 
-  * {
+  select, input {
     width: 100%;
-    background-color: lightgray;
   }
+
+  .option-child {
+    margin: 2px;
+  }
+
+  #boardFormElement {
+    grid-column: 1/3;
+    grid-row: 1/1;
+  }
+
+  #taskListFormElement {
+    grid-column: 1/3;
+    grid-row: 2/2;
+  }
+
+  #stateFormElement {
+    grid-column: 1/1;
+    grid-row: 3/3;
+  }
+
+  #positionFormElement {
+    grid-column: 2/2;
+    grid-row: 3/3;
+  }
+
 }
