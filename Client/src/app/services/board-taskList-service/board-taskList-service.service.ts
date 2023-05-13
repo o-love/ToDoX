@@ -53,14 +53,7 @@ export class BoardService {
     const http = this.http.put(`${this.apiUrl}/boards/${id}`, { name: name, description: description });
 
     http.subscribe({
-      next: () => {
-        const board = this.boards.get(id);
-        if (board) {
-          board.name = name;
-          board.description = description;
-          this.boards.set(id, board);
-        }
-      },
+      next: (board: any) => this.boards.set(board.id, board),
       error: (err: any) => console.error('error editing board:', err)
     })
 
