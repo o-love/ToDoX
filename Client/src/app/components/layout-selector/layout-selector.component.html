@@ -1,0 +1,10 @@
+<div #select class="layout-select closed">
+  <div class="select-btn" (click)="selectActive()">
+    <span #title class="placeholder-text">Kanban Layout</span>
+    <i #icon class="icon icon-arrow-down"></i>
+  </div>
+  <ul class="option-list">
+    <li #option #table id="table" class="option closed" (click)="selectLayout(tableOption)"><span class="left"><i class="icon icon-list"></i>Table Layout</span><i class="icon icon-check"></i></li>
+    <li #option #kanban id="kanban" class="option closed checked" (click)="selectLayout(kanbanOption)"><span class="left"><i class="icon icon-chart"></i>Kanban Layout</span><i class="icon icon-check"></i></li>
+  </ul>
+</div>
