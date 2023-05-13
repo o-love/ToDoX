@@ -8,12 +8,20 @@ import { Board } from 'src/app/models/board';
 })
 export class BoardService {
   private apiUrl = 'http://localhost:8082/api';
+  private boards: Map<string, Board> = new Map<string, Board>();
 
   constructor(private http: HttpClient) { }
 
-  boards: Map<string, Board> = new Map<string, Board>();
+  private getCachedBoards(): Board[] {
+    return Array.from(this.boards.values());
+  }
 
   getBoards(): Observable<Board[]> {
+    let boards: any = this.getCachedBoards();
+    console.log('cached boards:', boards);
+    if (boards.length > 0) return of(boards);
+
+    console.log('GET boards...');
     const http = this.http.get<Board[]>(`${this.apiUrl}/boards`);
 
     http.subscribe({
@@ -25,9 +33,11 @@ export class BoardService {
   }
 
   getBoardById(id: string): Observable<Board> {
-    const board = this.boards.get(id);
+    let board: any = this.boards.get(id);
+    console.log('cached board:', board);
     if (board) return of(board);
 
+    console.log('GET board %d...', id);
     const http = this.http.get<Board>(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
@@ -39,6 +49,7 @@ export class BoardService {
   }
 
   editBoard(id: string, name: string, description: string): Observable<any> {
+    console.log('PUT board %d...', id);
     const http = this.http.put(`${this.apiUrl}/boards/${id}`, { name: name, description: description });
 
     http.subscribe({
@@ -57,6 +68,7 @@ export class BoardService {
   }
 
   deleteBoard(id: string): Observable<any> {
+    console.log('DELETE board %d...', id);
     const http = this.http.delete(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
@@ -68,6 +80,7 @@ export class BoardService {
   }
 
   createBoard(name: string, description: string): Observable<any> {
+    console.log('POST board...');
     const http =  this.http.post(`${this.apiUrl}/boards`, { name: name, description: description });
 
     http.subscribe({

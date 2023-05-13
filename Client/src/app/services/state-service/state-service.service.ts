@@ -7,15 +7,23 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class StateService {
-  private states: Map<string, Map<string, Map<number, State>>> = new Map();
   private apiUrl = 'http://localhost:8082/api';
+  private states: Map<string, Map<string, Map<number, State>>> = new Map();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+
+  private getCachedStates(boardId: string, listId: string): State[] {
+    let lists: any = this.states.has(boardId) ? this.states.get(boardId) : new Map();
+    let states: any = lists.has(listId) ? lists.get(listId) : new Map();
+    return Array.from(states.values());
+  }
 
   getStatesByTaskListId(boardId: string, listId: string): Observable<State[]> {
-    const states = this.states.get(boardId)?.get(listId);
-    if (states) return of(Array.from(states.values()));
+    let states: any = this.getCachedStates(boardId, listId);
+    console.log('cached states:', states);
+    if (states.length > 0) return of(states);
 
+    console.log('GET states...');
     const http = this.http.get<State[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states`); 
 
     http.subscribe({

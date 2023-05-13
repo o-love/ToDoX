@@ -6,7 +6,7 @@ import { TaskService } from 'src/app/services/task-service/task-service.service'
 import { Label } from 'src/app/models/label';
 import { User } from 'src/app/models/user';
 import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { StateService } from 'src/app/services/state-service/state-service.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { StateService } from 'src/app/services/state-service/state-service.servi
   templateUrl: './list-detail.component.html',
   styleUrls: ['./list-detail.component.scss']
 })
-export class ListDetailComponent implements OnChanges {
+export class ListDetailComponent implements OnInit {
 
   taskList: TaskList | null = null;
 
@@ -25,8 +25,9 @@ export class ListDetailComponent implements OnChanges {
   @Output() edited: EventEmitter<void> = new EventEmitter();
   @Output() deleted: EventEmitter<string> = new EventEmitter();
 
-  boardId = this.route.snapshot.paramMap.get('boardId');
-  taskListId = this.route.snapshot.paramMap.get('listId');
+  boardId: string | null = null;
+  // taskListId = this.route.snapshot.paramMap.get('listId');
+  taskListId: string | null = null;
   
   tasks: Task[] = [];
   states: State[] = [];
@@ -47,7 +48,7 @@ export class ListDetailComponent implements OnChanges {
 
   // ng -----------------------------------------------------------------------------
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     this.getTaskList();
     this.reload();
   }
@@ -63,6 +64,11 @@ export class ListDetailComponent implements OnChanges {
   // getters ------------------------------------------------------------------------
 
   private getTaskList() {
+    console.log(this.route.url);
+    this.boardId = this.route.snapshot.paramMap.get('boardId');
+    console.log('boardId:', this.boardId);
+    this.taskListId = this.route.snapshot.paramMap.get('listId');
+    console.log('taskListId:', this.taskListId);
     if (!this.boardId || !this.taskListId) return;
 
     console.log('loading tasklist %d...', this.taskListId);

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
 import { TaskList } from 'src/app/models/taskList';
 
 @Injectable({
@@ -8,15 +8,25 @@ import { TaskList } from 'src/app/models/taskList';
 })
 export class TaskListService {
   private apiUrl = 'http://localhost:8082/api';
-
-  boardLists: Map<string, Map<string, TaskList>> = new Map();
+  private boardLists: Map<string, Map<string, TaskList>> = new Map();
 
   constructor(private http: HttpClient) { }
 
-  getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
-    const lists = this.boardLists.get(boardId)?.values();
-    if (lists) return of(Array.from(lists));
+  hasCachedTaskList(boardId: string, taskListId: string): boolean {
+    return this.boardLists.get(boardId)?.get(taskListId) != null;
+  }
 
+  private getCachedTaskLists(boardId: string): string[] {
+    let lists: any = this.boardLists.has(boardId) ? this.boardLists.get(boardId) : new Map();
+    return Array.from(lists);
+  }
+
+  getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
+    let lists: any = this.getCachedTaskLists(boardId);
+    console.log('cached lists:', lists);
+    if (lists.length > 0) return of(lists);
+
+    console.log('GET lists...');
     const http = this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
 
     http.subscribe({
@@ -32,12 +42,11 @@ export class TaskListService {
   }
 
   getListById(boardId: string, taskListId: string): Observable<TaskList> {
-    const lists = this.boardLists.get(boardId);
-    if (lists) {
-      const list = lists.get(taskListId);
-      if (list) return of(list);
-    } 
+    let list: any = this.boardLists.get(boardId)?.get(taskListId);
+    console.log('cached list:', list)
+    if (list) return of(list);
 
+    console.log('GET list %d...', taskListId);
     const http = this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);    
 
     http.subscribe({
@@ -54,6 +63,7 @@ export class TaskListService {
 
   // change when added labels
   createList(boardId: string, name: string, description: string): Observable<any> {
+    console.log('POST list...');
     const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [1, 2, 3] });
 
     http.subscribe({
@@ -70,6 +80,7 @@ export class TaskListService {
   }
 
   editTasklist(boardId: string, taskListId: string, name: string, description: string): Observable<TaskList> {
+    console.log('PUT list %d...', taskListId);
     const http = this.http.put<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`, { name: name, description: description });
 
     http.subscribe({
@@ -86,6 +97,7 @@ export class TaskListService {
   }
 
   deleteTasklist(boardId: string, taskListId: string): Observable<any> {
+    console.log('DELETE list %d...', taskListId);
     const http = this.http.delete(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
 
     http.subscribe({

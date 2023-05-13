@@ -9,10 +9,15 @@ import { Label } from 'src/app/models/label';
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
-
-  tasks: Map<string, Map<string, Map<number, Task>>> = new Map();
+  private tasks: Map<string, Map<string, Map<number, Task>>> = new Map();
 
   constructor(private http: HttpClient) {}
+
+  private getCachedTasks(boardId: string, listId: string): Task[] {
+    let lists: any = this.tasks.has(boardId) ? this.tasks.get(boardId) : new Map();
+    let tasks: any = lists.has(listId) ? lists.get(listId) : new Map();
+    return Array.from(tasks.values());
+  }
 
   private setTask(boardId: string, listId: string, task: Task) {
     let mapListTasks = this.tasks.get(boardId);
@@ -26,10 +31,12 @@ export class TaskService {
   }
 
   getTasksByTaskListId(boardId: string, listId: string): Observable<Task[]> {
-    const mapTasks = this.tasks.get(boardId)?.get(listId);
-    if (mapTasks) return of(Array.from(mapTasks.values()));
+    let tasks: any = this.getCachedTasks(boardId, listId);
+    console.log('cached tasks:', tasks);
+    if (tasks.length > 0) return of(tasks);
 
-    let http = this.http.get<Task[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`);
+    console.log('GET tasks...');
+    const http = this.http.get<Task[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`);
 
     http.subscribe({
       next: (tasks: Task[]) => {
@@ -48,9 +55,11 @@ export class TaskService {
   }
 
   getTaskById(boardId: string, listId: string, taskId: number): Observable<Task> {
-    const task = this.tasks.get(boardId)?.get(listId)?.get(taskId);
+    let task: any = this.tasks.get(boardId)?.get(listId)?.get(taskId);
+    console.log('cached task:', task);
     if (task) return of(task);
     
+    console.log('GET task %d...', taskId);
     const http = this.http.get<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
 
     http.subscribe({
@@ -71,6 +80,7 @@ export class TaskService {
     boardId: string, listId: string, taskName: string, taskDescription: string,
     stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
   ): Observable<Task> {
+    console.log('POST task...');
     const http = this.http.post<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`, {
         name: taskName,
         description: taskDescription,
@@ -93,6 +103,7 @@ export class TaskService {
     boardId: string, listId: string, taskId: string, taskName: string, taskDescription: string,
     stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
   ): Observable<Task> {
+    console.log('PUT task %d...', taskId);
     const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, {
       name: taskName,
       description: taskDescription,
@@ -111,6 +122,7 @@ export class TaskService {
 
   // Deletes a tasklist by id, list id and board id
   deleteTask(boardId: string, listId: string, taskId: number): Observable<any> {
+    console.log('DELETE task %d...', taskId);
     const http = this.http.delete(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
 
     http.subscribe({

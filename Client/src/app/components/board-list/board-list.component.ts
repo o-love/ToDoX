@@ -12,7 +12,7 @@ export class BoardListComponent implements OnInit {
   boards: Board[] = [];
   showAddPopup: boolean = false;
 
-  constructor(private boardService: BoardService, private router: Router) { }
+  constructor(public boardService: BoardService, private router: Router) { }
 
   ngOnInit(): void {
     this.getBoards();

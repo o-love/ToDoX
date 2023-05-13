@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
@@ -18,8 +19,8 @@ export class BoardDetailComponent implements OnInit {
   lists: TaskList[] = [];
   tasks: Task[] = [];
 
-  boardId = this.route.snapshot.paramMap.get('boardId');
-  selectedList: string | null = null;
+  boardId: string | null = null;
+  selectedList: string | null = null;  
 
   user: User | null = null;
   usersId: {[key: number]: User} = {};
@@ -35,6 +36,11 @@ export class BoardDetailComponent implements OnInit {
   // ng -----------------------------------------------------------------------------
 
   ngOnInit(): void {
+    this.boardId = this.route.snapshot.paramMap.get('boardId');
+    this.selectedList = this.route.snapshot.paramMap.get('listId');
+
+    console.log('board %d list %d', this.boardId, this.selectedList)
+
     this.getMyUser();
     this.getAllUsers();
     this.getBoard();
@@ -63,6 +69,7 @@ export class BoardDetailComponent implements OnInit {
         this.lists = lists;
         console.log('lists retrieved:', lists);
         if (this.lists.length > 0 && !this.selectedList) this.selectList(this.lists[0].id);
+        else this.selectList(this.selectedList);
       }
     })
   }
@@ -95,9 +102,9 @@ export class BoardDetailComponent implements OnInit {
   
   selectList(list: string | null): void {
     this.selectedList = list;
-    console.log('selected list:', list);
-    if (this.selectedList) this.router.navigate(['lists', this.selectedList], { relativeTo: this.route, replaceUrl: true });
-    else this.router.navigate(['boards', this.boardId]);
+    if (this.selectedList && this.taskListService.hasCachedTaskList(this.boardId!, this.selectedList)) this.router.navigate(['lists', this.selectedList], { relativeTo: this.route, replaceUrl: true });
+    else this.selectedList = null;
+    if (!this.selectedList) this.router.navigate(['boards', this.boardId]);
     this.showListDetail = this.selectedList ? true : false;
   }
 

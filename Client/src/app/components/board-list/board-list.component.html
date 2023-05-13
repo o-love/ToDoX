@@ -1,7 +1,7 @@
 <h1 class="title" translate>boards.title</h1>
 
 <div class="content">
-    <ng-container *ngFor="let board of boards">
+    <ng-container *ngFor="let board of  boards">
         <div class="board" *ngIf="boards.includes(board)">
             <div class="board-info" (click)="viewBoard(board.id)">
                 <div class="board-img"></div>
