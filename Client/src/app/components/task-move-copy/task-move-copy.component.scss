@@ -1,6 +1,44 @@
-.select-tabs {
+@import '../../../assets/styles/colours';
+
+
+#container {
+  background-color: $white;
+  width: 14rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 5px;
+
+  * {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+#tabs {
+  display: flex;
+  flex-direction: row;
+
+  .select-tabs {
+    width: 100%;
+    background-color: rgba($tropical-indigo, 0.2);
+    text-align: center;
+
+    &:hover {
+      background-color: rgba($tropical-indigo, 0.5);
+    }
+  }
 
   .selected {
+    border-bottom: 5px solid $tropical-indigo ;
+  }
+}
 
+.options {
+  display: grid;
+
+  * {
+    width: 100%;
+    background-color: lightgray;
   }
 }
