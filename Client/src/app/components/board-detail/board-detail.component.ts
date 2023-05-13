@@ -5,9 +5,9 @@ import { Board } from 'src/app/models/board';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
 import { User } from 'src/app/models/user';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
-import { TaskListService } from 'src/app/services/taskList-service/task-list-service.service';
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { BoardService } from 'src/app/services/board/board.service';
+import { TaskListService } from 'src/app/services/taskList/task-list.service';
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 
 @Component({
   selector: 'app-board-detail',

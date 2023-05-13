@@ -6,8 +6,8 @@ import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
-import { StateService } from 'src/app/services/state-service/state-service.service';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { StateService } from 'src/app/services/state/state.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-task-detail',

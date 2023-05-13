@@ -1,10 +1,10 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { BoardService } from 'src/app/services/board/board.service';
 import { Board } from 'src/app/models/board';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { User } from 'src/app/models/user'; // TODO: ELIMINATE AFTER SP1 PRESENTATION
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service'; // TODO: ELIMINATE AFTER SP1 PRESENTATION
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service'; // TODO: ELIMINATE AFTER SP1 PRESENTATION
 
 @Component({
   selector: 'app-create-board',

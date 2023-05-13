@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
+import { BoardService } from 'src/app/services/board/board.service';
 
 @Component({
   selector: 'app-board-list',

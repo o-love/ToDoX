@@ -2,12 +2,12 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, 
 import { trigger, transition, style, animate } from '@angular/animations';
 import { State } from 'src/app/models/state';
 import { ActivatedRoute, Router } from '@angular/router'
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { Task } from 'src/app/models/task';
 import { Label } from 'src/app/models/label';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
-import { StateService } from 'src/app/services/state-service/state-service.service';
+import { StateService } from 'src/app/services/state/state.service';
 
 @Component({
   selector: 'app-create-task',

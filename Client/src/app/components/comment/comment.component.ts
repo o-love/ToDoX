@@ -1,11 +1,11 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { TaskCommentService } from 'src/app/services/task-comment-service/task-comment-service.service';
+import { TaskCommentService } from 'src/app/services/task-comment/task-comment.service';
 import { TaskComment } from 'src/app/models/taskComment';
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-comment',

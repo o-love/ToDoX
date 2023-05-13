@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { State } from '../../models/state';
 import { Form } from 'src/app/models/form';
-import { StateService } from 'src/app/services/state-service/state-service.service';
+import { StateService } from 'src/app/services/state/state.service';
 
 @Component({
   selector: 'app-create-state',

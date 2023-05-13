@@ -17,10 +17,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UppercasePipe } from './pipes/uppercase.pipe';
 
-import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
-import { TaskService } from './services/task-service/task-service.service';
-import { UserAuthService } from './services/user-auth-service/user-auth.service';
-import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
+import { BoardService } from './services/board/board.service';
+import { TaskService } from './services/task/task.service';
+import { UserAuthService } from './services/user-auth/user-auth.service';
+import { AuthInterceptorService } from './services/auth-interceptor/auth-interceptor.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';

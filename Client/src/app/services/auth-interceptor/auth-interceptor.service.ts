@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { UserAuthService } from '../user-auth-service/user-auth.service';
+import { UserAuthService } from '../user-auth/user-auth.service';
 
 @Injectable({
   providedIn: 'root',
