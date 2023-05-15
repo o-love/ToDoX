@@ -10,17 +10,7 @@ import { CacheService } from '../cache/cache.service';
 export class TaskCommentService {
   private apiUrl = 'http://localhost:8082/api';
 
-  // taskComments: Map<number, Map<number, TaskComment>> = new Map();
-
-  constructor(private http: HttpClient, private cacheService: CacheService
-    ) {}
-
-  // private setComment(taskId: number, comment: TaskComment) {
-  //   let mapComments: any = this.
-  //   if (!mapComments) mapComments = new Map();
-  //   mapComments.set(comment.id, comment);
-  //   this.taskComments.set(taskId, mapComments);
-  // }
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   // Get task comments from a certain task
   getTaskComments(boardId: number, listId: number, taskId: number): Observable<TaskComment[]> {

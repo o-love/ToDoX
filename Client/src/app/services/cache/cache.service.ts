@@ -8,6 +8,7 @@ const BOARDS_KEY = 'httpBoardsCache';
 const LISTS_KEY = 'httpListsCache';
 const TASKS_KEY = 'httpTasksCache';
 const COMMENTS_KEY = 'httpCommentsCache';
+const TIME_KEY = 'lastTime';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,28 @@ export class CacheService {
   
   constructor() { }
 
+  storeLastTime(): void {
+    localStorage[TIME_KEY] = new Date();
+  }
+
+  getCachedLastTime(): Date {
+    return new Date(localStorage[TIME_KEY]);
+  }
+
   deleteCache(): void {
+    console.log('deleting...');
+    
+    let currentTime = new Date();
+    let lastTime = this.getCachedLastTime();
+    let differenceTime = currentTime.getTime() - lastTime.getTime();
+    let differenceInDays = Math.floor(differenceTime / (1000 * 3600 * 24));
+
+    console.log('difference time:', differenceTime);
+    console.log('difference in days:', differenceInDays);
+    
+    if (differenceInDays == 0) if (differenceTime <= (2 * 60 * 60 * 1000)) return;
     localStorage.clear();
+    console.log('cached deleted');
   }
 
   // boards -------------------------------------------------------------------------

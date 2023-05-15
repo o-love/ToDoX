@@ -12,6 +12,10 @@ export class TaskListService {
 
   constructor(private http: HttpClient, private cacheService: CacheService) { }
 
+  hasCachedTaskList(taskListId: string): boolean {
+    return (this.cacheService.getCachedTaskListById(taskListId) != undefined);
+  }
+
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
     let lists: any = this.cacheService.getCachedTaskLists(boardId);
     console.log('cached lists:', lists);

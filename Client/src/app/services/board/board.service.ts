@@ -9,7 +9,6 @@ import { CacheService } from '../cache/cache.service';
 })
 export class BoardService {
   private apiUrl = 'http://localhost:8082/api';
-  private boards: Map<string, Board> = new Map<string, Board>();
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
