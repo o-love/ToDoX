@@ -3,35 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Task } from 'src/app/models/task';
 import { Label } from 'src/app/models/label';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
-  private tasks: Map<string, Map<string, Map<number, Task>>> = new Map();
 
-  constructor(private http: HttpClient) {}
-
-  private getCachedTasks(boardId: string, listId: string): Task[] {
-    let lists: any = this.tasks.has(boardId) ? this.tasks.get(boardId) : new Map();
-    let tasks: any = lists.has(listId) ? lists.get(listId) : new Map();
-    return Array.from(tasks.values());
-  }
-
-  private setTask(boardId: string, listId: string, task: Task) {
-    let mapListTasks = this.tasks.get(boardId);
-    if (!mapListTasks) mapListTasks = new Map();
-    let mapTasks = mapListTasks.get(listId);
-    if (!mapTasks) mapTasks = new Map<number, Task>();
-    
-    mapTasks.set(task.id, task);
-    mapListTasks.set(listId, mapTasks);
-    this.tasks.set(boardId, mapListTasks);
-  }
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   getTasksByTaskListId(boardId: string, listId: string): Observable<Task[]> {
-    let tasks: any = this.getCachedTasks(boardId, listId);
+    let tasks: any = this.cacheService.getCachedTasks(listId);
     console.log('cached tasks:', tasks);
     if (tasks.length > 0) return of(tasks);
 
@@ -39,23 +22,15 @@ export class TaskService {
     const http = this.http.get<Task[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`);
 
     http.subscribe({
-      next: (tasks: Task[]) => {
-        let mapListTasks = this.tasks.get(boardId);
-        if (!mapListTasks) mapListTasks = new Map();
-        let mapTasks = mapListTasks.get(listId);
-        if (!mapTasks) mapTasks = new Map<number, Task>();
-        
-        tasks.forEach((task) => mapTasks?.set(task.id, task))
-        mapListTasks.set(listId, mapTasks);
-        this.tasks.set(boardId, mapListTasks);
-      }
+      next: (tasks: Task[]) => this.cacheService.storeTasks(tasks),
+      error: (err: any) => console.error('error getting all tasks by tasklist and board id:', err)
     })
 
     return http;
   }
 
   getTaskById(boardId: string, listId: string, taskId: number): Observable<Task> {
-    let task: any = this.tasks.get(boardId)?.get(listId)?.get(taskId);
+    let task: any = this.cacheService.getCachedTaskById(taskId);
     console.log('cached task:', task);
     if (task) return of(task);
     
@@ -63,18 +38,13 @@ export class TaskService {
     const http = this.http.get<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
 
     http.subscribe({
-      next: (task: Task) => this.setTask(boardId, listId, task)
+      next: (task: Task) => this.cacheService.storeTask(task),
+      error: (err: any) => console.error('error getting task by id:', err)
     })
 
     return http;
   }
 
-  // Gets a task by id, taskList id and board id - REV
-  // getTask(boardId: string, listId: string, stateId: string)
-  // // Gets a taskList by id and board id
-  // getList(boardId: string, listId: string): Observable<TaskList[]> {
-  //   return this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}`);
-  // }
   // Creates a new task in backend related to a taskList related to a board
   createTask(
     boardId: string, listId: string, taskName: string, taskDescription: string,
@@ -92,7 +62,8 @@ export class TaskService {
     });
 
     http.subscribe({
-      next: (task: Task) => this.setTask(boardId, listId, task)
+      next: (task: Task) => this.cacheService.storeTask(task),
+      error: (err: any) => console.error('error creating a new task:', err)
     })
     
     return http;
@@ -114,7 +85,8 @@ export class TaskService {
     });
 
     http.subscribe({
-      next: (task: Task) => this.setTask(boardId, listId, task)
+      next: (task: Task) => this.cacheService.storeTask(task),
+      error: (err: any) => console.error('error editing a task:', err)
     })
 
     return http;
@@ -126,17 +98,8 @@ export class TaskService {
     const http = this.http.delete(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
 
     http.subscribe({
-      next: () => {
-        let mapListTasks = this.tasks.get(boardId);
-        if (!mapListTasks) mapListTasks = new Map();
-        
-        let mapTasks = mapListTasks.get(listId);
-        if (!mapTasks) mapTasks = new Map();
-        else mapTasks.delete(taskId);
-        
-        mapListTasks.set(listId, mapTasks);
-        this.tasks.set(boardId, mapListTasks);
-      }
+      next: () => this.cacheService.deleteTask(taskId),
+      error: (err: any) => console.error('error deleting a task:', err)
     })
 
     return http;

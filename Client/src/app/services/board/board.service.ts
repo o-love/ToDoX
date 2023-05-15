@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Board } from 'src/app/models/board';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,10 @@ export class BoardService {
   private apiUrl = 'http://localhost:8082/api';
   private boards: Map<string, Board> = new Map<string, Board>();
 
-  constructor(private http: HttpClient) { }
-
-  private getCachedBoards(): Board[] {
-    return Array.from(this.boards.values());
-  }
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   getBoards(): Observable<Board[]> {
-    let boards: any = this.getCachedBoards();
+    let boards: Board[] = this.cacheService.getCachedBoards();
     console.log('cached boards:', boards);
     if (boards.length > 0) return of(boards);
 
@@ -25,7 +22,7 @@ export class BoardService {
     const http = this.http.get<Board[]>(`${this.apiUrl}/boards`);
 
     http.subscribe({
-      next: (boards: Board[]) => boards.forEach((board) => this.boards.set(board.id, board)),
+      next: (boards: Board[]) => this.cacheService.storeBoards(boards),
       error: (err: any) => console.error('error getting boards:', err)
     })
 
@@ -33,7 +30,7 @@ export class BoardService {
   }
 
   getBoardById(id: string): Observable<Board> {
-    let board: any = this.boards.get(id);
+    let board: any = this.cacheService.getCachedBoardById(id);
     console.log('cached board:', board);
     if (board) return of(board);
 
@@ -41,7 +38,7 @@ export class BoardService {
     const http = this.http.get<Board>(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
-      next: (board: Board) => this.boards.set(board.id, board),
+      next: (board: Board) => this.cacheService.storeBoard(board),
       error: (err: any) => console.error('error getting board by id:', err)
     })
 
@@ -53,7 +50,7 @@ export class BoardService {
     const http = this.http.put(`${this.apiUrl}/boards/${id}`, { name: name, description: description });
 
     http.subscribe({
-      next: (board: any) => this.boards.set(board.id, board),
+      next: (board: any) => this.cacheService.storeBoard(board),
       error: (err: any) => console.error('error editing board:', err)
     })
 
@@ -65,7 +62,7 @@ export class BoardService {
     const http = this.http.delete(`${this.apiUrl}/boards/${id}`);
 
     http.subscribe({
-      next: () => this.boards.delete(id),
+      next: () => this.cacheService.deleteBoard(id),
       error: (err: any) => console.error('error deleting board:', err)
     })
 
@@ -77,7 +74,7 @@ export class BoardService {
     const http =  this.http.post(`${this.apiUrl}/boards`, { name: name, description: description });
 
     http.subscribe({
-      next: (board: any) => this.boards.set(board.id, board),
+      next: (board: any) => this.cacheService.storeBoard(board),
       error: (err: any) => console.error('error creating board:', err)
     })
 

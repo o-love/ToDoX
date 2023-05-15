@@ -2,27 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
 import { TaskList } from 'src/app/models/taskList';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskListService {
   private apiUrl = 'http://localhost:8082/api';
-  private boardLists: Map<string, Map<string, TaskList>> = new Map();
 
-  constructor(private http: HttpClient) { }
-
-  hasCachedTaskList(boardId: string, taskListId: string): boolean {
-    return this.boardLists.get(boardId)?.get(taskListId) != null;
-  }
-
-  private getCachedTaskLists(boardId: string): string[] {
-    let lists: any = this.boardLists.has(boardId) ? this.boardLists.get(boardId) : new Map();
-    return Array.from(lists);
-  }
+  constructor(private http: HttpClient, private cacheService: CacheService) { }
 
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
-    let lists: any = this.getCachedTaskLists(boardId);
+    let lists: any = this.cacheService.getCachedTaskLists(boardId);
     console.log('cached lists:', lists);
     if (lists.length > 0) return of(lists);
 
@@ -33,7 +24,7 @@ export class TaskListService {
       next: (lists: TaskList[]) => {
         let mapLists: Map<string, TaskList> = new Map();
         lists.forEach((list) => mapLists.set(list.id, list))
-        this.boardLists.set(boardId, mapLists);
+        this.cacheService.storeTaskLists(lists);
       },
       error: (err: any) => console.error('error getting all tasklists by board id:', err)
     })
@@ -42,7 +33,7 @@ export class TaskListService {
   }
 
   getListById(boardId: string, taskListId: string): Observable<TaskList> {
-    let list: any = this.boardLists.get(boardId)?.get(taskListId);
+    let list: any = this.cacheService.getCachedTaskListById(taskListId);
     console.log('cached list:', list)
     if (list) return of(list);
 
@@ -50,11 +41,7 @@ export class TaskListService {
     const http = this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);    
 
     http.subscribe({
-      next: (list: TaskList) => {
-        let boardLists = this.boardLists.get(boardId);
-        if (!boardLists) boardLists = new Map<string, TaskList>();
-        boardLists.set(taskListId, list);
-      },
+      next: (list: TaskList) => this.cacheService.storeTaskList(list),
       error: (err: any) => console.error('error getting tasklist by id in a board:', err)
     })
 
@@ -67,12 +54,7 @@ export class TaskListService {
     const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [1, 2, 3] });
 
     http.subscribe({
-      next: (list: any) => {
-        let boardLists = this.boardLists.get(boardId);
-        if (!boardLists) boardLists = new Map<string, TaskList>();
-        boardLists.set(list.id, list);
-        this.boardLists.set(boardId, boardLists);
-      },
+      next: (list: any) => this.cacheService.storeTaskList(list),
       error: (err: any) => console.error('error creating a tasklist:', err)
     })
 
@@ -84,12 +66,7 @@ export class TaskListService {
     const http = this.http.put<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`, { name: name, description: description });
 
     http.subscribe({
-      next: (list: TaskList) => {
-        let boardLists = this.boardLists.get(boardId);
-        if (!boardLists) boardLists = new Map<string, TaskList>();
-        boardLists.set(taskListId, list);
-        this.boardLists.set(boardId, boardLists);
-      },
+      next: (list: TaskList) => this.cacheService.storeTaskList(list),
       error: (err: any) => console.error('error editing a tasklist:', err)
     })
 
@@ -101,12 +78,7 @@ export class TaskListService {
     const http = this.http.delete(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
 
     http.subscribe({
-      next: () => {
-        let boardLists = this.boardLists.get(boardId);
-        if (boardLists) boardLists.delete(taskListId);
-        else boardLists = new Map<string, TaskList>();
-        this.boardLists.set(boardId, boardLists);
-      },
+      next: () => this.cacheService.deleteTaskList(taskListId),
       error: (err: any) => console.error('error deleting a tasklist:', err)
     })
 
