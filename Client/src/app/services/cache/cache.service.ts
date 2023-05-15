@@ -60,10 +60,16 @@ export class CacheService {
   }
 
   storeUser(user: User): void {
-    localStorage[MYUSER_KEY] = JSON.stringify(user);
     let mapUsers: Map<number, User> = new Map(localStorage[USERS_KEY] ? JSON.parse(localStorage[USERS_KEY]) : '');
     mapUsers.set(user.id, user);
     localStorage[USERS_KEY] = JSON.stringify(Array.from(mapUsers.entries()));
+    let myUser: any = this.getCachedMyUser();
+    if (myUser && myUser.id == user.id) this.storeMyUser(user);
+  }
+
+  storeMyUser(user: User): void {
+    localStorage[MYUSER_KEY] = JSON.stringify(user);
+    if (!this.getCachedUserById(user.id)) this.storeUser(user);
   }
 
   getCachedMyUser(): User | undefined {
@@ -88,6 +94,8 @@ export class CacheService {
     let mapUsers: Map<number, User> = new Map(localStorage[USERS_KEY] ? JSON.parse(localStorage[USERS_KEY]) : '');
     mapUsers.delete(id);
     localStorage[USERS_KEY] = JSON.stringify(Array.from(mapUsers.entries()));
+    let myUser: any = this.getCachedMyUser();
+    if (myUser && myUser.id == id) this.deleteMyUser();
   }
 
   // boards -------------------------------------------------------------------------

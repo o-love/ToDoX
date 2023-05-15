@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { User } from 'src/app/models/user';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { User } from 'src/app/models/user';
 export class UserAuthService {
   private apiUrl = 'http://localhost:8082/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   getAuthToken() {
     return localStorage.getItem('token');
@@ -28,7 +29,10 @@ export class UserAuthService {
     const http = this.http.post<any>(`${this.apiUrl}/login`, user);
     
     http.subscribe({
-      next: (res: any) => localStorage.setItem('token', res.token.split('|')[1]),
+      next: (user: any) => {
+        localStorage.setItem('token', user.token.split('|')[1]);
+        this.cacheService.storeMyUser(user);
+      },
       error: (err: any) => console.error('error logging user:', err)
     });
 
@@ -41,39 +45,91 @@ export class UserAuthService {
       email: email,
       password: password,
     };
-    return this.http.post<User>(`${this.apiUrl}/users`, user);
+    const http = this.http.post<User>(`${this.apiUrl}/users`, user);
+
+    http.subscribe({
+      next: (user: any) => this.cacheService.storeMyUser(user),
+      error: (err: any) => console.error('error signing up user:', err)
+    })
+
+    return http;
   }
 
   logout() {
     localStorage.removeItem('token');
+    this.cacheService.deleteMyUser();
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.http
-      .get<User[]>(`${this.apiUrl}/users`)
-      .pipe(map((data: any) => data.data));
+    let users: any = this.cacheService.getCachedUsers();
+    if (users && users.length > 0) return of(users);
+
+    const http = this.http.get<User[]>(`${this.apiUrl}/users`);
+
+    http.subscribe({
+      next: (users: User[]) => this.cacheService.storeUsers(users),
+      error: (err: any) => console.error('error getting all users:', err)
+    })
+
+    return http;
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http
-      .get<User>(`${this.apiUrl}/users/${id}`)
-      .pipe(map((data: any) => data.data));
+    let user: any = this.cacheService.getCachedUserById(id);
+    console.log('cached user:', user);
+    if (user) return of(user);
+
+    const http = this.http.get<User>(`${this.apiUrl}/users/${id}`);
+
+    http.subscribe({
+      next: (user: User) => this.cacheService.storeUser(user),
+      error: (err: any) => console.error('error getting user by id:', err)
+    })
+
+    // return this.http
+    //   .get<User>(`${this.apiUrl}/users/${id}`)
+    //   .pipe(map((data: any) => data.data));
+    return http;
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http
-      .put<User>(`${this.apiUrl}/users/${user.id}`, user)
-      .pipe(map((data: any) => data.data));
+    const http = this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user)
+    
+    http.subscribe({
+      next: (user: User) => this.cacheService.storeUser(user),
+      error: (err: any) => console.error('error updating user:', err)
+    })
+
+    return http;
+    // .pipe(map((data: any) => data.data));
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/users/${id}`);
+    const http = this.http.delete(`${this.apiUrl}/users/${id}`);
+
+    http.subscribe({
+      next: () => this.cacheService.deleteUser(id),
+      error: (err: any) => console.error('error deleting user:', err)
+    })
+
+    return http;
   }
 
   getMyUser(): Observable<User> {
-    return this.http
-      .get<User>(`${this.apiUrl}/myUser`)
-      .pipe(map((data: any) => data.data));
+    let user: any = this.cacheService.getCachedMyUser();
+    if (user) return of(user);
+
+    const http = this.http.get<User>(`${this.apiUrl}/myUser`);
+
+    http.subscribe({
+      next: (user: User) => this.cacheService.storeMyUser(user),
+      error: (err: any) => console.error('error getting my user:', err)
+    })
+
+    return http;
+    // return this.http
+    //   .get<User>(`${this.apiUrl}/myUser`)
+    //   .pipe(map((data: any) => data.data));
   }
 
   updatePassword(
