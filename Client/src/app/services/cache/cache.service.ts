@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '@ionic/cli';
+import { User } from 'src/app/models/user';
 import { Board } from 'src/app/models/board';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
