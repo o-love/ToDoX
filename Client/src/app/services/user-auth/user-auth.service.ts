@@ -25,12 +25,14 @@ export class UserAuthService {
       password: password,
     };
 
-    const toRet = this.http.post<any>(`${this.apiUrl}/login`, user);
-    toRet.subscribe((res: any) => {
-      localStorage.setItem('token', res.token.split('|')[1]);
+    const http = this.http.post<any>(`${this.apiUrl}/login`, user);
+    
+    http.subscribe({
+      next: (res: any) => localStorage.setItem('token', res.token.split('|')[1]),
+      error: (err: any) => console.error('error logging user:', err)
     });
 
-    return toRet;
+    return http;
   }
 
   register(name: string, email: string, password: string): Observable<User> {

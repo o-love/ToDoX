@@ -102,7 +102,7 @@ export class BoardDetailComponent implements OnInit {
   
   selectList(list: string | null): void {
     this.selectedList = list;
-    if (this.selectedList && this.taskListService.hasCachedTaskList(this.selectedList)) this.router.navigate(['lists', this.selectedList], { relativeTo: this.route, replaceUrl: true });
+    if (this.selectedList && this.taskListService.hasCachedTaskList(this.selectedList)) this.router.navigate(['/boards/' + this.boardId + '/lists/' + this.selectedList]);
     else this.selectedList = null;
     if (!this.selectedList) this.router.navigate(['boards', this.boardId]);
     this.showListDetail = this.selectedList ? true : false;

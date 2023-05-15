@@ -16,7 +16,7 @@ export class TaskService {
   getTasksByTaskListId(boardId: string, listId: string): Observable<Task[]> {
     let tasks: any = this.cacheService.getCachedTasks(listId);
     console.log('cached tasks:', tasks);
-    if (tasks.length > 0) return of(tasks);
+    if (tasks && tasks.length > 0) return of(tasks);
 
     console.log('GET tasks...');
     const http = this.http.get<Task[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`);
@@ -104,35 +104,4 @@ export class TaskService {
 
     return http;
   }
-
-  // // Get a state's name from its id
-  // getStateName(stateId: string): Observable<State> {
-  //   const url = `${this.apiUrl}/tasks/${stateId}/name`;
-  //   return this.http.get<State>(url);
-  // }
-
-  // // Gets all labels from backend
-  // getLabels(): Observable<Label[]> {
-  //   const url = `${this.apiUrl}/labels`;
-  //   return this.http.get<Label[]>(url);
-  // }
-
-  // // Creates a new label in backend
-  // createLabel(labelName: string, labelColor: string, labelDescription: string): Observable<Label> {//, labelType: string): Observable<Label> {
-  //   const label = {
-  //     name: labelName,
-  //     color: labelColor,
-  //     description: labelDescription,
-  //     // type: labelType,
-  //   }
-  //   const url = `${this.apiUrl}/labels`;
-  //   return this.http.post<Label>(url, label);
-  // }
-
-  // // Changes the state of a task
-  // changeTaskState(boardId: string, listId: string, taskId: string, stateId: string): Observable<Task> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/state`;
-  //   const body = { state_id: stateId };
-  //   return this.http.put<Task>(url, body);
-  // }
 }

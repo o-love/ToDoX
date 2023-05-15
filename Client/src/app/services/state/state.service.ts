@@ -2,41 +2,27 @@ import { Injectable } from '@angular/core';
 import { State } from '../../models/state';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
   private apiUrl = 'http://localhost:8082/api';
-  private states: Map<string, Map<string, Map<number, State>>> = new Map();
 
-  constructor(private http: HttpClient) {}
-
-  private getCachedStates(boardId: string, listId: string): State[] {
-    let lists: any = this.states.has(boardId) ? this.states.get(boardId) : new Map();
-    let states: any = lists.has(listId) ? lists.get(listId) : new Map();
-    return Array.from(states.values());
-  }
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   getStatesByTaskListId(boardId: string, listId: string): Observable<State[]> {
-    let states: any = this.getCachedStates(boardId, listId);
+    let states: any = this.cacheService.getCachedStates(listId);
     console.log('cached states:', states);
-    if (states.length > 0) return of(states);
+    if (states && states.length > 0) return of(states);
 
     console.log('GET states...');
     const http = this.http.get<State[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states`); 
 
     http.subscribe({
-      next: (states: State[]) => {
-        let mapListStates = this.states.get(boardId);
-        if (!mapListStates) mapListStates = new Map();
-        let mapStates = mapListStates.get(listId);
-        if (!mapStates) mapStates = new Map<number, State>();
-        
-        states.forEach((state) => mapStates?.set(state.id, state))
-        mapListStates.set(listId, mapStates);
-        this.states.set(boardId, mapListStates);
-      }
+      next: (states: State[]) => this.cacheService.storeStates(states, listId),
+      error: (err: any) => console.error('error getting states:', err)
     })
 
     return http;

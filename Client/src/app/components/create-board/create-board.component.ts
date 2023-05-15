@@ -33,7 +33,7 @@ export class CreateBoardComponent implements Form {
   }
 
   checkErrors(): boolean {
-    if (this.form.controls['boardName'].errors) {
+    if (this.form.controls['name'].errors) {
       this.onError(this.name);
       return true;
     }  

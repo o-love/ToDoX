@@ -15,7 +15,7 @@ export class BoardService {
   getBoards(): Observable<Board[]> {
     let boards: Board[] = this.cacheService.getCachedBoards();
     console.log('cached boards:', boards);
-    if (boards.length > 0) return of(boards);
+    if (boards && boards.length > 0) return of(boards);
 
     console.log('GET boards...');
     const http = this.http.get<Board[]>(`${this.apiUrl}/boards`);

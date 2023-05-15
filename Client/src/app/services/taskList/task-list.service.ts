@@ -19,7 +19,7 @@ export class TaskListService {
   getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
     let lists: any = this.cacheService.getCachedTaskLists(boardId);
     console.log('cached lists:', lists);
-    if (lists.length > 0) return of(lists);
+    if (lists && lists.length > 0) return of(lists);
 
     console.log('GET lists...');
     const http = this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
