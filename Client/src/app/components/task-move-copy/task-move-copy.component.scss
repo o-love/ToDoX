@@ -6,12 +6,15 @@
   width: 14rem;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   border-radius: 5px;
 
   #tabs, #options, #submit {
-    margin-top: 5px;
     margin-bottom: 5px;
+  }
+
+  #options, #submit {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }
 
