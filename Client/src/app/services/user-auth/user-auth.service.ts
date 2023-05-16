@@ -26,6 +26,7 @@ export class UserAuthService {
       password: password,
     };
 
+    console.log('POST my user...');
     const http = this.http.post<any>(`${this.apiUrl}/login`, user);
     
     http.subscribe({
@@ -45,6 +46,7 @@ export class UserAuthService {
       email: email,
       password: password,
     };
+    console.log('POST user...');
     const http = this.http.post<User>(`${this.apiUrl}/users`, user);
 
     http.subscribe({
@@ -62,8 +64,10 @@ export class UserAuthService {
 
   getAllUsers(): Observable<User[]> {
     let users: any = this.cacheService.getCachedUsers();
+    console.log('cached users:', users);
     if (users && users.length > 0) return of(users);
 
+    console.log('GET users...');
     const http = this.http.get<User[]>(`${this.apiUrl}/users`);
 
     http.subscribe({
@@ -79,6 +83,7 @@ export class UserAuthService {
     console.log('cached user:', user);
     if (user) return of(user);
 
+    console.log('GET user by id...');
     const http = this.http.get<User>(`${this.apiUrl}/users/${id}`);
 
     http.subscribe({
@@ -93,6 +98,7 @@ export class UserAuthService {
   }
 
   updateUser(user: User): Observable<User> {
+    console.log('PUT user...');
     const http = this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user)
     
     http.subscribe({
@@ -105,6 +111,7 @@ export class UserAuthService {
   }
 
   deleteUser(id: number): Observable<any> {
+    console.log('DELETE user...');
     const http = this.http.delete(`${this.apiUrl}/users/${id}`);
 
     http.subscribe({
@@ -117,8 +124,10 @@ export class UserAuthService {
 
   getMyUser(): Observable<User> {
     let user: any = this.cacheService.getCachedMyUser();
+    console.log('cached my user:', user);
     if (user) return of(user);
 
+    console.log('GET my user...');
     const http = this.http.get<User>(`${this.apiUrl}/myUser`);
 
     http.subscribe({
@@ -137,6 +146,7 @@ export class UserAuthService {
     newPassword: string
   ): Observable<boolean> {
     // true if success, false if not
+    console.log('PUT passsword');
     return this.http
       .post(
         `${this.apiUrl}/myUser/updatepassword`,
