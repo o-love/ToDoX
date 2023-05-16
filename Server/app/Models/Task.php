@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date'];
+    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date', 'state_position'];
     protected $table = 'task';
     // protected $primaryKey = "uuid";
 

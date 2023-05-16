@@ -44,6 +44,26 @@ export class ListDetailKanbanComponent implements OnChanges {
 
       this.stateTasks[state.id] = tasks;
     })
+
+    this.initializeAllStateListOrdering();
+  }
+
+  private initializeAllStateListOrdering() {
+    for (let stateTasksKey in this.stateTasks) {
+      this.stateTasks[stateTasksKey].sort((a, b) => {
+        return b.state_position - a.state_position;
+      });
+    }
+  }
+
+  private updateStateListOrdering(state_id: number) {
+    this.stateTasks[state_id].forEach((task, index) => {
+      index = this.stateTasks[state_id].length - index - 1;
+      if (task.state_position !== index) {
+        task.state_position = index;
+        this.edited.emit(task);
+      }
+    })
   }
 
   // drag and drop ------------------------------------------------------------------
@@ -61,6 +81,8 @@ export class ListDetailKanbanComponent implements OnChanges {
     this.draggingTask.state_id = state_id;
     this.editTask(this.draggingTask);
     this.draggingTask = null;
+
+    this.updateStateListOrdering(state_id);
   }
 
   // tasks output -------------------------------------------------------------------

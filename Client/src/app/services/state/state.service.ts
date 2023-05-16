@@ -28,6 +28,59 @@ export class StateService {
     return http;
   }
 
+  getStateById(boardId: string, listId: string, stateId: number): Observable<State> {
+    let state: any = this.cacheService.getCachedStateById(stateId);
+    console.log('cached state:', state);
+    if (state) return of(state);
+
+    console.log('GET state...');
+    const http = this.http.get<State>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`);
+
+    http.subscribe({
+      next: (state: State) => this.cacheService.storeState(state, listId),
+      error: (err: any) => console.error('error getting state by its id:', err)
+    })
+
+    return http;
+  }
+
+  addState(boardId: string, listId: string, name: string): Observable<State> {
+    console.log('POST state...');
+    const http = this.http.post<State>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states`, { name: name });
+
+    http.subscribe({
+      next: (state: State) => this.cacheService.storeState(state, listId),
+      error: (err: any) => console.error('error creating a new state:', err)
+    })
+
+    return http;
+  }
+
+
+  updateState(listId: string, stateId: number, name: string): Observable<State> {
+    console.log('PUT state...');
+    const http = this.http.put<State>(`${this.apiUrl}/states/${stateId}`, { name: name })
+  
+    http.subscribe({
+      next: (state: State) => this.cacheService.storeState(state, listId),
+      error: (err: any) => console.error('error updating state:', err)
+    })
+
+    return http;
+  }
+
+  deleteState(stateId: number): Observable<any> {
+    console.log('DELETE state...');
+    const http = this.http.delete(`${this.apiUrl}/state/${stateId}`);
+
+    http.subscribe({
+      next: () => this.cacheService.deleteState(stateId),
+      error: (err: any) => console.error('error deleting a state:', err)
+    })
+
+    return http;
+  } 
+
   // back needs to add a http request for a GET in api/boards/boardId/lists/listId/states/stateId
 
   // addState(name: string): void {
