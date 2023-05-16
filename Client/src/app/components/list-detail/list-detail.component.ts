@@ -14,20 +14,18 @@ import { StateService } from 'src/app/services/state/state.service';
   templateUrl: './list-detail.component.html',
   styleUrls: ['./list-detail.component.scss']
 })
-export class ListDetailComponent implements OnInit {
-
+export class ListDetailComponent implements OnChanges {
   taskList: TaskList | null = null;
 
   // expected to change / delete after refactoring user service
   @Input() usersId: {[key: number]: User} = {};
   @Input() user: User | null = null;
+  @Input() taskListId: string | null = null;
 
   @Output() edited: EventEmitter<void> = new EventEmitter();
   @Output() deleted: EventEmitter<string> = new EventEmitter();
 
-  boardId: string | null = null;
-  // taskListId = this.route.snapshot.paramMap.get('listId');
-  taskListId: string | null = null;
+  boardId = this.route.snapshot.paramMap.get('boardId');
   
   tasks: Task[] = [];
   states: State[] = [];
@@ -48,7 +46,7 @@ export class ListDetailComponent implements OnInit {
 
   // ng -----------------------------------------------------------------------------
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.getTaskList();
     this.reload();
   }
@@ -64,20 +62,10 @@ export class ListDetailComponent implements OnInit {
   // getters ------------------------------------------------------------------------
 
   private getTaskList() {
-    console.log(this.route.url);
-    this.boardId = this.route.snapshot.paramMap.get('boardId');
-    console.log('boardId:', this.boardId);
-    this.taskListId = this.route.snapshot.paramMap.get('listId');
-    console.log('taskListId:', this.taskListId);
+    console.log('boardId: %d | taskListId: %d', this.boardId, this.taskListId);
     if (!this.boardId || !this.taskListId) return;
-
     console.log('loading tasklist %d...', this.taskListId);
-    this.taskListService.getListById(this.boardId, this.taskListId).subscribe({
-      next: (taskList: TaskList) => {
-        this.taskList = taskList;
-        console.log('tasklist retrieved:', taskList);
-      }
-    })
+    this.taskListService.getListById(this.boardId, this.taskListId).then((taskList: TaskList) => this.taskList = taskList);
   }
 
   private getStates() {
@@ -94,7 +82,6 @@ export class ListDetailComponent implements OnInit {
 
   private getTasks() {
     if (!this.boardId || !this.taskListId) return;
-
     console.log('loading tasklist %d tasks...', this.taskListId);
     this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe({
       next: (tasks: Task[]) => {
@@ -111,13 +98,12 @@ export class ListDetailComponent implements OnInit {
   editTaskList(taskList: TaskList) {
     if (!this.boardId || !this.taskListId || !this.taskList) return;
 
-    this.taskListService.editTasklist(this.boardId, this.taskListId, taskList.name, taskList.description).subscribe({
-      next: (taskList: TaskList) => {
+    this.taskListService.editTasklist(this.boardId, this.taskListId, taskList.name, taskList.description).then(
+      (taskList: TaskList) => {
         this.getTaskList();
-        console.log('edited tasklist:', taskList);
         this.edited.emit();
       }
-    })
+    )
   }
 
   deleteTaskList() {

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
 import { TaskList } from 'src/app/models/taskList';
 import { CacheService } from '../cache/cache.service';
 
@@ -16,76 +15,92 @@ export class TaskListService {
     return (this.cacheService.getCachedTaskListById(taskListId) != undefined);
   }
 
-  getTaskListsByBoardId(boardId: string): Observable<TaskList[]> {
+  async getTaskListsByBoardId(boardId: string): Promise<TaskList[]> {
     let lists: any = this.cacheService.getCachedTaskLists(boardId);
-    console.log('cached lists:', lists);
-    if (lists && lists.length > 0) return of(lists);
+    console.log('cached tasklists:', lists);
+    if (lists && lists.length > 0) return new Promise((resolve) => resolve(lists));
 
-    console.log('GET lists...');
+    console.log('GET tasklists...');
     const http = this.http.get<TaskList[]>(`${this.apiUrl}/boards/${boardId}/lists`);
 
-    http.subscribe({
-      next: (lists: TaskList[]) => {
-        let mapLists: Map<string, TaskList> = new Map();
-        lists.forEach((list) => mapLists.set(list.id, list))
-        this.cacheService.storeTaskLists(lists);
-      },
-      error: (err: any) => console.error('error getting all tasklists by board id:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (lists: TaskList[]) => {
+          this.cacheService.storeTaskLists(lists);
+          console.log('tasklists retrieved:', lists);
+          resolve(lists);
+        },
+        error: (err: any) => console.error('error getting all tasklists by board id:', err)
+      })
+    )
   }
 
-  getListById(boardId: string, taskListId: string): Observable<TaskList> {
+  async getListById(boardId: string, taskListId: string): Promise<TaskList> {
     let list: any = this.cacheService.getCachedTaskListById(taskListId);
-    console.log('cached list:', list)
-    if (list) return of(list);
+    console.log('cached tasklist:', list)
+    if (list) return new Promise((resolve) => resolve(list));
 
-    console.log('GET list %d...', taskListId);
+    console.log('GET tasklist %d...', taskListId);
     const http = this.http.get<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);    
 
-    http.subscribe({
-      next: (list: TaskList) => this.cacheService.storeTaskList(list),
-      error: (err: any) => console.error('error getting tasklist by id in a board:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (list: TaskList) => {
+          this.cacheService.storeTaskList(list);
+          console.log('tasklist retrieved:', list);
+          resolve(list);
+        },
+        error: (err: any) => console.error('error getting tasklist by id in a board:', err)
+      })
+    );
   }
 
   // change when added labels
-  createList(boardId: string, name: string, description: string): Observable<any> {
-    console.log('POST list...');
+  async createList(boardId: string, name: string, description: string): Promise<any> {
+    console.log('POST tasklist...');
     const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [1, 2, 3] });
 
-    http.subscribe({
-      next: (list: any) => this.cacheService.storeTaskList(list),
-      error: (err: any) => console.error('error creating a tasklist:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (list: any) => {
+          this.cacheService.storeTaskList(list);
+          console.log('created tasklist:', list);
+          resolve(list);
+        },
+        error: (err: any) => console.error('error creating a tasklist:', err)
+      })
+    );
   }
 
-  editTasklist(boardId: string, taskListId: string, name: string, description: string): Observable<TaskList> {
-    console.log('PUT list %d...', taskListId);
+  async editTasklist(boardId: string, taskListId: string, name: string, description: string): Promise<TaskList> {
+    console.log('PUT tasklist %d...', taskListId);
     const http = this.http.put<TaskList>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`, { name: name, description: description });
 
-    http.subscribe({
-      next: (list: TaskList) => this.cacheService.storeTaskList(list),
-      error: (err: any) => console.error('error editing a tasklist:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (list: TaskList) => {
+          this.cacheService.storeTaskList(list); 
+          console.log('tasklist edited:', list);
+          resolve(list);
+        },
+        error: (err: any) => console.error('error editing a tasklist:', err)
+      })
+    )
   }
 
-  deleteTasklist(boardId: string, taskListId: string): Observable<any> {
-    console.log('DELETE list %d...', taskListId);
+  async deleteTasklist(boardId: string, taskListId: string): Promise<any> {
+    console.log('DELETE tasklist %d...', taskListId);
     const http = this.http.delete(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}`);
 
-    http.subscribe({
-      next: () => this.cacheService.deleteTaskList(taskListId),
-      error: (err: any) => console.error('error deleting a tasklist:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: () => {
+          this.cacheService.deleteTaskList(taskListId);
+          console.log('tasklist deleted');
+          resolve(null);
+        },
+        error: (err: any) => console.error('error deleting a tasklist:', err)
+      })
+    )
   }
 }

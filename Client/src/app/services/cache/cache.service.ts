@@ -132,7 +132,7 @@ export class CacheService {
 
   storeTaskLists(taskLists: TaskList[]): void {
     let mapLists: Map<number, TaskList> = new Map(localStorage[LISTS_KEY] ? JSON.parse(localStorage[LISTS_KEY]) : '');
-    taskLists.filter((taskList: TaskList) => this.getCachedBoardById(taskList.board_id.toString()));
+    taskLists = taskLists.filter((taskList: TaskList) => this.getCachedBoardById(taskList.board_id.toString()));
     taskLists.forEach((taskList: TaskList) => mapLists.set(parseInt(taskList.id), taskList));
     localStorage[LISTS_KEY] = JSON.stringify(Array.from(mapLists.entries()));
   }
@@ -148,7 +148,7 @@ export class CacheService {
     if (!this.getCachedBoardById(boardId)) return;
     const mapLists: Map<number, TaskList> = new Map(localStorage[LISTS_KEY] ? JSON.parse(localStorage[LISTS_KEY]) : '');
     let lists: TaskList[] = Array.from(mapLists.values());
-    lists.filter((taskList: TaskList) => taskList.board_id == parseInt(boardId));
+    lists = lists.filter((taskList: TaskList) => taskList.board_id == parseInt(boardId));
     return lists;
   }
 
@@ -167,7 +167,7 @@ export class CacheService {
 
   storeTasks(tasks: Task[]): void {
     let mapTasks: Map<number, Task> = new Map(localStorage[TASKS_KEY] ? JSON.parse(localStorage[TASKS_KEY]) : '');
-    tasks.filter((task: Task) => this.getCachedTaskListById(task.tasklist_id.toString()));
+    tasks = tasks.filter((task: Task) => this.getCachedTaskListById(task.tasklist_id.toString()));
     tasks.forEach((task: Task) => mapTasks.set(task.id, task));
     localStorage[TASKS_KEY] = JSON.stringify(Array.from(mapTasks.entries()));
   }
@@ -182,7 +182,7 @@ export class CacheService {
     if (!this.getCachedTaskListById(listId)) return;
     const mapTasks: Map<number, Task> = new Map(localStorage[TASKS_KEY] ? JSON.parse(localStorage[TASKS_KEY]) : '');
     let tasks: Task[] = Array.from(mapTasks.values());
-    tasks.filter((task: Task) => task.tasklist_id == parseInt(listId));
+    tasks = tasks.filter((task: Task) => task.tasklist_id == parseInt(listId));
     return Array.from(mapTasks.values());
   }
 
@@ -201,7 +201,7 @@ export class CacheService {
 
   storeTaskComments(comments: TaskComment[]): void {
     let mapComments: Map<number, TaskComment> = new Map(localStorage[COMMENTS_KEY] ? JSON.parse(localStorage[COMMENTS_KEY]) : '');
-    comments.filter((comment: TaskComment) => this.getCachedTaskById(comment.task_id));
+    comments = comments.filter((comment: TaskComment) => this.getCachedTaskById(comment.task_id));
     comments.forEach((comment: TaskComment) => mapComments.set(comment.id, comment));
     localStorage[COMMENTS_KEY] = JSON.stringify(Array.from(mapComments.entries()));
   }
@@ -217,7 +217,7 @@ export class CacheService {
     if (!this.getCachedTaskById(taskId)) return;
     const mapComments: Map<number, TaskComment> = new Map(localStorage[COMMENTS_KEY] ? JSON.parse(localStorage[COMMENTS_KEY]) : '');
     let comments: TaskComment[] = Array.from(mapComments.values());
-    comments.filter((comment: TaskComment) => comment.task_id == taskId);
+    comments = comments.filter((comment: TaskComment) => comment.task_id == taskId);
     return comments;
   }
 
@@ -251,7 +251,7 @@ export class CacheService {
     let mapStates: Map<number, StateList> = new Map(localStorage[STATES_KEY] ? JSON.parse(localStorage[STATES_KEY]) : ''); 
     let statesList: StateList[] = Array.from(mapStates.values());
     let states: State[] = [];
-    statesList.filter((state: StateList) => state.tasklistId == parseInt(listId));
+    statesList = statesList.filter((state: StateList) => state.tasklistId == parseInt(listId));
     statesList.forEach((state: StateList) => states.push(state));
     return states;
   }

@@ -37,7 +37,7 @@
                 <label>{{ "lists.title" | translate }}</label>
                 <button class="add-btn" (click)="openCreateList()"><i class="bi bi-plus"></i></button>
             </div>
-            <app-list-detail *ngIf="showListDetail" (edited)="taskListEdited()" (deleted)="deleteTaskList($event)" [usersId]="usersId" [user]="user"></app-list-detail>
+            <app-list-detail *ngIf="showListDetail" (edited)="taskListEdited()" (deleted)="deleteTaskList($event)" [taskListId]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
         </div>
     </div>
 

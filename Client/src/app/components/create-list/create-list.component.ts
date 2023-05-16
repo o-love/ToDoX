@@ -61,12 +61,11 @@ export class CreateListComponent implements Form {
     if (!this.boardId) return;
 
     // change when labels are added
-    this.taskListService.createList(this.boardId, name, description).subscribe({
-      next: (list: TaskList) => {
-        console.log('list created:', list);
-        this.listCreated.emit(list.id);
+    this.taskListService.createList(this.boardId, name, description).then(
+      (list: TaskList) => {
         this.loading = false;
+        this.listCreated.emit(list.id);
       }
-    })
+    );
   } 
 }

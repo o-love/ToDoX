@@ -57,15 +57,14 @@ export class BoardDetailComponent implements OnInit {
 
   private getLists(): void {
     if (!this.boardId) return;
-
-    this.taskListService.getTaskListsByBoardId(this.boardId).subscribe({
-      next: (lists: TaskList[]) => {
+    console.log('loading taskslits from board %d...', this.boardId);
+    this.taskListService.getTaskListsByBoardId(this.boardId).then(
+      (lists: TaskList[]) => {
         this.lists = lists;
-        console.log('lists retrieved:', lists);
         if (this.lists.length > 0 && !this.selectedList) this.selectList(this.lists[0].id);
         else this.selectList(this.selectedList);
       }
-    })
+    )
   }
 
   // change after refactoring user-service
@@ -126,13 +125,12 @@ export class BoardDetailComponent implements OnInit {
     if (!this.boardId) return;
 
     console.log('deleting tasklist %d...', tasklist_id);
-    this.taskListService.deleteTasklist(this.boardId, tasklist_id).subscribe({
-      next: () => {
+    this.taskListService.deleteTasklist(this.boardId, tasklist_id).then(
+      () => {
         this.selectList(null);
-        console.log('deleted tasklist');
-        this.getLists()
-      } 
-    })
+        this.getLists();
+      }
+    );
   }
 
   // toggle -------------------------------------------------------------------------
