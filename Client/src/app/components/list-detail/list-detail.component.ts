@@ -72,12 +72,9 @@ export class ListDetailComponent implements OnChanges {
     if (!this.boardId || !this.taskListId) return;
 
     console.log('loading tasklist %d states...', this.taskListId);
-    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
-      next: (states: State[]) => {
-        this.states = states;
-        console.log('states retrieved:', states);
-      }
-    })
+    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).then(
+      (states: State[]) => this.states = states
+    );
   }
 
   private getTasks() {

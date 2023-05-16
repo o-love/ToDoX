@@ -12,101 +12,92 @@ export class StateService {
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-  getStatesByTaskListId(boardId: string, listId: string): Observable<State[]> {
+  async getStatesByTaskListId(boardId: string, listId: string): Promise<State[]> {
     let states: any = this.cacheService.getCachedStates(listId);
     console.log('cached states:', states);
-    if (states && states.length > 0) return of(states);
+    if (states && states.length > 0) return new Promise((resolve) => resolve(states));
 
     console.log('GET states...');
     const http = this.http.get<State[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states`); 
 
-    http.subscribe({
-      next: (states: State[]) => this.cacheService.storeStates(states, listId),
-      error: (err: any) => console.error('error getting states:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (states: State[]) => {
+          this.cacheService.storeStates(states, listId);
+          console.log('states retrieved:', states);
+          resolve(states);
+        },
+        error: (err: any) => console.error('error getting states:', err)
+      })
+    )
   }
 
-  getStateById(boardId: string, listId: string, stateId: number): Observable<State> {
+  async getStateById(boardId: string, listId: string, stateId: number): Promise<State> {
     let state: any = this.cacheService.getCachedStateById(stateId);
     console.log('cached state:', state);
-    if (state) return of(state);
+    if (state) return new Promise((resolve) => resolve(state));
 
     console.log('GET state...');
     const http = this.http.get<State>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states/${stateId}`);
 
-    http.subscribe({
-      next: (state: State) => this.cacheService.storeState(state, listId),
-      error: (err: any) => console.error('error getting state by its id:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (state: State) => {
+          this.cacheService.storeState(state, listId);
+          console.log('state retrieved:', state);
+          resolve(state);
+        },
+        error: (err: any) => console.error('error getting state by its id:', err)
+      })
+    );
   }
 
-  addState(boardId: string, listId: string, name: string): Observable<State> {
+  async createState(boardId: string, listId: string, name: string): Promise<State> {
     console.log('POST state...');
     const http = this.http.post<State>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/states`, { name: name });
 
-    http.subscribe({
-      next: (state: State) => this.cacheService.storeState(state, listId),
-      error: (err: any) => console.error('error creating a new state:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (state: State) => {
+          this.cacheService.storeState(state, listId);
+          console.log('state created:', state);
+          resolve(state);
+        },
+        error: (err: any) => console.error('error creating a new state:', err)
+      })
+    );
   }
 
 
-  updateState(listId: string, stateId: number, name: string): Observable<State> {
+  async editState(listId: string, stateId: number, name: string): Promise<State> {
     console.log('PUT state...');
     const http = this.http.put<State>(`${this.apiUrl}/states/${stateId}`, { name: name })
   
-    http.subscribe({
-      next: (state: State) => this.cacheService.storeState(state, listId),
-      error: (err: any) => console.error('error updating state:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (state: State) => {
+          this.cacheService.storeState(state, listId);
+          console.log('state edited:', state);
+          resolve(state);
+        },
+        error: (err: any) => console.error('error updating state:', err)
+      })
+    )
   }
 
-  deleteState(stateId: number): Observable<any> {
+  async deleteState(stateId: number): Promise<any> {
     console.log('DELETE state...');
     const http = this.http.delete(`${this.apiUrl}/state/${stateId}`);
 
-    http.subscribe({
-      next: () => this.cacheService.deleteState(stateId),
-      error: (err: any) => console.error('error deleting a state:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: () => {
+          this.cacheService.deleteState(stateId);
+          console.log('state deleted');
+          resolve(null);
+        },
+        error: (err: any) => console.error('error deleting a state:', err)
+      })
+    );
   } 
-
-  // back needs to add a http request for a GET in api/boards/boardId/lists/listId/states/stateId
-
-  // addState(name: string): void {
-  //   if (this.states.find(state => state.name === name)) {
-  //     throw new Error(`State "${name}" already exists`);
-  //   }
-  //   const id = this.states.length > 0 ? Math.max(...this.states.map(state => state.id)) + 1 : 1;
-  //   this.states.push({ id, name, tasks: [] });
-  // }
-
-  // updateState(id: number, name: string): void {
-  //   const state = this.getState(id);
-  //   if (!state) {
-  //     throw new Error(`State with ID ${id} not found`);
-  //   }
-  //   if (this.states.find(s => s.id !== id && s.name === name)) {
-  //     throw new Error(`State "${name}" already exists`);
-  //   }
-  //   state.name = name;
-  // }
-
-  // deleteState(id: number): void {
-  //   const stateIndex = this.states.findIndex(state => state.id === id);
-  //   if (stateIndex === -1) throw new Error(`State with ID ${id} not found`);
-  //   if (this.states[stateIndex].tasks.length > 0) throw new Error(`State with ID ${id} has tasks assigned and cannot be deleted`);
-    
-  //   this.states.splice(stateIndex, 1);
-  // }
 }

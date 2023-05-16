@@ -60,13 +60,12 @@ export class CreateTaskComponent implements Form, OnInit {
   private getStates() {
     if (!this.boardId || !this.taskListId) return;
     console.log('loading states of list %d from board %d...', this.taskListId, this.boardId);
-    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).subscribe({
-      next: (states: State[]) => { 
+    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).then(
+      (states: State[]) => { 
         this.states = states;
-        console.log('states retrieved:', states);
         this.getSelectedState();
       }
-    });
+    );
   }
   
   // here should be a getter method for labels when CRUD for labels is done
