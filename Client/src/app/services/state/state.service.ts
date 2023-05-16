@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State } from '../../models/state';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
 import { CacheService } from '../cache/cache.service';
 
 @Injectable({

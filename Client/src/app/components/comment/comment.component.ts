@@ -74,26 +74,20 @@ export class CommentComponent implements OnInit {
 
   private getComments() {
     if (!this.boardId || !this.taskListId || !this.task) return;
-    this.taskCommentService.getTaskComments(parseInt(this.boardId), parseInt(this.taskListId), this.task.id).subscribe({
-      next: (comments: TaskComment[]) => {
-        this.comments = comments;
-        console.log('task comments retrieved:', comments);
-      },
-      error: (error: any) => console.error('error retrieving comments:', error)
-    })
+    this.taskCommentService.getTaskComments(parseInt(this.boardId), parseInt(this.taskListId), this.task.id).then(
+      (comments: TaskComment[]) => this.comments = comments
+    );
   }
 
   addComment(message: string) {
     if (!this.boardId || !this.taskListId || !this.task || !this.user) return;
-    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.user.id, this.task.id, message,).subscribe({
-      next: (comment: TaskComment) => {
+    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.user.id, this.task.id, message,).then(
+      (comment: TaskComment) => {
         this.comments.push(comment);
         this.form.controls['text'].setValue('');
         this.form.controls['text'].enable();
-        console.log('saved comment:', comment);
-      },
-      error: (error: any) => console.error('error adding comment:', error)
-    })
+      }
+    )
   }
 
   // editComment(comment: TaskComment, message: string) {

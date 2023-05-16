@@ -13,50 +13,62 @@ export class TaskCommentService {
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   // Get task comments from a certain task
-  getTaskComments(boardId: number, listId: number, taskId: number): Observable<TaskComment[]> {
+  async getTaskComments(boardId: number, listId: number, taskId: number): Promise<TaskComment[]> {
     let comments: any = this.cacheService.getCachedTaskComments(taskId);
     console.log('cached comments:', comments);
-    if (comments.length > 0) return of(comments);
+    if (comments.length > 0) return new Promise((resolve) => resolve(comments));
 
     console.log('GET task comments from task %d...', taskId);
     const http = this.http.get<TaskComment[]>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`);
     
-    http.subscribe({
-      next: (comments: TaskComment[]) => this.cacheService.storeTaskComments(comments),
-      error: (err: any) => console.error('error getting comments by task id:', err) 
-    })
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (comments: TaskComment[]) => {
+          this.cacheService.storeTaskComments(comments);
+          console.log('task comment retrieved:', comments);
+          resolve(comments);
+        },
+        error: (err: any) => console.error('error getting comments by task id:', err) 
+      })
+    );
   }
 
   // Create a task comment for a certain task
-  addTaskComment(boardId: number, listId: number, taskId: number, userId: number, content: string): Observable<TaskComment> {
+  async addTaskComment(boardId: number, listId: number, taskId: number, userId: number, content: string): Promise<TaskComment> {
     console.log('POST task comment in task %d...', taskId);
     const http = this.http.post<TaskComment>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/comments`, { content: content, user_id: userId });
     
-    http.subscribe({
-      next: (comment: TaskComment) => this.cacheService.storeTaskComment(comment),
-      error: (err: any) => console.error('error creating a task comment:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (comment: TaskComment) => {
+          this.cacheService.storeTaskComment(comment);
+          console.log('comment created:', comment);
+          resolve(comment);
+        },
+        error: (err: any) => console.error('error creating a task comment:', err)
+      })
+    );
   }
 
   // Show information from a comment
-  getTaskComment(taskId: number, commentId: number): Observable<TaskComment> {
+  async getTaskComment(taskId: number, commentId: number): Promise<TaskComment> {
     const comment: any = this.cacheService.getCachedTaskCommentById(commentId);
     console.log('cached comment:', comment);
-    if (comment) return of(comment);
+    if (comment) return new Promise((resolve) => resolve(comment));
 
     console.log('GET task comment %d from task %d...', commentId, taskId);
     const http = this.http.get<TaskComment>(`${this.apiUrl}/comments/${commentId}`);
 
-    http.subscribe({
-      next: (comment: TaskComment) => this.cacheService.storeTaskComment(comment),
-      error: (err: any) => console.error('error getting task comment by id:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (comment: TaskComment) => {
+          this.cacheService.storeTaskComment(comment);
+          console.log('comment retrieved:', comment);
+          resolve(comment);
+        },
+        error: (err: any) => console.error('error getting task comment by id:', err)
+      })
+    );
   }
 
   // Update a comment
