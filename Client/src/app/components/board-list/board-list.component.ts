@@ -20,14 +20,7 @@ export class BoardListComponent implements OnInit {
 
   private getBoards(): void {
     console.log('loading boards...');
-
-    this.boardService.getBoards().subscribe({
-      next: (boards: Board[]) => {
-        this.boards = boards;
-        console.log('boards retrieved:', boards);
-      },
-      error: (err: any) => console.error('error getting boards:', err)
-    })
+    this.boardService.getBoards().then((boards: Board[]) => this.boards = boards);
   }
 
   show() {
@@ -53,12 +46,6 @@ export class BoardListComponent implements OnInit {
 
   deleteBoard(board_id: string): void {
     console.log('deleting board...');
-
-    this.boardService.deleteBoard(board_id).subscribe({
-      next: () => {
-        console.log('board deleted');
-        this.getBoards()
-      }
-    });
+    this.boardService.deleteBoard(board_id).then(() => this.getBoards());
   }
 }

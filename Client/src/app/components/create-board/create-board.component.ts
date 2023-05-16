@@ -56,13 +56,14 @@ export class CreateBoardComponent implements Form {
     let description = this.form.value.description;
 
     this.loading = true;
+    
     console.log('creating board...');
-    this.boardService.createBoard(name, description).subscribe({
-      next: (board: any) => {
+    this.boardService.createBoard(name, description).then(
+      (board: any) => {
         console.log('board created:', board);
         this.loading = false;
         this.boardCreated.emit();
       }
-    });
+    );
   }
 }

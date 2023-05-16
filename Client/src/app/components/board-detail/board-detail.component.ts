@@ -51,14 +51,8 @@ export class BoardDetailComponent implements OnInit {
 
   private getBoard(): void {
     if (!this.boardId) return;
-
     console.log('getting board...');
-    this.boardService.getBoardById(this.boardId).subscribe({
-      next: (board: Board) => {
-        this.board = board
-        console.log('board retrieved:', board);
-      }
-    })
+    this.boardService.getBoardById(this.boardId).then((board: Board) => this.board = board);
   }
 
   private getLists(): void {
@@ -112,13 +106,8 @@ export class BoardDetailComponent implements OnInit {
 
   editBoard(board: Board): void {
     if (!this.boardId) return;
-
-    this.boardService.editBoard(this.boardId, board.name, board.description).subscribe({
-      next: (board: any) => {
-        this.getBoard()
-        console.log('board edited:', board)
-      }
-    }) 
+    console.log('editing board...');
+    this.boardService.editBoard(this.boardId, board.name, board.description).then((board: any) => this.getBoard());
   }
 
   // tasklists ----------------------------------------------------------------------
