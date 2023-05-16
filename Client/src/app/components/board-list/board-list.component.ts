@@ -46,6 +46,7 @@ export class BoardListComponent implements OnInit {
 
   deleteBoard(board_id: string): void {
     console.log('deleting board...');
+    
     this.boardService.deleteBoard(board_id).then(() => this.getBoards());
   }
 }
