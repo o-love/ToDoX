@@ -67,15 +67,14 @@ export class TaskDetailComponent implements OnInit, Form {
   private getTask() {
     if (!this.boardId || !this.taskListId || !this.taskId) return;
     console.log('loading task %d of list %d from board %d', this.taskId, this.taskListId, this.boardId);
-    this.taskService.getTaskById(this.boardId, this.taskListId, this.taskId).subscribe({
-      next: (task: Task) => {
+    this.taskService.getTaskById(this.boardId, this.taskListId, this.taskId).then(
+      (task: Task) => {
         this.task = task;
         this.startDate = this.task.start_date;
         this.dueDate = this.task.due_date;
         this.form.setValue({name: this.task.name, description: this.task.description});
-        console.log('task retrieved:', task);
       }
-    })
+    )
   }
 
   private getStates() {

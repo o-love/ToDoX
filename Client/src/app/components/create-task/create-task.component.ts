@@ -161,13 +161,12 @@ export class CreateTaskComponent implements Form, OnInit {
     if (!this.taskListId || !this.boardId) return;
 
     this.loading = true;
-    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate).subscribe({
-      next: (task: Task) => {
+    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate).then(
+      (task: Task) => {
         this.created.emit();
-        console.log('created task:', task);
         this.close.emit();
       }
-    })
+    )
   }
 
   // submit -------------------------------------------------------------------------

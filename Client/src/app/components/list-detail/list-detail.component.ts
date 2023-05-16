@@ -83,12 +83,11 @@ export class ListDetailComponent implements OnChanges {
   private getTasks() {
     if (!this.boardId || !this.taskListId) return;
     console.log('loading tasklist %d tasks...', this.taskListId);
-    this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).subscribe({
-      next: (tasks: Task[]) => {
+    this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).then(
+      (tasks: Task[]) => {
         this.tasks = tasks;
-        console.log('tasks retrieved:', tasks);
       }
-    })
+    );
   }
 
   // get labels method must be included here when CRUD for labels is done
@@ -119,23 +118,20 @@ export class ListDetailComponent implements OnChanges {
     if (!this.boardId || !this.taskListId || !this.selectedTask) return;
 
     console.log('editing task %d...', this.selectedTask);
-    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date).subscribe({
-      next: (task: Task) => {
-        console.log('edited task:', task);
-        this.reload();
-      }
-    })
+    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date).then(
+      (task: Task) => this.reload()
+    );
   }
 
   deleteTask(taskId: number): void {
     if (!this.boardId || !this.taskListId) return;
 
-    this.taskService.deleteTask(this.boardId, this.taskListId, taskId).subscribe({
-      next: () => {
+    this.taskService.deleteTask(this.boardId, this.taskListId, taskId).then(
+      () => {
         this.reload();
         this.hideModals();
       }
-    })
+    )
   }
 
   // selectors ----------------------------------------------------------------------
