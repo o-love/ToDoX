@@ -16,6 +16,16 @@
     margin-left: 1rem;
     margin-right: 1rem;
   }
+
+  #tabs {
+    position: relative;
+  }
+  .close-btn {
+    position: absolute;
+    z-index: 1000;
+    top: 10px;
+    font-size: 12pt;
+  }
 }
 
 #tabs {

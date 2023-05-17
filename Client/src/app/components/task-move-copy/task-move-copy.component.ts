@@ -99,4 +99,7 @@ export class TaskMoveCopyComponent {
     return Math.abs(this.selectedState.tasks.length - this.positionNumber);
   }
 
+  onClose() {
+
+  }
 }

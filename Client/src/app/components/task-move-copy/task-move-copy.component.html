@@ -1,7 +1,10 @@
 <div id="container">
-  <div id="tabs">
-    <div class="select-tabs" [class.selected]="isCopy" (click)="setIsCopy(true)">Copy</div>
-    <div class="select-tabs" [class.selected]="!isCopy" (click)="setIsCopy(false)">Move</div>
+  <div>
+    <div id="tabs">
+      <div class="select-tabs" [class.selected]="isCopy" (click)="setIsCopy(true)">Copy</div>
+      <div class="select-tabs" [class.selected]="!isCopy" (click)="setIsCopy(false)">Move</div>
+    </div>
+    <i (click)="onClose()" id="close-bt" class="bi-x"></i>
   </div>
 
   <div id="options">
