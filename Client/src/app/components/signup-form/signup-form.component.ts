@@ -85,8 +85,7 @@ export class SignupFormComponent implements Form {
     .subscribe({
       next: (response) => {
         console.log("account created", response);
-        // this.router.navigate(['/profile']);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/profile']);
       },
       error: (error) => console.log(error)
     });

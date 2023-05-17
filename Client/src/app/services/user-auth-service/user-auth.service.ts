@@ -19,6 +19,10 @@ export class UserAuthService {
     return !!this.getAuthToken();
   }
 
+  private saveToken(response: any) {
+    localStorage.setItem('token', response.token.split('|')[1]);
+  }
+
   login(email: string, password: string): Observable<null> {
     const user = {
       email: email,
@@ -27,7 +31,7 @@ export class UserAuthService {
 
     const toRet = this.http.post<any>(`${this.apiUrl}/login`, user);
     toRet.subscribe((res: any) => {
-      localStorage.setItem('token', res.token.split('|')[1]);
+      this.saveToken(res);
     });
 
     return toRet;
@@ -39,7 +43,15 @@ export class UserAuthService {
       email: email,
       password: password,
     };
-    return this.http.post<User>(`${this.apiUrl}/users`, user);
+    const toRet = this.http.post<any>(`${this.apiUrl}/users`, user);
+
+    toRet.subscribe((res) => {
+      this.saveToken(res);
+    })
+
+    return toRet.pipe(map((response: any) => {
+      return response.user;
+    }));
   }
 
   logout() {
