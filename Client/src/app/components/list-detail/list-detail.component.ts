@@ -164,7 +164,7 @@ export class ListDetailComponent implements OnChanges {
     this.options.forEach((option) => {
       if (option.nativeElement.classList.contains('checked')) {
         option.nativeElement.classList.toggle('checked');
-        this.layouts.set(option.nativeElement.innerText.toString(), false);
+        this.layouts.set(option.nativeElement.innerText.toString().trim(), false);
       }
     });
 
@@ -173,7 +173,7 @@ export class ListDetailComponent implements OnChanges {
     this.options.forEach((option) => {
       if (option.nativeElement.innerText == selected_option.nativeElement.innerText) {
         option.nativeElement.classList.toggle('checked');
-        this.layouts.set(option.nativeElement.innerText.toString(), true);
+        this.layouts.set(option.nativeElement.innerText.toString().trim(), true);
       }
     });
 
