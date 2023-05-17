@@ -26,6 +26,6 @@ export class HeaderComponent {
   }
 
   onSignUp() {
-    this.router.navigate(['signup']);
+    this.router.navigate(['register']);
   }
 }

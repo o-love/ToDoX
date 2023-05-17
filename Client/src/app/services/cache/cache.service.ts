@@ -54,13 +54,13 @@ export class CacheService {
   // users --------------------------------------------------------------------------
 
   storeUsers(users: User[]): void {
-    let mapUsers: Map<number, User> = new Map(localStorage[USERS_KEY] ? JSON.parse(localStorage[USERS_KEY]) : '');
+    let mapUsers: Map<number, User> =  localStorage[USERS_KEY] ? new Map(JSON.parse(localStorage[USERS_KEY])) : new Map();
     users.forEach((user: User) => mapUsers.set(user.id, user));
     localStorage[USERS_KEY] = JSON.stringify(Array.from(mapUsers.entries()));
   }
 
   storeUser(user: User): void {
-    let mapUsers: Map<number, User> = new Map(localStorage[USERS_KEY] ? JSON.parse(localStorage[USERS_KEY]) : '');
+    let mapUsers: Map<number, User> = localStorage[USERS_KEY] ? new Map(JSON.parse(localStorage[USERS_KEY])) : new Map();
     mapUsers.set(user.id, user);
     localStorage[USERS_KEY] = JSON.stringify(Array.from(mapUsers.entries()));
     let myUser: any = this.getCachedMyUser();
@@ -87,7 +87,7 @@ export class CacheService {
   }
 
   deleteMyUser(): void {
-    localStorage[USERS_KEY] = '';
+    localStorage.removeItem(MYUSER_KEY);
   }
 
   deleteUser(id: number): void {

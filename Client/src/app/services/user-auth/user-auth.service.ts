@@ -17,7 +17,7 @@ export class UserAuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getAuthToken();
+    return this.getAuthToken() != null || this.cacheService.getCachedMyUser() != undefined;
   }
 
   async login(email: string, password: string): Promise<any> {
@@ -33,9 +33,10 @@ export class UserAuthService {
       http.subscribe({
         next: (user: any) => {
           localStorage.setItem('token', user.token.split('|')[1]);
-          this.cacheService.storeMyUser(user);
-          console.log('user logged in:', user);
-          resolve(user);
+          this.getMyUser().then((user: User) => {
+            console.log('user logged in:', user);
+            resolve(user);
+          });
         },
         error: (err: any) => console.error('error logging user:', err)
       })
@@ -53,10 +54,11 @@ export class UserAuthService {
 
     return await new Promise((resolve) => 
       http.subscribe({
-        next: (user: any) => {
-          this.cacheService.storeMyUser(user);
-          console.log('user signed up:', user);
-          resolve(user);
+        next: (data: any) => {
+          this.getMyUser().then((user: User) => {
+            console.log('user signed up:', user);
+            resolve(user);
+          });
         },
         error: (err: any) => console.error('error signing up user:', err)
       })
@@ -78,10 +80,10 @@ export class UserAuthService {
 
     return await new Promise((resolve) =>
       http.subscribe({
-        next: (users: User[]) => {
-          this.cacheService.storeUsers(users);
-          console.log('users retrieved:', users);
-          resolve(users);
+        next: (data: any) => {
+          this.cacheService.storeUsers(data.data);
+          console.log('users retrieved:', data.data);
+          resolve(data.data);
         },
         error: (err: any) => console.error('error getting all users:', err)
       })
@@ -98,10 +100,10 @@ export class UserAuthService {
 
     return await new Promise((resolve) =>
       http.subscribe({
-        next: (user: User) => {
-          this.cacheService.storeUser(user);
-          console.log('user retrieved:', user);
-          resolve(user);
+        next: (data: any) => {
+          this.cacheService.storeUser(data.data);
+          console.log('user retrieved:', data.data);
+          resolve(data.data);
         },
         error: (err: any) => console.error('error getting user by id:', err)
       })
@@ -111,6 +113,7 @@ export class UserAuthService {
   async updateUser(user: User): Promise<User> {
     console.log('PUT user...');
     const http = this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user)
+    .pipe(map((data: any) => data.data));
     
     return await new Promise((resolve) => 
       http.subscribe({
@@ -150,10 +153,10 @@ export class UserAuthService {
 
     return await new Promise((resolve) => 
       http.subscribe({
-        next: (user: User) => {
-          this.cacheService.storeMyUser(user);
-          console.log('user retrieved:', user);
-          resolve(user);          
+        next: (data: any) => {
+          this.cacheService.storeMyUser(data.data);
+          console.log('user retrieved:', data.data);
+          resolve(data.data);          
         },
         error: (err: any) => console.error('error getting my user:', err)
       })

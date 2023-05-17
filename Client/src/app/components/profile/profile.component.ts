@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { PasswordValidator } from 'src/app/validators/password.validator';
@@ -10,14 +10,12 @@ import { Router } from '@angular/router';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   infoForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
   user: User | null = null;
-  userEmail: string = '';
-  userPassword: string = '';
   darkMode: boolean = false;
 
   @ViewChildren('email') emailLabels!: QueryList<ElementRef>;
@@ -52,11 +50,22 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
+    console.log('profile init');
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    
     this.infoForm.controls['name'].disable();
+    this.getMyUser();    
+  }
 
+  private getMyUser(): void {
+    console.log('loading my user...');
     this.authService.getMyUser().then(
       (user: User) => {
-        console.log("user:", user);
+        console.log("my user:", user);
+        if (!user) this.router.navigate(['/login']);
         this.user = user;
         this.emailForm.controls['currentEmail'].setValue(user.email);
         this.infoForm.controls['name'].setValue(user.name);
@@ -90,9 +99,7 @@ export class ProfileComponent {
   }
 
   resetErrors(labels: QueryList<ElementRef>) {
-    labels.forEach((label) => {
-      label.nativeElement.style.boxShadow = 'none';
-    });
+    labels.forEach((label) => label.nativeElement.style.boxShadow = 'none');
   }
 
   saveEmail() {
@@ -108,17 +115,14 @@ export class ProfileComponent {
     this.loading_email = true;
     this.authService.updateUser(user).then(
       (user: User) => {
-        console.log(user);
-        this.userEmail = user.email;
-        this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
+        this.emailForm.reset();
+        this.getMyUser();
         this.loading_email = false;
       } 
     );
   }
 
   savePassword() {
-    // DESCOMENTAR CUANDO FUNCIONE Y ESTÉ LA FUNCIÓN DEL SERVICIO PA COMPARAR CONTRASEÑAS !!!
-
     console.log("updating password...");
 
     this.resetErrors(this.passwordLabels);
@@ -151,7 +155,10 @@ export class ProfileComponent {
     this.user.name = this.infoForm.value.name;
     this.toggleDisable();
     this.authService.updateUser(this.user).then(
-      (user: User) => console.log('user updated:', user),
+      (user: User) => {
+        console.log('user updated:', user); 
+        this.getMyUser();
+      }
     )
   }
 
