@@ -70,25 +70,17 @@ export class BoardDetailComponent implements OnInit {
   // change after refactoring user-service
   private getMyUser() {
     if (this.userService.isLoggedIn()) {
-      this.userService.getMyUser().subscribe({
-        next: (user: User) => {
-          this.user = user;
-          console.log('user retrieved:', user);
-        },
-        error: (error: any) => console.error('error retrieving user:', error)
-      })
+      this.userService.getMyUser().then(
+        (user: User) => this.user = user
+      )
     }
   }
 
   // change after refactoring user-service
   private getAllUsers() {
-    this.userService.getAllUsers().subscribe({
-      next: (users: User[]) => { 
-        console.log('users retrieved:', users);
-        for (let user of users) this.usersId[user.id] = user;
-      },
-      error: (error: any) => console.error('error retrieving all users:', error)
-    })
+    this.userService.getAllUsers().then(
+      (users: User[]) => { for (let user of users) this.usersId[user.id] = user }
+    )
   }
 
   // selectors ----------------------------------------------------------------------

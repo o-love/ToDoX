@@ -54,15 +54,14 @@ export class ProfileComponent {
   ngOnInit() {
     this.infoForm.controls['name'].disable();
 
-    this.authService.getMyUser().subscribe({
-      next: (user: User) => {
+    this.authService.getMyUser().then(
+      (user: User) => {
         console.log("user:", user);
         this.user = user;
         this.emailForm.controls['currentEmail'].setValue(user.email);
         this.infoForm.controls['name'].setValue(user.name);
-      },
-      error: (error: any) => console.error('error retrieving user:', error)
-    });
+      }
+    );
   }
 
   onError(label: ElementRef) {
@@ -107,14 +106,14 @@ export class ProfileComponent {
 
     const user: User = { id: this.user.id, name: this.user.name, email: this.emailForm.value.newEmail };
     this.loading_email = true;
-    this.authService.updateUser(user).subscribe({
-      next: (user: User) => {
+    this.authService.updateUser(user).then(
+      (user: User) => {
         console.log(user);
         this.userEmail = user.email;
         this.emailForm.setValue({ currentEmail: this.userEmail, newEmail: '' });
         this.loading_email = false;
       } 
-    });
+    );
   }
 
   savePassword() {
@@ -129,8 +128,8 @@ export class ProfileComponent {
     let newPassword: string = this.passwordForm.value.newPassword;
 
     this.loading_password = true;
-    this.authService.updatePassword(oldPassword, newPassword).subscribe({
-      next: (response: boolean) => {
+    this.authService.updatePassword(oldPassword, newPassword).then(
+      (response: boolean) => {
         if (response) console.log('password updated succesfully');
         else {
           console.log('password not updated');
@@ -139,12 +138,8 @@ export class ProfileComponent {
         // localStorage.setItem('token', response.token.split('|')[1]);
         this.passwordForm.reset();
         this.loading_password = false;
-      },
-      error: (error) => {
-        console.log(error);
-        this.onError(this.newPasswordLabel);
       }
-    });
+    );
   }
 
   saveInfo() {
@@ -155,10 +150,9 @@ export class ProfileComponent {
 
     this.user.name = this.infoForm.value.name;
     this.toggleDisable();
-    this.authService.updateUser(this.user).subscribe({
-      next: (user: User) => console.log('user updated:', user),
-      error: (error: any) => console.error('error updating user:', error)
-    })
+    this.authService.updateUser(this.user).then(
+      (user: User) => console.log('user updated:', user),
+    )
   }
 
   logout() {

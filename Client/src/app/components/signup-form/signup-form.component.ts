@@ -82,13 +82,12 @@ export class SignupFormComponent implements Form {
 
     this.loading = true;
     this.authService.register(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password)
-    .subscribe({
-      next: (response) => {
-        console.log("account created", response);
+    .then(
+      (response) => {
+        // console.log("account created", response);
         // this.router.navigate(['/profile']);
         this.router.navigate(['/login']);
-      },
-      error: (error) => console.log(error)
-    });
+      }
+    );
   }
 }

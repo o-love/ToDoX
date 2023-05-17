@@ -74,15 +74,12 @@ export class LoginFormComponent implements Form {
 
     this.loading = true;
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
-    .subscribe({
-      next: (response) => {
+    .then(
+      (response) => {
         console.log("logged in", response);        
         // this.router.navigate(['/profile']);
         this.router.navigate(['/boards']);  // SOLO PARA LA PRESENTACION SP1
-      },
-      error: (error) => {
-        console.log(error);
       }
-    });
+    );
   }  
 }

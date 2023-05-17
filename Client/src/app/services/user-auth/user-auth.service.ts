@@ -20,7 +20,7 @@ export class UserAuthService {
     return !!this.getAuthToken();
   }
 
-  login(email: string, password: string): Observable<null> {
+  async login(email: string, password: string): Promise<any> {
     const user = {
       email: email,
       password: password,
@@ -29,18 +29,20 @@ export class UserAuthService {
     console.log('POST my user...');
     const http = this.http.post<any>(`${this.apiUrl}/login`, user);
     
-    http.subscribe({
-      next: (user: any) => {
-        localStorage.setItem('token', user.token.split('|')[1]);
-        this.cacheService.storeMyUser(user);
-      },
-      error: (err: any) => console.error('error logging user:', err)
-    });
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (user: any) => {
+          localStorage.setItem('token', user.token.split('|')[1]);
+          this.cacheService.storeMyUser(user);
+          console.log('user logged in:', user);
+          resolve(user);
+        },
+        error: (err: any) => console.error('error logging user:', err)
+      })
+    );
   }
 
-  register(name: string, email: string, password: string): Observable<User> {
+  async register(name: string, email: string, password: string): Promise<User> {
     const user = {
       name: name,
       email: email,
@@ -49,12 +51,16 @@ export class UserAuthService {
     console.log('POST user...');
     const http = this.http.post<User>(`${this.apiUrl}/users`, user);
 
-    http.subscribe({
-      next: (user: any) => this.cacheService.storeMyUser(user),
-      error: (err: any) => console.error('error signing up user:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (user: any) => {
+          this.cacheService.storeMyUser(user);
+          console.log('user signed up:', user);
+          resolve(user);
+        },
+        error: (err: any) => console.error('error signing up user:', err)
+      })
+    )
   }
 
   logout() {
@@ -62,106 +68,126 @@ export class UserAuthService {
     this.cacheService.deleteMyUser();
   }
 
-  getAllUsers(): Observable<User[]> {
+  async getAllUsers(): Promise<User[]> {
     let users: any = this.cacheService.getCachedUsers();
     console.log('cached users:', users);
-    if (users && users.length > 0) return of(users);
+    if (users && users.length > 0) return new Promise((resolve) => resolve(users));
 
     console.log('GET users...');
     const http = this.http.get<User[]>(`${this.apiUrl}/users`);
 
-    http.subscribe({
-      next: (users: User[]) => this.cacheService.storeUsers(users),
-      error: (err: any) => console.error('error getting all users:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (users: User[]) => {
+          this.cacheService.storeUsers(users);
+          console.log('users retrieved:', users);
+          resolve(users);
+        },
+        error: (err: any) => console.error('error getting all users:', err)
+      })
+    )
   }
 
-  getUserById(id: number): Observable<User> {
+  async getUserById(id: number): Promise<User> {
     let user: any = this.cacheService.getCachedUserById(id);
     console.log('cached user:', user);
-    if (user) return of(user);
+    if (user) return new Promise((resolve) => resolve(user));
 
     console.log('GET user by id...');
     const http = this.http.get<User>(`${this.apiUrl}/users/${id}`);
 
-    http.subscribe({
-      next: (user: User) => this.cacheService.storeUser(user),
-      error: (err: any) => console.error('error getting user by id:', err)
-    })
-
-    // return this.http
-    //   .get<User>(`${this.apiUrl}/users/${id}`)
-    //   .pipe(map((data: any) => data.data));
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (user: User) => {
+          this.cacheService.storeUser(user);
+          console.log('user retrieved:', user);
+          resolve(user);
+        },
+        error: (err: any) => console.error('error getting user by id:', err)
+      })
+    )
   }
 
-  updateUser(user: User): Observable<User> {
+  async updateUser(user: User): Promise<User> {
     console.log('PUT user...');
     const http = this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user)
     
-    http.subscribe({
-      next: (user: User) => this.cacheService.storeUser(user),
-      error: (err: any) => console.error('error updating user:', err)
-    })
-
-    return http;
-    // .pipe(map((data: any) => data.data));
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (user: User) => {
+          this.cacheService.storeUser(user);
+          console.log('user updated:', user);
+          resolve(user);
+        },
+        error: (err: any) => console.error('error updating user:', err)
+      })
+    )
   }
 
-  deleteUser(id: number): Observable<any> {
+  async deleteUser(id: number): Promise<any> {
     console.log('DELETE user...');
     const http = this.http.delete(`${this.apiUrl}/users/${id}`);
 
-    http.subscribe({
-      next: () => this.cacheService.deleteUser(id),
-      error: (err: any) => console.error('error deleting user:', err)
-    })
-
-    return http;
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: () => {
+          this.cacheService.deleteUser(id);
+          console.log('user deleted');
+          resolve(null);
+        },
+        error: (err: any) => console.error('error deleting user:', err)
+      })
+    )
   }
 
-  getMyUser(): Observable<User> {
+  async getMyUser(): Promise<User> {
     let user: any = this.cacheService.getCachedMyUser();
     console.log('cached my user:', user);
-    if (user) return of(user);
+    if (user) return new Promise((resolve) => resolve(user));
 
     console.log('GET my user...');
     const http = this.http.get<User>(`${this.apiUrl}/myUser`);
 
-    http.subscribe({
-      next: (user: User) => this.cacheService.storeMyUser(user),
-      error: (err: any) => console.error('error getting my user:', err)
-    })
-
-    return http;
-    // return this.http
-    //   .get<User>(`${this.apiUrl}/myUser`)
-    //   .pipe(map((data: any) => data.data));
+    return await new Promise((resolve) => 
+      http.subscribe({
+        next: (user: User) => {
+          this.cacheService.storeMyUser(user);
+          console.log('user retrieved:', user);
+          resolve(user);          
+        },
+        error: (err: any) => console.error('error getting my user:', err)
+      })
+    );
   }
 
-  updatePassword(
+  async updatePassword (
     oldPassword: string,
     newPassword: string
-  ): Observable<boolean> {
+  ): Promise<boolean> {
     // true if success, false if not
     console.log('PUT passsword');
-    return this.http
-      .post(
-        `${this.apiUrl}/myUser/updatepassword`,
-        {
-          newpassword: newPassword,
-          oldpassword: oldPassword,
-        },
-        { observe: 'response' }
-      )
-      .pipe(
-        map((res: any) => {
-          console.log(res);
-          return res.status === 200;
-        }),
-        catchError(() => of(false))
+    const http = this.http
+        .post(
+          `${this.apiUrl}/myUser/updatepassword`,
+          {
+            newpassword: newPassword,
+            oldpassword: oldPassword,
+          },
+          { observe: 'response' }
+        )
+        .pipe(
+          map((res: any) => {
+            console.log(res);
+            return res.status === 200;
+          }),
+          catchError(() => of(false))
+        );
+
+      return await new Promise((resolve) => 
+        http.subscribe({
+          next: (value: boolean) => resolve(value),
+          error: (err: any) => console.error('error updating password:', err)
+        })
       );
   }
 }
