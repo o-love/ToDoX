@@ -17,7 +17,7 @@
                         </div>
                         <i #dropdown (click)="openState(dropdown, state.id)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
-                    <app-state-detail *ngIf="stateOpened == state.id" [state]="state"></app-state-detail>
+                    <app-state-detail class="popup" *ngIf="stateOpened == state.id" [state]="state"></app-state-detail>
                 </ng-container>
                 <label *ngIf="states.length == 0" class="empty">No hay estados</label>
             </ng-container>

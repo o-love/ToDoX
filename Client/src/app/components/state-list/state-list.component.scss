@@ -11,6 +11,7 @@
     box-shadow: 0 0px 10px rgba($english-violet, .2);
     background-color: $white;
     z-index: 103;
+    overflow: hidden;
 
     padding: .4em .5em;
     color: $english-violet;
@@ -142,4 +143,9 @@
 .empty {
     font-size: 8pt;
     font-style: italic;
+}
+
+.popup {
+    position: fixed;
+    transform: translateX(90%);
 }

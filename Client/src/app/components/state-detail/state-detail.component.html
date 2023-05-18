@@ -1,5 +1,4 @@
 <form class="state" *ngIf="state" [formGroup]="form">
-    <i (click)="onClose()" class="bi bi-x"></i>
     <div class="content">
         <input #input (keyup)="onKeyUp($event)" formControlName="name" type="text" name="name">
         <hr class="divider">
