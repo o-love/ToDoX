@@ -183,7 +183,7 @@ export class CacheService {
     const mapTasks: Map<number, Task> = new Map(localStorage[TASKS_KEY] ? JSON.parse(localStorage[TASKS_KEY]) : '');
     let tasks: Task[] = Array.from(mapTasks.values());
     tasks = tasks.filter((task: Task) => task.tasklist_id == parseInt(listId));
-    return Array.from(mapTasks.values());
+    return tasks;
   }
 
   getCachedTaskById(id: number): Task | undefined {

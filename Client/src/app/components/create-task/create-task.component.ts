@@ -174,8 +174,8 @@ export class CreateTaskComponent implements Form, OnInit {
     this.resetErrors();
     if (this.checkErrors() || !this.selectedState) return;
   
-    let taskName: string = this.form.get('taskName')?.value;
-    let taskDescription: string = this.form.get('taskDescription')?.value;
+    let taskName: string = this.form.value.name;
+    let taskDescription: string = this.form.value.description;
     let selectedState: string = this.selectedState.id.toString();
     let startDate: Date = new Date();
     let dueDate: Date = new Date();
