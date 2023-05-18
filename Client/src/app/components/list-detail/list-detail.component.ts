@@ -27,9 +27,9 @@ export class ListDetailComponent implements OnChanges {
 
   boardId = this.route.snapshot.paramMap.get('boardId');
   
-  tasks: Task[] = [];
-  states: State[] = [];
-  labels: Label[] = [];
+  tasks: Task[] | undefined;
+  states: State[] | undefined;
+  labels: Label[] | undefined;
 
   selectedTask: number | null = null;
   selectedState: number | null = null;
@@ -62,7 +62,6 @@ export class ListDetailComponent implements OnChanges {
   // getters ------------------------------------------------------------------------
 
   private getTaskList() {
-    console.log('boardId: %d | taskListId: %d', this.boardId, this.taskListId);
     if (!this.boardId || !this.taskListId) return;
     console.log('loading tasklist %d...', this.taskListId);
     this.taskListService.getListById(this.boardId, this.taskListId).then((taskList: TaskList) => this.taskList = taskList);
@@ -70,19 +69,24 @@ export class ListDetailComponent implements OnChanges {
 
   private getStates() {
     if (!this.boardId || !this.taskListId) return;
-
     console.log('loading tasklist %d states...', this.taskListId);
+    const tasklist_id: string | null = this.taskListId;
+    this.states = undefined;
     this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).then(
-      (states: State[]) => this.states = states
+      (states: State[]) => {
+        if (tasklist_id == this.taskListId) this.states = states;
+      }
     );
   }
 
   private getTasks() {
     if (!this.boardId || !this.taskListId) return;
     console.log('loading tasklist %d tasks...', this.taskListId);
+    const tasklist_id: string | null = this.taskListId;
+    this.tasks = undefined;
     this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).then(
       (tasks: Task[]) => {
-        this.tasks = tasks;
+        if (tasklist_id == this.taskListId) this.tasks = tasks; 
       }
     );
   }
@@ -104,7 +108,6 @@ export class ListDetailComponent implements OnChanges {
 
   deleteTaskList() {
     if (!this.boardId || !this.taskListId) return;
-
     let $this = this;
     setTimeout(function() { $this.deleted.emit($this.taskListId?.toString()) }, 1000);
   }
@@ -113,7 +116,6 @@ export class ListDetailComponent implements OnChanges {
   
   editTask(task: Task): void {
     if (!this.boardId || !this.taskListId || !this.selectedTask) return;
-
     console.log('editing task %d...', this.selectedTask);
     this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date).then(
       (task: Task) => this.reload()

@@ -13,9 +13,9 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 export class ListDetailKanbanComponent implements OnChanges {
 
   @Input() selectedList: TaskList | null = null;
-  @Input() tasks!: Task[];
-  @Input() states!: State[];
-  @Input() labels!: Label[];
+  @Input() tasks: Task[] | undefined;
+  @Input() states: State[] | undefined;
+  @Input() labels: Label[] | undefined;
 
   @Output() taskDragged: EventEmitter<number | null> = new EventEmitter();
   @Output() edited: EventEmitter<Task> = new EventEmitter();
@@ -35,10 +35,12 @@ export class ListDetailKanbanComponent implements OnChanges {
   // update -------------------------------------------------------------------------
 
   updateStates() {
+    if (!this.states || !this.tasks) return;
+
     this.states.forEach((state) => {
       let tasks: Task[] = [];
 
-      this.tasks.forEach((task) => {
+      if (this.tasks) this.tasks.forEach((task) => {
         if (task.state_id == state.id) tasks.push(task);
       });
 

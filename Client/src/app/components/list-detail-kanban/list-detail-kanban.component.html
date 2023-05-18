@@ -1,5 +1,5 @@
 <div class="kanban-layout">
-    <div class="states" cdkDropListGroup>
+    <div *ngIf="states && tasks" class="states" cdkDropListGroup>
         <ng-container *ngFor="let state of states">
             <div class="state">
                 <div class="title"><h3 class="name">{{ state.name }}</h3><!--<i class="bi bi-three-dots-vertical"></i>--></div>
@@ -18,4 +18,5 @@
         </ng-container>
         <i class="bi bi-plus-circle-fill"></i>
     </div>
+    <app-spinner class="spinner-container" *ngIf="!states || !tasks"></app-spinner>
 </div>

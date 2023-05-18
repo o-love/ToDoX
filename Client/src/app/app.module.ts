@@ -52,6 +52,7 @@ import { BoardSettingsComponent } from './components/board-settings/board-settin
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { ListSettingsComponent } from './components/list-settings/list-settings.component';
 import { LayoutSelectorComponent } from './components/layout-selector/layout-selector.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { LayoutSelectorComponent } from './components/layout-selector/layout-sel
     TaskDetailComponent,
     ListSettingsComponent,
     LayoutSelectorComponent,
+    SpinnerComponent,
   ],
   imports: [
     // CommonModule,
