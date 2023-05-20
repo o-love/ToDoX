@@ -25,6 +25,20 @@
                 <label class="name">{{ 'global.dueDate' | translate }}</label>
                 <input #labels class="input" [min]="startDate" type="date" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}">
             </div>
+
+            <!-- Repetition {{ 'global.repetition' | translate }}-->
+            <div class="form-group">
+                <label class="name">Periodicity</label>
+                <select class="input" formControlName="periodicity">
+                    <option value="none">None</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="every-odd-day">Every odd day</option>
+                    <option value="every-even-day">Every even day</option>
+                </select>
+            </div>
         </div>
 
         <!-- <div class="inline-group"> -->

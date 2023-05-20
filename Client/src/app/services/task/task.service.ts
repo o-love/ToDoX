@@ -9,6 +9,7 @@ import { CacheService } from '../cache/cache.service';
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
+  private taskPeriodicity: string = '';
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
@@ -56,7 +57,7 @@ export class TaskService {
   async createTask(
     boardId: string, listId: string, taskName: string, taskDescription: string,
     stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null, 
-    state_position: number = 0
+    periodicity: string, state_position: number = 0
   ): Promise<Task> {
     console.log('POST task...');
     const http = this.http.post<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`, {
@@ -67,7 +68,8 @@ export class TaskService {
         selectedLabels: selectedLabels,
         start_date: startDate,
         due_date: dueDate,
-        state_position: state_position
+        state_position: state_position,
+        recurring_period: periodicity
     });
 
     return await new Promise((resolve) =>
@@ -85,7 +87,7 @@ export class TaskService {
   // Updates a task by id, list id and board id - REV opt with createTask
   async editTask(
     boardId: string, listId: string, taskId: string, taskName: string, taskDescription: string,
-    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null
+    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null, periodicity: string
   ): Promise<Task> {
     console.log('PUT task %d...', taskId);
     const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, {
@@ -94,7 +96,8 @@ export class TaskService {
       state_id: stateId,
       selectedLabels: selectedLabels,
       start_date: startDate,
-      due_date: dueDate
+      due_date: dueDate,
+      recurring_period: periodicity
     });
 
     return await new Promise((resolve) => 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -38,16 +39,15 @@ class Task extends Model
 
     public function isPastDue()
     {
-    if ($this->labels()->where('type', 'date')->exists()) {
-        $dateLabel = $this->labels()->where('type', 'date')->first();
-        $dateValue = $dateLabel->typevalue;
+        if ($this->labels()->where('type', 'date')->exists()) {
+            $dateLabel = $this->labels()->where('type', 'date')->first();
+            $dateValue = $dateLabel->typevalue;
 
-        // Comparar la fecha de fin con la fecha actual
-        if (strtotime($dateValue) < time()) {
-            return true;
+            if (strtotime($dateValue) < time()) {
+                return true;
+            }
         }
-    }
 
-    return false;
+        return false;
     }
 }

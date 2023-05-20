@@ -18,7 +18,7 @@ export class ListDetailComponent implements OnChanges {
   taskList: TaskList | null = null;
 
   // expected to change / delete after refactoring user service
-  @Input() usersId: {[key: number]: User} = {};
+  @Input() usersId: { [key: number]: User } = {};
   @Input() user: User | null = null;
   @Input() taskListId: string | null = null;
 
@@ -26,7 +26,7 @@ export class ListDetailComponent implements OnChanges {
   @Output() deleted: EventEmitter<string> = new EventEmitter();
 
   boardId = this.route.snapshot.paramMap.get('boardId');
-  
+
   tasks: Task[] | undefined;
   states: State[] | undefined;
   labels: Label[] | undefined;
@@ -41,9 +41,9 @@ export class ListDetailComponent implements OnChanges {
   showTaskDetail: boolean = false;
   showCreateState: boolean = false;
 
-  layouts: {[key: number]: boolean} = { 0: false, 1: true };
+  layouts: { [key: number]: boolean } = { 0: false, 1: true };
 
-  constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService) {}
+  constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService) { }
 
   // ng -----------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ export class ListDetailComponent implements OnChanges {
   reload() {
     this.getStates();
     this.getTasks();
-  } 
+  }
 
   // getters ------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ export class ListDetailComponent implements OnChanges {
     this.tasks = undefined;
     this.taskService.getTasksByTaskListId(this.boardId, this.taskListId).then(
       (tasks: Task[]) => {
-        if (tasklist_id == this.taskListId) this.tasks = tasks; 
+        if (tasklist_id == this.taskListId) this.tasks = tasks;
       }
     );
   }
@@ -110,7 +110,7 @@ export class ListDetailComponent implements OnChanges {
   deleteTaskList() {
     if (!this.boardId || !this.taskListId) return;
     let $this = this;
-    setTimeout(function() { $this.deleted.emit($this.taskListId?.toString()) }, 1000);
+    setTimeout(function () { $this.deleted.emit($this.taskListId?.toString()) }, 1000);
   }
 
   // states--------------------------------------------------------------------------
@@ -120,17 +120,17 @@ export class ListDetailComponent implements OnChanges {
     console.log('editing state %d...', state.id);
     this.stateService.editState(this.taskListId, state.id, state.name).then(
       (state: State) => {
-        this.getStates(); 
+        this.getStates();
       }
     )
   }
 
   // tasks --------------------------------------------------------------------------
-  
+
   editTask(task: Task): void {
     if (!this.boardId || !this.taskListId || !this.selectedTask) return;
     console.log('editing task %d...', this.selectedTask);
-    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date).then(
+    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date, task.recurring_period).then(
       (task: Task) => this.reload()
     );
   }

@@ -45,7 +45,8 @@ export class CreateTaskComponent implements Form, OnInit {
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private stateService: StateService, private taskService: TaskService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
-      description: ['', [Validators.required, Validators.maxLength(200)]]
+      description: ['', [Validators.required, Validators.maxLength(200)]],
+      periodicity: ['none']
     })
   }
 
@@ -160,11 +161,11 @@ export class CreateTaskComponent implements Form, OnInit {
 
   // tasks --------------------------------------------------------------------------
 
-  private createTask(name: string, description: string, stateId: string, startDate: Date, dueDate: Date) {
+  private createTask(name: string, description: string, stateId: string, startDate: Date, dueDate: Date, periodicity: string) {
     if (!this.taskListId || !this.boardId) return;
 
     this.loading = true;
-    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate).then(
+    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate, periodicity).then(
       (task: Task) => {
         this.onChanges();
         this.onClose();
@@ -187,6 +188,8 @@ export class CreateTaskComponent implements Form, OnInit {
     if (this.startDate) startDate = new Date(this.startDate);
     if (this.dueDate) dueDate = new Date(this.dueDate);
 
-    this.createTask(taskName, taskDescription, selectedState, startDate, dueDate);
+    let taskPeriodicity: string = this.form.value.periodicity;
+
+    this.createTask(taskName, taskDescription, selectedState, startDate, dueDate, taskPeriodicity);
   }
 }
