@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date', 'state_position'];
+    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date', 'state_position', 'recurring_period'];
     protected $table = 'task';
     // protected $primaryKey = "uuid";
 
@@ -49,15 +49,5 @@ class Task extends Model
     }
 
     return false;
-
-    // Try on front - rev api connection
-    // $.get('/api/tasks/' + taskId, function(task) {
-    //     if (task.isOverdue) {
-    //         $('p[data-task-id="' + taskId + '"]').addClass('overdue');
-    //     }
-    // });
-    // .overdue {
-    //     color: red;
-    // }
     }
 }
