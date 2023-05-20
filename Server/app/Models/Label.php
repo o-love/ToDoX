@@ -17,4 +17,10 @@ class Label extends Model
     {
         return $this->belongsToMany(Task::class, 'task_label', 'label_id', 'task_id');
     }
+
+    // A State has many TaskLists through TaskListLabel
+    public function taskLists()
+    {
+        return $this->belongsToMany(TaskList::class, 'tasklist_label', 'label_id', 'tasklist_id');
+    }
 }

@@ -35,6 +35,20 @@
                     <label>{{ 'global.dueDate' | translate }}</label>
                     <input type="date" [min]="startDate" class="date-input input-2" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
                 </div>
+
+                <!-- Repetition -->
+                <div class="label-input">
+                    <label>Periodicidad</label>
+                    <select class="input" name="periodicity" [(ngModel)]="recurring_period" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
+                        <option value="none">None</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="every-odd-day">Every odd day</option>
+                        <option value="every-even-day">Every even day</option>
+                    </select>
+                </div>                
             </div>
             <div class="bottom">
                 <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar</div>

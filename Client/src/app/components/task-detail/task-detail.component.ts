@@ -43,6 +43,7 @@ export class TaskDetailComponent implements OnInit, Form {
   selectedState: State | null = null;
   startDate: Date | null = null;
   dueDate: Date | null = null;
+  recurring_period: string | null = null;
 
   showStates: boolean = false;
 
@@ -73,6 +74,7 @@ export class TaskDetailComponent implements OnInit, Form {
         this.task = task;
         this.startDate = this.task.start_date;
         this.dueDate = this.task.due_date;
+        this.recurring_period = this.task.recurring_period;
         this.form.setValue({name: this.task.name, description: this.task.description});
       }
     )
@@ -187,6 +189,7 @@ export class TaskDetailComponent implements OnInit, Form {
     
     this.task.name = this.form.get('name')?.value;
     this.task.description = this.form.get('description')?.value;
+    if (this.recurring_period) this.task.recurring_period = this.recurring_period || 'none';
     if (this.selectedState) this.task.state_id = this.selectedState.id;
     if (this.startDate) this.task.start_date = new Date(this.startDate);
     if (this.dueDate) this.task.due_date = new Date(this.dueDate);

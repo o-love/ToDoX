@@ -29,6 +29,7 @@ class TaskController extends Controller
         //     'selectedLabels' => $request->input('selectedLabels'),
         //     'due_date' => $request->input('start_date'),
         //     'start_date' => $request->input('due_date'),
+        //     'recurring_period' => $request->input('recurring_period'),
         // ]);
 
         $start_date = $this->convertDate($request->input('start_date'));
@@ -43,6 +44,7 @@ class TaskController extends Controller
             'due_date' => $due_date,
             'start_date' => $start_date,
             'state_position' => $request->input('state_position'),
+            'recurring_period' => $request->input('recurring_period'),
         ]);
         $task->save();
 
@@ -91,6 +93,7 @@ class TaskController extends Controller
             'due_date' => $due_date,
             'start_date' => $start_date,
             'state_position' => $request->input('state_position'),
+            'recurring_period' => $request->input('recurring_period')
         ]);
 
         return response()->json($task, 201);

@@ -8,4 +8,5 @@ export interface Task {
   due_date: Date | null;
   isEditing: boolean;
   state_position: number;
+  recurring_period: string;
 }
