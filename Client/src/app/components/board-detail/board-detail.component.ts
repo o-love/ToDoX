@@ -6,7 +6,7 @@ import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
 import { User } from 'src/app/models/user';
 import { BoardService } from 'src/app/services/board/board.service';
-import { TaskListService } from 'src/app/services/taskList/task-list.service';
+import { TaskListService } from 'src/app/services/task-list/task-list.service';
 import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 
 @Component({

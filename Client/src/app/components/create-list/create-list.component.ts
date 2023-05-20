@@ -3,7 +3,7 @@ import { TaskList } from 'src/app/models/taskList';
 import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TaskListService } from 'src/app/services/taskList/task-list.service';
+import { TaskListService } from 'src/app/services/task-list/task-list.service';
 
 @Component({
   selector: 'app-create-list',

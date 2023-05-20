@@ -5,7 +5,7 @@ import { State } from 'src/app/models/state';
 import { TaskService } from 'src/app/services/task/task.service';
 import { Label } from 'src/app/models/label';
 import { User } from 'src/app/models/user';
-import { TaskListService } from 'src/app/services/taskList/task-list.service';
+import { TaskListService } from 'src/app/services/task-list/task-list.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StateService } from 'src/app/services/state/state.service';
 
