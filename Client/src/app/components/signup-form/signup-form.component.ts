@@ -1,16 +1,16 @@
-import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss']
 })
-export class SignupFormComponent implements Form {
+export class SignupFormComponent implements Form, OnInit {
   signupForm: FormGroup;
 
   @ViewChildren('label') labels!: QueryList<ElementRef>;
@@ -28,6 +28,10 @@ export class SignupFormComponent implements Form {
       password: ['', [Validators.required, PasswordValidator.strong(), Validators.maxLength(70)]],
       repeatPassword: ['', [Validators.required, Validators.maxLength(70)]]
     });
+  }
+
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) this.router.navigate(['/profile']); 
   }
 
   checkErrors(): boolean {
@@ -82,13 +86,8 @@ export class SignupFormComponent implements Form {
 
     this.loading = true;
     this.authService.register(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password)
-    .subscribe({
-      next: (response) => {
-        console.log("account created", response);
-        // this.router.navigate(['/profile']);
-        this.router.navigate(['/login']);
-      },
-      error: (error) => console.log(error)
-    });
+    .then(
+      (response) => this.router.navigate(['/profile'])
+    );
   }
 }

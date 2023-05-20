@@ -12,27 +12,48 @@ import { TaskList } from 'src/app/models/taskList';
 export class ListDetailTableComponent implements OnChanges {
 
   @Input() selectedList: TaskList | null = null;
-  @Input() tasks!: Task[];
-  @Input() states!: State[];
-  @Input() labels!: Label[];
+  @Input() tasks: Task[] | undefined;
+  @Input() states: State[] | undefined;
+  @Input() labels: Label[] | undefined;
 
   stateNames: {[key: number]: string} = {};
-  showPopup: boolean = false; 
+  showStates: boolean = false;
 
-  @Output() openCreateTaskPopup = new EventEmitter<State | null>();
-  @Output() openTaskDetailPopup = new EventEmitter<Task>();
+  @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateTask: EventEmitter<null> = new EventEmitter();
+  @Output() openCreateState: EventEmitter<void> = new EventEmitter();
+
+  // ng -----------------------------------------------------------------------------
 
   ngOnChanges(): void {
-    this.states.forEach((state) => {
+    if (this.states) this.states.forEach((state) => {
       this.stateNames[state.id] = state.name;
     });
   }
 
+  // tasks --------------------------------------------------------------------------
+
   createTask() {
-    this.openCreateTaskPopup.emit(null);
+    this.openCreateTask.emit(null);
   }
 
-  editTask(task: Task) {
-    this.openTaskDetailPopup.emit(task);
+  viewTask(task: Task) {
+    this.openTaskDetail.emit(task.id);
+  }
+
+  // modals -------------------------------------------------------------------------
+  
+  hideModals() {
+    if (this.showStates) this.showStates = false;
+  }
+
+  openStateList() {
+    this.showStates = true;
+  }
+
+  // outputs ------------------------------------------------------------------------
+
+  addNewState() {
+    this.openCreateState.emit();
   }
 }

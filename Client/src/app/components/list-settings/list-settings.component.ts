@@ -12,9 +12,10 @@ export class ListSettingsComponent implements Form, OnChanges {
   form: FormGroup;
 
   @Input() list: TaskList | null = null; 
+  
   @Output() close = new EventEmitter<void>();
-  @Output() listEdited = new EventEmitter<TaskList>();
-  @Output() deleteList = new EventEmitter<void>();
+  @Output() edited = new EventEmitter<TaskList>();
+  @Output() deleted = new EventEmitter<void>();
 
   @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
   @ViewChild('savebtn') savebtn!: ElementRef<any>;
@@ -29,6 +30,8 @@ export class ListSettingsComponent implements Form, OnChanges {
     });
   }
 
+  // ng -----------------------------------------------------------------------------
+
   ngOnChanges() {
     if (!this.list) return;
 
@@ -37,6 +40,34 @@ export class ListSettingsComponent implements Form, OnChanges {
       description: this.list.description
     })
   }
+
+  // outputs ------------------------------------------------------------------------
+
+  onClose() {
+    this.close.emit();
+  }
+
+  onDelete(btn: HTMLElement) {
+    if (!this.list) return;
+    btn.style.backgroundColor = "rgba(255, 113, 113)";
+    btn.style.color = "white";
+    this.loading = true;
+    this.deleted.emit();
+  }
+
+  // keys ---------------------------------------------------------------------------
+
+  onKeyUp(event: any) {
+    clearTimeout(this.timeout);
+    let $this = this;
+    this.timeout = setTimeout(function() {
+      if (event.keyCode != 13) {
+        $this.save();
+      }
+    }, 1000);
+  }
+
+  // forms --------------------------------------------------------------------------
 
   checkErrors(): boolean {
     let errors: boolean = false;
@@ -63,27 +94,7 @@ export class ListSettingsComponent implements Form, OnChanges {
     input.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
 
-  onClose() {
-    this.close.emit();
-  }
-
-  onDelete(btn: HTMLElement) {
-    if (!this.list) return;
-    btn.style.backgroundColor = "rgba(255, 113, 113)";
-    btn.style.color = "white";
-    this.loading = true;
-    this.deleteList.emit();
-  }
-
-  onKeyUp(event: any) {
-    clearTimeout(this.timeout);
-    let $this = this;
-    this.timeout = setTimeout(function() {
-      if (event.keyCode != 13) {
-        $this.save();
-      }
-    }, 1000);
-  }
+  // submit -------------------------------------------------------------------------
 
   save() {
     this.resetErrors();
@@ -95,6 +106,6 @@ export class ListSettingsComponent implements Form, OnChanges {
     this.list.description = this.form.get('description')?.value;
 
     console.log('new list:', this.list);
-    this.listEdited.emit(this.list);
+    this.edited.emit(this.list);
   }
 }

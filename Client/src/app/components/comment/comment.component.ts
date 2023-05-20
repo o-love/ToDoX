@@ -1,11 +1,11 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { TaskCommentService } from 'src/app/services/task-comment-service/task-comment-service.service';
+import { TaskCommentService } from 'src/app/services/task-comment/task-comment.service';
 import { TaskComment } from 'src/app/models/taskComment';
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-comment',
@@ -74,46 +74,40 @@ export class CommentComponent implements OnInit {
 
   private getComments() {
     if (!this.boardId || !this.taskListId || !this.task) return;
-    this.taskCommentService.getTaskComments(parseInt(this.boardId), parseInt(this.taskListId), this.task.id).subscribe({
-      next: (comments: TaskComment[]) => {
-        this.comments = comments;
-        console.log('task comments retrieved:', comments);
-      },
-      error: (error: any) => console.error('error retrieving comments:', error)
-    })
+    this.taskCommentService.getTaskComments(parseInt(this.boardId), parseInt(this.taskListId), this.task.id).then(
+      (comments: TaskComment[]) => this.comments = comments
+    );
   }
 
   addComment(message: string) {
     if (!this.boardId || !this.taskListId || !this.task || !this.user) return;
-    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.task.id, message).subscribe({
-      next: (comment: TaskComment) => {
+    this.taskCommentService.addTaskComment(parseInt(this.boardId), parseInt(this.taskListId), this.user.id, this.task.id, message,).then(
+      (comment: TaskComment) => {
         this.comments.push(comment);
         this.form.controls['text'].setValue('');
         this.form.controls['text'].enable();
-        console.log('saved comment:', comment);
-      },
-      error: (error: any) => console.error('error adding comment:', error)
-    })
+      }
+    )
   }
 
-  editComment(comment: TaskComment, message: string) {
-    comment.content = message;
-    this.taskCommentService.updateTaskComment(comment.id, comment.content).subscribe({
-      next: (comment: TaskComment) => {
-        this.comments[this.comments.indexOf(comment)] = comment;
-        console.log('saved comment edit:', comment);
-      },
-      error: (error: any) => console.error('error editing comment:', error)
-    })
-  }
+  // editComment(comment: TaskComment, message: string) {
+  //   comment.content = message;
+  //   this.taskCommentService.updateTaskComment(comment.id, comment.content).subscribe({
+  //     next: (comment: TaskComment) => {
+  //       this.comments[this.comments.indexOf(comment)] = comment;
+  //       console.log('saved comment edit:', comment);
+  //     },
+  //     error: (error: any) => console.error('error editing comment:', error)
+  //   })
+  // }
 
-  deleteComment(comment: TaskComment) {
-    this.taskCommentService.deleteTaskComment(comment.id).subscribe({
-      next: () => {
-        this.comments.splice(this.comments.indexOf(comment), 1);
-        console.log('deleted comment:', comment);
-      },
-      error: (error: any) => console.error('error deleting comment:', error)
-    })
-  }
+  // deleteComment(comment: TaskComment) {
+  //   this.taskCommentService.deleteTaskComment(comment.id).subscribe({
+  //     next: () => {
+  //       this.comments.splice(this.comments.indexOf(comment), 1);
+  //       console.log('deleted comment:', comment);
+  //     },
+  //     error: (error: any) => console.error('error deleting comment:', error)
+  //   })
+  // }  
 }

@@ -1,0 +1,89 @@
+@import '../../../assets/styles/colours';
+
+.state {
+    display: flex;
+    flex-direction: column;
+    width: 130px;
+    height: fit-content;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba($english-violet, .2);
+    background-color: $white;
+    z-index: 104;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+
+    padding: .5em;
+    color: $english-violet;
+
+    .bi-x {
+        font-size: 10pt;
+        align-self: flex-end;
+        margin: -.3em -.3em 0 0;
+
+        cursor: pointer;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        padding-inline: 2%;
+
+        input[type=text] {
+            padding: 2px 5px;
+            border-radius: 2px;
+            border: 1px solid rgba($english-violet, 0.4);
+            background-color: rgba($english-violet, 0.05);
+            color: $tropical-indigo;
+            font-size: 8pt;
+            margin-bottom: 6%;
+            
+            &:focus { 
+                outline: none; 
+                background-color: rgba($tropical-indigo, 0.2);
+            }
+        }
+
+        .divider {
+            margin: 2%;
+            padding: 0;
+        }
+
+        .delete-btn {
+            display: flex;
+            align-items: center;
+            font-size:8pt;
+            margin-top: 5%;
+            padding: .2em .5em;
+            color: $bittersweet;
+            border-radius: 5px;
+            text-transform: uppercase;
+
+            .bi {
+                font-size: 8pt;
+                margin-right: .5em;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            label:hover {
+                cursor: pointer;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba($bittersweet, .2);
+            }
+
+            .spinner {
+                margin-left: 8px;
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
+}

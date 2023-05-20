@@ -19,7 +19,7 @@
         padding: 5px;
         border-radius: 5px;
         font-size: 10pt;
-        border: 2px solid rgba($english-violet, .2);
+        border: 1px solid rgba($english-violet, .7);
         background-color: rgba($tropical-indigo, 0.05);
         color: $tropical-indigo;
         
@@ -113,7 +113,8 @@
                 .select-input {
                     display: flex;
                     align-items: center;
-                    border: 2px solid rgba($english-violet, .2);
+                    border: 1px solid rgba($english-violet, .7);
+                    overflow: hidden;
 
                     .state-balloon {
                         display: flex;
@@ -123,6 +124,7 @@
                         margin-left: .6em;
                         min-width: fit-content;
                         width: 8em;
+                        max-width: 8em;
                         box-sizing: border-box;
                         padding: .8em .6em;
                         border-radius: 1.2em;
@@ -132,6 +134,15 @@
                         .state-name {
                             font-weight: 500;
                             margin: 0 0 0 .5em;
+                            width: 6em;
+                            max-width: 6em;
+                            display: flex;
+                            align-items: center;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+
+                            &:hover { cursor: pointer; }
                         }
 
                         .bi { font-size: 8pt; }
@@ -163,7 +174,7 @@
                     }               
 
                     .date-input {
-                        border: 2px solid rgba($english-violet, .2);
+                        border: 1px solid rgba($english-violet, .7);
                         background-color: rgba($tropical-indigo, 0.05);
                         color: $tropical-indigo;
                 
@@ -190,13 +201,8 @@
                         color: $white;
                     }
 
-                    .bi {
-                        margin-left: .5em;
-                        font-size: 8pt;
-                    }
-
                     .spinner {
-                        margin-left: -8px;
+                        margin-left: -12px;
                         width: 25px;
                         height: 25px;
                     }

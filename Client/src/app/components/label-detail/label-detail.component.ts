@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { Label } from 'src/app/models/label';
 
 @Component({
@@ -17,11 +17,11 @@ export class LabelDetailComponent implements OnInit {
   }
 
   getLabels(): void {
-    this.taskService.getLabels().subscribe(
-      labels => {
-        this.labels = labels;
-        console.log("Retrieved labels", this.labels);
-      }
-    );
+    // this.taskService.getLabels().subscribe(
+    //   labels => {
+    //     this.labels = labels;
+    //     console.log("Retrieved labels", this.labels);
+    //   }
+    // );
   }
 }

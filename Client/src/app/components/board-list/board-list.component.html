@@ -1,22 +1,25 @@
 <h1 class="title" translate>boards.title</h1>
 
-<div class="content">
-    <ng-container *ngFor="let board of boards">
-        <div class="board" *ngIf="boards.includes(board)">
-            <div class="board-info" (click)="viewBoard(board.id)">
-                <div class="board-img"></div>
-                <label class="board-name">{{ board.name }}</label> 
+<div class="board-container" *ngIf="!loading">
+    <div class="content">
+        <ng-container *ngFor="let board of  boards">
+            <div class="board" *ngIf="boards.includes(board)">
+                <div class="board-info" (click)="viewBoard(board.id)">
+                    <div class="board-img"></div>
+                    <label class="board-name">{{ board.name }}</label> 
+                </div>
+                <div class="btn-section">
+                    <img id="delete-btn" class="board-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteBoard(board.id)">
+                </div>
             </div>
-            <div class="btn-section">
-                <img id="delete-btn" class="board-btn" src="../../../assets/icons/Trashcan.svg" (click)="deleteBoard(board.id)">
-            </div>
-        </div>
-    </ng-container>
+        </ng-container>
+    </div>
+    <button class="add-btn qt-btn" (click)="openAddPopup()" translate>boards.addBtn</button>
 </div>
-<button class="add-btn qt-btn" (click)="showAddPopup = true" translate>boards.addBtn</button>
+<app-spinner *ngIf="loading"></app-spinner>
 
-<div class="overlay" *ngIf="showAddPopup" (click)="hidePopup()"></div>
-<div class="popup" *ngIf="showAddPopup">
-    <app-create-board *ngIf="showAddPopup" (boardCreated)="addBoard($event)"
-        (closePopup)="showAddPopup = false"></app-create-board>
+<div class="overlay" *ngIf="show()" (click)="hidePopup()"></div>
+<div class="popup" *ngIf="show()">
+    <app-create-board *ngIf="show()" (boardCreated)="addBoard()"
+        (closePopup)="hidePopup()"></app-create-board>
 </div>

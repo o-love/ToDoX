@@ -1,12 +1,12 @@
-<div class="create-state" (ngSubmit)="onSubmit()" [formGroup]="stateForm">
-    <div class="top">
+<form class="create-state" (ngSubmit)="onSubmit()" [formGroup]="stateForm">
+    <div class="form-header">
         <h4 class="title">Crear estado</h4>
-        <i class="bi bi-arrow-left"></i>
+        <img class="close-btn" src="../../../assets/icons/IoChevronBackCircle.svg" (click)="onClose()">
     </div>
-    <div class="body">
-        <input #input type="text" formControlName="name" placeholder="State name">
+    <div class="form-body">
+        <input #input type="text" formControlName="name" placeholder="{{ 'global.name' | translate }}">
     </div>
-    <div class="bottom">
-        <button class="btn" type="submit">{{ 'global.ok' | translate }}</button>
+    <div class="buttons">
+        <button class="btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.ok' | translate }}</button>
     </div>
-</div>
+</form>

@@ -2,31 +2,23 @@
   <div class="wallpaper"></div>
 
   <div class="header">
-    <div *ngIf="selectedList" class="info">
-      <div class="top"><h3 class="name">{{ selectedList.name }}</h3><i class="bi bi-pencil-square" (click)="openSettingsPopup()"></i></div>
-      <p class="description">{{ selectedList.description }}</p>
+    <div *ngIf="taskList" class="info">
+      <div class="top"><h3 class="name">{{ taskList.name }}</h3><i class="bi bi-pencil-square" (click)="openSettings()"></i></div>
+      <p class="description">{{ taskList.description }}</p>
     </div>
-    <div #select class="layout-select closed">
-      <div class="select-btn" (click)="selectActive()">
-        <span #title class="placeholder-text">Kanban Layout</span>
-        <i #icon class="icon icon-arrow-down"></i>
-      </div>
-      <ul class="option-list">
-        <li #option #table id="table" class="option closed" (click)="selectLayout(tableOption)"><span class="left"><i class="icon icon-list"></i>Table Layout</span><i class="icon icon-check"></i></li>
-        <li #option #kanban id="kanban" class="option closed checked" (click)="selectLayout(kanbanOption)"><span class="left"><i class="icon icon-chart"></i>Kanban Layout</span><i class="icon icon-check"></i></li>
-      </ul>
-    </div>
+    <app-layout-selector class="layout-select" (selection)="selectLayout($event)"></app-layout-selector>
   </div>
 
   <div class="layout">
-    <app-list-detail-table id="table-layout" *ngIf="layouts.get('TABLE LAYOUT')" (openCreateTaskPopup)="openCreateTaskPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
-    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts.get('KANBAN LAYOUT')" (taskEdited)="unrestrictedEditTask($event)" (taskDragged)="selectTask($event)" (stateChanged)="changeTaksState($event, false)" (openCreateTaskPopup)="openCreateTaskPopup($event)" (openTaskDetailPopup)="openTaskDetailPopup($event)" [selectedList]="selectedList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban>
+    <app-list-detail-table id="table-layout" *ngIf="layouts[0]" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
+    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts[1]" (deletedState)="reload()" (edited)="editTask($event)" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" (editedState)="editState($event)" (edited)="editTask($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban> 
   </div>
 </div>
 
-<div class="overlay" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup" (click)="closePopup()"></div>
-<div class="popup" *ngIf="showCreateTaskPopup || showTaskDetailPopup || showSettingsPopup">
-  <app-create-task *ngIf="showCreateTaskPopup" (taskCreated)="reload()" (close)="closePopup()" [boardId]="boardId" [taskListId]="taskListId" [states]="states" [labels]="labels" [selectedState]="selectedState"></app-create-task>
-  <app-task-detail *ngIf="showTaskDetailPopup" (close)="closePopup()" (stateChanged)="changeTaksState($event, true)" (editTask)="editTask($event)" (deleteTask)="deleteTask($event)" [user]="user" [usersId]="usersId" [boardId]="boardId" [taskListId]="taskListId" [task]="selectedTask" [states]="states"></app-task-detail>
-  <app-list-settings *ngIf="showSettingsPopup" (deleteList)="deleteTaskList()" (listEdited)="editTaskList($event)" (close)="closePopup()" [list]="selectedList"></app-list-settings>
+<div class="overlay" *ngIf="show()" (click)="hideModals()"></div>
+<div class="popup" *ngIf="show()">
+  <app-create-task *ngIf="showCreateTask" (changes)="reload()" (close)="hideModals()" [stateId]="selectedState"></app-create-task>
+  <app-create-state *ngIf="showCreateState" (newState)="reload()" (close)="hideModals()"></app-create-state>
+  <app-task-detail *ngIf="showTaskDetail" (changes)="reload()" (close)="hideModals()" (edited)="editTask($event)" (deleted)="deleteTask($event)" [taskId]="selectedTask" [user]="user" [usersId]="usersId"></app-task-detail>
+  <app-list-settings *ngIf="showSettings" (deleted)="deleteTaskList()" (edited)="editTaskList($event)" (close)="hideModals()" [list]="taskList"></app-list-settings>
 </div>

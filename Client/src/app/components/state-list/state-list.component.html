@@ -9,20 +9,21 @@
                 <ng-container *ngFor="let state of states">
                     <div class="select-card state-card">
                         <div class="left">
-                            <input type="checkbox" [ngModel]="options[state.id]" (click)="selectState(state)">
+                            <input *ngIf="select" type="checkbox" [ngModel]="options[state.id]" (click)="selectState(state)">
                             <div class="balloon">
                                 <i class="bi bi-circle-fill"></i>
                                 <label class="name">{{ state.name }}</label>
                             </div>
                         </div>
-                        <!-- <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i> -->
+                        <i *ngIf="canEdit" #dropdown #element (click)="openState(element, state.id)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
+                    <app-state-detail class="popup" *ngIf="canEdit && stateOpened == state.id" [canClose]="false" (edited)="editState($event)" (deleted)="deleteState()" [state]="state"></app-state-detail>
                 </ng-container>
                 <label *ngIf="states.length == 0" class="empty">No hay estados</label>
             </ng-container>
         </div>
     </div>
-    <!-- <div class="bottom">
-        <div class="add-btn" (click)="addNew()"><i class="bi bi-plus-lg"></i><label>New</label></div>
-    </div> -->
+    <div class="bottom">
+        <div *ngIf="canEdit" class="add-btn" (click)="addNew()"><i class="bi bi-plus-lg"></i><label>New</label></div>
+    </div>
 </div>

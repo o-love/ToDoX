@@ -6,13 +6,13 @@
 
     <div class="form-body">
         <div class="form-group">
-            <label class="name" for="taskName">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
-            <input #labels #input class="input" type="text" name="taskName" formControlName="taskName">
+            <label class="name" for="name">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
+            <input #labels #input class="input" type="text" name="name" formControlName="name">
         </div>
 
         <div class="form-group">
-            <label class="name" for="taskDescription">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
-            <textarea #labels #input class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
+            <label class="name" for="description">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
+            <textarea #labels #input class="input" rows="6" cols="30" name="description" formControlName="description"></textarea>
         </div>
 
         <div class="inline-group">
@@ -30,7 +30,7 @@
         <!-- <div class="inline-group"> -->
             <div class="form-group" id="state">
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
-                <div class="select" id="state-select" (click)="toggleStates()">
+                <div class="select" id="state-select" (click)="openStates()">
                     <div #labels #state class="input select-btn">
                         <label class="placeholder-text" *ngIf="!selectedState">
                             Select a state...
@@ -42,11 +42,13 @@
                         </label>
                     </div>
                 </div>
-                <div class="popup-states" *ngIf="statesPopup">
-                    <app-state-list (close)="toggleStates()" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
+                <div class="popup-states" *ngIf="showStates">
+                    <app-state-list (close)="closeStates()" (changes)="onChanges()" (state)="selectState($event)" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
+            <!-- this will be uncommented when CRUD for labels is done !!!! -->
+            
             <!--
             <div class="form-group">
                 <label class="name">{{ 'labels.labels' | translate }}</label>

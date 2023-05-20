@@ -21,8 +21,8 @@
                         <label class="state-name">{{ selectedState.name }}</label>
                     </div>
                 </div>
-                <div *ngIf="statesPopup" class="popup">
-                    <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
+                <div *ngIf="showStates" class="popup">
+                    <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
                 </div>
                 <!-- aquí iría el selector de labels -->
                 <!-- <div class="select-input input-2"></div> -->
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
+                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar</div>
             </div>
         </div>
     </div>

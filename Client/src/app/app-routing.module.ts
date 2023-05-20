@@ -24,9 +24,11 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
 
   { path: 'boards', component: BoardListComponent },
-  { path: 'boards/:boardId', component: BoardDetailComponent, children: [
-    { path: 'lists/:listId', component: ListDetailComponent }
-  ]},
+  { path: 'boards/:boardId', component: BoardDetailComponent },
+  { path: 'boards/:boardId/lists/:listId', component: BoardDetailComponent }
+  // { path: 'boards/:boardId', component: BoardDetailComponent, children: [
+  //   { path: 'lists/:listId', component: ListDetailComponent }
+  // ]},
 ];
 
 @NgModule({

@@ -1,11 +1,11 @@
-<form class="create-board" (ngSubmit)="onSubmit()" [formGroup]="form">
+<form class="create-board" (ngSubmit)="createBoard()" [formGroup]="form">
   <div class="form-header">
     <h2 translate>boards.createBoard</h2>
     <img class="close-btn" src="../../../assets/icons/IoCloseCircle.svg" (click)="onClose()">
   </div>
   <div class="form-body">
-    <input #name type="text" [(ngModel)]="boardName" name="boardName" placeholder="{{ 'global.name' | translate }} *" (focus)="onFocus($event, name)" (blur)="onBlur($event, name)" formControlName="boardName">
-    <textarea rows="6" cols="30" [(ngModel)]="boardDescription" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="boardDescription"></textarea>
+    <input #name type="text" name="boardName" placeholder="{{ 'global.name' | translate }} *" formControlName="name">
+    <textarea rows="6" cols="30" name="boardDescription" placeholder="{{ 'global.description' | translate }}" formControlName="description"></textarea>
   </div>
   <div class="buttons">
     <button class="btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.ok' | translate }}</button>
