@@ -10,14 +10,15 @@
   </div>
 
   <div class="layout">
-    <app-list-detail-table id="table-layout" *ngIf="layouts[0]" (openCreateTask)="openCreateTask($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
-    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts[1]" (edited)="editTask($event)" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" (edited)="editTask($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban> 
+    <app-list-detail-table id="table-layout" *ngIf="layouts[0]" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
+    <app-list-detail-kanban id="kanban-layout" *ngIf="layouts[1]" (deletedState)="reload()" (edited)="editTask($event)" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" (editedState)="editState($event)" (edited)="editTask($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban> 
   </div>
 </div>
 
 <div class="overlay" *ngIf="show()" (click)="hideModals()"></div>
 <div class="popup" *ngIf="show()">
-  <app-create-task *ngIf="showCreateTask" (created)="reload()" (close)="hideModals()" [stateId]="selectedState"></app-create-task>
-  <app-task-detail *ngIf="showTaskDetail" (close)="hideModals()" (edited)="editTask($event)" (deleted)="deleteTask($event)" [taskId]="selectedTask" [user]="user" [usersId]="usersId"></app-task-detail>
+  <app-create-task *ngIf="showCreateTask" (changes)="reload()" (close)="hideModals()" [stateId]="selectedState"></app-create-task>
+  <app-create-state *ngIf="showCreateState" (newState)="reload()" (close)="hideModals()"></app-create-state>
+  <app-task-detail *ngIf="showTaskDetail" (changes)="reload()" (close)="hideModals()" (edited)="editTask($event)" (deleted)="deleteTask($event)" [taskId]="selectedTask" [user]="user" [usersId]="usersId"></app-task-detail>
   <app-list-settings *ngIf="showSettings" (deleted)="deleteTaskList()" (edited)="editTaskList($event)" (close)="hideModals()" [list]="taskList"></app-list-settings>
 </div>

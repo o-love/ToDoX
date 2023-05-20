@@ -264,6 +264,6 @@ export class CacheService {
   deleteState(id: number): void {
     let mapStates: Map<number, StateList> = new Map(localStorage[STATES_KEY] ? JSON.parse(localStorage[STATES_KEY]) : ''); 
     mapStates.delete(id);
-    localStorage[STATES_KEY] = mapStates;
+    localStorage[STATES_KEY] = JSON.stringify(Array.from(mapStates.entries()));
   }
 }

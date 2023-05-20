@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div *ngIf="showStates" class="popup">
-                    <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
+                    <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
                 </div>
                 <!-- aquí iría el selector de labels -->
                 <!-- <div class="select-input input-2"></div> -->

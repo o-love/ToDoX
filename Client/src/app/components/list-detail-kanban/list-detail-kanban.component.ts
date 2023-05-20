@@ -20,10 +20,15 @@ export class ListDetailKanbanComponent implements OnChanges {
   @Output() taskDragged: EventEmitter<number | null> = new EventEmitter();
   @Output() edited: EventEmitter<Task> = new EventEmitter();
 
+  @Output() editedState: EventEmitter<State> = new EventEmitter();
+  @Output() deletedState: EventEmitter<void> = new EventEmitter();
+
   @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
   @Output() openCreateTask: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateState: EventEmitter<void> = new EventEmitter();
 
   stateTasks: { [key: number]: Task[] } = {};
+  selectedState: State | null = null;
   draggingTask: Task | null = null;
 
   // ng -----------------------------------------------------------------------------
@@ -94,6 +99,16 @@ export class ListDetailKanbanComponent implements OnChanges {
     this.edited.emit(task);
   }
 
+  // states output ------------------------------------------------------------------
+
+  editState(state: State) {
+    this.editedState.emit(state);
+  }
+
+  deleteState() {
+    this.deletedState.emit();
+  }
+
   // modals output ------------------------------------------------------------------
  
   viewTask(task: Task) {
@@ -102,5 +117,15 @@ export class ListDetailKanbanComponent implements OnChanges {
 
   createTask(state: State) {
     this.openCreateTask.emit(state.id);
+  }
+
+  createState() {
+    this.openCreateState.emit();
+  }
+
+  // events -------------------------------------------------------------------------
+
+  selectState(state: State | null) {
+    this.selectedState = state;
   }
 }

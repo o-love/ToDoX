@@ -29,6 +29,8 @@ export class BoardDetailComponent implements OnInit {
   showSettings: boolean = false;
   showListDetail: boolean = false;
 
+  loading: boolean = false;
+
   @ViewChild('sidebar') sidebar!: ElementRef<any>;
 
   constructor(private boardService: BoardService, private taskListService: TaskListService, private route: ActivatedRoute, private router: Router, private userService: UserAuthService) {}
@@ -57,10 +59,12 @@ export class BoardDetailComponent implements OnInit {
 
   private getLists(): void {
     if (!this.boardId) return;
+    this.loading = true;
     console.log('loading taskslits from board %d...', this.boardId);
     this.taskListService.getTaskListsByBoardId(this.boardId).then(
       (lists: TaskList[]) => {
         this.lists = lists;
+        this.loading = false;
         if (this.lists.length > 0 && !this.selectedList) this.selectList(this.lists[0].id);
         else this.selectList(this.selectedList);
       }

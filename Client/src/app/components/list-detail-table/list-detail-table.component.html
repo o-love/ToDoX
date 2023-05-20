@@ -1,26 +1,28 @@
 <div class="table-layout">
-  <table class="task-table">
-    <thead>
-      <th translate>global.name</th>
-      <th translate>global.description</th>
-      <th translate>global.state</th>
-      <th translate>global.label</th>
-      <th translate>global.startDate</th>
-      <th translate>global.dueDate</th>
-    </thead>
-    <tbody>
+  <div class="task-table">
+    <div class="head">
+      <div class="th cell" translate>global.name</div>
+      <div class="th cell" translate>global.description</div>
+      <div class="th cell" translate>global.state <i class="bi bi-three-dots-vertical" (click)="openStateList()"></i>
+        <app-state-list class="popup" *ngIf="showStates" (new)="addNewState()" [canEdit]="true" [select]="false" (close)="hideModals()"></app-state-list>
+      </div>
+      <div class="th cell" translate>global.label <!--<i class="bi bi-three-dots-vertical"></i>--></div>
+      <div class="th cell" translate>global.startDate</div>
+      <div class="th cell" translate>global.dueDate</div>
+    </div>
+    <div class="tbody">
       <ng-container *ngFor="let task of tasks">
-        <tr>
-          <td>{{ task.name }}</td>
-          <td>{{ task.description }}</td>
-          <td>{{ stateNames[task.state_id] }}</td>
-          <td></td>
-          <td>{{ task.start_date | date: 'dd-MM-yyyy' }}</td>
-          <td>{{ task.due_date | date: 'dd-MM-yyyy' }}</td>
-        </tr>
+        <div class="tr" (click)="viewTask(task)">
+          <div class="td cell">{{ task.name }}</div>
+          <div class="td cell">{{ task.description }}</div>
+          <div class="td cell">{{ stateNames[task.state_id] }}</div>
+          <div class="td cell"></div>
+          <div class="td cell">{{ task.start_date | date: 'dd-MM-yyyy' }}</div>
+          <div class="td cell">{{ task.due_date | date: 'dd-MM-yyyy' }}</div>
+        </div>
       </ng-container>
-    </tbody>
-  </table>
+    </div>
+  </div>
   <div class="add-btn-container" (click)="createTask()">
     <i class="add-btn bi bi-plus-lg"></i>
   </div>

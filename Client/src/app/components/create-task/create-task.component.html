@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="popup-states" *ngIf="showStates">
-                    <app-state-list (close)="closeStates()" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
+                    <app-state-list (close)="closeStates()" (changes)="onChanges()" (state)="selectState($event)" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 

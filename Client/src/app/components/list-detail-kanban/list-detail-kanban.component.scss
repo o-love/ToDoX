@@ -23,6 +23,7 @@
             width: 250px;
             height: fit-content;  
             font-size: 8pt;
+            position: relative;
             margin-right: 15px;
 
             .title {
@@ -47,10 +48,19 @@
                     &:hover {
                         cursor: pointer;
                     }
+
+                    &:active {
+                        transform: scale(.9);
+                    }
                 }
             }
-            
 
+            .popup {
+                position: absolute;
+                left: 45%;
+                top: 6%;
+            }
+            
             .tasks {
                 display: flex;
                 flex-direction: column;

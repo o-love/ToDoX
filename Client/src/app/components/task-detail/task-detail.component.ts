@@ -25,6 +25,7 @@ export class TaskDetailComponent implements OnInit, Form {
 
   @Output() edited: EventEmitter<Task> = new EventEmitter();
   @Output() deleted: EventEmitter<number> = new EventEmitter();
+  @Output() changes: EventEmitter<void> = new EventEmitter();
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   boardId = this.route.snapshot.paramMap.get('boardId');
@@ -159,6 +160,11 @@ export class TaskDetailComponent implements OnInit, Form {
     btn.style.color = "white";
     this.loading = true;
     this.deleted.emit(this.task.id);
+  }
+
+  onChanges() {
+    this.getStates();
+    this.changes.emit();
   }
 
   onKeyUp(event: any) {

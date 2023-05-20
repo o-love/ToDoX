@@ -11,6 +11,7 @@ import { BoardService } from 'src/app/services/board/board.service';
 export class BoardListComponent implements OnInit {
   boards: Board[] = [];
   showAddPopup: boolean = false;
+  loading: boolean = false;
 
   constructor(public boardService: BoardService, private router: Router) { }
 
@@ -20,7 +21,11 @@ export class BoardListComponent implements OnInit {
 
   private getBoards(): void {
     console.log('loading boards...');
-    this.boardService.getBoards().then((boards: Board[]) => this.boards = boards);
+    this.loading = true;
+    this.boardService.getBoards().then((boards: Board[]) => {
+      this.boards = boards;
+      this.loading = false;
+    });
   }
 
   show() {

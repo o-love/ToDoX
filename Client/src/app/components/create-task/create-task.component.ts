@@ -18,7 +18,7 @@ export class CreateTaskComponent implements Form, OnInit {
 
   @Input() stateId: number | null = null; 
 
-  @Output() created: EventEmitter<void> = new EventEmitter();
+  @Output() changes: EventEmitter<void> = new EventEmitter();
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   boardId = this.route.snapshot.paramMap.get('boardId');
@@ -138,6 +138,10 @@ export class CreateTaskComponent implements Form, OnInit {
 
   // outputs ------------------------------------------------------------------------
 
+  onChanges() {
+    this.changes.emit();
+  }
+
   onClose() {
     this.close.emit();
   }
@@ -162,8 +166,8 @@ export class CreateTaskComponent implements Form, OnInit {
     this.loading = true;
     this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate).then(
       (task: Task) => {
-        this.created.emit();
-        this.close.emit();
+        this.onChanges();
+        this.onClose();
       }
     )
   }

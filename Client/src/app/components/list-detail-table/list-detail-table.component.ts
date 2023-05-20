@@ -17,10 +17,11 @@ export class ListDetailTableComponent implements OnChanges {
   @Input() labels: Label[] | undefined;
 
   stateNames: {[key: number]: string} = {};
-  showPopup: boolean = false; 
+  showStates: boolean = false;
 
   @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
   @Output() openCreateTask: EventEmitter<null> = new EventEmitter();
+  @Output() openCreateState: EventEmitter<void> = new EventEmitter();
 
   // ng -----------------------------------------------------------------------------
 
@@ -36,7 +37,23 @@ export class ListDetailTableComponent implements OnChanges {
     this.openCreateTask.emit(null);
   }
 
-  editTask(task: Task) {
+  viewTask(task: Task) {
     this.openTaskDetail.emit(task.id);
+  }
+
+  // modals -------------------------------------------------------------------------
+  
+  hideModals() {
+    if (this.showStates) this.showStates = false;
+  }
+
+  openStateList() {
+    this.showStates = true;
+  }
+
+  // outputs ------------------------------------------------------------------------
+
+  addNewState() {
+    this.openCreateState.emit();
   }
 }

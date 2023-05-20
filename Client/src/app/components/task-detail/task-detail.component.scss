@@ -114,6 +114,7 @@
                     display: flex;
                     align-items: center;
                     border: 1px solid rgba($english-violet, .7);
+                    overflow: hidden;
 
                     .state-balloon {
                         display: flex;
@@ -123,6 +124,7 @@
                         margin-left: .6em;
                         min-width: fit-content;
                         width: 8em;
+                        max-width: 8em;
                         box-sizing: border-box;
                         padding: .8em .6em;
                         border-radius: 1.2em;
@@ -132,6 +134,15 @@
                         .state-name {
                             font-weight: 500;
                             margin: 0 0 0 .5em;
+                            width: 6em;
+                            max-width: 6em;
+                            display: flex;
+                            align-items: center;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+
+                            &:hover { cursor: pointer; }
                         }
 
                         .bi { font-size: 8pt; }

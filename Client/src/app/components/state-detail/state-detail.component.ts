@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { State } from 'src/app/models/state';
+import { StateService } from 'src/app/services/state/state.service';
 
 @Component({
   selector: 'app-state-detail',
@@ -13,16 +14,19 @@ export class StateDetailComponent implements Form, OnInit {
   form: FormGroup;
 
   @Input() state: State | null = null;
+  @Input() canClose: boolean = true;
 
-  @Output() close: EventEmitter<void> = new EventEmitter<void>(); 
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
   @Output() edited: EventEmitter<State> = new EventEmitter<State>();
-  @Output() deleted: EventEmitter<number> = new EventEmitter<number>();
+  @Output() deleted: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('input') input!: ElementRef;
+  @ViewChild('btn') btn!: ElementRef;
 
+  loading: boolean = false;
   timeout: any;
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private stateService: StateService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]]
     })
@@ -30,7 +34,6 @@ export class StateDetailComponent implements Form, OnInit {
 
   ngOnInit(): void {
     if (!this.state) return;
-
     this.form.setValue({name: this.state.name});
   }
 
@@ -50,8 +53,9 @@ export class StateDetailComponent implements Form, OnInit {
   }
 
   onDelete(): void {
-    if (!this.state) return;
-    this.deleted.emit(this.state.id);
+    this.btn.nativeElement.style.backgroundColor = "rgba(255, 113, 113)";
+    this.btn.nativeElement.style.color = "white";
+    this.delete();
   }
 
   onClose(): void {
@@ -78,5 +82,17 @@ export class StateDetailComponent implements Form, OnInit {
 
     console.log('new state:', this.state);
     this.edited.emit(this.state);
+  }
+
+  private delete(): void {
+    if (!this.state) return;
+    this.loading = true;
+    console.log('deleting state %d...', this.state.id);
+    this.stateService.deleteState(this.state.id).then(
+      (r: any) => {
+        this.deleted.emit();
+        this.onClose();
+      }
+    )
   }
 }

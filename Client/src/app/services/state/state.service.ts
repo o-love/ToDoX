@@ -74,10 +74,10 @@ export class StateService {
   
     return await new Promise((resolve) => 
       http.subscribe({
-        next: (state: State) => {
-          this.cacheService.storeState(state, listId);
-          console.log('state edited:', state);
-          resolve(state);
+        next: (state: any) => {
+          this.cacheService.storeState(state.state, listId);
+          console.log('state edited:', state.state);
+          resolve(state.state);
         },
         error: (err: any) => console.error('error updating state:', err)
       })
@@ -86,7 +86,7 @@ export class StateService {
 
   async deleteState(stateId: number): Promise<any> {
     console.log('DELETE state...');
-    const http = this.http.delete(`${this.apiUrl}/state/${stateId}`);
+    const http = this.http.delete(`${this.apiUrl}/states/${stateId}`);
 
     return await new Promise((resolve) => 
       http.subscribe({

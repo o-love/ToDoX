@@ -39,6 +39,7 @@ export class ListDetailComponent implements OnChanges {
   showSettings: boolean = false;
   showCreateTask: boolean = false;
   showTaskDetail: boolean = false;
+  showCreateState: boolean = false;
 
   layouts: {[key: number]: boolean} = { 0: false, 1: true };
 
@@ -112,6 +113,18 @@ export class ListDetailComponent implements OnChanges {
     setTimeout(function() { $this.deleted.emit($this.taskListId?.toString()) }, 1000);
   }
 
+  // states--------------------------------------------------------------------------
+
+  editState(state: State): void {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('editing state %d...', state.id);
+    this.stateService.editState(this.taskListId, state.id, state.name).then(
+      (state: State) => {
+        this.getStates(); 
+      }
+    )
+  }
+
   // tasks --------------------------------------------------------------------------
   
   editTask(task: Task): void {
@@ -150,13 +163,14 @@ export class ListDetailComponent implements OnChanges {
   // modals -------------------------------------------------------------------------
 
   show(): boolean {
-    return this.showCreateTask || this.showSettings || this.showTaskDetail;
+    return this.showCreateTask || this.showSettings || this.showTaskDetail || this.showCreateState;
   }
 
   hideModals() {
     if (this.showCreateTask) this.showCreateTask = false;
     if (this.showTaskDetail) this.showTaskDetail = false;
     if (this.showSettings) this.showSettings = false;
+    if (this.showCreateState) this.showCreateState = false;
     this.selectTask(null);
   }
 
@@ -167,6 +181,10 @@ export class ListDetailComponent implements OnChanges {
   openCreateTask(stateId: number | null) {
     this.selectState(stateId);
     this.showCreateTask = true;
+  }
+
+  openCreateState() {
+    this.showCreateState = true;
   }
 
   openTaskDetail(taskId: number) {

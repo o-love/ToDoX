@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TaskList } from 'src/app/models/taskList';
 import { CacheService } from '../cache/cache.service';
+import { StateService } from '../state/state.service';
+import { State } from 'src/app/models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { CacheService } from '../cache/cache.service';
 export class TaskListService {
   private apiUrl = 'http://localhost:8082/api';
 
-  constructor(private http: HttpClient, private cacheService: CacheService) { }
+  constructor(private http: HttpClient, private cacheService: CacheService, private stateService: StateService) {}
 
   hasCachedTaskList(taskListId: string): boolean {
     return (this.cacheService.getCachedTaskListById(taskListId) != undefined);
@@ -58,14 +60,22 @@ export class TaskListService {
   // change when added labels
   async createList(boardId: string, name: string, description: string): Promise<any> {
     console.log('POST tasklist...');
-    const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [1, 2, 3] });
-
+    const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [] });
     return await new Promise((resolve) => 
       http.subscribe({
         next: (list: any) => {
-          this.cacheService.storeTaskList(list);
-          console.log('created tasklist:', list);
-          resolve(list);
+          const promise1 = this.stateService.createState(boardId, list.id, 'To Do');
+          const promise2 = this.stateService.createState(boardId, list.id, 'In Progress');
+          const promise3 = this.stateService.createState(boardId, list.id, 'Done');
+          Promise.all([promise1, promise2, promise3]).then(
+            (states: State[]) => {
+              let state_ids: number[] = []
+              states.forEach((state) => state_ids.push(state.id));
+              this.cacheService.storeTaskList(list);
+              console.log('created tasklist:', list);
+              resolve(list);
+            }
+          );
         },
         error: (err: any) => console.error('error creating a tasklist:', err)
       })
