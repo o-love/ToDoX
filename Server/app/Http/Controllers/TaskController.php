@@ -54,7 +54,10 @@ class TaskController extends Controller
 
         $selectedLabels = $request->input('selectedLabels');
         foreach ($selectedLabels as $label)
-            $task->labels()->attach($label['id']);
+            $task->labels()->attach($label);
+        // $selectedLabels = $request->input('selectedLabels');
+        // foreach ($selectedLabels as $label)
+        //     $task->labels()->attach($label['id']);
 
         return response()->json($task, 201);
     }

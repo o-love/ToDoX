@@ -25,6 +25,10 @@
                     <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="hideModals()"></app-state-list>
                 </div>
 
+                <div *ngIf="showCopyMove" class="popup">
+                    <app-task-move-copy [boardId]="boardId!" [taskListId]="taskListId!" [task]="task!"></app-task-move-copy>
+                </div>
+
                 <!-- aquí iría el selector de labels -->
                 <div class="select-input input-2" id="labels" (click)="openLabels()">
                     <ng-container *ngIf="selectedLabels.length == 0">
@@ -69,6 +73,7 @@
             </div>
             <div class="bottom">
                 <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar</div>
+                <div #btn class="copy-move-btn" (click)="toggleCopyMove()">Move/Copy <i class="bi bi-clipboard"></i></div>
             </div>
         </div>
     </div>

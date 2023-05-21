@@ -54,6 +54,7 @@ import { ListSettingsComponent } from './components/list-settings/list-settings.
 import { LayoutSelectorComponent } from './components/layout-selector/layout-selector.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ColorSelectorComponent } from './components/color-selector/color-selector.component';
+import { TaskMoveCopyComponent } from './components/task-move-copy/task-move-copy.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { ColorSelectorComponent } from './components/color-selector/color-select
     LayoutSelectorComponent,
     SpinnerComponent,
     ColorSelectorComponent,
+    TaskMoveCopyComponent,
   ],
   imports: [
     // CommonModule,

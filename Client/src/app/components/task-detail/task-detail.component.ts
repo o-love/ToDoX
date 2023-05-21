@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Form } from 'src/app/models/form';
@@ -47,6 +47,7 @@ export class TaskDetailComponent implements OnInit, Form {
 
   showStates: boolean = false;
   showLabels: boolean = false;
+  showCopyMove: boolean = false;
 
   timeout: any;
   loading: boolean = false;
@@ -55,9 +56,9 @@ export class TaskDetailComponent implements OnInit, Form {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
       description: ['', [Validators.required, Validators.maxLength(200)]]
-    });
+    })
   }
-
+  
   // ng -----------------------------------------------------------------------------
   
   ngOnInit(): void {
@@ -187,6 +188,11 @@ export class TaskDetailComponent implements OnInit, Form {
     if (!this.showLabels) this.showLabels = true;
   }
 
+  toggleCopyMove() {
+    this.hideModals();
+    this.showCopyMove != this.showCopyMove;
+  }
+
   hideModals() {
     if (this.showStates) this.showStates = false;
     if (this.showLabels) this.showLabels = false;
@@ -238,7 +244,7 @@ export class TaskDetailComponent implements OnInit, Form {
     if (this.checkErrors() || !this.boardId || !this.taskListId || !this.task) return;
 
     console.log('saving...');
-    
+
     this.task.name = this.form.get('name')?.value;
     this.task.description = this.form.get('description')?.value;
     if (this.recurring_period) this.task.recurring_period = this.recurring_period || 'none';
