@@ -190,7 +190,8 @@ export class TaskDetailComponent implements OnInit, Form {
 
   toggleCopyMove() {
     this.hideModals();
-    this.showCopyMove != this.showCopyMove;
+    this.showCopyMove = !this.showCopyMove;
+    console.log(this.showCopyMove);
   }
 
   hideModals() {

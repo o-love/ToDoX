@@ -1,12 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {Board} from "../../models/board";
 import {TaskList} from "../../models/taskList";
-import {BoardService} from "../../services/board-taskList-service/board-taskList-service.service";
-import {TaskService} from "../../services/task-service/task-service.service";
-import {TaskListService} from "../../services/taskList-service/task-list-service.service";
 import {Task} from "../../models/task";
 import {State} from "../../models/state";
-import {StateService} from "../../services/state-service/state-service.service";
+import { BoardService } from 'src/app/services/board/board.service';
+import { TaskListService } from 'src/app/services/task-list/task-list.service';
+import { TaskService } from 'src/app/services/task/task.service';
+import { StateService } from 'src/app/services/state/state.service';
 
 @Component({
   selector: 'app-task-move-copy',
@@ -36,41 +36,48 @@ export class TaskMoveCopyComponent {
   }
 
   ngOnInit() {
-    if(this.boardId && this.taskListId) {
-      this.boardService.getBoards().subscribe((boards) => {
-        this.boards = boards;
-        this.selectedBoard = this.boards.find((board: Board) => board.id.toString() === this.boardId);
-      });
+    if(!this.boardId || !this.taskListId) return;
 
-      this.boardService.getTaskListsByBoardId(this.boardId).subscribe((taskLists) => {
+    this.boardService.getBoards().then(
+      (boards: Board[]) => {
+      this.boards = boards;
+      this.selectedBoard = this.boards.find((board: Board) => board.id.toString() === this.boardId);
+    });
+
+    this.taskListService.getTaskListsByBoardId(this.boardId).then(
+      (taskLists: TaskList[]) => {
         this.taskLists = taskLists;
         this.selectedTaskList = this.taskLists.find((taskList) => taskList.id.toString() === this.taskListId);
         this.updateStates();
-      })
-    }
+      }
+    );
   }
 
   updateTaskLists() {
     if (this.selectedBoard) {
       console.log(this.selectedBoard)
-      this.boardService.getTaskListsByBoardId(this.selectedBoard.id.toString()).subscribe((taskLists) => {
-        this.taskLists = taskLists;
-        this.selectedTaskList = taskLists[0];
-      })
+      this.taskListService.getTaskListsByBoardId(this.selectedBoard.id.toString()).then(
+        (taskLists: TaskList[]) => {
+          this.taskLists = taskLists;
+          this.selectedTaskList = taskLists[0];
+        }
+      );
     }
   }
 
   updateStates() {
     if (this.selectedTaskList && this.selectedBoard) {
-      this.stateService.getStatesByTaskListId(this.selectedBoard.id.toString(), this.selectedTaskList.id.toString()).subscribe((states) => {
-        this.states = states;
-        this.selectedState = states[0];
-      });
+      this.stateService.getStatesByTaskListId(this.selectedBoard.id.toString(), this.selectedTaskList.id.toString()).then(
+        (states: State[]) => {
+          this.states = states;
+          this.selectedState = states[0];
+        }
+      );
     }
   }
 
   updatePosition() {
-    if (this.selectedState) {
+    if (this.selectedState && this.selectedState.tasks) {
       this.positionNumber = this.selectedState.tasks.length;
     }
   }
@@ -82,9 +89,13 @@ export class TaskMoveCopyComponent {
   submit() {
     if (this.task === undefined || this.positionNumber === undefined || this.taskListId === undefined || this.boardId === undefined || this.selectedBoard === undefined) return;
 
-    if (this.isCopy) {
+    if (this.isCopy && this.task) {
       // TODO: Look into labels, how it work and copy it. Need to wait for Alberto to implement label services.
-      this.taskService.createTask(this.boardId, this.taskListId, this.task?.name, this.task?.description, this.task?.state_id.toString(), [], this.task?.start_date, this.task?.due_date, this.convertPositionNumber());
+      this.taskService.createTask(this.boardId, this.taskListId, this.task.name, this.task.description, this.task.state_id.toString(), [], this.task.start_date, this.task.due_date, this.convertPositionNumber().toString()).then(
+        (task: Task) => {
+          console.log('no se por que no se guarda -sara');
+        }
+      );
     }
     else {
       // TODO: Move tasks from board, tasklist, state, and position.
@@ -98,5 +109,4 @@ export class TaskMoveCopyComponent {
 
     return Math.abs(this.selectedState.tasks.length - this.positionNumber);
   }
-
 }
