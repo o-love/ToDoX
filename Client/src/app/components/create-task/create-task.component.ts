@@ -8,6 +8,7 @@ import { Label } from 'src/app/models/label';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { StateService } from 'src/app/services/state/state.service';
+import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
   selector: 'app-create-task',
@@ -39,10 +40,11 @@ export class CreateTaskComponent implements Form, OnInit {
 
   form: FormGroup;
   selectedState: State | null = null;
+  selectedLabels: Label[] = [];
   startDate: Date = new Date();
   dueDate: Date = new Date();
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private stateService: StateService, private taskService: TaskService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private stateService: StateService, private labelService: LabelService, private taskService: TaskService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
       description: ['', [Validators.required, Validators.maxLength(200)]],
@@ -54,6 +56,7 @@ export class CreateTaskComponent implements Form, OnInit {
 
   ngOnInit(): void {
     this.getStates();
+    this.getLabels();
   }
 
   // getters ------------------------------------------------------------------------
@@ -70,6 +73,14 @@ export class CreateTaskComponent implements Form, OnInit {
   }
   
   // here should be a getter method for labels when CRUD for labels is done
+
+  private getLabels() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading labels of list %d from board %d', this.taskListId, this.boardId);
+    this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
+      (labels: Label[]) => this.labels = labels
+    )
+  }
 
   // back should do this not front. and this method would reference state service
   private getSelectedState() {
@@ -120,22 +131,19 @@ export class CreateTaskComponent implements Form, OnInit {
   // modals -------------------------------------------------------------------------
   
   openStates() {
+    this.hideModals();
     if (!this.showStates) this.showStates = true;
   }
 
-  closeStates() {
-    if (this.showStates) this.showStates = false;
+  openLabels() {
+    this.hideModals();
+    if (!this.showLabels) this.showLabels = true;
   }
 
-  // when CRUD for labels is done this will be uncommented and used !!
-
-  // openLabels() {
-  //   if (!this.showLabels) this.showLabels = true;
-  // }
-
-  // closeLabels() {
-  //   if (this.showLabels) this.showLabels = false;
-  // }
+  hideModals() {
+    if (this.showStates) this.showStates = false;
+    if (this.showLabels) this.showLabels = false;
+  }
 
   // outputs ------------------------------------------------------------------------
 
@@ -153,19 +161,17 @@ export class CreateTaskComponent implements Form, OnInit {
     this.selectedState = state;
   }
 
-  // when CRUD for labels is done this will be used !!
-
-  // selectLabels(labels: Label[]) {
-  //   this.selectedLabels = labels;
-  // }
+  selectLabels(labels: Label[]) {
+    this.selectedLabels = labels;
+  }
 
   // tasks --------------------------------------------------------------------------
 
-  private createTask(name: string, description: string, stateId: string, startDate: Date, dueDate: Date, periodicity: string) {
+  private createTask(name: string, description: string, stateId: string, labels: Label[], startDate: Date, dueDate: Date, periodicity: string) {
     if (!this.taskListId || !this.boardId) return;
 
     this.loading = true;
-    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, [], startDate, dueDate, periodicity).then(
+    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, labels, startDate, dueDate, periodicity).then(
       (task: Task) => {
         this.onChanges();
         this.onClose();
@@ -190,6 +196,6 @@ export class CreateTaskComponent implements Form, OnInit {
 
     let taskPeriodicity: string = this.form.value.periodicity;
 
-    this.createTask(taskName, taskDescription, selectedState, startDate, dueDate, taskPeriodicity);
+    this.createTask(taskName, taskDescription, selectedState, this.selectedLabels, startDate, dueDate, taskPeriodicity);
   }
 }

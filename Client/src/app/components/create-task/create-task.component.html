@@ -41,8 +41,8 @@
             </select>
         </div>
 
-        <!-- <div class="inline-group"> -->
-            <div class="form-group" id="state">
+        <div class="inline-group">
+            <div class="form-group">
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
                 <div class="select" id="state-select" (click)="openStates()">
                     <div #labels #state class="input select-btn">
@@ -57,39 +57,33 @@
                     </div>
                 </div>
                 <div class="popup-states" *ngIf="showStates">
-                    <app-state-list (close)="closeStates()" (changes)="onChanges()" (state)="selectState($event)" [selectedState]="selectedState"></app-state-list>
+                    <app-state-list (close)="hideModals()" (changes)="onChanges()" (state)="selectState($event)" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
             <!-- this will be uncommented when CRUD for labels is done !!!! -->
             
-            <!--
             <div class="form-group">
                 <label class="name">{{ 'labels.labels' | translate }}</label>
-                <div class="select" id="label-multiselect" (click)="toggleLabels()">
-                    <div class="input select-btn">
-                        <div class="selected-label-list">
-                            <label class="placeholder-text" *ngIf="!selectedLabels">
-                                Select labels...
-                            </label>
-                            <ng-container *ngIf="selectedLabels">
-                                <ng-container *ngFor="let label of selectedLabels">
-                                    <label class="label">
-                                        <span class="balloon">{{ label.name }}</span>
-                                    </label>
-                                </ng-container>
+                <div class="select" id="label-select" (click)="openLabels()">
+                    <div #labels #label class="input select-btn">
+                        <label class="placeholder-text" *ngIf="selectedLabels.length == 0">
+                            Select labels...
+                        </label>
+                        <ng-container *ngIf="selectedLabels.length > 0">
+                            <ng-container *ngFor="let label of selectedLabels">
+                                <label class="label">
+                                    <span class="balloon">{{ label.name }}</span>
+                                </label>
                             </ng-container>
-                        </div>
+                        </ng-container>
                     </div>
-                    <div class="popup-labels" >
-                        <app-select-state-label *ngIf="labelsPopup" (close)="close(true)" [states]="states" [selectedState]="selectedState"></app-select-state-label>
-                    </div>
-                --><!-- <div class="popup-labels" *ngIf="openLabelsSelectPopup">
-                        <app-label-list *ngIf="openLabelsSelectPopup" (closeLabel)="hideLabels()" (label)="selectLabels($event)" [labels]="labels" [selectedLabels]="selectedLabels"></app-label-list>
-                    </div> -->
-                <!--</div>
-            </div>-->
-        <!-- </div> -->
+                </div>
+                <div class="popup-labels" *ngIf="showLabels">
+                    <app-label-list (close)="hideModals()" (changes)="onChanges()" (labels)="selectLabels($event)" [selectedLabels]="selectedLabels"></app-label-list>
+                </div> 
+            </div>
+        </div>
     </div>
 
     <div class="buttons">

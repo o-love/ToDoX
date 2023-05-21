@@ -9,7 +9,6 @@ import { CacheService } from '../cache/cache.service';
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
-  private taskPeriodicity: string = '';
 
   constructor(private http: HttpClient, private cacheService: CacheService) {}
 
