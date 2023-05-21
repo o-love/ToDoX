@@ -9,6 +9,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 import { LabelListComponent } from './components/label-list/label-list.component';
+import { LabelDetailComponent } from './components/label-detail/label-detail.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },  
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'boards/:boardId/lists/:listId', component: BoardDetailComponent },
 
   { path: 'boards/:boardId/lists/:listId/label-list', component: LabelListComponent },
+  { path: 'label-detail', component: LabelDetailComponent }
 ];
 
 @NgModule({

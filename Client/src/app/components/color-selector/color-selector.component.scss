@@ -9,7 +9,7 @@
     box-sizing: border-box;
     border-radius: 5px;
     color: rgba($tropical-indigo, .6);
-    border: 2px solid rgba($tropical-indigo, 0.4);
+    border: 1px solid rgba($tropical-indigo, 0.4);
     background-color: $white;
 
     .select-btn {
@@ -26,7 +26,7 @@
         position: absolute;
         top: 1.5em;
         width: 110%;
-        border: 2px solid rgba($tropical-indigo, 0.4);
+        border: 1px solid rgba($tropical-indigo, 0.4);
         background-color: $white;
         list-style: none;
         text-decoration: none;
