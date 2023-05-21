@@ -131,7 +131,7 @@ export class ListDetailComponent implements OnChanges {
   editTask(task: Task): void {
     if (!this.boardId || !this.taskListId || !this.selectedTask) return;
     console.log('editing task %d...', this.selectedTask);
-    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), [], task.start_date, task.due_date, task.recurring_period).then(
+    this.taskService.editTask(this.boardId, this.taskListId, this.selectedTask.toString(), task.name, task.description, task.state_id.toString(), task.selectedLabels, task.start_date, task.due_date, task.recurring_period).then(
       (task: Task) => this.reload()
     );
   }

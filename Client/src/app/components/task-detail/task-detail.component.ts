@@ -63,6 +63,7 @@ export class TaskDetailComponent implements OnInit, Form {
   ngOnInit(): void {
     this.getTask();
     this.getStates();
+    this.getLabels();
   }
 
   // getters ------------------------------------------------------------------------
@@ -244,6 +245,7 @@ export class TaskDetailComponent implements OnInit, Form {
     if (this.selectedState) this.task.state_id = this.selectedState.id;
     if (this.startDate) this.task.start_date = new Date(this.startDate);
     if (this.dueDate) this.task.due_date = new Date(this.dueDate);
+    if (this.selectedLabels) this.task.selectedLabels = this.selectedLabels.map((label: Label) => label.id);
   
     console.log('new task:', this.task);
     this.edited.emit(this.task);

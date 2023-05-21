@@ -16,7 +16,7 @@
         <div class="body-right">
             <div class="top">
                 <div class="select-input input-2" id="states" (click)="openStates()">
-                    <div *ngIf="selectedState" class="state-balloon">
+                    <div *ngIf="selectedState" class="state-balloon balloon">
                         <i class="bi bi-circle-fill"></i>
                         <label class="state-name">{{ selectedState.name }}</label>
                     </div>
@@ -32,7 +32,7 @@
                     </ng-container>
                     <ng-container *ngIf="selectedLabels.length > 0">
                         <ng-container *ngFor="let label of selectedLabels">
-                            <div class="label-balloon" [style.backgroundColor]="getBackgroundColor(label.color)">
+                            <div class="label-balloon balloon" [style.backgroundColor]="getBackgroundColor(label.color)">
                                 <i class="bi bi-circle-fill" [style.color]="getColor(label.color) ? getColor(label.color) : '#202130'"></i>
                                 <label class="state-name">{{ label.name }}</label>
                             </div>

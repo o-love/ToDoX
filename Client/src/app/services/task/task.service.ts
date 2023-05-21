@@ -23,7 +23,7 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (tasks: Task[]) => {
-          tasks.forEach((task: Task) => task.selectedLabels = []);
+          tasks.forEach((task: Task) => { if (!task.selectedLabels) task.selectedLabels = [] });
           this.cacheService.storeTasks(tasks);
           console.log('tasks retrieved:', tasks);
           resolve(tasks);
@@ -44,7 +44,7 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (task: Task) => {
-          task.selectedLabels = [];
+          if (!task.selectedLabels) task.selectedLabels = [];
           this.cacheService.storeTask(task);
           console.log('task retrieved:', task);
           resolve(task);
@@ -77,6 +77,7 @@ export class TaskService {
       http.subscribe({
         next: (task: Task) => {
           task.selectedLabels = selectedLabels;
+          console.log(task.selectedLabels);
           this.cacheService.storeTask(task); 
           console.log('created task:', task);
           resolve(task);
@@ -106,6 +107,7 @@ export class TaskService {
       http.subscribe({
         next: (task: Task) => {
           task.selectedLabels = selectedLabels;
+          console.log(task.selectedLabels);
           this.cacheService.storeTask(task) 
           console.log('edited task:', task);
           resolve(task);
