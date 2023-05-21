@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
 import { Label } from 'src/app/models/label';
@@ -39,6 +39,9 @@ export class LabelDetailComponent implements Form, OnInit {
   ngOnInit(): void {
     if (!this.label) return;
     this.form.setValue({name: this.label.name , description: this.label.description });
+    this.labelService.getColorsName().forEach((color: string) => {
+      this.colors.push(color);
+    });
     this.color = this.label.color;
   }
 
@@ -79,6 +82,7 @@ export class LabelDetailComponent implements Form, OnInit {
 
   selectColor(i: number) {
     if (i < this.colors.length) this.color = this.colors[i];
+    console.log('holi');
     this.save();
   }
 
@@ -113,7 +117,7 @@ export class LabelDetailComponent implements Form, OnInit {
   private delete(): void {
     if (!this.label) return;
     this.loading = true;
-    console.log('deleting state %d...', this.label.id);
+    console.log('deleting label %d...', this.label.id);
     this.labelService.deleteLabel(this.label.id).then(
       (r: any) => {
         this.deleted.emit();

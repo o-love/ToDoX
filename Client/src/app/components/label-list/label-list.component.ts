@@ -48,8 +48,23 @@ export class LabelListComponent implements OnChanges {
     )
   }
 
+  hexToRgb(hex: string): string {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  }
+
   getColor(key: string): string | undefined {
     return this.labelService.getColor(key);
+  }
+
+  getBackgroundColor(color: string): string {
+    let backgroundColor = this.getColor(color);
+    if (!backgroundColor) backgroundColor = '#474269';
+    backgroundColor = 'rgba(' + this.hexToRgb(backgroundColor) + ', .4)';
+    return backgroundColor;
   }
 
   editLabel(label: Label) {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class ColorSelectorComponent implements AfterViewInit {
   @ViewChildren('option') options!: QueryList<ElementRef>;
   @ViewChildren('color') colors!: QueryList<ElementRef>
 
+  @Input() color: string | undefined;
   @Output() selection: EventEmitter<number> = new EventEmitter();
 
   constructor(private labelService: LabelService) {}
@@ -25,6 +26,19 @@ export class ColorSelectorComponent implements AfterViewInit {
     this.colors.forEach((element, index) => {
       if (index < colorsValue.length) element.nativeElement.style.color = colorsValue[index];
     })
+
+    if (this.color) {
+      let initialColor = this.getInitialColor(this.color); 
+      if (initialColor) this.selectColor(initialColor.element, initialColor.i, false);
+    }  
+  }
+
+  getInitialColor(color: string): any {
+    let initial: any;
+    this.options.forEach((option, index) => {
+      if (option.nativeElement.innerText == color) initial = { element: option.nativeElement, i: index };
+    })
+    return initial;
   }
 
   selectActive() {
@@ -33,8 +47,8 @@ export class ColorSelectorComponent implements AfterViewInit {
     this.select.nativeElement.classList.toggle('closed');
   }
 
-  selectColor(element: HTMLElement, i: number) {
-    this.options.forEach((option, index) => {
+  selectColor(element: HTMLElement, i: number, emit: boolean) {
+    this.options.forEach((option) => {
       if (option.nativeElement.classList.contains('checked')) {
         option.nativeElement.classList.toggle('checked');
       }
@@ -43,6 +57,7 @@ export class ColorSelectorComponent implements AfterViewInit {
     this.title.nativeElement.innerText = element.innerText;
     element.classList.toggle('checked');
     console.log('checked \'%s\': %d', element.innerText, i);
+    if (!emit) return;
     this.selection.emit(i);
     this.selectActive();
   }

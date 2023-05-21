@@ -40,6 +40,7 @@ export class ListDetailComponent implements OnChanges {
   showCreateTask: boolean = false;
   showTaskDetail: boolean = false;
   showCreateState: boolean = false;
+  showCreateLabel: boolean = false;
 
   layouts: { [key: number]: boolean } = { 0: false, 1: true };
 
@@ -163,7 +164,7 @@ export class ListDetailComponent implements OnChanges {
   // modals -------------------------------------------------------------------------
 
   show(): boolean {
-    return this.showCreateTask || this.showSettings || this.showTaskDetail || this.showCreateState;
+    return this.showCreateTask || this.showSettings || this.showTaskDetail || this.showCreateState || this.showCreateLabel;
   }
 
   hideModals() {
@@ -171,6 +172,7 @@ export class ListDetailComponent implements OnChanges {
     if (this.showTaskDetail) this.showTaskDetail = false;
     if (this.showSettings) this.showSettings = false;
     if (this.showCreateState) this.showCreateState = false;
+    if (this.showCreateLabel) this.showCreateLabel = false;
     this.selectTask(null);
   }
 
@@ -185,6 +187,10 @@ export class ListDetailComponent implements OnChanges {
 
   openCreateState() {
     this.showCreateState = true;
+  }
+
+  openCreateLabel() {
+    this.showCreateLabel = true;
   }
 
   openTaskDetail(taskId: number) {

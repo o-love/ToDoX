@@ -4,7 +4,7 @@
       <div class="form-body">
         <input #input (keyup)="onKeyUp($event)" formControlName="name" type="text" name="name" placeholder="{{ 'global.name' | translate }}">
         <textarea #input (keyup)="onKeyUp($event)" formControlName="description" rows="4" cols="30" name="description" type="text" placeholder="{{ 'global.description' | translate }}"></textarea>
-        <app-color-selector #selector (selection)="selectColor($event)" class="color-select"></app-color-selector>
+        <app-color-selector #selector [color]="label.color" (selection)="selectColor($event)" class="color-select"></app-color-selector>
       </div>  
       <hr class="divider">
       <div #btn (click)="onDelete()" class="delete-btn">

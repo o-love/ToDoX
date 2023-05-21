@@ -18,7 +18,7 @@ export class CreateLabelComponent implements OnInit, Form {
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
   @ViewChild('selector', { read: ElementRef }) select!: ElementRef<any>;
 
-  @Output() created = new EventEmitter<any>();
+  @Output() newLabel = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
 
   boardId: string | null = this.route.snapshot.paramMap.get('boardId');
@@ -96,7 +96,7 @@ export class CreateLabelComponent implements OnInit, Form {
     this.loading = true;
     this.labelService.createLabel(this.boardId, this.listId, { name: name, description: description, color: color }).then(
       (label: Label) => {
-        this.created.emit();
+        this.newLabel.emit();
         this.close.emit();
       }
     )

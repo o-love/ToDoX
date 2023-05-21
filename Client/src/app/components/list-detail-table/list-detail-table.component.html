@@ -6,7 +6,9 @@
       <div class="th cell" translate>global.state <i class="bi bi-three-dots-vertical" (click)="openStateList()"></i>
         <app-state-list class="popup" *ngIf="showStates" (new)="addNewState()" [canEdit]="true" [select]="false" (close)="hideModals()"></app-state-list>
       </div>
-      <div class="th cell" translate>global.label <!--<i class="bi bi-three-dots-vertical"></i>--></div>
+      <div class="th cell" translate>global.label <i class="bi bi-three-dots-vertical" (click)="openLabelList()"></i>
+        <app-label-list class="popup" *ngIf="showLabels" (new)="addNewLabel()" [canEdit]="true" [select]="false" (close)="hideModals()"></app-label-list>
+      </div>
       <div class="th cell" translate>global.startDate</div>
       <div class="th cell" translate>global.dueDate</div>
     </div>
@@ -16,7 +18,11 @@
           <div class="td cell">{{ task.name }}</div>
           <div class="td cell">{{ task.description }}</div>
           <div class="td cell">{{ stateNames[task.state_id] }}</div>
-          <div class="td cell"></div>
+          <div class="td cell">
+            <ng-container *ngFor="let label of task.labels">
+              <span [style.backgroundColor]="getColor(getLabel(label)?.color) ? getColor(getLabel(label)?.color) : ''">{{ getLabel(label)?.name }}</span>
+            </ng-container>
+          </div>
           <div class="td cell">{{ task.start_date | date: 'dd-MM-yyyy' }}</div>
           <div class="td cell">{{ task.due_date | date: 'dd-MM-yyyy' }}</div>
         </div>
