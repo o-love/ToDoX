@@ -88,7 +88,7 @@ export class LabelService {
     )
   }
 
-  async editLabel(listId: string, labelId: string, label: any): Promise<Label> {
+  async editLabel(listId: string, labelId: number, label: any): Promise<Label> {
     console.log('PUT label...');
     const http = this.http.put<Label>(`${this.apiUrl}/labels/${labelId}`, label);
 

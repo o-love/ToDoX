@@ -8,6 +8,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { ProfileComponent } from './components/profile/profile.component';
 
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+import { LabelListComponent } from './components/label-list/label-list.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },  
@@ -19,6 +20,8 @@ const routes: Routes = [
   { path: 'boards', component: BoardListComponent },
   { path: 'boards/:boardId', component: BoardDetailComponent },
   { path: 'boards/:boardId/lists/:listId', component: BoardDetailComponent },
+
+  { path: 'boards/:boardId/lists/:listId/label-list', component: LabelListComponent },
 ];
 
 @NgModule({
