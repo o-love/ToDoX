@@ -60,7 +60,7 @@ export class TaskListService {
   // change when added labels
   async createList(boardId: string, name: string, description: string): Promise<any> {
     console.log('POST tasklist...');
-    const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId, state_ids: [] });
+    const http = this.http.post(`${this.apiUrl}/boards/${boardId}/lists`, { name: name, description: description, board_id: boardId });
     return await new Promise((resolve) => 
       http.subscribe({
         next: (list: any) => {

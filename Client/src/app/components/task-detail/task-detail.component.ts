@@ -6,6 +6,7 @@ import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
+import { LabelService } from 'src/app/services/label/label.service';
 import { StateService } from 'src/app/services/state/state.service';
 import { TaskService } from 'src/app/services/task/task.service';
 
@@ -17,8 +18,6 @@ import { TaskService } from 'src/app/services/task/task.service';
 export class TaskDetailComponent implements OnInit, Form {
 
   @Input() taskId: number | null = null;
-
-  // this will be changed / delete once user-service is refactored
   
   @Input() usersId: {[key: number]: User} = {}
   @Input() user: User | null = null;
@@ -41,6 +40,7 @@ export class TaskDetailComponent implements OnInit, Form {
 
   form: FormGroup;
   selectedState: State | null = null;
+  selectedLabels: Label[] = [];
   startDate: Date | null = null;
   dueDate: Date | null = null;
   recurring_period: string | null = null;
@@ -50,7 +50,7 @@ export class TaskDetailComponent implements OnInit, Form {
   timeout: any;
   loading: boolean = false;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private taskService: TaskService, private stateService: StateService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private taskService: TaskService, private labelService: LabelService, private stateService: StateService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]],
       description: ['', [Validators.required, Validators.maxLength(200)]]
@@ -92,6 +92,16 @@ export class TaskDetailComponent implements OnInit, Form {
   }
   
   // here should be a getter method for labels when CRUD for labels is done
+  private getLabels() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading labels of list %d from board %d...', this.taskListId, this.boardId);
+    this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
+      (labels: Label[]) => {
+        this.labels = labels;
+        this.getSelectedLabels();
+      }
+    )
+  }
 
   // back should do this not front. and this method would reference state service
   private getSelectedState() {
@@ -99,6 +109,13 @@ export class TaskDetailComponent implements OnInit, Form {
     for (let state of this.states) if (state.id == this.task.state_id) {
       this.selectedState = state;
       break;
+    }
+  }
+
+  private getSelectedLabels() {
+    if (!this.task || this.labels.length == 0) return;
+    for (let label of this.labels) {
+      // if ()
     }
   }
 
