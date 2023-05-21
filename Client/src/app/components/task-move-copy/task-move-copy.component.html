@@ -5,13 +5,13 @@
   </div>
 
   <div id="options">
-    <div id="boardFormElement" class="form-floating option-child">
+    <!-- <div id="boardFormElement" class="form-floating option-child">
       <select id="boardSelect" class="form-select form-control" [(ngModel)]="selectedBoard"
               (change)="updateTaskLists()">
         <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
       </select>
       <label for="boardSelect">Board</label>
-    </div>
+    </div> -->
 
     <div id="taskListFormElement" class="form-floating option-child">
       <select id="taskListSelect" class="form-select form-control" [(ngModel)]="selectedTaskList"
@@ -28,15 +28,14 @@
       <label for="stateSelect">State</label>
     </div>
 
-    <div id="positionFormElement" class="form-floating option-child">
+    <!-- <div id="positionFormElement" class="form-floating option-child">
       <input id="positionSelect" class="form-control" [(ngModel)]="positionNumber">
       <label for="positionSelect">Position</label>
-    </div>
-
-
+    </div> -->
   </div>
 
-  <button id="submit" type="submit" class="btn btn-outline-secondary" (click)="submit()">
+  <button #btn id="submit" type="submit" class="btn btn-outline-secondary" (click)="submit()">
+    <img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">
     <ng-container *ngIf="isCopy">Copy</ng-container>
     <ng-container *ngIf="!isCopy">Move</ng-container>
   </button>

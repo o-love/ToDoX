@@ -12,7 +12,6 @@ import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 })
 export class SignupFormComponent implements Form, OnInit {
   signupForm: FormGroup;
-
   @ViewChildren('label') labels!: QueryList<ElementRef>;
   @ViewChild('nameLabel') nameLabel!: ElementRef;
   @ViewChild('emailLabel') emailLabel!: ElementRef;

@@ -99,9 +99,12 @@ export class TaskService {
       state_id: stateId,
       selectedLabels: selectedLabels,
       start_date: startDate,
+      tasklist_id: listId,
       due_date: dueDate,
       recurring_period: periodicity
     });
+
+    console.log(taskName);
 
     return await new Promise((resolve) => 
       http.subscribe({
@@ -132,5 +135,29 @@ export class TaskService {
         error: (err: any) => console.error('error deleting a task:', err)
       })
     );
+  }
+
+  async moveTask(boardId: string, listId: string, taskId: number, NewlistTaskId: string, NewstateId: string): Promise<Task> {
+    console.log('moving task...');
+    const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, { 
+      tasklist_id: NewlistTaskId, 
+      selectedLabels: [],
+      state_id: NewstateId
+    })
+
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (task: Task) => {
+          task.selectedLabels = [];
+          this.cacheService.storeTask(task);
+          console.log('task retrieved:', task);
+          resolve(task);
+        }
+      })
+    );
+  }
+
+  async copyTask(boardId: string, task: Task, newlistId: string, NewstateId: string): Promise<Task> {
+    return this.createTask(boardId, newlistId, task.name, task.description, NewstateId, [], task.start_date, task.due_date, task.periodicity, task.state_position);
   }
 }

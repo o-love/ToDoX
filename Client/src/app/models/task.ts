@@ -9,5 +9,6 @@ export interface Task {
   isEditing: boolean;
   state_position: number;
   selectedLabels: number[];
+  periodicity: string;
   recurring_period: string;
 }

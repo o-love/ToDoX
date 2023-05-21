@@ -27,8 +27,8 @@ export class TaskDetailComponent implements OnInit, Form {
   @Output() changes: EventEmitter<void> = new EventEmitter();
   @Output() close: EventEmitter<void> = new EventEmitter();
 
-  boardId = this.route.snapshot.paramMap.get('boardId');
-  taskListId = this.route.snapshot.paramMap.get('listId');
+  boardId: string | null = this.route.snapshot.paramMap.get('boardId');
+  taskListId: string | null = this.route.snapshot.paramMap.get('listId');
 
   task: Task | null = null;
 
@@ -191,7 +191,7 @@ export class TaskDetailComponent implements OnInit, Form {
   toggleCopyMove() {
     this.hideModals();
     this.showCopyMove = !this.showCopyMove;
-    console.log(this.showCopyMove);
+    this.close.emit();
   }
 
   hideModals() {
@@ -246,8 +246,8 @@ export class TaskDetailComponent implements OnInit, Form {
 
     console.log('saving...');
 
-    this.task.name = this.form.get('name')?.value;
-    this.task.description = this.form.get('description')?.value;
+    this.task.name = this.form.value.name;
+    this.task.description = this.form.value.description;
     if (this.recurring_period) this.task.recurring_period = this.recurring_period || 'none';
     if (this.selectedState) this.task.state_id = this.selectedState.id;
     if (this.startDate) this.task.start_date = new Date(this.startDate);

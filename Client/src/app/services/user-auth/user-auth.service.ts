@@ -193,4 +193,8 @@ export class UserAuthService {
         })
       );
   }
+
+  getPermissions(boardUserId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/permissions/${boardUserId}`);
+  }
 }

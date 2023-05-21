@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\TaskList;
 
+/**
+ * Summary of TaskController
+ */
 class TaskController extends Controller
 {
     // Display a listing of the resource
@@ -154,5 +157,13 @@ class TaskController extends Controller
             return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
 
         return [$start_date, $due_date];
+    }
+
+    public function move(Request $request,$boardId, $taskListId, $taskId){
+        $task = Task::findOrFail($taskId);
+        $task->tasklist_id = $request->input('tasklist_id');
+        $task->state_id = $request->input('state_id');
+        $task->save();
+        return response()->json($task, 201);
     }
 }

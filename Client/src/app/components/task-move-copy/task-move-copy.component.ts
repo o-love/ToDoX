@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Board} from "../../models/board";
 import {TaskList} from "../../models/taskList";
 import {Task} from "../../models/task";
@@ -7,6 +7,7 @@ import { BoardService } from 'src/app/services/board/board.service';
 import { TaskListService } from 'src/app/services/task-list/task-list.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { StateService } from 'src/app/services/state/state.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-task-move-copy',
@@ -15,98 +16,129 @@ import { StateService } from 'src/app/services/state/state.service';
 })
 export class TaskMoveCopyComponent {
 
-  @Input() boardId: string | undefined;
-  @Input() taskListId: string | undefined;
-  @Input() task: Task | undefined;
+  boardId: string | null = this.route.snapshot.paramMap.get('boardId');
+  taskListId: string | null = this.route.snapshot.paramMap.get('listId');
 
+  @Input() task: Task | null = null;
+  @Output() close: EventEmitter<void> = new EventEmitter();
+
+  @ViewChild('btn', { read: ElementRef }) btn!: ElementRef;
+ 
   isCopy: boolean = true;
 
   boards: Board[] = [];
   taskLists: TaskList[] = [];
   states: State[] = [];
 
-  selectedBoard: Board | undefined;
   selectedTaskList: TaskList | undefined;
-  selectedState: State | undefined;
+  selectedState: State | null = null;
   positionNumber: number = 0;
 
+  loading: boolean = false;
 
-  constructor(private boardService: BoardService, private taskListService: TaskListService, private taskService: TaskService, private stateService: StateService) {
+  constructor(private route: ActivatedRoute, private boardService: BoardService, private taskListService: TaskListService, private taskService: TaskService, private stateService: StateService) {}
 
-  }
+  // ng -----------------------------------------------------------------------------
 
   ngOnInit() {
+    this.getBoards();
+    this.getTaskLists();
+  }
+
+  // getters ------------------------------------------------------------------------
+
+  private getBoards() {
     if(!this.boardId || !this.taskListId) return;
 
     this.boardService.getBoards().then(
-      (boards: Board[]) => {
-      this.boards = boards;
-      this.selectedBoard = this.boards.find((board: Board) => board.id.toString() === this.boardId);
-    });
+      (boards: Board[]) => this.boards = boards
+    );
+  }
+
+  private getTaskLists() {
+    if(!this.boardId || !this.taskListId) return;
 
     this.taskListService.getTaskListsByBoardId(this.boardId).then(
       (taskLists: TaskList[]) => {
         this.taskLists = taskLists;
-        this.selectedTaskList = this.taskLists.find((taskList) => taskList.id.toString() === this.taskListId);
+        this.selectedTaskList = this.taskLists.find((taskList: TaskList) => taskList.id == this.taskListId);
+        console.log(this.selectedTaskList);
         this.updateStates();
       }
     );
   }
 
-  updateTaskLists() {
-    if (this.selectedBoard) {
-      console.log(this.selectedBoard)
-      this.taskListService.getTaskListsByBoardId(this.selectedBoard.id.toString()).then(
-        (taskLists: TaskList[]) => {
-          this.taskLists = taskLists;
-          this.selectedTaskList = taskLists[0];
-        }
-      );
-    }
-  }
+  // update -------------------------------------------------------------------------
+
+  // updateTaskLists() {
+  //   if (!this.selectedBoard) return;
+  //   console.log(this.selectedBoard)
+  //   this.taskListService.getTaskListsByBoardId(this.selectedBoard.id).then(
+  //     (taskLists: TaskList[]) => {
+  //       this.taskLists = taskLists;
+  //       this.selectedTaskList = taskLists[0];
+  //     }
+  //   );
+  // }
 
   updateStates() {
-    if (this.selectedTaskList && this.selectedBoard) {
-      this.stateService.getStatesByTaskListId(this.selectedBoard.id.toString(), this.selectedTaskList.id.toString()).then(
-        (states: State[]) => {
-          this.states = states;
-          this.selectedState = states[0];
-        }
-      );
-    }
+    if (!this.selectedTaskList || !this.boardId) return;
+
+    this.stateService.getStatesByTaskListId(this.boardId, this.selectedTaskList.id).then(
+      (states: State[]) => {
+        this.states = states;
+        this.selectedState = states[0];
+
+      }
+    );
   }
 
   updatePosition() {
-    if (this.selectedState && this.selectedState.tasks) {
-      this.positionNumber = this.selectedState.tasks.length;
-    }
+    if (!this.selectedState) return;
+    if (!this.selectedState.tasks) this.positionNumber = 0;
+    else this.positionNumber = this.selectedState.tasks.length;
   }
+
+  // submit -------------------------------------------------------------------------
 
   setIsCopy(value: boolean) {
     this.isCopy = value;
   }
 
   submit() {
-    if (this.task === undefined || this.positionNumber === undefined || this.taskListId === undefined || this.boardId === undefined || this.selectedBoard === undefined) return;
+    if (!this.task || !this.taskListId || !this.selectedTaskList || !this.boardId || !this.selectedState) return;
 
-    if (this.isCopy && this.task) {
-      // TODO: Look into labels, how it work and copy it. Need to wait for Alberto to implement label services.
-      this.taskService.createTask(this.boardId, this.taskListId, this.task.name, this.task.description, this.task.state_id.toString(), [], this.task.start_date, this.task.due_date, this.convertPositionNumber().toString()).then(
-        (task: Task) => {
-          console.log('no se por que no se guarda -sara');
-        }
-      );
-    }
+    this.btn.nativeElement.style.backgroundColor = '#202130';
+    this.btn.nativeElement.style.color = 'white';
+
+    this.loading = true;
+    if (this.isCopy) this.taskService.copyTask(this.boardId, this.task, this.selectedTaskList.id, this.selectedState.id.toString()).then(
+      (task: Task) => {
+        console.log('task copied:', task);
+        this.close.emit();
+      }
+    )
     else {
-      // TODO: Move tasks from board, tasklist, state, and position.
+      // comprobación para que no me mueva la misma tarea al mismo sitio
+      if (this.taskListId == this.selectedTaskList.id && this.task.state_id == this.selectedState.id) {
+        this.loading = false;
+        return;
+      }
+
+      this.taskService.moveTask(this.boardId, this.selectedTaskList.id, this.task.id, this.selectedTaskList.id, this.selectedState.id.toString()).then(
+        (task: Task) => {
+          console.log('task moved:', task);
+          this.close.emit();
+        }
+      )
     }
   }
 
-  convertPositionNumber(): number {
-    if (!(this.positionNumber && this.selectedState)) {
-      return 0;
-    }
+  // convertPositionNumber(): number {
+  //   if (!(this.positionNumber && this.selectedState)) {
+  //     return 0;
+  //   }
 
-    return Math.abs(this.selectedState.tasks.length - this.positionNumber);
-  }
+  //   return Math.abs(this.selectedState.tasks.length - this.positionNumber);
+  // }
 }
