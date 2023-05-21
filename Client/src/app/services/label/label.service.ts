@@ -47,10 +47,31 @@ export class LabelService {
           console.log('labels retrieved:', labels);
           resolve(labels);
         },
-        error: (err: any) => console.error('error getting labels:', err)
+        error: (err: any) => console.error('error getting labels by list:', err)
       })
     )
   }
+
+  async getLabelByTaskId(boardId: string, taskListId: string, taskId: number): Promise<Label[]> {
+    let labels: any = this.cacheService.getCachedLabelsByTaskId(taskId);
+    console.log('cached labels:', labels);
+    if (labels && labels.length > 0) return new Promise((resolve) => resolve(labels));
+
+    console.log('GET labels by task...');
+    const http = this.http.get<Label[]>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}/tasks/${taskId}/labels`);
+
+    return await new Promise((resolve) =>
+      http.subscribe({
+        next: (labels: Label[]) => {
+          this.cacheService.storeLabelsByTask(labels, taskListId, taskId);
+          console.log('labels retrieved:', labels);
+          resolve(labels);
+        },
+        error: (err: any) => console.error('error getting labels by task:', err)
+      })
+    )
+  } 
+
 
   async getLabelById(boardId: string, listId: string, labelId: number): Promise<Label> {
     let label: any = this.cacheService.getCachedLabelById(labelId);

@@ -46,6 +46,7 @@ export class TaskDetailComponent implements OnInit, Form {
   recurring_period: string | null = null;
 
   showStates: boolean = false;
+  showLabels: boolean = false;
 
   timeout: any;
   loading: boolean = false;
@@ -113,10 +114,10 @@ export class TaskDetailComponent implements OnInit, Form {
   }
 
   private getSelectedLabels() {
-    if (!this.task || this.labels.length == 0) return;
-    for (let label of this.labels) {
-      // if ()
-    }
+    if (!this.boardId || !this.taskListId || !this.taskId || this.labels.length == 0) return;
+    this.labelService.getLabelByTaskId(this.boardId, this.taskListId, this.taskId).then(
+      (labels: Label[]) => this.selectedLabels = labels
+    )
   }
 
   // forms --------------------------------------------------------------------------
@@ -152,14 +153,47 @@ export class TaskDetailComponent implements OnInit, Form {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   } 
   
+  // labels -------------------------------------------------------------------------
+  
+  hexToRgb(hex: string): string {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  }
+
+  getColor(key: string): string | undefined {
+    return this.labelService.getColor(key);
+  }
+
+  getBackgroundColor(color: string): string {
+    let backgroundColor = this.getColor(color);
+    if (!backgroundColor) backgroundColor = '#474269';
+    backgroundColor = 'rgba(' + this.hexToRgb(backgroundColor) + ', .4)';
+    return backgroundColor;
+  }
+
   // modals -------------------------------------------------------------------------
 
   openStates() {
+    this.hideModals();
     if (!this.showStates) this.showStates = true;
   }
 
-  closeStates() {
+  openLabels() {
+    this.hideModals();
+    if (!this.showLabels) this.showLabels = true;
+  }
+
+  hideModals() {
     if (this.showStates) this.showStates = false;
+    if (this.showLabels) this.showLabels = false;
+  }
+
+  changeLabels(labels: Label[]) {
+    this.selectedLabels = labels;
+    this.save();
   }
 
   changeState(state: State) {

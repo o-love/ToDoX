@@ -280,6 +280,15 @@ export class CacheService {
     localStorage[LABELS_KEY] = JSON.stringify(Array.from(mapLabels.entries()));
   }
 
+  storeLabelsByTask(labels: Label[], listId: string, taskId: number): void {
+    this.storeLabels(labels, listId);
+    let task: any = this.getCachedTaskById(taskId);
+    if (!task) return;
+    if (!task.selectedLabels) task.selectedLabels = [];
+    labels.forEach((label: Label) => task.selectedLabels.push(label));
+    this.storeTask(task);
+  }
+
   storeLabel(label: Label, listId: string): void {
     let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : '');
     mapLabels.set(label.id, { id: label.id, name: label.name, color: label.color, description: label.description, tasklistId: parseInt(listId) })
@@ -294,6 +303,10 @@ export class CacheService {
     labelList = labelList.filter((label: LabelList) => label.tasklistId == parseInt(listId));
     labelList.forEach((label: LabelList) => labels.push(label));
     return labels;
+  }
+
+  getCachedLabelsByTaskId(taskId: number): Label[] | undefined {
+    return;
   }
 
   getCachedLabelById(id: number): Label | undefined {

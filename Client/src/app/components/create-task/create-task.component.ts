@@ -167,7 +167,7 @@ export class CreateTaskComponent implements Form, OnInit {
 
   // tasks --------------------------------------------------------------------------
 
-  private createTask(name: string, description: string, stateId: string, labels: Label[], startDate: Date, dueDate: Date, periodicity: string) {
+  private createTask(name: string, description: string, stateId: string, labels: number[], startDate: Date, dueDate: Date, periodicity: string) {
     if (!this.taskListId || !this.boardId) return;
 
     this.loading = true;
@@ -195,7 +195,9 @@ export class CreateTaskComponent implements Form, OnInit {
     if (this.dueDate) dueDate = new Date(this.dueDate);
 
     let taskPeriodicity: string = this.form.value.periodicity;
+    let labels: number[] = [];
+    this.selectedLabels.forEach((label) => labels.push(label.id));
 
-    this.createTask(taskName, taskDescription, selectedState, this.selectedLabels, startDate, dueDate, taskPeriodicity);
+    this.createTask(taskName, taskDescription, selectedState, labels, startDate, dueDate, taskPeriodicity);
   }
 }

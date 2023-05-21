@@ -19,7 +19,7 @@
           <div class="td cell">{{ task.description }}</div>
           <div class="td cell">{{ stateNames[task.state_id] }}</div>
           <div class="td cell">
-            <ng-container *ngFor="let label of task.labels">
+            <ng-container *ngFor="let label of task.selectedLabels">
               <span [style.backgroundColor]="getColor(getLabel(label)?.color) ? getColor(getLabel(label)?.color) : ''">{{ getLabel(label)?.name }}</span>
             </ng-container>
           </div>

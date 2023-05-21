@@ -8,6 +8,6 @@ export interface Task {
   due_date: Date | null;
   isEditing: boolean;
   state_position: number;
-  labels: number[];
+  selectedLabels: number[];
   recurring_period: string;
 }

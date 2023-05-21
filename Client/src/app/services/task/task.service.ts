@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Task } from 'src/app/models/task';
-import { Label } from 'src/app/models/label';
 import { CacheService } from '../cache/cache.service';
+import { LabelService } from '../label/label.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { CacheService } from '../cache/cache.service';
 export class TaskService {
   private apiUrl = 'http://localhost:8082/api';
 
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  constructor(private http: HttpClient, private cacheService: CacheService, private labelService: LabelService) {}
 
   async getTasksByTaskListId(boardId: string, listId: string): Promise<Task[]> {
     let tasks: any = this.cacheService.getCachedTasks(listId);
@@ -23,6 +23,7 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (tasks: Task[]) => {
+          tasks.forEach((task: Task) => task.selectedLabels = []);
           this.cacheService.storeTasks(tasks);
           console.log('tasks retrieved:', tasks);
           resolve(tasks);
@@ -43,6 +44,7 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (task: Task) => {
+          task.selectedLabels = [];
           this.cacheService.storeTask(task);
           console.log('task retrieved:', task);
           resolve(task);
@@ -55,7 +57,7 @@ export class TaskService {
   // Creates a new task in backend related to a taskList related to a board
   async createTask(
     boardId: string, listId: string, taskName: string, taskDescription: string,
-    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null, 
+    stateId: string, selectedLabels: number[], startDate: Date | null, dueDate: Date | null, 
     periodicity: string, state_position: number = 0
   ): Promise<Task> {
     console.log('POST task...');
@@ -74,6 +76,7 @@ export class TaskService {
     return await new Promise((resolve) =>
       http.subscribe({
         next: (task: Task) => {
+          task.selectedLabels = selectedLabels;
           this.cacheService.storeTask(task); 
           console.log('created task:', task);
           resolve(task);
@@ -86,7 +89,7 @@ export class TaskService {
   // Updates a task by id, list id and board id - REV opt with createTask
   async editTask(
     boardId: string, listId: string, taskId: string, taskName: string, taskDescription: string,
-    stateId: string, selectedLabels: Label[], startDate: Date | null, dueDate: Date | null, periodicity: string
+    stateId: string, selectedLabels: number[], startDate: Date | null, dueDate: Date | null, periodicity: string
   ): Promise<Task> {
     console.log('PUT task %d...', taskId);
     const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, {
@@ -102,6 +105,7 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (task: Task) => {
+          task.selectedLabels = selectedLabels;
           this.cacheService.storeTask(task) 
           console.log('edited task:', task);
           resolve(task);

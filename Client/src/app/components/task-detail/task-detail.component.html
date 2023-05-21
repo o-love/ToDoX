@@ -15,18 +15,18 @@
         </div>
         <div class="body-right">
             <div class="top">
-                <div class="select-input input-2" (click)="openStates()">
+                <div class="select-input input-2" id="states" (click)="openStates()">
                     <div *ngIf="selectedState" class="state-balloon">
                         <i class="bi bi-circle-fill"></i>
                         <label class="state-name">{{ selectedState.name }}</label>
                     </div>
                 </div>
                 <div *ngIf="showStates" class="popup">
-                    <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
+                    <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="hideModals()"></app-state-list>
                 </div>
 
                 <!-- aquí iría el selector de labels -->
-                <!-- <div class="select-input input-2" (click)="openLabels()">
+                <div class="select-input input-2" id="labels" (click)="openLabels()">
                     <ng-container *ngIf="selectedLabels.length == 0">
                         <label class="placeholder-text">Select labels...</label>
                     </ng-container>
@@ -40,8 +40,8 @@
                     </ng-container>
                 </div>
                 <div *ngIf="showLabels" class="popup">
-                    <app-label-list [selectedLabels]="selectedLabels" (changes)="onChanges()" (labels)="changeLabels($event)" (close)="closeLabels()"></app-labels-list>
-                </div> -->
+                    <app-label-list [selectedLabels]="selectedLabels" (changes)="onChanges()" (labels)="changeLabels($event)" (close)="hideModals()"></app-label-list>
+                </div>
 
                 <div class="label-input">
                     <label>{{ 'global.startDate' | translate }}</label>
