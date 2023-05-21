@@ -76,5 +76,15 @@
             "dark": "Modo oscuro",
             "light": "Modo claro"
         }
-    }
+    },
+    "periodicity": {
+        "title": "Repetición de tarea",
+        "none": "Ninguno",
+        "daily": "Diario",
+        "weekly": "Semanal",
+        "monthly": "Mensual",
+        "yearly": "Anual",
+        "oddDay": "Cada día impar",
+        "evenDay": "Cada día par"
+    }    
 }

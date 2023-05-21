@@ -67,5 +67,15 @@
             "dark": "Dunkelmodus",
             "light": "Hellmodus"
         }
-    }
+    },
+    "periodicity": {
+        "title": "Wiederholung der Aufgabe",
+        "none": "Keine",
+        "daily": "Täglich",
+        "weekly": "Wöchentlich",
+        "monthly": "Monatlich",
+        "yearly": "Jährlich",
+        "oddDay": "Jeden ungeraden Tag",
+        "evenDay": "Jeden geraden Tag"
+    }    
 }

@@ -59,15 +59,15 @@
 
                 <!-- Repetition -->
                 <div class="label-input">
-                    <label>Periodicidad</label>
+                    <label translate>periodicity.title</label>
                     <select class="input" name="periodicity" [(ngModel)]="recurring_period" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
-                        <option value="none">None</option>
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                        <option value="every-odd-day">Every odd day</option>
-                        <option value="every-even-day">Every even day</option>
+                        <option value="none" translate>periodicity.none</option>
+                        <option value="daily" translate>periodicity.daily</option>
+                        <option value="weekly" translate>periodicity.weekly</option>
+                        <option value="monthly" translate>periodicity.monthly</option>
+                        <option value="yearly" translate>periodicity.yearly</option>
+                        <option value="every-odd-day" translate>periodicity.oddDay</option>
+                        <option value="every-even-day" translate>periodicity.evenDay</option>
                     </select>
                 </div>                
             </div>
