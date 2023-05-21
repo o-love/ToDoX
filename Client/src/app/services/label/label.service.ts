@@ -9,8 +9,28 @@ import { CacheService } from '../cache/cache.service';
 })
 export class LabelService {
   private apiUrl = 'http://localhost:8082/api';
+  private colors: Map<string, string> = new Map([
+    ['RED', '#FF5151'],
+    ['PINK', '#FFA8D7'],
+    ['PURPLE', '#B892FF'],
+    ['BLUE', '#52D7E1'],
+    ['GREEN', '#70EC87'],
+    ['YELLOW', '#FFE46B']
+  ])
 
   constructor(private http: HttpClient, private cacheService: CacheService) { }
+
+  getColorsName(): string[] {
+    return Array.from(this.colors.keys());
+  }
+
+  getColorsValue(): string[] {
+    return Array.from(this.colors.values());
+  }
+
+  getColor(key: string): string | undefined {
+    return this.colors.get(key);
+  }
 
   async getLabelsByTaskListId(boardId: string, taskListId: string): Promise<Label[]> {
     let labels: any = this.cacheService.getCachedLabels(taskListId);
