@@ -5,6 +5,7 @@ import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { TaskComment } from 'src/app/models/taskComment';
 import { TaskList } from 'src/app/models/taskList';
+import { Label } from 'src/app/models/label';
 
 const USERS_KEY = 'httpUsersCache';
 const MYUSER_KEY = 'httpMyUserCache';
@@ -13,12 +14,16 @@ const LISTS_KEY = 'httpListsCache';
 const TASKS_KEY = 'httpTasksCache';
 const COMMENTS_KEY = 'httpCommentsCache';
 const STATES_KEY = 'httpStatesCache';
+const LABELS_KEY = 'httpLabelsCache';
 const TIME_KEY = 'lastTime';
 
 interface StateList extends State {
   tasklistId: number;
 } 
 
+interface LabelList extends Label {
+  tasklistId: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -265,5 +270,40 @@ export class CacheService {
     let mapStates: Map<number, StateList> = new Map(localStorage[STATES_KEY] ? JSON.parse(localStorage[STATES_KEY]) : ''); 
     mapStates.delete(id);
     localStorage[STATES_KEY] = JSON.stringify(Array.from(mapStates.entries()));
+  }
+
+  // labels -------------------------------------------------------------------------
+
+  storeLabels(labels: Label[], listId: string): void {
+    let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : '');
+    labels.forEach((label: Label) => mapLabels.set(label.id, { id: label.id, name: label.name, color: label.color, description: label.description, tasklistId: parseInt(listId) }));
+    localStorage[LABELS_KEY] = JSON.stringify(Array.from(mapLabels.entries()));
+  }
+
+  storeLabel(label: Label, listId: string): void {
+    let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : '');
+    mapLabels.set(label.id, { id: label.id, name: label.name, color: label.color, description: label.description, tasklistId: parseInt(listId) })
+    localStorage[LABELS_KEY] = JSON.stringify(Array.from(mapLabels.entries()));
+  }
+
+  getCachedLabels(listId: string): Label[] | undefined {
+    if (!this.getCachedTaskListById(listId)) return;
+    let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : ''); 
+    let labelList: LabelList[] = Array.from(mapLabels.values());
+    let labels: Label[] = [];
+    labelList = labelList.filter((label: LabelList) => label.tasklistId == parseInt(listId));
+    labelList.forEach((label: LabelList) => labels.push(label));
+    return labels;
+  }
+
+  getCachedLabelById(id: number): Label | undefined {
+    let mapLabels: Map<number, Label> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : ''); 
+    return mapLabels.get(id);
+  }
+
+  deleteLabel(id: number): void {
+    let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : ''); 
+    mapLabels.delete(id);
+    localStorage[LABELS_KEY] = JSON.stringify(Array.from(mapLabels.entries()));
   }
 }
