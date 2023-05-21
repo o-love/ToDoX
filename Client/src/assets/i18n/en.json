@@ -76,5 +76,16 @@
             "dark": "Dark mode",
             "light": "Light mode"
         }
+    },
+
+    "periodicity": {
+        "title": "Task repetition",
+        "none": "None",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "oddDay": "Every odd day",
+        "evenDay": "Every even day"
     }
 }
