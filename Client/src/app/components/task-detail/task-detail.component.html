@@ -16,6 +16,9 @@
         <div class="body-right">
             <div class="top">
                 <div class="select-input input-2" id="states" (click)="openStates()">
+                    <ng-container *ngIf="!selectedState">
+                        <label class="placeholder-text">Select state...</label>
+                    </ng-container>
                     <div *ngIf="selectedState" class="state-balloon balloon">
                         <i class="bi bi-circle-fill"></i>
                         <label class="state-name">{{ selectedState.name }}</label>
