@@ -30,7 +30,7 @@ export class SignupFormComponent implements Form, OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) this.router.navigate(['/profile']); 
+    if (this.authService.isLoggedIn()) this.router.navigate(['/profile']);
   }
 
   checkErrors(): boolean {
@@ -90,3 +90,4 @@ export class SignupFormComponent implements Form, OnInit {
     );
   }
 }
+

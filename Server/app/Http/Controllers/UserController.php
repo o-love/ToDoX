@@ -26,14 +26,16 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->all());
+        $token = $user->createToken('authToken')->plainTextToken;
 
-        return new UserResource($user);
+        return response()->json(['user' => new UserResource($user), 'token' => $token]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
+     * @return UserResource
      */
     public function show(User $user)
     {
