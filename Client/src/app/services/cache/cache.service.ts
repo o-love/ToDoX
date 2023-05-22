@@ -302,6 +302,7 @@ export class CacheService {
     let labels: Label[] = [];
     labelList = labelList.filter((label: LabelList) => label.tasklistId == parseInt(listId));
     labelList.forEach((label: LabelList) => labels.push(label));
+    labels = labels.filter((label: Label) => label.color);
     return labels;
   }
 

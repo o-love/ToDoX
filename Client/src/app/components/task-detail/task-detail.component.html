@@ -25,7 +25,7 @@
                     <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="hideModals()"></app-state-list>
                 </div>
 
-                <div *ngIf="showCopyMove" class="popup">
+                <div *ngIf="showCopyMove" class="copy-popup">
                     <app-task-move-copy (close)="moved()" [task]="task"></app-task-move-copy>
                 </div>
 
