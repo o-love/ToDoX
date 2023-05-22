@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date'];
+    protected $fillable = ['name', 'description', 'tasklist_id', 'state_id', 'due_date', 'start_date', 'state_position', 'recurring_period'];
     protected $table = 'task';
     // protected $primaryKey = "uuid";
 
@@ -38,26 +39,15 @@ class Task extends Model
 
     public function isPastDue()
     {
-    if ($this->labels()->where('type', 'date')->exists()) {
-        $dateLabel = $this->labels()->where('type', 'date')->first();
-        $dateValue = $dateLabel->typevalue;
+        if ($this->labels()->where('type', 'date')->exists()) {
+            $dateLabel = $this->labels()->where('type', 'date')->first();
+            $dateValue = $dateLabel->typevalue;
 
-        // Comparar la fecha de fin con la fecha actual
-        if (strtotime($dateValue) < time()) {
-            return true;
+            if (strtotime($dateValue) < time()) {
+                return true;
+            }
         }
-    }
 
-    return false;
-
-    // Try on front - rev api connection
-    // $.get('/api/tasks/' + taskId, function(task) {
-    //     if (task.isOverdue) {
-    //         $('p[data-task-id="' + taskId + '"]').addClass('overdue');
-    //     }
-    // });
-    // .overdue {
-    //     color: red;
-    // }
+        return false;
     }
 }

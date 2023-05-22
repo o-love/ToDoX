@@ -1,27 +1,22 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CacheService } from './services/cache/cache.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'ToDoX';
-  showLoginButton: boolean = false;
   
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private cacheService: CacheService) {}
 
-  onBoardCreated(board: any) {
-    this.http.post('http:/localhost:8082/api/board', board).subscribe((response) => {
-      console.log(response);
-    });
+  ngOnInit(): void {
+    this.cacheService.deleteCache();
+    this.cacheService.storeLastTime();
   }
 
-  ngOnInit() {
-    this.route.data.subscribe(data => {
-      this.showLoginButton = data['showLoginButton'] || false;
-    });
+  ngOnDestroy(): void {
+    this.cacheService.storeLastTime();
   }
 }

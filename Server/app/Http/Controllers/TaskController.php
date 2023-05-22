@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\TaskList;
 
+/**
+ * Summary of TaskController
+ */
 class TaskController extends Controller
 {
     // Display a listing of the resource
@@ -29,6 +32,7 @@ class TaskController extends Controller
         //     'selectedLabels' => $request->input('selectedLabels'),
         //     'due_date' => $request->input('start_date'),
         //     'start_date' => $request->input('due_date'),
+        //     'recurring_period' => $request->input('recurring_period'),
         // ]);
 
         $start_date = $this->convertDate($request->input('start_date'));
@@ -42,6 +46,8 @@ class TaskController extends Controller
             'state_id' => $request->input('state_id'),
             'due_date' => $due_date,
             'start_date' => $start_date,
+            'state_position' => $request->input('state_position'),
+            'recurring_period' => $request->input('recurring_period'),
         ]);
         $task->save();
 
@@ -51,7 +57,10 @@ class TaskController extends Controller
 
         $selectedLabels = $request->input('selectedLabels');
         foreach ($selectedLabels as $label)
-            $task->labels()->attach($label['id']);
+            $task->labels()->attach($label);
+        // $selectedLabels = $request->input('selectedLabels');
+        // foreach ($selectedLabels as $label)
+        //     $task->labels()->attach($label['id']);
 
         return response()->json($task, 201);
     }
@@ -88,7 +97,9 @@ class TaskController extends Controller
             'description' => $request->input('description'),
             'state_id' => $request->input('state_id'),
             'due_date' => $due_date,
-            'start_date' => $start_date
+            'start_date' => $start_date,
+            'state_position' => $request->input('state_position'),
+            'recurring_period' => $request->input('recurring_period')
         ]);
 
         return response()->json($task, 201);
@@ -136,7 +147,7 @@ class TaskController extends Controller
     }
 
     private function validateDates($start_date, $due_date)
-    {        
+    {
         /* Validate start and due dates */
         // If a due date is selected, a start date must be selected as well
         if ($due_date && !$start_date)
@@ -146,5 +157,13 @@ class TaskController extends Controller
             return response()->json(['error' => 'Start date cannot be greater than due date'], 400);
 
         return [$start_date, $due_date];
+    }
+
+    public function move(Request $request,$boardId, $taskListId, $taskId){
+        $task = Task::findOrFail($taskId);
+        $task->tasklist_id = $request->input('tasklist_id');
+        $task->state_id = $request->input('state_id');
+        $task->save();
+        return response()->json($task, 201);
     }
 }

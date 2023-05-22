@@ -9,7 +9,7 @@
     background-color: $white;
     border-radius: 10px;
     width: 500px;
-    height: 400px;
+    height: 440px;
 
     padding: 5%;
 
@@ -19,12 +19,12 @@
         padding: 5px;
         border-radius: 5px;
         font-size: 10pt;
-        border: 2px solid rgba($english-violet, .2);
+        border: 1px solid rgba($english-violet, .7);
         background-color: rgba($tropical-indigo, 0.05);
         color: $tropical-indigo;
-        
-        &:focus { 
-            outline: none; 
+
+        &:focus {
+            outline: none;
             background-color: rgba($tropical-indigo, 0.2);
         }
     }
@@ -61,10 +61,10 @@
             font-size: 18pt;
             color: $melon;
             margin: -3% -2% 0 0;
-            
-            &:hover { 
+
+            &:hover {
                 cursor: pointer;
-                transform: scale(1.1); 
+                transform: scale(1.1);
             }
             &:active { transform: scale(1); }
         }
@@ -92,11 +92,11 @@
             .comment-section {
                 margin-top: 15px;
                 width: 100%;
-                height: 50%;
-                max-height: 50%;
+                height: 56%;
+                max-height: 56%;
 
-                h4 { 
-                    font-size: 10pt; 
+                h4 {
+                    font-size: 10pt;
                     margin: 0 0 10px 0;
                     padding: 0;
                 }
@@ -113,9 +113,27 @@
                 .select-input {
                     display: flex;
                     align-items: center;
-                    border: 2px solid rgba($english-violet, .2);
+                    border: 1px solid rgba($english-violet, .7);
+                    overflow-x: scroll;
 
-                    .state-balloon {
+                    &::-webkit-scrollbar {
+                        height: 0.2em;
+                    }
+                      
+                    &::-webkit-scrollbar-track {
+                        background-color: transparent;
+                    }
+                      
+                    &::-webkit-scrollbar-thumb {
+                        border: none;
+                    }
+
+                    .placeholder-text {
+                        font-size: 10pt;
+                        opacity: .6;
+                    }
+
+                    .balloon {
                         display: flex;
                         align-items: center;
                         justify-content: flex-start;
@@ -123,6 +141,7 @@
                         margin-left: .6em;
                         min-width: fit-content;
                         width: 8em;
+                        max-width: 8em;
                         box-sizing: border-box;
                         padding: .8em .6em;
                         border-radius: 1.2em;
@@ -132,6 +151,15 @@
                         .state-name {
                             font-weight: 500;
                             margin: 0 0 0 .5em;
+                            width: 6em;
+                            max-width: 6em;
+                            display: flex;
+                            align-items: center;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+
+                            &:hover { cursor: pointer; }
                         }
 
                         .bi { font-size: 8pt; }
@@ -157,36 +185,40 @@
 
                 .label-input {
                     font-size: 10pt;
+                    width: 100%;
 
                     label {
                         font-weight: 500;
-                    }               
+                    }
 
                     .date-input {
-                        border: 2px solid rgba($english-violet, .2);
+                        border: 1px solid rgba($english-violet, .7);
                         background-color: rgba($tropical-indigo, 0.05);
                         color: $tropical-indigo;
-                
-                        &:focus { 
-                            outline: none; 
+
+                        &:focus {
+                            outline: none;
                             background-color: rgba($tropical-indigo, 0.2);
                         }
                     }
                 }
-            }   
+            }
 
             .bottom {
                 display: flex;
                 width: 100%;
-                justify-content: flex-end;
-                
-                .delete-btn {
-                    @include btn(8em, 2em, 10pt, $white, $light-red, 2px solid $light-red, 2px, transparent, 0px, 1px);
+                align-items: flex-end;
+                justify-content: space-between;
+                flex-direction: column;
+
+                .copy-move-btn {
+                    @include btn(8em, 2em, 10pt, $white, $light-blue, 2px solid $light-blue, 2px, transparent, 0px, 1px);
                     text-transform: uppercase;
                     cursor: pointer;
+                    margin-bottom: 0.5rem;
 
                     &:hover {
-                        background-color: $light-red;
+                        background-color: $light-blue;
                         color: $white;
                     }
 
@@ -197,6 +229,23 @@
 
                     .spinner {
                         margin-left: -8px;
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .delete-btn {
+                    @include btn(8em, 2em, 10pt, $white, $light-red, 2px solid $light-red, 2px, transparent, 0px, 1px);
+                    text-transform: uppercase;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $light-red;
+                        color: $white;
+                    }
+
+                    .spinner {
+                        margin-left: -12px;
                         width: 25px;
                         height: 25px;
                     }

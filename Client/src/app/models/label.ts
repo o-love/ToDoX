@@ -3,7 +3,7 @@ export interface Label {
     name: string;
     color: string;
     description: string;
-    type: string;
+    // type: string;
     // created_at: string;
     // updated_at: string;
   }

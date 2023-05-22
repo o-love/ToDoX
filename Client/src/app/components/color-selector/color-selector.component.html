@@ -1,0 +1,14 @@
+<div #select class="color-select closed">
+    <div class="select-btn" (click)="selectActive()">
+        <span #title class="placeholder-text">Color</span>
+        <i #icon class="bi bi-chevron-down"></i>
+    </div>
+    <ul class="option-list">
+        <li #option #red id="red" class="option closed" (click)="selectColor(red, 0, true)"><span class="left"><i #color class="bi bi-square-fill"></i>RED</span><i class="bi bi-check2"></i></li>
+        <li #option #pink id="pink" class="option closed" (click)="selectColor(pink, 1, true)"><span class="left"><i #color class="bi bi-square-fill"></i>PINK</span><i class="bi bi-check2"></i></li>
+        <li #option #purple id="purple" class="option closed" (click)="selectColor(purple, 2, true)"><span class="left"><i #color class="bi bi-square-fill"></i>PURPLE</span><i class="bi bi-check2"></i></li>
+        <li #option #blue id="blue" class="option closed" (click)="selectColor(blue, 3, true)"><span class="left"><i #color class="bi bi-square-fill"></i>BLUE</span><i class="bi bi-check2"></i></li>
+        <li #option #green id="green" class="option closed" (click)="selectColor(green, 4, true)"><span class="left"><i #color class="bi bi-square-fill"></i>GREEN</span><i class="bi bi-check2"></i></li>
+        <li #option #yellow id="yellow" class="option closed" (click)="selectColor(yellow, 5, true)"><span class="left"><i #color class="bi bi-square-fill"></i>YELLOW</span><i class="bi bi-check2"></i></li>
+    </ul>
+</div>

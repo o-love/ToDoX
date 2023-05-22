@@ -21,7 +21,7 @@
                         <ng-container *ngFor="let list of lists; let i = index">
                             <ng-container>
                                 <div #list class="list-card">
-                                    <label class="list-name" (click)="selectList(list)">{{ list.name }}</label>
+                                    <label class="list-name" (click)="selectList(list.id)">{{ list.name }}</label>
                                     <i class="delete-btn bi bi-trash3" (click)="deleteTaskList(list.id)"></i>
                                 </div>
                             </ng-container>
@@ -33,17 +33,18 @@
             <img class="close-btn" (click)="toggleSidebar()" src="../../../assets/icons/IoCaretBackCircle.svg">
         </div>
         <div class="list-detail-container">
-            <div *ngIf="!showListDetail" class="create-list">
+            <app-spinner *ngIf="loading"></app-spinner>
+            <div *ngIf="!showListDetail && !loading" class="create-list">
                 <label>{{ "lists.title" | translate }}</label>
                 <button class="add-btn" (click)="openCreateList()"><i class="bi bi-plus"></i></button>
             </div>
-            <app-list-detail *ngIf="showListDetail" (taskListEdited)="editTaskList($event)" (taskListDeleted)="deleteTaskList($event)" [selectedList]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
+            <app-list-detail *ngIf="showListDetail && !loading" (edited)="taskListEdited()" (deleted)="deleteTaskList($event)" [taskListId]="selectedList" [usersId]="usersId" [user]="user"></app-list-detail>
         </div>
     </div>
 
-    <div class="overlay" *ngIf="showCreateList || showSettings" (click)="closePopup()"></div>
-    <div class="popup" *ngIf="showCreateList || showSettings">
-        <app-create-list *ngIf="showCreateList" (listCreated)="addList($event)" (closePopup)="closePopup()"></app-create-list>
-        <app-board-settings *ngIf="showSettings" (boardEdited)="editBoard($event)" (closeBoardSettings)="closePopup()" [board]="board"></app-board-settings>
+    <div class="overlay" *ngIf="show()" (click)="hideModals()"></div>
+    <div class="popup" *ngIf="show()">
+        <app-create-list *ngIf="showCreateList" (listCreated)="addList($event)" (closePopup)="hideModals()"></app-create-list>
+        <app-board-settings *ngIf="showSettings" (boardEdited)="editBoard($event)" (closeBoardSettings)="hideModals()" [board]="board"></app-board-settings>
     </div>
 </main>

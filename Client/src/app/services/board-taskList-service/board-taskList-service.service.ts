@@ -3,14 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { TaskList } from 'src/app/models/taskList';
+import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { map, switchMap, mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
   private apiUrl = 'http://localhost:8082/api';
+  
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: UserAuthService) { }
 
   // Gets all boards from backend
   getBoards(): Observable<Board[]> {
@@ -43,6 +46,7 @@ export class BoardService {
       name: boardName,
       description: boardDescription,
     };
+  
     return this.http.post(`${this.apiUrl}/boards`, board);
   }
 

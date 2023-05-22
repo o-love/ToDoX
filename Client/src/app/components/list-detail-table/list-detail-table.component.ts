@@ -3,6 +3,7 @@ import { Label } from 'src/app/models/label';
 import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
+import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
   selector: 'app-list-detail-table',
@@ -12,27 +13,81 @@ import { TaskList } from 'src/app/models/taskList';
 export class ListDetailTableComponent implements OnChanges {
 
   @Input() selectedList: TaskList | null = null;
-  @Input() tasks!: Task[];
-  @Input() states!: State[];
-  @Input() labels!: Label[];
+  @Input() tasks: Task[] | undefined;
+  @Input() states: State[] | undefined;
+  @Input() labels: Label[] | undefined;
 
   stateNames: {[key: number]: string} = {};
-  showPopup: boolean = false; 
+  mapLabels: Map<number, Label> = new Map();
 
-  @Output() openCreateTaskPopup = new EventEmitter<State | null>();
-  @Output() openTaskDetailPopup = new EventEmitter<Task>();
+  showStates: boolean = false;
+  showLabels: boolean = false;
+
+  @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateTask: EventEmitter<null> = new EventEmitter();
+  @Output() openCreateState: EventEmitter<void> = new EventEmitter();
+  @Output() openCreateLabel: EventEmitter<void> = new EventEmitter();
+
+  @Output() changes: EventEmitter<void> = new EventEmitter();
+
+  constructor(private labelService: LabelService) {}
+
+  // ng -----------------------------------------------------------------------------
 
   ngOnChanges(): void {
-    this.states.forEach((state) => {
-      this.stateNames[state.id] = state.name;
-    });
+    if (this.states) this.states.forEach((state) => this.stateNames[state.id] = state.name);
+    if (this.labels) this.labels.forEach((label) => this.mapLabels.set(label.id, label));
   }
+
+  // tasks --------------------------------------------------------------------------
 
   createTask() {
-    this.openCreateTaskPopup.emit(null);
+    this.openCreateTask.emit(null);
   }
 
-  editTask(task: Task) {
-    this.openTaskDetailPopup.emit(task);
+  viewTask(task: Task) {
+    this.openTaskDetail.emit(task.id);
+  }
+
+  // labels -------------------------------------------------------------------------
+
+  getLabel(id: number): string {
+    let label: any = this.mapLabels.get(id);
+    return label ? label.name : '';
+  }
+
+  getColor(key: string | undefined): string | undefined {
+    return key ? this.labelService.getColor(key) : undefined;
+  }
+
+  // modals -------------------------------------------------------------------------
+  
+  hideModals() {
+    if (this.showStates) this.showStates = false;
+    if (this.showLabels) this.showLabels = false;
+  }
+
+  openStateList() {
+    this.hideModals();
+    this.showStates = true;
+  }
+
+  openLabelList() {
+    this.hideModals();
+    this.showLabels = true;
+  }
+
+  // outputs ------------------------------------------------------------------------
+
+  addNewState() {
+    this.openCreateState.emit();
+  }
+
+  addNewLabel() {
+    this.openCreateLabel.emit();
+  }
+
+  onChanges() {
+    this.changes.emit();
   }
 }

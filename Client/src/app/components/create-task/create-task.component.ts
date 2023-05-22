@@ -1,52 +1,98 @@
-import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { State } from 'src/app/models/state';
 import { ActivatedRoute, Router } from '@angular/router'
-import { TaskService } from 'src/app/services/task-service/task-service.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { Task } from 'src/app/models/task';
 import { Label } from 'src/app/models/label';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/models/form';
+import { StateService } from 'src/app/services/state/state.service';
+import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
   styleUrls: ['./create-task.component.scss']
 })
-export class CreateTaskComponent implements Form {  
+export class CreateTaskComponent implements Form, OnInit {  
+
+  @Input() stateId: number | null = null; 
+
+  @Output() changes: EventEmitter<void> = new EventEmitter();
+  @Output() close: EventEmitter<void> = new EventEmitter();
+
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  taskListId = this.route.snapshot.paramMap.get('listId');
   
-  form: FormGroup;
-  
-  @Input() selectedState: State | null = null;
-  selectedLabels: Label[] = [];
-  startDate: Date | null = null;
-  dueDate: Date | null = null;
+  states: State[] = [];
+  labels: Label[] = [];
 
-  @Input() boardId: string | null = null;
-  @Input() taskListId: string | null = null;
-  @Input() states: State[] = [];
-  @Input() labels: Label[] = [];
+  showStates: boolean = false;
+  showLabels: boolean = false;
 
-  @Output() taskCreated = new EventEmitter<void>();
-  @Output() close = new EventEmitter<void>();
-
-  statesPopup: boolean = false;
-  labelsPopup: boolean = false;
-
-  @ViewChildren('labels') labelsRef!: QueryList<ElementRef<any>>;
-  @ViewChildren('input') inputs!: QueryList<ElementRef<any>>;
-  @ViewChild('start') start!: ElementRef<any>;
-  @ViewChild('state') state!: ElementRef<any>;
+  @ViewChildren('labels') labelsRef!: QueryList<ElementRef>;
+  @ViewChildren('input') inputs!: QueryList<ElementRef>;
+  @ViewChild('start') start!: ElementRef;
+  @ViewChild('state') state!: ElementRef;
 
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  form: FormGroup;
+  selectedState: State | null = null;
+  selectedLabels: Label[] = [];
+  startDate: Date = new Date();
+  dueDate: Date = new Date();
+
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private stateService: StateService, private labelService: LabelService, private taskService: TaskService) {
     this.form = this.fb.group({
-      taskName: ['', [Validators.required, Validators.maxLength(20)]],
-      taskDescription: ['', [Validators.required, Validators.maxLength(200)]],
-    });
+      name: ['', [Validators.required, Validators.maxLength(20)]],
+      description: ['', [Validators.required, Validators.maxLength(200)]],
+      periodicity: ['none']
+    })
   }
 
+  // ng -----------------------------------------------------------------------------
+
+  ngOnInit(): void {
+    this.getStates();
+    this.getLabels();
+  }
+
+  // getters ------------------------------------------------------------------------
+
+  private getStates() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading states of list %d from board %d...', this.taskListId, this.boardId);
+    this.stateService.getStatesByTaskListId(this.boardId, this.taskListId).then(
+      (states: State[]) => { 
+        this.states = states;
+        this.getSelectedState();
+      }
+    );
+  }
+  
+  // here should be a getter method for labels when CRUD for labels is done
+
+  private getLabels() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading labels of list %d from board %d', this.taskListId, this.boardId);
+    this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
+      (labels: Label[]) => this.labels = labels
+    )
+  }
+
+  // back should do this not front. and this method would reference state service
+  private getSelectedState() {
+    if (!this.stateId || !this.states) return;
+    for (let state of this.states) if (state.id == this.stateId) {
+      this.selectedState = state;
+      break;
+    }
+  }
+
+  // forms --------------------------------------------------------------------------
+  
   checkErrors(): boolean {
     let errors: boolean = false;
 
@@ -62,7 +108,7 @@ export class CreateTaskComponent implements Form {
     if (!this.startDate && this.dueDate) {
       this.onError(this.start);
       errors = true;
-    } 
+    }
 
     if (!this.selectedState) {
       this.onError(this.state);
@@ -78,23 +124,38 @@ export class CreateTaskComponent implements Form {
 		});
   }
 
-  onError(label: ElementRef<any>): void {
+  onError(label: ElementRef): void {
     label.nativeElement.style.boxShadow = '0px 0px 7px rgb(255, 113, 113)';
   }
 
-  toggleLabels() {
-    if (this.labelsPopup) this.labelsPopup = false;
-    else this.labelsPopup = true;
+  // modals -------------------------------------------------------------------------
+  
+  openStates() {
+    this.hideModals();
+    if (!this.showStates) this.showStates = true;
   }
 
-  toggleStates() {
-    if (this.statesPopup) this.statesPopup = false;
-    else this.statesPopup = true;
+  openLabels() {
+    this.hideModals();
+    if (!this.showLabels) this.showLabels = true;
+  }
+
+  hideModals() {
+    if (this.showStates) this.showStates = false;
+    if (this.showLabels) this.showLabels = false;
+  }
+
+  // outputs ------------------------------------------------------------------------
+
+  onChanges() {
+    this.changes.emit();
   }
 
   onClose() {
     this.close.emit();
   }
+
+  // selectors ----------------------------------------------------------------------
 
   selectState(state: State) {
     this.selectedState = state;
@@ -104,27 +165,28 @@ export class CreateTaskComponent implements Form {
     this.selectedLabels = labels;
   }
 
-  private createTask(taskName: string, taskDescription: string, selectedState: string, startDate: Date, dueDate: Date) {
+  // tasks --------------------------------------------------------------------------
+
+  private createTask(name: string, description: string, stateId: string, labels: number[], startDate: Date, dueDate: Date, periodicity: string) {
     if (!this.taskListId || !this.boardId) return;
 
-    this.taskService.createTask(this.boardId, this.taskListId, 
-      taskName, taskDescription, selectedState, this.selectedLabels, 
-      startDate, dueDate).subscribe({
-        next: (task: Task) => {
-          console.log('created task:', task);
-          this.taskCreated.emit();
-          this.close.emit();
-        },
-        error: (error) => console.log(error)
-    });
+    this.loading = true;
+    this.taskService.createTask(this.boardId, this.taskListId, name, description, stateId, labels, startDate, dueDate, periodicity).then(
+      (task: Task) => {
+        this.onChanges();
+        this.onClose();
+      }
+    )
   }
+
+  // submit -------------------------------------------------------------------------
 
   onSubmit() {
     this.resetErrors();
     if (this.checkErrors() || !this.selectedState) return;
   
-    let taskName: string = this.form.get('taskName')?.value;
-    let taskDescription: string = this.form.get('taskDescription')?.value;
+    let taskName: string = this.form.value.name;
+    let taskDescription: string = this.form.value.description;
     let selectedState: string = this.selectedState.id.toString();
     let startDate: Date = new Date();
     let dueDate: Date = new Date();
@@ -132,7 +194,10 @@ export class CreateTaskComponent implements Form {
     if (this.startDate) startDate = new Date(this.startDate);
     if (this.dueDate) dueDate = new Date(this.dueDate);
 
-    this.loading = true;
-    this.createTask(taskName, taskDescription, selectedState, startDate, dueDate);
+    let taskPeriodicity: string = this.form.value.periodicity;
+    let labels: number[] = [];
+    this.selectedLabels.forEach((label) => labels.push(label.id));
+
+    this.createTask(taskName, taskDescription, selectedState, labels, startDate, dueDate, taskPeriodicity);
   }
 }

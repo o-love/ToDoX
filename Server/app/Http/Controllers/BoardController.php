@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Board;
+use App\Models\BoardUser;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
 
 class BoardController extends Controller
 {
@@ -28,6 +31,16 @@ class BoardController extends Controller
     public function store(Request $request)
     {
         $board = Board::create($request->all());
+        $board->save();
+
+        $boardUser = new BoardUser;
+        if(Auth::check()){
+            $boardUser->user_id = Auth::user()->id;
+        };
+        $boardUser->board_id = $board->id;
+        $boardUser->permission = 1;
+        $boardUser->save();
+    
         return new JsonResponse($board, Response::HTTP_OK);
     }
 
@@ -54,4 +67,6 @@ class BoardController extends Controller
         Board::destroy($id);
         return response()->json(null, 204);
     }
+
+
 }

@@ -1,36 +1,112 @@
-import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Label } from 'src/app/models/label';
+import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
   selector: 'app-label-list',
   templateUrl: './label-list.component.html',
   styleUrls: ['./label-list.component.scss']
 })
-export class LabelListComponent implements OnInit {
+export class LabelListComponent implements OnChanges {
 
-  selectedElements: HTMLElement[] = [];
-  @Input() selectedLabels: Label[] | null = null;
-  @Input() labels: Label[] = [];
+  @Input() selectedLabels: Label[] = [];
+  @Input() canEdit: boolean = false;
+  @Input() select: boolean = true;
 
-  @Output() closeLabel = new EventEmitter<void>;
-  @Output() label = new EventEmitter<Label[]>;
+  @Output() close = new EventEmitter<void>();
+  @Output() changes = new EventEmitter<void>();
+  @Output() labels = new EventEmitter<Label[]>();
+  @Output() new = new EventEmitter<void>();
 
-  @ViewChildren('check') checks!: QueryList<HTMLElement>;
-  labelsListId: {[key: number]: number} = {};
+  boardId = this.route.snapshot.paramMap.get('boardId');
+  taskListId = this.route.snapshot.paramMap.get('listId');
+  labelList: Label[] | undefined;
+
+  @ViewChildren('dropdown') dropdown!: QueryList<ElementRef>;
+  @ViewChild('element') element!: HTMLElement;
+  options: {[key: number]: boolean } = {};
+  labelOpened: number | null = null;
   
+  constructor(private route: ActivatedRoute, private labelService: LabelService) {}
 
-  constructor() {}
+  ngOnChanges() {
+    this.getLabels();
+  }
 
-  ngOnInit() {
-    if (this.labels) {
-      this.labels.forEach((label, index) => {
-        this.labelsListId[label.id] = index;
-      })
-    }
+  onChanges() {
+    this.changes.emit();
+  }
+
+  private getLabels() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading labels...');
+    this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
+      (labels: Label[]) => {
+        this.labelList = labels;
+        this.updateOptions();
+      }
+    )
+  }
+
+  hexToRgb(hex: string): string {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  }
+
+  getColor(key: string): string | undefined {
+    return this.labelService.getColor(key);
+  }
+
+  getBackgroundColor(color: string): string {
+    let backgroundColor = this.getColor(color);
+    if (!backgroundColor) backgroundColor = '#474269';
+    backgroundColor = 'rgba(' + this.hexToRgb(backgroundColor) + ', .4)';
+    return backgroundColor;
+  }
+
+  editLabel(label: Label) {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('editing label %d...', label.id);
+    this.labelService.editLabel(this.taskListId, label.id, { name: label.name, description: label.description, color: label.color }).then(
+      (label: Label) => {
+        this.getLabels();
+        this.onChanges();
+      }
+    )
+  }
+
+  deleteLabel() {
+    this.changes.emit();
+    this.close.emit();
+  }
+  
+  addNew() {
+    this.new.emit();
+    this.close.emit();
+  }
+
+  updateOptions() {
+    if (this.labelList) this.labelList.forEach((label) => this.options[label.id] = false);
+    if (this.selectedLabels) this.selectedLabels.forEach((label) => this.options[label.id] = true);
+  }
+
+  openLabel(element: HTMLElement | undefined, label: number) {
+    if (element == undefined) return;
+    this.dropdown.forEach((icon) => {
+      if (icon.nativeElement != element && icon.nativeElement.classList.contains('bi-chevron-up')) this.toggleDropdown(icon.nativeElement);
+    })
+
+    this.toggleDropdown(element);
+    if (element.classList.contains('bi-chevron-up')) this.labelOpened = label;
+    else this.labelOpened = null;
   }
 
   onClose() {
-    this.closeLabel.emit();
+    this.close.emit();
   }
 
   toggleDropdown(element: HTMLElement) {
@@ -38,44 +114,10 @@ export class LabelListComponent implements OnInit {
     element.classList.toggle('bi-chevron-up');
   }
 
-  toggleClear(element: HTMLElement) {
-    element.classList.toggle('bi-square');
-  }
-
-  toggleFill(element: HTMLElement) {
-    element.classList.toggle('bi-square-fill');
-  }
-
-  toggleCheck(element: HTMLElement) {
-    element.classList.toggle('bi-check-square-fill')
-  }
-
-  fill(element: HTMLElement, pass: boolean) {
-    if (this.selectedElements.length > 0 && !pass) if (this.selectedElements.includes(element)) return;
-    this.toggleClear(element);
-    this.toggleFill(element);
-  }
-
-  selectLabel(element: HTMLElement, label: Label) {
-    if (this.selectedElements.length > 0 && this.selectedLabels) {
-      for (let i = 0; i < this.selectedLabels.length; i++) {
-        if (this.selectedLabels[i].id == label.id) {
-          this.fill(element, true);
-          this.selectedLabels.slice(i, 1);
-          this.selectedElements.slice(this.selectedElements.indexOf(element), 1);
-          this.label.emit(this.selectedLabels);
-          return;
-        }
-      }
-    }
-
-    if (element.classList.contains('bi-square-fill')) this.toggleFill(element);
-    if (element.classList.contains('bi-square')) this.toggleClear(element);
-    this.toggleCheck(element);
-    if (this.selectedLabels) { 
-      this.selectedLabels.push(label);
-      this.selectedElements.push(element);
-      this.label.emit(this.selectedLabels);
-    }
+  selectLabel(label: Label) {
+    let labelsIds: number[] = this.selectedLabels.map((label: Label) => label.id);
+    if (labelsIds.includes(label.id)) this.selectedLabels.splice(labelsIds.indexOf(label.id), 1);
+    else this.selectedLabels.push(label);
+    this.labels.emit(this.selectedLabels);
   }
 }

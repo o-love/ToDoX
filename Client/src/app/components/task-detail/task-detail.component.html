@@ -15,17 +15,38 @@
         </div>
         <div class="body-right">
             <div class="top">
-                <div class="select-input input-2" (click)="openStates()">
-                    <div *ngIf="selectedState" class="state-balloon">
+                <div class="select-input input-2" id="states" (click)="openStates()">
+                    <div *ngIf="selectedState" class="state-balloon balloon">
                         <i class="bi bi-circle-fill"></i>
                         <label class="state-name">{{ selectedState.name }}</label>
                     </div>
                 </div>
-                <div *ngIf="statesPopup" class="popup">
-                    <app-state-list [states]="states" [selectedState]="selectedState" (state)="changeState($event)" (close)="closeStates()"></app-state-list>
+                <div *ngIf="showStates" class="popup">
+                    <app-state-list [selectedState]="selectedState" (changes)="onChanges()" (state)="changeState($event)" (close)="hideModals()"></app-state-list>
                 </div>
+
+                <div *ngIf="showCopyMove" class="popup">
+                    <app-task-move-copy (close)="moved()" [task]="task"></app-task-move-copy>
+                </div>
+
                 <!-- aquí iría el selector de labels -->
-                <!-- <div class="select-input input-2"></div> -->
+                <div class="select-input input-2" id="labels" (click)="openLabels()">
+                    <ng-container *ngIf="selectedLabels.length == 0">
+                        <label class="placeholder-text">Select labels...</label>
+                    </ng-container>
+                    <ng-container *ngIf="selectedLabels.length > 0">
+                        <ng-container *ngFor="let label of selectedLabels">
+                            <div class="label-balloon balloon" [style.backgroundColor]="getBackgroundColor(label.color)">
+                                <i class="bi bi-circle-fill" [style.color]="getColor(label.color) ? getColor(label.color) : '#202130'"></i>
+                                <label class="state-name">{{ label.name }}</label>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div *ngIf="showLabels" class="popup">
+                    <app-label-list [selectedLabels]="selectedLabels" (changes)="onChanges()" (labels)="changeLabels($event)" (close)="hideModals()"></app-label-list>
+                </div>
+
                 <div class="label-input">
                     <label>{{ 'global.startDate' | translate }}</label>
                     <input #start type="date" [max]="dueDate" class="date-input input-2" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
@@ -35,9 +56,24 @@
                     <label>{{ 'global.dueDate' | translate }}</label>
                     <input type="date" [min]="startDate" class="date-input input-2" name="dueDate" [(ngModel)]="dueDate" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
                 </div>
+
+                <!-- Repetition -->
+                <div class="label-input">
+                    <label translate>periodicity.title</label>
+                    <select class="input" name="periodicity" [(ngModel)]="recurring_period" [ngModelOptions]="{standalone: true}" (ngModelChange)="save()">
+                        <option value="none" translate>periodicity.none</option>
+                        <option value="daily" translate>periodicity.daily</option>
+                        <option value="weekly" translate>periodicity.weekly</option>
+                        <option value="monthly" translate>periodicity.monthly</option>
+                        <option value="yearly" translate>periodicity.yearly</option>
+                        <option value="every-odd-day" translate>periodicity.oddDay</option>
+                        <option value="every-even-day" translate>periodicity.evenDay</option>
+                    </select>
+                </div>                
             </div>
             <div class="bottom">
-                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar <i *ngIf="!loading" class="bi bi-trash-fill"></i></div>
+                <div #btn class="copy-move-btn" (click)="toggleCopyMove()">Move/Copy <i class="bi bi-clipboard"></i></div>
+                <div #btn class="delete-btn" (click)="onDelete(btn)"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">Borrar</div>
             </div>
         </div>
     </div>

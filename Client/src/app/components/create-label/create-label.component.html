@@ -1,50 +1,14 @@
-<h2 translate>labels.title</h2>
-
-<form (ngSubmit)="onSubmit()">
+<form class="create-label" (ngSubmit)="onSubmit()" [formGroup]="labelForm">
+    <div class="form-header">
+        <h4 class="title">Crear etiqueta</h4>
+        <img class="close-btn" src="../../../assets/icons/IoChevronBackCircle.svg" (click)="onClose()">
+    </div>
     <div class="form-body">
-        <!-- Label name -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.name' | <!--translate-->  }}:</label>
-            </div>
-            <div class="input-field">
-                <input type="text" (ngModel)="labelName" name="labelName" required>
-            </div>
-        </div>
-        <!-- Label description -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.description' | <!--translate-->  }}:</label>
-            </div>
-            <div class="input-field">
-                <textarea rows="5" cols="50" (ngModel)="labelDescription" name="labelDescription" required></textarea>
-            </div>
-        </div>
-        <!-- Label color -->
-        <div class="form-group">
-            <div class="input-label">
-                <label>{{ 'global.color' | <!--translate--> }}:</label>
-            </div>
-            <div class="input-field">
-                <input type="color" (ngModel)="labelColor" name="labelColor">
-            </div>
-        </div>
-        <!-- Label type -->
-        <!-- <div class="form-group">
-            <div class="input-label">
-                <label>Type:</label>
-            </div>
-            <div class="input-field">
-                <select [(ngModel)]="labelType" name="labelType">
-                    <option value="date">Date</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="int">Integer</option>
-                    <option value="string">String</option>
-                </select>
-            </div>
-        </div> -->
-        <div class="buttons">
-            <button class="btn" type="submit">{{ 'global.ok' | <!--translate-->  }}</button>
-        </div>
+        <input #input type="text" formControlName="name" placeholder="{{ 'global.name' | translate }}">
+        <textarea #input formControlName="description" rows="4" cols="30" name="description" type="text" placeholder="{{ 'global.description' | translate }}"></textarea>
+        <app-color-selector #selector (selection)="selectColor($event)" class="color-select"></app-color-selector>
+    </div>
+    <div class="buttons">
+        <button class="btn qt-btn" type="submit"><img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">{{ 'global.ok' | translate }}</button>
     </div>
 </form>

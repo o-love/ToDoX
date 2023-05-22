@@ -17,10 +17,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UppercasePipe } from './pipes/uppercase.pipe';
 
-import { BoardService } from './services/board-taskList-service/board-taskList-service.service';
-import { TaskService } from './services/task-service/task-service.service';
-import { UserAuthService } from './services/user-auth-service/user-auth.service';
-import { AuthInterceptorService } from './services/auth-interceptor-service/auth-interceptor.service';
+import { BoardService } from './services/board/board.service';
+import { TaskService } from './services/task/task.service';
+import { UserAuthService } from './services/user-auth/user-auth.service';
+import { AuthInterceptorService } from './services/auth-interceptor/auth-interceptor.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -51,6 +51,10 @@ import { StateDetailComponent } from './components/state-detail/state-detail.com
 import { BoardSettingsComponent } from './components/board-settings/board-settings.component';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { ListSettingsComponent } from './components/list-settings/list-settings.component';
+import { LayoutSelectorComponent } from './components/layout-selector/layout-selector.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { ColorSelectorComponent } from './components/color-selector/color-selector.component';
+import { TaskMoveCopyComponent } from './components/task-move-copy/task-move-copy.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +85,10 @@ import { ListSettingsComponent } from './components/list-settings/list-settings.
     BoardSettingsComponent,
     TaskDetailComponent,
     ListSettingsComponent,
+    LayoutSelectorComponent,
+    SpinnerComponent,
+    ColorSelectorComponent,
+    TaskMoveCopyComponent,
   ],
   imports: [
     // CommonModule,

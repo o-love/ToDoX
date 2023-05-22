@@ -2,7 +2,6 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
 import { Form } from 'src/app/models/form';
-import { BoardService } from 'src/app/services/board-taskList-service/board-taskList-service.service';
 
 @Component({
   selector: 'app-board-settings',

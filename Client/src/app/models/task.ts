@@ -7,4 +7,8 @@ export interface Task {
   start_date: Date | null;
   due_date: Date | null;
   isEditing: boolean;
+  state_position: number;
+  selectedLabels: number[];
+  periodicity: string;
+  recurring_period: string;
 }

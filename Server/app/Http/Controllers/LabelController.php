@@ -6,24 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Label;
 use App\Models\Task;
+use App\Models\TaskList;
 
 class LabelController extends Controller
 {
-    public function index()
+    public function index($boardId, $taskListId)
     {
-        $labels = Label::all();
+        $taskList = TaskList::findOrFail($taskListId);
+        $labels = $taskList->labels()->get();
+        // $labels = Label::all();
         return response()->json($labels);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $boardId, $taskListId)
     {
         $label = new Label([
             'name' => $request->input('name'),
             'color' => $request->input('color') ?: '',
             'description' => $request->input('description'),
-            // 'type' => $request->input('type') ?: '',
         ]);
         $label->save();
+
+        $taskList = TaskList::findOrFail($taskListId);
+        $taskList->labels()->attach($label);
 
         return response()->json($label, 201);
     }
@@ -31,35 +36,18 @@ class LabelController extends Controller
     public function show($boardId, $taskId, $labelId)
     {
         $label = Label::findOrFail($labelId);
-
-        // return response()->json([
-        //     'id' => $label->id,
-        //     'name' => $label->name,
-        //     'color' => $label->color,
-        //     'description' => $label->description,
-        //     'type' => $label->type,
-        //     'typevalue' => $label->typevalue
-        // ], 200);
-
         return response()->json($label, 200);
     }
 
     public function update(Request $request, $labelId)
     {
         $label = Label::findOrFail($labelId);
-        $label->update($request->all());
+        $label->name = $request->input('name');
+        $label->color = $request->input('color');
+        $label->description = $request->input('description');
+        $label->save();
         
         return response()->json($label, 200);
-
-        // return response()->json(['label' => $label], 200);
-        // return response()->json([
-        //     'id' => $label->id,
-        //     'name' => $label->name,
-        //     'color' => $label->color,
-        //     'description' => $label->description,
-        //     'type' => $label->type,
-        //     'typevalue' => $label->typevalue
-        // ], 200);
     }
 
     public function destroy($labelId)
@@ -70,13 +58,9 @@ class LabelController extends Controller
         return response()->json(null, 204);
     }
 
-    public function assignToTask(Request $request, $taskId)
+    public function assignToTask(Request $request, $boardId, $taskListId, $taskId)
     {
-        // $task->labels()->sync($labelIds);
         $labelIds = $request->input('label_ids');
-
-        // $task = Task::findOrFail($taskId);
-        // $task->labels()->attach($label);
 
         $task = Task::findOrFail($taskId);
 
@@ -88,11 +72,21 @@ class LabelController extends Controller
         return response()->json($task->labels);
     }
 
-    public function getTaskLabels($taskId)
+    public function deassignFromTask(Request $request, $boardId, $taskListId, $taskId)
     {
-        // $labels = Label::whereHas('tasks', function ($query) use ($taskId) {
-        //     $query->where('task_id', $taskId);
-        // })->get();
+        $labelIds = $request->input('label_ids');
+        $task = Task::findOrFail($taskId);
+
+        foreach ($labelIds as $labelId) {
+            $label = Label::findOrFail($labelId);
+            $task->labels()->detach($label);
+        }
+
+        return response()->json($task->labels);
+    }
+
+    public function getTaskLabels($boardId, $taskListId, $taskId)
+    {
         $task = Task::findOrFail($taskId);
         $labels = $task->labels()->get();
         return response()->json($labels);

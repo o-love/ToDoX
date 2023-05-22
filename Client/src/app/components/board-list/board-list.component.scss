@@ -52,7 +52,7 @@
         max-width: 300px;
         height: 5em;
         padding: 10px 15px;
-        margin: 0px 100px 40px 5px;
+        margin: 0px 52px 40px 5px;
 
         border: 2px solid rgba($black, 0.05);
         border-radius: 5px;
@@ -105,55 +105,55 @@
     }
 }
 
-@media only screen and (max-width: 770px) {
-    .title {
-      margin: 5% 0 0 5%;
-      display: flex;
-      align-items: center;
-    }
+// @media only screen and (max-width: 770px) {
+//     .title {
+//       margin: 5% 0 0 5%;
+//       display: flex;
+//       align-items: center;
+//     }
 
-    .popup {
-      padding: 10px;
-    }
+//     .popup {
+//       padding: 10px;
+//     }
 
-    .add-btn {
-        font-size: 12px;
-    }
+//     .add-btn {
+//         font-size: 12px;
+//     }
 
-    .content {
-      margin: 5% 5% 0 5%;
+//     .content {
+//       margin: 5% 5% 0 5%;
 
-      .board {
-        width: 100%;
-        max-width: 100%;
-        margin: 0px 0px 20px 0px;
+//       .board {
+//         width: 100%;
+//         max-width: 100%;
+//         margin: 0px 0px 20px 0px;
 
-        .board-info {
-          max-height: 3em;
+//         .board-info {
+//           max-height: 3em;
 
-          .board-img {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: 10px;
-          }
+//           .board-img {
+//             width: 1.5rem;
+//             height: 1.5rem;
+//             margin-right: 10px;
+//           }
 
-          .board-name {
-            font-size: 12pt;
-            max-width: 140px;
-          }
-        }
+//           .board-name {
+//             font-size: 12pt;
+//             max-width: 140px;
+//           }
+//         }
 
-        .btn-section {
-          display: flex;
-          align-items: center;
-          margin: 10px 0 0 0;
+//         .btn-section {
+//           display: flex;
+//           align-items: center;
+//           margin: 10px 0 0 0;
 
-          .board-btn {
-            width: 15px;
-            height: 15px;
-            margin-left: 5px;
-          }
-        }
-      }
-    }
-  }
+//           .board-btn {
+//             width: 15px;
+//             height: 15px;
+//             margin-left: 5px;
+//           }
+//         }
+//       }
+//     }
+//   }

@@ -1,38 +1,29 @@
-<div class="label-list">
+<div class="select">
     <div class="top">
-        <div class="btn-top">
+        <div class="header">
             <h4 class="title" translate>labels.labels</h4>
             <i (click)="onClose()" class="bi bi-x"></i>
         </div>
         <div class="body">
-            <ng-container *ngIf="labels">
-                <ng-container *ngFor="let label of labels">
-                    <div class="label-card">
+            <ng-container *ngIf="labelList">
+                <ng-container *ngFor="let label of labelList">
+                    <div class="select-card label-card">
                         <div class="left">
-                            <i #check (click)="selectLabel(check, label)" (mouseover)="fill(check, false)" (mouseout)="fill(check, false)" class="bi bi-square"></i>
-                            <div class="balloon"><label class="name">{{ label.name }}</label></div>
-                        </div>
-                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
-                    </div>
-                </ng-container>
-            </ng-container>
-            <!-- <ng-container *ngIf="states">
-                <ng-container *ngFor="let state of states">
-                    <div class="state-card">
-                        <div class="left">
-                            <i #check (click)="selectState(check, state)" (mouseover)="fill(check, false)" (mouseout)="fill(check, false)"  class="bi bi-square"></i>
-                            <div class="balloon">
-                                <i class="bi bi-circle-fill"></i>
-                                <label class="name">{{ state.name }}</label>
+                            <input *ngIf="select" type="checkbox" [ngModel]="options[label.id]" (click)="selectLabel(label)">
+                            <div class="balloon" [style.backgroundColor]="getBackgroundColor(label.color)">
+                                <i class="bi bi-circle-fill" [style.color]="getColor(label.color) ? getColor(label.color) : '#202130'"></i>
+                                <label class="name">{{ label.name }}</label>
                             </div>
                         </div>
-                        <i #dropdown (click)="toggleDropdown(dropdown)" class="bi dropdown-btn bi-chevron-down"></i>
+                        <i *ngIf="canEdit" #dropdown #element (click)="openLabel(element, label.id)" class="bi dropdown-btn bi-chevron-down"></i>
                     </div>
+                    <app-label-detail class="popup" *ngIf="canEdit && labelOpened == label.id" [canClose]="false" (edited)="editLabel($event)" (deleted)="deleteLabel()" [label]="label"></app-label-detail>
                 </ng-container>
-            </ng-container> -->
+            </ng-container>
+            <label *ngIf="!labelList || labelList.length == 0" class="empty">No hay etiquetas</label>
         </div>
     </div>
     <div class="bottom">
-        <div class="btn"><i class="bi bi-plus-lg"></i><label>New</label></div>
+        <div *ngIf="canEdit" class="add-btn" (click)="addNew()"><i class="bi bi-plus-lg"></i><label>New</label></div>
     </div>
 </div>

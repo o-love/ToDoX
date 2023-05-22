@@ -6,13 +6,13 @@
 
     <div class="form-body">
         <div class="form-group">
-            <label class="name" for="taskName">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
-            <input #labels #input class="input" type="text" name="taskName" formControlName="taskName">
+            <label class="name" for="name">{{ 'global.name' | translate }}<span class="asterisk">*</span></label>
+            <input #labels #input class="input" type="text" name="name" formControlName="name">
         </div>
 
         <div class="form-group">
-            <label class="name" for="taskDescription">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
-            <textarea #labels #input class="input" rows="6" cols="30" name="taskDescription" formControlName="taskDescription"></textarea>
+            <label class="name" for="description">{{ 'global.description' | translate }}<span class="asterisk">*</span></label>
+            <textarea #labels #input class="input" rows="6" cols="30" name="description" formControlName="description"></textarea>
         </div>
 
         <div class="inline-group">
@@ -27,10 +27,24 @@
             </div>
         </div>
 
-        <!-- <div class="inline-group"> -->
-            <div class="form-group" id="state">
+        <!-- Repetition {{ 'global.repetition' | translate }}-->
+        <div class="form-group" id="periocity">
+            <label class="name">Periodicity</label>
+            <select class="input" formControlName="periodicity">
+                <option value="none">None</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+                <option value="every-odd-day">Every odd day</option>
+                <option value="every-even-day">Every even day</option>
+            </select>
+        </div>
+
+        <div class="inline-group">
+            <div class="form-group">
                 <label class="name">{{ 'states.state' | translate }}<span class="asterisk">*</span></label>
-                <div class="select" id="state-select" (click)="toggleStates()">
+                <div class="select" id="state-select" (click)="openStates()">
                     <div #labels #state class="input select-btn">
                         <label class="placeholder-text" *ngIf="!selectedState">
                             Select a state...
@@ -42,38 +56,34 @@
                         </label>
                     </div>
                 </div>
-                <div class="popup-states" *ngIf="statesPopup">
-                    <app-state-list (close)="toggleStates()" (state)="selectState($event)" [states]="states" [selectedState]="selectedState"></app-state-list>
+                <div class="popup-states" *ngIf="showStates">
+                    <app-state-list (close)="hideModals()" (changes)="onChanges()" (state)="selectState($event)" [selectedState]="selectedState"></app-state-list>
                 </div>
             </div>
 
-            <!--
+            <!-- this will be uncommented when CRUD for labels is done !!!! -->
+            
             <div class="form-group">
                 <label class="name">{{ 'labels.labels' | translate }}</label>
-                <div class="select" id="label-multiselect" (click)="toggleLabels()">
-                    <div class="input select-btn">
-                        <div class="selected-label-list">
-                            <label class="placeholder-text" *ngIf="!selectedLabels">
-                                Select labels...
-                            </label>
-                            <ng-container *ngIf="selectedLabels">
-                                <ng-container *ngFor="let label of selectedLabels">
-                                    <label class="label">
-                                        <span class="balloon">{{ label.name }}</span>
-                                    </label>
-                                </ng-container>
+                <div class="select" id="label-select" (click)="openLabels()">
+                    <div #labels #label class="input select-btn">
+                        <label class="placeholder-text" *ngIf="selectedLabels.length == 0">
+                            Select labels...
+                        </label>
+                        <ng-container *ngIf="selectedLabels.length > 0">
+                            <ng-container *ngFor="let label of selectedLabels">
+                                <label class="label">
+                                    <span class="balloon">{{ label.name }}</span>
+                                </label>
                             </ng-container>
-                        </div>
+                        </ng-container>
                     </div>
-                    <div class="popup-labels" >
-                        <app-select-state-label *ngIf="labelsPopup" (close)="close(true)" [states]="states" [selectedState]="selectedState"></app-select-state-label>
-                    </div>
-                --><!-- <div class="popup-labels" *ngIf="openLabelsSelectPopup">
-                        <app-label-list *ngIf="openLabelsSelectPopup" (closeLabel)="hideLabels()" (label)="selectLabels($event)" [labels]="labels" [selectedLabels]="selectedLabels"></app-label-list>
-                    </div> -->
-                <!--</div>
-            </div>-->
-        <!-- </div> -->
+                </div>
+                <div class="popup-labels" *ngIf="showLabels">
+                    <app-label-list (close)="hideModals()" (changes)="onChanges()" (labels)="selectLabels($event)" [selectedLabels]="selectedLabels"></app-label-list>
+                </div> 
+            </div>
+        </div>
     </div>
 
     <div class="buttons">

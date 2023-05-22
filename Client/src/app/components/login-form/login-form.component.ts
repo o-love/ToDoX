@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 import { Form } from 'src/app/models/form';
-import { UserAuthService } from 'src/app/services/user-auth-service/user-auth.service';
+import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -74,15 +74,12 @@ export class LoginFormComponent implements Form {
 
     this.loading = true;
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
-    .subscribe({
-      next: (response) => {
+    .then(
+      (response) => {
         console.log("logged in", response);        
         // this.router.navigate(['/profile']);
         this.router.navigate(['/boards']);  // SOLO PARA LA PRESENTACION SP1
-      },
-      error: (error) => {
-        console.log(error);
       }
-    });
+    );
   }  
 }

@@ -28,6 +28,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('state')
                 ->onDelete('cascade');
+                
+            $table->unique(['tasklist_id', 'state_id']);
         });
     }
 

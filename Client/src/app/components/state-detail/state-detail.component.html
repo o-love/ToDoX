@@ -1,0 +1,12 @@
+<form class="state" *ngIf="state" [formGroup]="form">
+    <i *ngIf="canClose" class="bi bi-x" (click)="onClose()"></i>
+    <div class="content">
+        <input #input (keyup)="onKeyUp($event)" formControlName="name" type="text" name="name">
+        <hr class="divider">
+        <div #btn (click)="onDelete()" class="delete-btn">
+            <i class="bi bi-trash3-fill"></i>
+            <label translate>Borrar</label>
+            <img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">
+        </div>
+    </div>
+</form>

@@ -2,7 +2,8 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { State } from '../../models/state';
 import { Form } from 'src/app/models/form';
-import { StateService } from 'src/app/services/state-service/state-service.service';
+import { StateService } from 'src/app/services/state/state.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-state',
@@ -11,14 +12,23 @@ import { StateService } from 'src/app/services/state-service/state-service.servi
 })
 export class CreateStateComponent implements Form { // implements OnInit
   stateForm!: FormGroup;
-  
+  loading: boolean = false;
+
+  boardId: string | null = this.route.snapshot.paramMap.get('boardId');
+  listId: string | null = this.route.snapshot.paramMap.get('listId');
+
   @ViewChild('input') input!: ElementRef<any>;
   @Output() newState = new EventEmitter<State>();
+  @Output() close = new EventEmitter<void>();
 
-  constructor(private fb: FormBuilder, private stateService: StateService) { 
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private stateService: StateService) { 
     this.stateForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(20)]]
     });
+  }
+
+  onClose() {
+    this.close.emit();
   }
 
   checkErrors(): boolean {
@@ -46,46 +56,20 @@ export class CreateStateComponent implements Form { // implements OnInit
     this.resetErrors();
     if (this.checkErrors()) return;
 
-    // needs change
-    this.stateService.addState(this.stateForm.get('name')?.value); // tiene que devolver un estado
-    this.newState.emit() // tengo que pasar un estado
+    let name: string = this.stateForm.value.name;
+    this.createState(name);
   }
 
-  // ngOnInit(): void {
-  //   this.stateForm = this.fb.group({
-  //     name: ['', Validators.required]
-  //   });
-  // }
-
-  // onSubmit() {
-  //   const { value } = this.stateForm;
-  //   if (this.editingState) {
-  //     const index = this.states.findIndex(s => s.id === this.editingState!.id);
-  //     this.states[index] = { ...this.editingState, name: value.name };
-  //     this.editingState = null;
-  //   } else {
-  //     const newState: State = {
-  //       id: 1,
-  //       name: 'New State',
-  //       tasks: []
-  //     };
-  //     this.states.push(newState);
-  //   }
-  //   this.stateForm.reset();
-  // }
-
-  // resetForm() {
-  //   this.editingState = null;
-  //   this.stateForm.reset();
-  // }
-
-  // editState(state: State) {
-  //   this.editingState = state;
-  //   this.stateForm.patchValue({ name: state.name });
-  // }
-
-  // deleteState(state: State) {
-  //   const index = this.states.findIndex(s => s.id === state.id);
-  //   this.states.splice(index, 1);
-  // }
+  private createState(name: string) {
+    if (!this.boardId || !this.listId) return;
+    this.loading = true;
+    console.log('creating new state...');
+    this.stateService.createState(this.boardId, this.listId, name).then(
+      (state: State) => {
+        this.loading = false;
+        this.onClose();
+        this.newState.emit();
+      }
+    )
+  }
 }

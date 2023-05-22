@@ -4,9 +4,6 @@ import { State } from 'src/app/models/state';
 import { Task } from 'src/app/models/task';
 import { TaskList } from 'src/app/models/taskList';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { isContinueStatement } from 'typescript';
-import { state } from '@angular/animations';
-import { TaskService } from 'src/app/services/task-service/task-service.service';
 
 @Component({
   selector: 'app-list-detail-kanban',
@@ -16,77 +13,119 @@ import { TaskService } from 'src/app/services/task-service/task-service.service'
 export class ListDetailKanbanComponent implements OnChanges {
 
   @Input() selectedList: TaskList | null = null;
-  @Input() tasks!: Task[];
-  @Input() states!: State[];
-  @Input() labels!: Label[];
+  @Input() tasks: Task[] | undefined;
+  @Input() states: State[] | undefined;
+  @Input() labels: Label[] | undefined;
 
-  @Output() taskDragged = new EventEmitter<Task | null>();
-  @Output() taskEdited = new EventEmitter<Task>();
-  @Output() stateChanged = new EventEmitter<string>();
-  @Output() openTaskDetailPopup = new EventEmitter<Task>();
-  @Output() openCreateTaskPopup = new EventEmitter<State>();
+  @Output() taskDragged: EventEmitter<number | null> = new EventEmitter();
+  @Output() edited: EventEmitter<Task> = new EventEmitter();
+
+  @Output() editedState: EventEmitter<State> = new EventEmitter();
+  @Output() deletedState: EventEmitter<void> = new EventEmitter();
+
+  @Output() openTaskDetail: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateTask: EventEmitter<number> = new EventEmitter();
+  @Output() openCreateState: EventEmitter<void> = new EventEmitter();
 
   stateTasks: { [key: number]: Task[] } = {};
+  selectedState: State | null = null;
   draggingTask: Task | null = null;
 
-  constructor(
-    private taskService: TaskService
-  ) { }
+  // ng -----------------------------------------------------------------------------
 
   ngOnChanges(): void {
     this.updateStates();
   }
 
+  // update -------------------------------------------------------------------------
+
   updateStates() {
+    if (!this.states || !this.tasks) return;
+
     this.states.forEach((state) => {
       let tasks: Task[] = [];
 
-      this.tasks.forEach((task) => {
+      if (this.tasks) this.tasks.forEach((task) => {
         if (task.state_id == state.id) tasks.push(task);
       });
 
       this.stateTasks[state.id] = tasks;
     })
+
+    this.initializeAllStateListOrdering();
   }
+
+  private initializeAllStateListOrdering() {
+    for (let stateTasksKey in this.stateTasks) {
+      this.stateTasks[stateTasksKey].sort((a, b) => {
+        return b.state_position - a.state_position;
+      });
+    }
+  }
+
+  private updateStateListOrdering(state_id: number) {
+    this.stateTasks[state_id].forEach((task, index) => {
+      index = this.stateTasks[state_id].length - index - 1;
+      if (task.state_position !== index) {
+        task.state_position = index;
+        this.edited.emit(task);
+      }
+    })
+  }
+
+  // drag and drop ------------------------------------------------------------------
 
   onDragEntered(task: Task) {
     this.draggingTask = task;
-    this.draggedTask(this.draggingTask);
   }
 
   drop(event: CdkDragDrop<Task[]>, state_id: number) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
+    if (event.previousContainer === event.container) moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    else transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+  
+    if (!this.draggingTask) return;
 
-    if (this.draggingTask) {
-      this.draggingTask.state_id = state_id;
-      this.editState(state_id.toString());
-      this.draggingTask = null;
-      this.draggedTask(null);
-    }
+    this.draggingTask.state_id = state_id;
+    this.editTask(this.draggingTask);
+    this.draggingTask = null;
+
+    this.updateStateListOrdering(state_id);
   }
 
-  editTask(task: Task) {
-    this.openTaskDetailPopup.emit(task);
+  // tasks output -------------------------------------------------------------------
+
+  private editTask(task: Task) {
+    this.taskDragged.emit(task.id);
+    this.edited.emit(task);
+  }
+
+  // states output ------------------------------------------------------------------
+
+  editState(state: State) {
+    this.editedState.emit(state);
+  }
+
+  deleteState() {
+    this.deletedState.emit();
+  }
+
+  // modals output ------------------------------------------------------------------
+ 
+  viewTask(task: Task) {
+    this.openTaskDetail.emit(task.id);
   }
 
   createTask(state: State) {
-    this.openCreateTaskPopup.emit(state);
+    this.openCreateTask.emit(state.id);
   }
 
-  draggedTask(task: Task | null) {
-    this.taskDragged.emit(task);
+  createState() {
+    this.openCreateState.emit();
   }
 
-  editState(state_id: string) {
-    this.stateChanged.emit(state_id);
+  // events -------------------------------------------------------------------------
+
+  selectState(state: State | null) {
+    this.selectedState = state;
   }
 }

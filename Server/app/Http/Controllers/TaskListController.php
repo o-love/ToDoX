@@ -36,9 +36,9 @@ class TaskListController extends Controller
         ]);        
         $list->save();
 
-        $stateIds = [1, 2, 3];
-        $states = State::whereIn('id', $stateIds)->get();
-        $list->states()->attach($states);
+        // $stateIds = [1, 2, 3];
+        // $states = State::whereIn('id', $stateIds)->get();
+        // $list->states()->attach($states);
 
         // if ($request->has('state_ids')) {
         //     $stateIds = $request->input('state_ids');

@@ -1,0 +1,43 @@
+<div id="container">
+  <div id="tabs">
+    <div class="select-tabs" [class.selected]="isCopy" (click)="setIsCopy(true)">Copy</div>
+    <div class="select-tabs" [class.selected]="!isCopy" (click)="setIsCopy(false)">Move</div>
+  </div>
+
+  <div id="options">
+    <!-- <div id="boardFormElement" class="form-floating option-child">
+      <select id="boardSelect" class="form-select form-control" [(ngModel)]="selectedBoard"
+              (change)="updateTaskLists()">
+        <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+      </select>
+      <label for="boardSelect">Board</label>
+    </div> -->
+
+    <div id="taskListFormElement" class="form-floating option-child">
+      <select id="taskListSelect" class="form-select form-control" [(ngModel)]="selectedTaskList"
+              (change)="updateStates()">
+        <option *ngFor="let taskList of taskLists" [ngValue]="taskList">{{taskList.name}}</option>
+      </select>
+      <label for="taskListSelect">Task List</label>
+    </div>
+
+    <div id="stateFormElement" class="form-floating option-child">
+      <select id="stateSelect" class="form-select form-control" [(ngModel)]="selectedState" (change)="updatePosition()">
+        <option *ngFor="let state of states" [ngValue]="state">{{state.name}}</option>
+      </select>
+      <label for="stateSelect">State</label>
+    </div>
+
+    <!-- <div id="positionFormElement" class="form-floating option-child">
+      <input id="positionSelect" class="form-control" [(ngModel)]="positionNumber">
+      <label for="positionSelect">Position</label>
+    </div> -->
+  </div>
+
+  <button #btn id="submit" type="submit" class="btn btn-outline-secondary" (click)="submit()">
+    <img *ngIf="loading" class="spinner" src="../../../assets/spinner.gif">
+    <ng-container *ngIf="isCopy">Copy</ng-container>
+    <ng-container *ngIf="!isCopy">Move</ng-container>
+  </button>
+
+</div>
