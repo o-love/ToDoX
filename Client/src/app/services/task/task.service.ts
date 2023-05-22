@@ -106,13 +106,10 @@ export class TaskService {
       recurring_period: periodicity
     });
 
-    console.log(taskName);
-
     return await new Promise((resolve) => 
       http.subscribe({
         next: (task: Task) => {
           task.selectedLabels = selectedLabels;
-          console.log(task.selectedLabels);
           this.cacheService.storeTask(task) 
           console.log('edited task:', task);
           resolve(task);

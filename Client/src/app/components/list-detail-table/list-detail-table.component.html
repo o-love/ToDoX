@@ -4,10 +4,10 @@
       <div class="th cell" translate>global.name</div>
       <div class="th cell" translate>global.description</div>
       <div class="th cell" translate>global.state <i class="bi bi-three-dots-vertical" (click)="openStateList()"></i>
-        <app-state-list class="popup" *ngIf="showStates" (new)="addNewState()" [canEdit]="true" [select]="false" (close)="hideModals()"></app-state-list>
+        <app-state-list class="popup" *ngIf="showStates" (new)="addNewState()" [canEdit]="true" [select]="false" (close)="hideModals()" (changes)="onChanges()"></app-state-list>
       </div>
       <div class="th cell" translate>global.label <i class="bi bi-three-dots-vertical" (click)="openLabelList()"></i>
-        <app-label-list class="popup" *ngIf="showLabels" (new)="addNewLabel()" [canEdit]="true" [select]="false" (close)="hideModals()"></app-label-list>
+        <app-label-list class="popup" *ngIf="showLabels" (new)="addNewLabel()" [canEdit]="true" [select]="false" (close)="hideModals()" (changes)="onChanges()"></app-label-list>
       </div>
       <div class="th cell" translate>global.startDate</div>
       <div class="th cell" translate>global.dueDate</div>

@@ -10,7 +10,7 @@
   </div>
 
   <div class="layout">
-    <app-list-detail-table id="table-layout" *ngIf="layouts[0]" (openCreateLabel)="openCreateLabel()" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
+    <app-list-detail-table id="table-layout" *ngIf="layouts[0]" (changes)="reload()" (openCreateLabel)="openCreateLabel()" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-table>
     <app-list-detail-kanban id="kanban-layout" *ngIf="layouts[1]" (deletedState)="reload()" (edited)="editTask($event)" (openCreateState)="openCreateState()" (openCreateTask)="openCreateTask($event)" (openTaskDetail)="openTaskDetail($event)" (editedState)="editState($event)" (edited)="editTask($event)" [selectedList]="taskList" [tasks]="tasks" [states]="states" [labels]="labels"></app-list-detail-kanban> 
   </div>
 </div>

@@ -28,6 +28,8 @@ export class ListDetailTableComponent implements OnChanges {
   @Output() openCreateState: EventEmitter<void> = new EventEmitter();
   @Output() openCreateLabel: EventEmitter<void> = new EventEmitter();
 
+  @Output() changes: EventEmitter<void> = new EventEmitter();
+
   constructor(private labelService: LabelService) {}
 
   // ng -----------------------------------------------------------------------------
@@ -83,5 +85,9 @@ export class ListDetailTableComponent implements OnChanges {
 
   addNewLabel() {
     this.openCreateLabel.emit();
+  }
+
+  onChanges() {
+    this.changes.emit();
   }
 }
