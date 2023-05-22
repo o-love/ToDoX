@@ -112,20 +112,25 @@ export class TaskMoveCopyComponent {
     this.btn.nativeElement.style.color = 'white';
 
     this.loading = true;
-    if (this.isCopy) this.taskService.copyTask(this.boardId, this.task, this.selectedTaskList.id, this.selectedState.id.toString()).then(
-      (task: Task) => {
-        console.log('task copied:', task);
-        this.close.emit();
-      }
-    )
-    else {
+
+    let labels: number[] = [];
+      if (this.selectedTaskList.id == this.task.tasklist_id.toString()) labels = this.task.selectedLabels;
+
+    if (this.isCopy) { 
+      this.taskService.copyTask(this.boardId, this.task, labels, this.selectedTaskList.id, this.selectedState.id.toString()).then(
+        (task: Task) => {
+          console.log('task copied:', task);
+          this.close.emit();
+        }
+      )
+    } else {
       // comprobación para que no me mueva la misma tarea al mismo sitio
       if (this.taskListId == this.selectedTaskList.id && this.task.state_id == this.selectedState.id) {
         this.loading = false;
         return;
       }
 
-      this.taskService.moveTask(this.boardId, this.selectedTaskList.id, this.task.id, this.selectedTaskList.id, this.selectedState.id.toString()).then(
+      this.taskService.moveTask(this.boardId, this.selectedTaskList.id, this.task.id, labels, this.selectedTaskList.id, this.selectedState.id.toString()).then(
         (task: Task) => {
           console.log('task moved:', task);
           this.close.emit();

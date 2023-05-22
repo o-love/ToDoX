@@ -49,8 +49,9 @@ export class ListDetailTableComponent implements OnChanges {
 
   // labels -------------------------------------------------------------------------
 
-  getLabel(id: number): Label | undefined {
-    return this.mapLabels.get(id);
+  getLabel(id: number): string {
+    let label: any = this.mapLabels.get(id);
+    return label ? label.name : '';
   }
 
   getColor(key: string | undefined): string | undefined {

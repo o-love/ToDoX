@@ -26,7 +26,7 @@
                 </div>
 
                 <div *ngIf="showCopyMove" class="popup">
-                    <app-task-move-copy (close)="toggleCopyMove()" [task]="task"></app-task-move-copy>
+                    <app-task-move-copy (close)="moved()" [task]="task"></app-task-move-copy>
                 </div>
 
                 <!-- aquí iría el selector de labels -->

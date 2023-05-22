@@ -139,7 +139,7 @@ export class TaskService {
     );
   }
 
-  async moveTask(boardId: string, listId: string, taskId: number, NewlistTaskId: string, NewstateId: string): Promise<Task> {
+  async moveTask(boardId: string, listId: string, taskId: number, labels: number[], NewlistTaskId: string, NewstateId: string): Promise<Task> {
     console.log('moving task...');
     const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/move`, { 
       tasklist_id: NewlistTaskId, 
@@ -159,7 +159,7 @@ export class TaskService {
     );
   }
 
-  async copyTask(boardId: string, task: Task, newlistId: string, NewstateId: string): Promise<Task> {
-    return this.createTask(boardId, newlistId, task.name, task.description, NewstateId, [], task.start_date, task.due_date, task.periodicity, task.state_position);
+  async copyTask(boardId: string, task: Task, labels: number[], newlistId: string, NewstateId: string): Promise<Task> {
+    return this.createTask(boardId, newlistId, task.name, task.description, NewstateId, labels, task.start_date, task.due_date, task.periodicity, task.state_position);
   }
 }

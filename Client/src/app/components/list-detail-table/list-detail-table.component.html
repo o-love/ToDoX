@@ -20,7 +20,7 @@
           <div class="td cell">{{ stateNames[task.state_id] }}</div>
           <div class="td cell">
             <ng-container *ngFor="let label of task.selectedLabels">
-              <span [style.backgroundColor]="getColor(getLabel(label)?.color) ? getColor(getLabel(label)?.color) : ''">{{ getLabel(label)?.name }}</span>
+              {{ getLabel(label) }}
             </ng-container>
           </div>
           <div class="td cell">{{ task.start_date | date: 'dd-MM-yyyy' }}</div>

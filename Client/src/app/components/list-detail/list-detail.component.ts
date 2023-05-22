@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user';
 import { TaskListService } from 'src/app/services/task-list/task-list.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StateService } from 'src/app/services/state/state.service';
+import { LabelService } from 'src/app/services/label/label.service';
 
 @Component({
   selector: 'app-list-detail',
@@ -44,7 +45,7 @@ export class ListDetailComponent implements OnChanges {
 
   layouts: { [key: number]: boolean } = { 0: false, 1: true };
 
-  constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService) { }
+  constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService, private labelService: LabelService) { }
 
   // ng -----------------------------------------------------------------------------
 
@@ -58,6 +59,7 @@ export class ListDetailComponent implements OnChanges {
   // when labels are added a get labels method must be created and added here
   reload() {
     this.getStates();
+    this.getLabels();
     this.getTasks();
   }
 
@@ -94,6 +96,17 @@ export class ListDetailComponent implements OnChanges {
   }
 
   // get labels method must be included here when CRUD for labels is done
+  private getLabels() {
+    if (!this.boardId || !this.taskListId) return;
+    console.log('loading tasklist %d labels...', this.taskListId);
+    const tasklist_id: string | null = this.taskListId;
+    this.tasks = undefined;
+    this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
+      (labels: Label[]) => {
+        if (tasklist_id == this.taskListId) this.labels = labels;
+      }
+    );
+  }
 
   // lists --------------------------------------------------------------------------
 

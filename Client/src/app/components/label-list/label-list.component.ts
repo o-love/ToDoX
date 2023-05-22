@@ -44,6 +44,7 @@ export class LabelListComponent implements OnChanges {
     this.labelService.getLabelsByTaskListId(this.boardId, this.taskListId).then(
       (labels: Label[]) => {
         this.labelList = labels;
+        this.updateOptions();
       }
     )
   }
@@ -114,7 +115,9 @@ export class LabelListComponent implements OnChanges {
   }
 
   selectLabel(label: Label) {
-    this.selectedLabels.push(label);
+    let labelsIds: number[] = this.selectedLabels.map((label: Label) => label.id);
+    if (labelsIds.includes(label.id)) this.selectedLabels.splice(labelsIds.indexOf(label.id), 1);
+    else this.selectedLabels.push(label);
     this.labels.emit(this.selectedLabels);
   }
 }

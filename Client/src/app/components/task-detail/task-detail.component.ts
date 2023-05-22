@@ -191,6 +191,11 @@ export class TaskDetailComponent implements OnInit, Form {
   toggleCopyMove() {
     this.hideModals();
     this.showCopyMove = !this.showCopyMove;
+  }
+
+  moved() {
+    this.toggleCopyMove();
+    this.changes.emit();
     this.close.emit();
   }
 
@@ -200,6 +205,7 @@ export class TaskDetailComponent implements OnInit, Form {
   }
 
   changeLabels(labels: Label[]) {
+    console.log(labels);
     this.selectedLabels = labels;
     this.save();
   }
