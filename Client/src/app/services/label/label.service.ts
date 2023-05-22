@@ -72,7 +72,6 @@ export class LabelService {
     )
   } 
 
-
   async getLabelById(boardId: string, listId: string, labelId: number): Promise<Label> {
     let label: any = this.cacheService.getCachedLabelById(labelId);
     console.log('cached label:', label);
@@ -141,41 +140,37 @@ export class LabelService {
     )
   }
 
-  // getLabels(boardId: number, taskListId: number): Observable<any> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}/labels`;
-  //   return this.http.get(url);
-  // }
+  async assignLabelToTask(boardId: string, taskListId: string, taskId: number, labelIds: number[]): Promise<Label[]> {
+    console.log('POST labels in task...');
+    const http = this.http.post<Label[]>(`${this.apiUrl}/boards/${boardId}/lists/${taskListId}/tasks/${taskId}/labels`, { label_ids: labelIds });
 
-  // createLabel(boardId: number, taskListId: number, label: any): Observable<any> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}/labels`;
-  //   return this.http.post(url, label);
-  // }
-
-  // getLabel(boardId: number, taskId: number, labelId: number): Observable<any> {
-  //   const url = `${this.apiUrl}/boards/${boardId}/tasks/${taskId}/labels/${labelId}`;
-  //   return this.http.get(url);
-  // }
-
-  // updateLabel(labelId: number, label: any): Observable<any> {
-  //   const url = `${this.apiUrl}/labels/${labelId}`;
-  //   return this.http.put(url, label);
-  // }
-
-  // deleteLabel(labelId: number): Observable<any> {
-  //   const url = `${this.apiUrl}/labels/${labelId}`;
-  //   return this.http.delete(url);
-  // }
-
-  assignLabelToTask(boardId: number, taskListId: number, taskId: number, labelIds: number[]): Observable<any> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}/tasks/${taskId}/labels`;
-    const body = { label_ids: labelIds };
-    return this.http.post(url, body);
+    return await new Promise((resolve) => {
+      http.subscribe({
+        next: (labels: Label[]) => {
+          this.cacheService.storeLabelsByTask(labels, taskListId, taskId);
+          console.log('labels assigned in task');
+          resolve(labels);
+        },
+        error: (err: any) => console.error('error assigning labels to tasks:', err)
+      })
+    })
   }
 
-  deassignLabelFromTask(boardId: number, taskListId: number, taskId: number, labelIds: number[]): Observable<any> {
-    const url = `${this.apiUrl}/boards/${boardId}/lists/${taskListId}/tasks/${taskId}/labels`;
+  async deassignLabelFromTask(boardId: string, taskListId: string, taskId: number, labelIds: number[]): Promise<any> {
+    console.log('DELETE labels in task...');
     const body = { label_ids: labelIds };
-    return this.http.request('delete', url, { body });
+    const http = this.http.request('delete', `${this.apiUrl}/boards/${boardId}/lists/${taskListId}/tasks/${taskId}/labels`, { body });
+
+    return await new Promise((resolve) => {
+      http.subscribe({
+        next: () => {
+          this.cacheService.deassignLabelsFromTask(labelIds, taskId);
+          console.log('labels deassigned in task');
+          resolve(null);
+        },
+        error: (err: any) => console.error('error deassigning labels to task:', err)
+      })
+    })
   }
 
   getTaskLabels(boardId: number, taskListId: number, taskId: number): Observable<any> {

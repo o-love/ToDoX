@@ -285,7 +285,7 @@ export class CacheService {
     let task: any = this.getCachedTaskById(taskId);
     if (!task) return;
     if (!task.selectedLabels) task.selectedLabels = [];
-    labels.forEach((label: Label) => task.selectedLabels.push(label));
+    labels.forEach((label: Label) => { if (!task.selectedLabels.includes(label.id)) task.selectedLabels.push(label.id) });
     this.storeTask(task);
   }
 
@@ -306,7 +306,14 @@ export class CacheService {
   }
 
   getCachedLabelsByTaskId(taskId: number): Label[] | undefined {
-    return;
+    let task: any = this.getCachedTaskById(taskId);
+    if (!task) return;
+    let labels: Label[] = [];
+    task.selectedLabels.forEach((labelId: number) => {
+      let label: any = this.getCachedLabelById(labelId);
+      if (label) labels.push(label);
+    })
+    return labels;
   }
 
   getCachedLabelById(id: number): Label | undefined {
@@ -318,5 +325,16 @@ export class CacheService {
     let mapLabels: Map<number, LabelList> = new Map(localStorage[LABELS_KEY] ? JSON.parse(localStorage[LABELS_KEY]) : ''); 
     mapLabels.delete(id);
     localStorage[LABELS_KEY] = JSON.stringify(Array.from(mapLabels.entries()));
+  }
+
+  deassignLabelsFromTask(labels: number[], taskId: number): void {
+    let task: any = this.getCachedTaskById(taskId);
+    if (!task) return;
+    let selectedLabels: number[] = task.selectedLabels;
+    console.log(selectedLabels);
+    task.selectedLabels.forEach((label: number) => { if (labels.includes(label)) selectedLabels.slice(selectedLabels.indexOf(label), 1) });
+    console.log(selectedLabels);
+    task.selectedLabels = selectedLabels;
+    this.storeTask(task);
   }
 }

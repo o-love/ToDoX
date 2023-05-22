@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Task } from 'src/app/models/task';
 import { CacheService } from '../cache/cache.service';
 import { LabelService } from '../label/label.service';
+import { Label } from 'src/app/models/label';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,9 @@ export class TaskService {
     return await new Promise((resolve) => 
       http.subscribe({
         next: (tasks: Task[]) => {
-          tasks.forEach((task: Task) => { if (!task.selectedLabels) task.selectedLabels = [] });
+          tasks.forEach((task: Task) => { 
+            if (!task.selectedLabels) task.selectedLabels = [];
+          });
           this.cacheService.storeTasks(tasks);
           console.log('tasks retrieved:', tasks);
           resolve(tasks);
@@ -77,7 +80,6 @@ export class TaskService {
       http.subscribe({
         next: (task: Task) => {
           task.selectedLabels = selectedLabels;
-          console.log(task.selectedLabels);
           this.cacheService.storeTask(task); 
           console.log('created task:', task);
           resolve(task);
@@ -93,7 +95,7 @@ export class TaskService {
     stateId: string, selectedLabels: number[], startDate: Date | null, dueDate: Date | null, periodicity: string
   ): Promise<Task> {
     console.log('PUT task %d...', taskId);
-    const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, {
+    const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/update`, {
       name: taskName,
       description: taskDescription,
       state_id: stateId,
@@ -139,7 +141,7 @@ export class TaskService {
 
   async moveTask(boardId: string, listId: string, taskId: number, NewlistTaskId: string, NewstateId: string): Promise<Task> {
     console.log('moving task...');
-    const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}`, { 
+    const http = this.http.put<Task>(`${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks/${taskId}/move`, { 
       tasklist_id: NewlistTaskId, 
       selectedLabels: [],
       state_id: NewstateId
