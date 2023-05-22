@@ -28,15 +28,13 @@ export class UserAuthService {
 
     console.log('POST my user...');
     const http = this.http.post<any>(`${this.apiUrl}/login`, user);
-    
+
     return await new Promise((resolve) =>
       http.subscribe({
-        next: (user: any) => {
-          localStorage.setItem('token', user.token.split('|')[1]);
-          this.getMyUser().then((user: User) => {
-            console.log('user logged in:', user);
-            resolve(user);
-          });
+        next: (data: any) => {
+          localStorage.setItem('token', data.token.split('|')[1]);
+          this.cacheService.storeMyUser(data.user)
+          resolve(data.user);
         },
         error: (err: any) => console.error('error logging user:', err)
       })
@@ -52,13 +50,13 @@ export class UserAuthService {
     console.log('POST user...');
     const http = this.http.post<User>(`${this.apiUrl}/users`, user);
 
-    return await new Promise((resolve) => 
+    return await new Promise((resolve) =>
       http.subscribe({
         next: (data: any) => {
-          this.getMyUser().then((user: User) => {
-            console.log('user signed up:', user);
-            resolve(user);
-          });
+          console.log(data)
+          localStorage.setItem('token', data.token.split('|')[1]);
+          this.cacheService.storeMyUser(data.user)
+          resolve(data.user);
         },
         error: (err: any) => console.error('error signing up user:', err)
       })
@@ -114,8 +112,8 @@ export class UserAuthService {
     console.log('PUT user...');
     const http = this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user)
     .pipe(map((data: any) => data.data));
-    
-    return await new Promise((resolve) => 
+
+    return await new Promise((resolve) =>
       http.subscribe({
         next: (user: User) => {
           this.cacheService.storeUser(user);
@@ -151,12 +149,12 @@ export class UserAuthService {
     console.log('GET my user...');
     const http = this.http.get<User>(`${this.apiUrl}/myUser`);
 
-    return await new Promise((resolve) => 
+    return await new Promise((resolve) =>
       http.subscribe({
         next: (data: any) => {
           this.cacheService.storeMyUser(data.data);
           console.log('user retrieved:', data.data);
-          resolve(data.data);          
+          resolve(data.data);
         },
         error: (err: any) => console.error('error getting my user:', err)
       })
@@ -186,7 +184,7 @@ export class UserAuthService {
           catchError(() => of(false))
         );
 
-      return await new Promise((resolve) => 
+      return await new Promise((resolve) =>
         http.subscribe({
           next: (value: boolean) => resolve(value),
           error: (err: any) => console.error('error updating password:', err)
