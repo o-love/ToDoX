@@ -67,6 +67,11 @@
           padding: 0;
         }
 
+        .add-label-btn {
+          margin-left: 2em;
+          @include btn(6em, 2em, 8pt, $light-blue, $white, 2px solid $light-blue, 2px, rgab($light-blue, .5), -1px, 1px);
+        }
+
         .bi {
           color: $tropical-indigo;
           margin-left: 1em;
@@ -135,3 +140,18 @@
   z-index: 99; 
   overflow-y: scroll;
 }
+
+// orden scss ------------------------------------------------------------
+
+.custom-select {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 150px;
+}
+
+
+
+
+
+
