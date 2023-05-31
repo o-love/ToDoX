@@ -23,3 +23,12 @@
   <app-task-detail *ngIf="showTaskDetail" (changes)="reload()" (close)="hideModals()" (edited)="editTask($event)" (deleted)="deleteTask($event)" [taskId]="selectedTask" [user]="user" [usersId]="usersId"></app-task-detail>
   <app-list-settings *ngIf="showSettings" (deleted)="deleteTaskList()" (edited)="editTaskList($event)" (close)="hideModals()" [list]="taskList"></app-list-settings>
 </div>
+
+<mat-form-field class="custom-select">
+  <mat-label>Task by order</mat-label>
+  <mat-select (selectionChange)="onSelectionChange($event.value)">
+    <mat-option value="dueDate">Start date</mat-option>
+    <mat-option value="startDate">Due date</mat-option>
+    <mat-option value="state">States</mat-option>
+  </mat-select>
+</mat-form-field>

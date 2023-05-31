@@ -26,7 +26,9 @@ export class ListDetailComponent implements OnChanges {
   @Output() edited: EventEmitter<void> = new EventEmitter();
   @Output() deleted: EventEmitter<string> = new EventEmitter();
 
-  boardId = this.route.snapshot.paramMap.get('boardId');
+  boardId: string | null = this.route.snapshot.paramMap.get('boardId');
+  listId: string | null = this.route.snapshot.paramMap.get('listId');
+  stateId: number[] | null = null; 
 
   tasks: Task[] | undefined;
   states: State[] | undefined;
@@ -45,13 +47,39 @@ export class ListDetailComponent implements OnChanges {
 
   layouts: { [key: number]: boolean } = { 0: false, 1: true };
 
+  tasksByState: Task[] = [];
+  tasksByDueDate: Task[] = [];
+  tasksByStartDate: Task[] = [];
+
+  onSelectionChange(value: string) {
+    if (value === 'dueDate') {
+      this.getTasksByDueDate();
+    } else if (value === 'startDate') {
+      this.getTasksByStartDate();
+    } else if (value === 'state') {
+      this.getTasksByState();
+    }
+  }
+
   constructor(private route: ActivatedRoute, private taskListService: TaskListService, private stateService: StateService, private taskService: TaskService, private labelService: LabelService) { }
 
   // ng -----------------------------------------------------------------------------
 
   ngOnChanges(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.boardId = params['boardId'];
+      this.listId = params['listId'];
+  
+      // Si el parámetro stateId está presente en la URL, conviértelo a un array de números
+      if (params['stateId']) {
+        this.stateId = params['stateId'].split(',').map(Number);
+      }
+
+    });
+    
     this.getTaskList();
     this.reload();
+    
   }
 
   // update -------------------------------------------------------------------------
@@ -62,6 +90,7 @@ export class ListDetailComponent implements OnChanges {
     this.getLabels();
     this.getTasks();
   }
+
 
   // getters ------------------------------------------------------------------------
 
@@ -107,6 +136,13 @@ export class ListDetailComponent implements OnChanges {
       }
     );
   }
+
+  private getStatesId(): number[] {
+    if (!this.states || !Array.isArray(this.states)) return [];
+  
+    return this.states.map(state => state.id);
+  }
+  
 
   // lists --------------------------------------------------------------------------
 
@@ -210,5 +246,36 @@ export class ListDetailComponent implements OnChanges {
   openTaskDetail(taskId: number) {
     this.selectTask(taskId);
     this.showTaskDetail = true;
+  }
+
+  // order -------------------------------------------------------------------------
+
+  getTasksByDueDate() {
+    if (this.boardId !== null && this.listId !== null) {
+      this.taskService.getTaskByDueDate(this.boardId, this.listId).subscribe((tasks: Task[]) => {
+        console.log(tasks);
+        this.tasks = tasks;
+      });
+    }
+  }
+  
+  getTasksByStartDate() {
+    if (this.boardId !== null && this.listId !== null) {
+      this.taskService.getTaskByStartDate(this.boardId, this.listId).subscribe((tasks: Task[]) => {
+        console.log(tasks);
+        this.tasks = tasks;
+      });
+    }
+  }
+  
+  getTasksByState() {
+    const stateIds: number[] = this.getStatesId();
+    
+    if (this.boardId !== null && this.listId !== null && stateIds.length > 0) {
+      this.taskService.getTaskByState(this.boardId, this.listId, stateIds).subscribe((tasks: Task[]) => {
+        console.log(tasks);
+        this.tasks = tasks;
+      });
+    }
   }
 }

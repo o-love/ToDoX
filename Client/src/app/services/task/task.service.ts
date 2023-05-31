@@ -4,6 +4,7 @@ import { Task } from 'src/app/models/task';
 import { CacheService } from '../cache/cache.service';
 import { LabelService } from '../label/label.service';
 import { Label } from 'src/app/models/label';
+import { Observable, of, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -158,5 +159,59 @@ export class TaskService {
 
   async copyTask(boardId: string, task: Task, labels: number[], newlistId: string, NewstateId: string): Promise<Task> {
     return this.createTask(boardId, newlistId, task.name, task.description, NewstateId, labels, task.start_date, task.due_date, task.periodicity, task.state_position);
+  }
+
+  getTaskByDueDate(boardId: string, listId: string): Observable<Task[]> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`;
+    return this.http.get<Task[]>(url).pipe(
+      map((tasks: Task[]) => {
+        // Ordenar tareas por fecha de inicio
+        tasks.sort((a, b) => {
+          const startDateA = a.start_date ? new Date(a.start_date) : null;
+          const startDateB = b.start_date ? new Date(b.start_date) : null;
+          if (startDateA && startDateB) {
+            return startDateA.getTime() - startDateB.getTime();
+          } else if (startDateA) {
+            return -1;
+          } else if (startDateB) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        return tasks;
+      })
+    );
+  }
+
+  getTaskByStartDate(boardId: string, listId: string): Observable<Task[]> {
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks`;
+    return this.http.get<Task[]>(url).pipe(
+      map((tasks: Task[]) => {
+        // Filtrar las tareas con fecha de vencimiento y ordenarlas por fecha
+        const tasksWithDueDate = tasks.filter(task => task.due_date !== null);
+        tasksWithDueDate.sort((a, b) => {
+          const dueDateA = new Date(a.due_date!);
+          const dueDateB = new Date(b.due_date!);
+          return dueDateA.getTime() - dueDateB.getTime();
+        });
+  
+        // Concatenar las tareas sin fecha de vencimiento al final del array
+        const tasksWithoutDueDate = tasks.filter(task => task.due_date === null);
+        const sortedTasks = tasksWithDueDate.concat(tasksWithoutDueDate);
+  
+        return sortedTasks;
+      })
+    );
+  }
+
+
+  getTaskByState(boardId: string, listId: string, stateIds: number[]): Observable<Task[]> {
+    const stateIdParams = stateIds.join(',');
+    const url = `${this.apiUrl}/boards/${boardId}/lists/${listId}/tasks?state_id=${stateIdParams}`;
+    return this.http.get<Task[]>(url).pipe(
+      map(tasks => tasks.sort((a, b) => stateIds.indexOf(a.state_id) - stateIds.indexOf(b.state_id))),
+      switchMap(sortedTasks => of(sortedTasks))
+    );
   }
 }
