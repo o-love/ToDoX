@@ -1,12 +1,35 @@
-# ToDoX
+# ToDoX - Task Management Application
+ToDoX is a powerful task management web application built using Angular and Laravel. It aims to provide users with an intuitive interface to manage tasks and projects efficiently. With a combination of Docker, Nginx, and Laravel, this project is designed for easy deployment on various platforms.
+
+**Please Note: This project is developed solely for a university project. It is an unfinished task management web application.**
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Prototypes](#prototypes)
+  - [Sheppy the Explorer](#sheppy-the-explorer)
+  - [Target Shooting](#target-shooting)
+  - [AI Art Proposal](#ai-art-proposal)
+- [Getting Started](#getting-started)
+- [Acknowledgments](#acknowledgments)
 
 ## Description
-This project is a web application built using Angular, Docker, Nginx, and Laravel. It is designed to be easily deployable on any machine that supports Docker.
+ToDoX is a collaborative task management application that enables teams to organize, track, and prioritize tasks. It combines the capabilities of Angular and Laravel to provide a seamless user experience. Docker and Nginx are utilized to ensure smooth deployment across different environments.
 
+## Dependencies
+To use this project, ensure you have Docker installed and running on your system.
 
-## Installation
-1. Clone the repository from Github.
-2. Make sure you have Docker installed & running on your machine.
+## Getting Started
+To get started with the project, follow these steps:
+
+### Setting up Laravel
+1. Clone the repository:
+   ```bash
+   https://github.com/mele13/ToDoX.git
+   ```
+   ```bash
+   cd ToDoX
+   ```
+3. Make sure you have Docker installed & running on your machine.
 3. Create a .env file on the root directory with the following variables:
     ```
     TIMEZONE=Europe/Madrid
@@ -30,27 +53,41 @@ This project is a web application built using Angular, Docker, Nginx, and Larave
     DB_USERNAME=ps
     DB_PASSWORD='cQGMlSMYsUb'
     ```
-5. Run docker-compose up -d to start the application. This command will build and start all the necessary Docker containers.
-6. Follow the additional steps in the 'Sorking with Angular' section below.
+6. Build and start all the containers using the following command. For more information, check the 'Basic Docker commands' section.
+    ```bash
+    docker-compose up --build -d
+    ```
+6. Follow the additional steps in the 'Setting up Angular' section below.
 
-
-## Working with Angular
-Since we haven't been able to set up angular using Docker, we will be working with angular locally.
-1. Once you've build and run all containers, move to the Client directory.
+### Setting up Angular
+Although Angular is not set up using Docker, you can work with Angular locally:
+1. After starting all containers, navigate to the Client directory:
+    ```bash
+   cd Client
+   ```
 2. Execute ng serve -o (--port xxxx if you want to specify a port, default port is 4200).
 3. Angular will be deployed on http://http://localhost:xxxx (http://http://localhost:4200 in case no port was declared).
     * Changes will be updated in Real Time. Make sure to commit and push your changes.
     ** To add elements, just run the command inside the Client directory. E.g. to create a component cd to Client and run ng generate component <component_name>.
+4. Follow the additional steps in the 'Database migrations' section below.
 
-
-## Database migrations
+### Database migrations
 To be up to date with all the database migrations, execute the following commands:
-1. docker exec -it todox-app-1 bash to access laravel's container
-2. php artisan migrate to create all the tables of the database
-3. php artisan db:seed --class=StateSeeder to create the 3 basic states
+1. Access the Laravel container: 
+    ```bash
+    docker exec -it todox-app-1 bash
+    ```
+2. Run migrations to create all the tables of the database:
+    ```bash
+    php artisan migrate
+    ```
+3. Seed the database to create 3 basic States:
+    ```bash
+    php artisan db:seed --class=StateSeeder
+    ```
 
-
-## Commit changes as a group member
+## Commit Changes as a Group Member
+Follow these steps to commit changes as a group member:
 1. Once you cloned the repository, create a new branch for your feature or bug fix using the following command:
     ```
     git checkout -b <your_branch_name>
@@ -91,65 +128,25 @@ Resolve any merge conflicts carefully to avoid losing work, and then commit the 
 
 The main branch should be used as the stable version of the codebase, and should only contain code that has been thoroughly tested and reviewed. It's important to avoid making changes directly to the main branch, and to only merge changes in from feature branches after they have been reviewed and tested. This helps to ensure that the codebase remains stable and that changes are properly tracked and reviewed.
 
-
-## Usage
-### Building the application
-To build the application, run the following command:<br>
-    ```
-    docker-compose build
-    ```<br>
-This will build all the necessary Docker images.
-
-### Restarting the application
-To restart the application, run the following command:<br>
-    ```
-    docker-compose up -d
-    ```<br>
-This will restart all the Docker containers.
-
-### Bringing the application down
-To stop the application, run the following command:<br>
-    ```
-    docker-compose down
-    ```<br>
-This will stop and remove all the Docker containers.
-
-### Killing the application
-To kill the application, run the following command:<br>
-    ```
-    docker-compose kill
-    ```<br>
-This will stop all the Docker containers immediately.
-
-### Building with docker-compose up --build -d
-To alternatively build the application, run the following command:<br>
-    ```
-    docker-compose up --build -d
-    ```<br>
-This command rebuilds the image before starting the container. This command can be slower than docker-compose up -d because it rebuilds the image every time. However, it can be helpful if you have made changes to the Dockerfile or if the image was not built correctly the first time.
-
-## Configuration
-- The IP addresses are static to make sure that the containers can communicate seamlessly. Please do not modify the IP addresses in the docker-compose.yml file.
-- The .env file in the Server directory is already configured with the necessary environment variables. You don't need to modify it unless absolutely necessary.
-- The user created in the .env file already has the necessary permissions on the database. You do not need to create another user or modify the permissions of the current user unless a new one is created.
-
-### Why Docker & Nginx
-We use Docker to simplify the process of deploying our application and to ensure consistent environments across all machines. With Docker, we can package all the dependencies and configurations of our application into a single container, making it easy to deploy and run the application on any machine.
-
-We use Nginx as a reverse proxy to handle incoming traffic and distribute it to the appropriate containers in our Docker network. Nginx provides additional features like load balancing, caching, and SSL termination, which can help improve the performance and security of our application.
-
-### Docker folders
-Instead of using volumes to store the persistent data for our containers, we have chosen to use a docker folder with the necessary files. The main reason for this is that it can be complicated to execute commands inside a container when the data is stored in a volume.
-
-By having a local folder that we map to containers, we can ensure that data is stored correctly and accessible from any container that needs it. This also makes it easier to manage the data since we don't have to worry about dealing with the volume.
-
-Additionally, by having a local folder for each service (MySQL, PHP, Nginx), we can keep a clear organization of the files and settings of each service. This makes it easier to locate and modify the settings for each service.
-
-For example, we use the hosts.allow file to restrict access to the MySQL service only to specific IP addresses. Similarly, we use the default.conf file to configure the Nginx service to listen on a specific port and handle requests for the Laravel application.
-
-
 ## Basic Docker commands
 Here are some basic Docker commands that everyone should know:
+- Build all the necessary Docker images:
+    ```
+    docker-compose build
+    ```
+- (Re)Start all the Docker containers:
+    ```
+    docker-compose up -d
+    ```
+- Rebuild the image before starting the container:
+    ```
+    docker-compose up --build -d
+    ```
+    This command can be slower than docker-compose up -d because it rebuilds the image every time. However, it can be helpful if you have made changes to the Dockerfile or if the image was not built correctly the first time.
+- Stop the application and remove all the Docker containers:
+    ```
+    docker-compose down
+    ```
 - Opens a terminal inside the container with the specified name:
     ```
     docker exec -it <container_name> 
@@ -161,6 +158,10 @@ Here are some basic Docker commands that everyone should know:
 - List all the Docker networks on the system:
     ```
     docker network ls
+    ```
+- Stop all the Docker containers immediately:
+    ```
+    docker-compose kill
     ```
 - Remove all unused Docker networks:
     ```
@@ -175,7 +176,6 @@ Here are some basic Docker commands that everyone should know:
     docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
     ```
 ** These are just a few examples of Docker commands. Check the documentation for more information: https://laravel.com/docs/8.x/artisan](https://docs.docker.com/ or https://docs.docker.com/engine/reference/commandline/ (Docker CLI).
-
 
 ## Basic Laravel commands
 Here are some basic Laravel commands that everyone should know. Remember to run the commands inside the correct container (todox-app-1).
@@ -213,24 +213,45 @@ Here are some basic Laravel commands that everyone should know. Remember to run 
     ```
 ** These are just a few examples of Laravel commands. Check the documentation for more information: https://laravel.com/docs/8.x/artisan
 
+## Configuration
+- IP addresses are static to ensure seamless communication between containers.
+- Modify the .env files as necessary.
+- The Docker folders structure helps manage settings and data efficiently.
 
-## Using the application
-1. To build Docker containers, use the docker-compose up --build -d command.
-2. To stop the containers, use the docker-compose down command.
-3. To force stop the containers, use the docker-compose kill command.
-4. To rebuild the Docker image for a specific application, use the docker-compose build [service name] command.
-5. You can access the Angular application via http://localhost:4200/ (or http://localhost:<port_number>/ if you've used a different port).
-6. To run commands in a specific container, use the docker exec -it <container_name> to open a terminal inside the container and run the desired command.
+## Why Docker & Nginx
+- Docker simplifies deployment and ensures consistent environments.
+- Nginx acts as a reverse proxy, improving performance and security.
 
+## Docker Folders
+Using Docker folders instead of volumes simplifies data management and access inside containers.
 
 ## Application Ports:
-Front-end application: http://localhost:4200/ (or http://localhost:<port_number>/ if you've used a different port)<br>
-API: http://localhost:8082/
-
+- Front-end application: http://localhost:4200/ (or http://localhost:<port_number>/ if you've used a different port)
+- API: http://localhost:8082/
 
 ## Custom commands
-In addition to the basic Laravel commands, we have added some custom commands to the project. These commands are to be used inside the Laravel container (docker-compose exec php php artisan <command_name> or docker exec -it todox-app-1  -> run <command_name).
+In addition to the basic Laravel commands, we have added some custom commands to the project. These commands are to be used inside the Laravel container (docker-compose exec php php artisan <command_name> or docker exec -it todox-app-1  -> run <command_name>).
 - Checks the status of the database connection:
-    ```
+    ```bash
     php artisan app:checkdb
     ```
+
+## Contributing
+Contributions to this project are welcome! If you have suggestions, find bugs, or want to add new features, please follow these steps:
+
+Fork the repository.
+Create a new branch: git checkout -b feature/your-feature-name
+Make your changes and test thoroughly.
+Commit your changes: git commit -m 'Add feature: your feature name'
+Push to the branch: git push origin feature/your-feature-name
+Create a pull request explaining your changes.
+
+Enjoy exploring the project!
+
+## Disclaimer
+This project is developed exclusively for educational purposes as part of a university project. 
+
+--------------------------------------------------
+
+Feel free to explore, learn, and have fun with this project! If you have any questions or suggestions, please open an issue on this repository.
+
