@@ -4,16 +4,27 @@ ToDoX is a powerful task management web application built using Angular and Lara
 **Please Note: This project is developed solely for a university project. It is an unfinished task management web application.**
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Prototypes](#prototypes)
-  - [Sheppy the Explorer](#sheppy-the-explorer)
-  - [Target Shooting](#target-shooting)
-  - [AI Art Proposal](#ai-art-proposal)
+- [Description](#description)
+- [Dependencies](#dependencies)
 - [Getting Started](#getting-started)
-- [Acknowledgments](#acknowledgments)
+  - [Setting up Laravel](#setting-up-laravel)
+  - [Setting up Angular](#setting-up-angular)
+  - [Database migrations](#database-migrations)
+- [Commit Changes as a Group Member](#commit-changes-as-a-group-member)
+- [Basic Docker commands](#basic-docker-commands)
+- [Basic Laravel commands](#basic-laravel-commands)
+- [Configuration](#configuration)
+- [Why Docker & Nginx](#why-docker-&-nginx)
+- [Docker Folders](#docker-folders)
+- [Application Ports](#application-ports)
+- [Custom commands](#custom-commands)
+- [Contributing](#contributing)
+- [Disclaimer](#disclaimer)
 
 ## Description
 ToDoX is a collaborative task management application that enables teams to organize, track, and prioritize tasks. It combines the capabilities of Angular and Laravel to provide a seamless user experience. Docker and Nginx are utilized to ensure smooth deployment across different environments.
+https://github.com/mele13/ToDoX/assets/87198060/89664ac3-932c-4641-8e0b-57f2b7a3aa93
+
 
 ## Dependencies
 To use this project, ensure you have Docker installed and running on your system.
